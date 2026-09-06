@@ -1,38 +1,50 @@
 # G04Event
 
-Ein Überblick über **jährlich wiederkehrende Veranstaltungen in deutschen Städten** — mit Datum,
-Dauer, Rhythmus und Kategorie. Stadt anklicken, Thema wählen, fertig.
+Ein Überblick über **jährlich wiederkehrende Veranstaltungen in europäischen Städten** — mit Datum,
+Dauer, Rhythmus und Kategorie. Unten auswählen, oben den Countdown ablesen.
+
+**213 Termine · 19 Länder · 8 Kategorien**, Saison 2026/27.
+
+Live: **https://paulfv.github.io/G04Event/**
 
 Eine einzige HTML-Datei, kein Build, keine Abhängigkeiten, kein Backend.
 
 ## Funktionen
 
-- **Bundesland-Auswahl** — schränkt zugleich die Städteliste ein, mehrere gleichzeitig wählbar
-- **Städte-Auswahl** — jede Stadt als Schaltfläche mit Anzahl der Termine, mehrere gleichzeitig wählbar
-- **Countdown** — die nächste Veranstaltung der gewählten Stadt mit Live-Countdown bis zum Start
-  (läuft gerade etwas, zählt der Countdown bis zum Ende herunter). Ampelfarbe nach Restzeit:
-  ab vier Tagen grün, ab drei Tagen gelb, am letzten Tag rot
-- **Kategorien** — Technik, Essen, Spiel, Musik, Kultur, Film, Sport, Tradition, farblich codiert
-- **Sortierung** — nach Datum, Dauer (lang/kurz zuerst), Stadt, Name oder Kategorie
-- **Auswahl bleibt gespeichert** — zuletzt gewählte Städte und Themen sind beim nächsten Öffnen
-  wieder gesetzt (`localStorage`, bleibt im Browser des Betrachters)
-- **Suche** über Name, Stadt, Bundesland und Beschreibung
-- **Details** — Klick auf eine Zeile öffnet Beschreibung, Wochentag, Rhythmus und Bundesland
-- Helles und dunkles Design, folgt der Systemeinstellung; funktioniert auf Handy und Desktop
+- **Bedienleiste am unteren Rand**, immer sichtbar — Suche, Land, Region, Stadt, Thema.
+  Ein Tipp öffnet die Auswahl als Feld darüber, jeder Knopf zeigt an, was gerade gesetzt ist.
+- **Kaskadierende Auswahl** — das Land schränkt die Regionen ein, die Region die Städte.
+  Was nicht mehr passt, fällt automatisch aus der Auswahl.
+- **Nächster Termin ganz oben**, hervorgehoben und mit Live-Countdown. Läuft gerade etwas,
+  zählt der Countdown bis zum Ende. Die Ziffern sind eine Ampel: ab vier Tagen grün,
+  ab drei Tagen gelb, am letzten Tag rot.
+- **Sortierung** nach Datum, Dauer (lang/kurz zuerst), Stadt, Name oder Kategorie
+- **Auswahl bleibt gespeichert** — beim nächsten Öffnen ist alles wieder gesetzt
+  (`localStorage`, bleibt im Browser des Betrachters)
+- **Details** — Tipp auf eine Zeile öffnet Beschreibung, Wochentag, Rhythmus, Region und Land
+- Helles und dunkles Design, folgt der Systemeinstellung
+
+## Auf dem Handy installieren
+
+Die Seite ist eine installierbare Web-App (Manifest, Icons, Vollbildmodus, sichere Ränder für
+Notch und Home-Indicator).
+
+- **iPhone:** Seite in Safari öffnen → Teilen-Symbol → *Zum Home-Bildschirm*
+- **Android:** Seite in Chrome öffnen → Menü → *App installieren*
+
+Danach startet sie ohne Browserleiste, mit eigenem Icon.
 
 ## Starten
 
 Datei `index.html` im Browser öffnen. Mehr ist nicht nötig.
 
-Lokaler Server (optional):
+Lokaler Server (nötig, damit Manifest und Installation greifen):
 
 ```bash
 python -m http.server 8000
 ```
 
-## Veröffentlicht
-
-**https://paulfv.github.io/G04Event/**
+## Veröffentlichen
 
 Jeder Push auf `main` aktualisiert die Seite:
 
@@ -40,8 +52,8 @@ Jeder Push auf `main` aktualisiert die Seite:
 git add -A && git commit -m "Neue Veranstaltungen" && git push
 ```
 
-Die Quelle steht im Repository unter **Settings → Pages**; der Workflow in
-`.github/workflows/pages.yml` übernimmt die Veröffentlichung.
+Die Quelle steht unter **Settings → Pages**; der Workflow in `.github/workflows/pages.yml`
+übernimmt die Veröffentlichung.
 
 ## Veranstaltung hinzufügen
 
@@ -57,7 +69,8 @@ Alle Daten stehen als Liste `EVENTS` im `<script>`-Block von `index.html`. Eine 
 |------|-----------|
 | `n`  | Name der Veranstaltung |
 | `c`  | Stadt — neue Städte erscheinen automatisch in der Auswahl |
-| `l`  | Bundesland |
+| `l`  | Region: Bundesland, Kanton, Provinz — je nach Land |
+| `p`  | Land. **Fehlt das Feld, gilt Deutschland** — deshalb steht es nur bei den übrigen Ländern |
 | `k`  | Kategorie: `tech` `food` `play` `music` `art` `film` `sport` `trad` |
 | `s`  | Beginn der nächsten Ausgabe, `JJJJ-MM-TT` |
 | `e`  | Ende (bei eintägigen Terminen gleich `s`) |
@@ -67,17 +80,23 @@ Alle Daten stehen als Liste `EVENTS` im `<script>`-Block von `index.html`. Eine 
 
 Dauer und Wochentag berechnet die App selbst aus `s` und `e` — nichts doppelt pflegen.
 
-Eine neue Kategorie braucht zwei Ergänzungen: einen Eintrag in `CATS` und eine Farbvariable
-`--c-name` in beiden Farbschemata (hell und dunkel).
+Eine neue Kategorie braucht zwei Ergänzungen: einen Eintrag in `CATS` (mit `h` als heller Variante
+für den Kopfbereich) und eine Farbvariable `--c-name` in beiden Farbschemata.
+
+## Icon
+
+`icon.svg` ist die Vorlage — ein Jahresring aus zwölf Monatsstrichen, einer davon hervorgehoben,
+mit dem E in der Mitte. Die PNG-Größen für iOS und Android werden daraus erzeugt:
+`favicon-32.png`, `icon-180.png` (Apple Touch), `icon-192.png`, `icon-512.png` und
+`icon-512-maskable.png` (Android, ohne eigene Rundung, damit das System selbst zuschneiden kann).
 
 ## Zu den Terminen
 
 Termine mit **gepunkteter Unterstreichung** (`x:0`) sind aus dem jährlichen Rhythmus
 fortgeschrieben und vom Veranstalter noch nicht bestätigt — vor der Anreise auf der offiziellen
-Seite prüfen. Feste Regeltermine (`x:1`) folgen einer Regel: Karneval ist an Ostern gekoppelt,
-der Wiesn-Anstich fällt auf den dritten Septembersamstag, Weihnachtsmärkte enden an Heiligabend.
-
-Stand der Daten: Saison 2026/27.
+Seite prüfen. Feste Regeltermine (`x:1`) folgen einer Regel: Karneval und Semana Santa hängen an
+Ostern, der Wiesn-Anstich fällt auf den dritten Septembersamstag, San Fermín läuft immer vom
+6. bis 14. Juli, deutsche Weihnachtsmärkte enden an Heiligabend.
 
 ## Lizenz
 

@@ -1,0 +1,19 @@
+{
+  "name": "G04Event",
+  "short_name": "G04Event",
+  "description": "Jährliche Veranstaltungen in Europa — Termin, Dauer, Kategorie und Countdown.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0E1115",
+  "theme_color": "#0E1115",
+  "categories": ["events", "travel", "lifestyle"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

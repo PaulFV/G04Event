@@ -1,4 +1,16 @@
 <title>G04Event</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Jährliche Veranstaltungen in Europa — Termin, Dauer, Kategorie und Countdown.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#E9EAEC">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1115">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="G04Event">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap">
 <style>
@@ -10,9 +22,10 @@
   --c-art:#0E7A6B; --c-film:#3D4A5C; --c-sport:#12762D; --c-trad:#B03A3A;
   --tint:rgba(20,23,28,.05);
   --ring:#14171C;
-  --sig-rot:#C0271B;   --sig-rot-bg:rgba(192,39,27,.09);
-  --sig-gelb:#8A6300;  --sig-gelb-bg:rgba(138,99,0,.11);
-  --sig-gruen:#10702A; --sig-gruen-bg:rgba(16,112,42,.09);
+  --sig-rot:#C0271B; --sig-gelb:#8A6300; --sig-gruen:#10702A;
+  --hero-bg:#14171C; --hero-ink:#F2F4F7; --hero-muted:#A8B0BC; --hero-box:#232935;
+  --dock-bg:rgba(252,252,253,.92);
+  --schatten:0 -14px 40px rgba(20,23,28,.14);
   --sans:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --disp:"Bricolage Grotesque","Public Sans",-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
@@ -26,9 +39,10 @@
     --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
     --tint:rgba(255,255,255,.06);
     --ring:#E8EBF0;
-    --sig-rot:#F58C80;   --sig-rot-bg:rgba(245,140,128,.13);
-    --sig-gelb:#E5B84A;  --sig-gelb-bg:rgba(229,184,74,.13);
-    --sig-gruen:#5FC47C; --sig-gruen-bg:rgba(95,196,124,.13);
+    --sig-rot:#F58C80; --sig-gelb:#E5B84A; --sig-gruen:#5FC47C;
+    --hero-bg:#242B37; --hero-ink:#F0F3F7; --hero-muted:#A9B3C1; --hero-box:#161B24;
+    --dock-bg:rgba(18,22,28,.92);
+    --schatten:0 -14px 40px rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"]{
@@ -39,121 +53,75 @@
   --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
   --tint:rgba(255,255,255,.06);
   --ring:#E8EBF0;
-  --sig-rot:#F58C80;   --sig-rot-bg:rgba(245,140,128,.13);
-  --sig-gelb:#E5B84A;  --sig-gelb-bg:rgba(229,184,74,.13);
-  --sig-gruen:#5FC47C; --sig-gruen-bg:rgba(95,196,124,.13);
+  --sig-rot:#F58C80; --sig-gelb:#E5B84A; --sig-gruen:#5FC47C;
+  --hero-bg:#242B37; --hero-ink:#F0F3F7; --hero-muted:#A9B3C1; --hero-box:#161B24;
+  --dock-bg:rgba(18,22,28,.92);
+  --schatten:0 -14px 40px rgba(0,0,0,.5);
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
-  -webkit-font-smoothing:antialiased;margin:0}
+  -webkit-font-smoothing:antialiased;margin:0;
+  padding-bottom:calc(86px + env(safe-area-inset-bottom))}
 :focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:4px}
-.shell{max-width:960px;margin:0 auto;padding:0 20px 80px}
+.shell{max-width:1000px;margin:0 auto;padding:0 18px}
 
-/* --- Kopf --- */
-.head{padding:44px 0 4px}
-h1{font-family:var(--disp);font-weight:800;font-size:clamp(36px,6vw,56px);letter-spacing:-.03em;
-  margin:0;line-height:.95}
-.lede{margin:14px 0 0;max-width:54ch;color:var(--ink-2);font-size:17px}
+/* ---------- Kopf ---------- */
+.head{padding:26px 0 16px}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,7vw,42px);letter-spacing:-.03em;
+  margin:0;line-height:.98}
+.lede{margin:8px 0 0;max-width:52ch;color:var(--muted);font-size:14.5px}
 
-/* --- Bedienfeld --- */
-.panel{margin-top:28px;display:flex;flex-direction:column;gap:12px}
-.searchbox{position:relative}
-.searchbox input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
-  border:1px solid var(--line-2);border-radius:10px;padding:12px 14px 12px 40px}
-.searchbox input::placeholder{color:var(--faint)}
-.searchbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
+/* ---------- Nächster Termin ---------- */
+.hero{background:var(--hero-bg);color:var(--hero-ink);border-radius:16px;
+  padding:20px 22px 22px;display:flex;gap:20px 30px;justify-content:space-between;
+  align-items:flex-end;flex-wrap:wrap}
+.hero[hidden]{display:none}
+.hero .who{min-width:0;flex:1 1 260px}
+.hero .lbl{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--hcat);margin-bottom:10px}
+.hero h2{font-family:var(--disp);font-weight:700;font-size:clamp(27px,6.4vw,44px);
+  letter-spacing:-.028em;margin:0 0 9px;line-height:1.02;color:var(--hero-ink)}
+.hero .meta{font-size:14.5px;color:var(--hero-muted);display:flex;flex-wrap:wrap;gap:2px 7px}
+.hero .meta b{color:var(--hero-ink);font-weight:600}
+.hero .meta span::before{content:"·";margin-right:7px;opacity:.45}
+.hero .cdwrap{display:flex;flex-direction:column;gap:9px;align-items:flex-start}
+.hero .cdl{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--hero-muted)}
+.cd{display:flex;gap:7px}
+.cdu{min-width:62px;text-align:center;background:var(--hero-box);border-radius:11px;padding:9px 8px}
+.cdu .v{display:block;font-family:var(--mono);font-size:27px;font-weight:600;letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums;line-height:1.03;color:var(--hero-ink)}
+.cdu .k{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--hero-muted);margin-top:5px}
+/* Ampel: nur die Ziffern */
+.cd[data-stufe="rot"]   .cdu .v{color:#FF8D80}
+.cd[data-stufe="gelb"]  .cdu .v{color:#F0C155}
+.cd[data-stufe="gruen"] .cdu .v{color:#6BD189}
 
-/* Ausklappbare Auswahl */
-.block{border:1px solid var(--line-2);border-radius:10px;background:var(--surface);overflow:hidden}
-.block>summary{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;
-  list-style:none;font-size:15px}
-.block>summary::-webkit-details-marker{display:none}
-.block>summary:hover{background:var(--tint)}
-.block>summary:focus-visible{outline:2px solid var(--ring);outline-offset:-2px}
-.block .bt{font-weight:600;flex:none}
-.block .sum{color:var(--muted);font-size:14px;flex:1;min-width:0;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap}
-.block .chev{flex:none;color:var(--muted);transition:transform .18s}
-.block[open] .chev{transform:rotate(180deg)}
-.block[open]>summary{border-bottom:1px solid var(--line)}
-.block>.chips{padding:14px 15px 16px;max-height:196px;overflow-y:auto;overscroll-behavior:contain;
-  scrollbar-width:thin;scrollbar-color:var(--line-2) transparent}
-.block>.chips::-webkit-scrollbar{width:11px}
-.block>.chips::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:99px;
-  border:3.5px solid var(--surface)}
-.block>.chips::-webkit-scrollbar-track{background:transparent}
-.chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{font:inherit;font-size:14px;background:var(--surface);color:var(--ink-2);
-  border:1px solid var(--line-2);border-radius:999px;padding:7px 14px;cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;line-height:1.2}
-.chip:hover{background:var(--surface-2);color:var(--ink)}
-.chip .n{font-family:var(--mono);font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:500}
-.chip[aria-pressed="true"] .n{color:var(--bg);opacity:.6}
-.chip.k{border-color:var(--cat)}
-.chip.k .dot{width:9px;height:9px;border-radius:50%;background:var(--cat);flex:none}
-.chip.k[aria-pressed="true"]{background:var(--cat);border-color:var(--cat);color:#fff}
-:root[data-theme="dark"] .chip.k[aria-pressed="true"],
-.chip.k[aria-pressed="true"]{color:var(--chiptext,#fff)}
-.chip.k[aria-pressed="true"] .dot{background:currentColor;opacity:.85}
-.chip.k[aria-pressed="true"] .n{color:currentColor;opacity:.7}
-
-/* --- Werkzeugzeile --- */
-.tools{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:space-between;
-  padding-top:18px;border-top:1px solid var(--line-2)}
-.tools-l{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.count{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+/* ---------- Ergebniskopf ---------- */
+.rhead{display:flex;align-items:center;justify-content:space-between;gap:12px 18px;flex-wrap:wrap;
+  padding:22px 0 12px}
+.count{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .count b{color:var(--ink);font-weight:600}
-.tg{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:var(--ink-2)}
+.rtools{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.tg{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13.5px;color:var(--ink-2)}
 .tg input{width:16px;height:16px;accent-color:var(--ink);margin:0;flex:none}
-.sortwrap{display:flex;align-items:center;gap:9px}
-.sortwrap label{font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.09em;
-  font-weight:600}
-select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);appearance:none;
-  border:1px solid var(--line-2);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;
+select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);appearance:none;
+  border:1px solid var(--line-2);border-radius:8px;padding:7px 28px 7px 10px;cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
-  background-position:calc(100% - 16px) 53%,calc(100% - 11px) 53%;background-size:5px 5px,5px 5px;
+  background-position:calc(100% - 15px) 53%,calc(100% - 10px) 53%;background-size:5px 5px,5px 5px;
   background-repeat:no-repeat}
-.reset{background:none;border:0;padding:0;font:inherit;font-size:13.5px;color:var(--muted);
+.reset{background:none;border:0;padding:0;font:inherit;font-size:13px;color:var(--muted);
   text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .reset:hover{color:var(--ink)}
 .reset[hidden]{display:none}
 
-/* --- Nächste Veranstaltung --- */
-.next{margin-top:24px;border:1px solid var(--line);border-left:5px solid var(--cat);
-  border-radius:12px;background:var(--surface);padding:18px 20px;display:flex;
-  gap:22px 28px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.next[hidden]{display:none}
-.next .who{min-width:0}
-.next .lbl{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--cat);margin-bottom:8px}
-.next h2{font-family:var(--disp);font-weight:700;font-size:clamp(21px,3.4vw,27px);
-  letter-spacing:-.022em;margin:0 0 6px;line-height:1.08}
-.next .meta{font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 9px}
-.next .meta .place{color:var(--ink-2);font-weight:500}
-.cdwrap{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-.cdwrap .cdl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--faint)}
-.cd{display:flex;gap:7px}
-.cdu{min-width:56px;text-align:center;background:var(--surface-2);border:1px solid var(--line);
-  border-radius:9px;padding:8px 7px}
-.cdu .v{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.03em;
-  font-variant-numeric:tabular-nums;display:block;line-height:1.05;color:var(--ink)}
-.cdu .k{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
-  display:block;margin-top:4px}
-
-/* Ampel: nur die Ziffern — 1 Tag oder weniger rot, bis 3 Tage gelb, sonst grün */
-.cd[data-stufe] .cdu .v{color:var(--sig)}
-.cd[data-stufe="rot"]  {--sig:var(--sig-rot)}
-.cd[data-stufe="gelb"] {--sig:var(--sig-gelb)}
-.cd[data-stufe="gruen"]{--sig:var(--sig-gruen)}
-
-/* --- Liste --- */
-#out{margin-top:22px}
+/* ---------- Liste ---------- */
 .group{margin-bottom:26px}
 .gh{position:sticky;top:0;z-index:2;display:flex;align-items:baseline;gap:12px;
   padding:9px 2px;background:var(--bg);border-bottom:1px solid var(--line-2)}
-.gh h3{font-family:var(--disp);font-weight:600;font-size:18px;letter-spacing:-.015em;margin:0}
+.gh h3{font-family:var(--disp);font-weight:600;font-size:17px;letter-spacing:-.015em;margin:0}
 .gh .gn{font-family:var(--mono);font-size:11.5px;color:var(--faint)}
 .list{border:1px solid var(--line);border-top:0;border-radius:0 0 11px 11px;overflow:hidden;
   background:var(--surface)}
@@ -186,22 +154,82 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);ap
   padding:2px 6px;white-space:nowrap}
 .detail{padding:0 16px 18px 15px;display:grid;gap:13px}
 .detail p{margin:0;max-width:64ch;color:var(--ink-2);font-size:14.5px}
-.dl{display:flex;flex-wrap:wrap;gap:11px 32px}
+.dl{display:flex;flex-wrap:wrap;gap:11px 30px}
 .dl div{display:flex;flex-direction:column;gap:2px}
 .dl dt{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600}
 .dl dd{margin:0;font-family:var(--mono);font-size:13px;color:var(--ink)}
-.empty{border:1px dashed var(--line-2);border-radius:11px;padding:52px 24px;text-align:center;
+.empty{border:1px dashed var(--line-2);border-radius:11px;padding:48px 24px;text-align:center;
   color:var(--muted)}
 .empty strong{display:block;color:var(--ink);font-size:17px;margin-bottom:6px;font-weight:600}
-.note{margin-top:38px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;
+.note{margin:34px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;
   color:var(--faint);max-width:72ch}
 .note b{color:var(--muted);font-weight:600}
+
+/* ---------- Leiste unten ---------- */
+.dockwrap{position:fixed;left:0;right:0;bottom:0;z-index:40}
+.dock{background:var(--dock-bg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line-2);
+  padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+.dockrow{display:flex;gap:3px;max-width:1000px;margin:0 auto}
+.dbtn{flex:1 1 0;min-width:0;background:none;border:0;border-radius:11px;padding:7px 3px 6px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+  color:var(--muted);font:inherit;min-height:56px;-webkit-tap-highlight-color:transparent}
+.dbtn svg{flex:none}
+.dbtn .dl{font-size:10.5px;font-weight:600;letter-spacing:.01em;line-height:1.1}
+.dbtn .dv{font-size:10px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;color:var(--faint)}
+.dbtn:hover{color:var(--ink-2)}
+.dbtn.gesetzt{color:var(--ink)}
+.dbtn.gesetzt .dv{color:var(--ink);font-weight:600}
+.dbtn[aria-expanded="true"]{background:var(--surface-3);color:var(--ink)}
+
+/* ---------- Auswahlfeld über der Leiste ---------- */
+.sheet{background:var(--surface);border-top:1px solid var(--line-2);
+  border-radius:16px 16px 0 0;box-shadow:var(--schatten);
+  max-height:min(58vh,440px);display:flex;flex-direction:column}
+.sheet[hidden]{display:none}
+.sheetbar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 16px 10px;border-bottom:1px solid var(--line)}
+.sheetbar h2{font-size:14.5px;font-weight:600;margin:0}
+.sheetbar button{background:none;border:0;font:inherit;font-size:14px;font-weight:600;
+  color:var(--ink);cursor:pointer;padding:4px 2px}
+.sheetbody{overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 18px;
+  scrollbar-width:thin;scrollbar-color:var(--line-2) transparent}
+.sheetbody::-webkit-scrollbar{width:11px}
+.sheetbody::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:99px;
+  border:3.5px solid var(--surface)}
+.scrim{position:fixed;inset:0;z-index:39;background:rgba(10,12,16,.4)}
+.scrim[hidden]{display:none}
+.searchbox{position:relative}
+.searchbox input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-2);border-radius:10px;padding:12px 14px 12px 40px}
+.searchbox input::placeholder{color:var(--faint)}
+.searchbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips[hidden]{display:none}
+.chip{font:inherit;font-size:14px;background:var(--surface-2);color:var(--ink-2);
+  border:1px solid var(--line-2);border-radius:999px;padding:8px 14px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;line-height:1.2}
+.chip:hover{background:var(--surface-3);color:var(--ink)}
+.chip .n{font-family:var(--mono);font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:500}
+.chip[aria-pressed="true"] .n{color:var(--bg);opacity:.6}
+.chip.k{border-color:var(--cat)}
+.chip.k .dot{width:9px;height:9px;border-radius:50%;background:var(--cat);flex:none}
+.chip.k[aria-pressed="true"]{background:var(--cat);border-color:var(--cat);color:#fff}
+.chip.k[aria-pressed="true"] .dot{background:currentColor;opacity:.85}
+.chip.k[aria-pressed="true"] .n{color:currentColor;opacity:.7}
+
 @media (max-width:640px){
-  .head{padding-top:32px}
+  .shell{padding:0 14px}
+  .hero{padding:18px 16px 18px;border-radius:14px;gap:16px}
+  .cdu{min-width:0;flex:1 1 0;padding:8px 4px}
+  .cdu .v{font-size:23px}
+  .hero .cdwrap{width:100%}
+  .cd{width:100%}
   .evmain{grid-template-columns:54px minmax(0,1fr);gap:13px;padding:13px 12px 13px 13px}
   .right{grid-column:2;justify-content:flex-start;padding-top:6px}
   .dur{text-align:left}
-  .tools{align-items:flex-start}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -209,58 +237,26 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);ap
 <div class="shell">
   <header class="head">
     <h1>G04Event</h1>
-    <p class="lede">Jährliche Veranstaltungen in deutschen Städten — mit Datum, Dauer und Kategorie.
-      Stadt anklicken, Thema wählen, fertig.</p>
+    <p class="lede">Jährliche Veranstaltungen in Europa — Termin, Dauer und Countdown.</p>
   </header>
 
-  <div class="panel">
-    <div class="searchbox">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.3 10.3 14 14"/></svg>
-      <input id="q" type="search" placeholder="Suchen: Name, Stadt oder Stichwort" aria-label="Suchen">
-    </div>
+  <section class="hero" id="next" hidden></section>
 
-    <details class="block">
-      <summary><span class="bt">Bundesland</span><span class="sum" id="sumLaender">Alle Bundesländer</span>
-        <svg class="chev" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg>
-      </summary>
-      <div class="chips" id="laender"></div>
-    </details>
-
-    <details class="block">
-      <summary><span class="bt">Stadt</span><span class="sum" id="sumCities">Alle Städte</span>
-        <svg class="chev" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg>
-      </summary>
-      <div class="chips" id="cities"></div>
-    </details>
-
-    <details class="block">
-      <summary><span class="bt">Thema</span><span class="sum" id="sumCats">Alle Themen</span>
-        <svg class="chev" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg>
-      </summary>
-      <div class="chips" id="cats"></div>
-    </details>
-
-    <div class="tools">
-      <div class="tools-l">
-        <span class="count" id="count"></span>
-        <label class="tg"><input type="checkbox" id="upcoming" checked> Nur kommende</label>
-        <button class="reset" id="reset" hidden>Auswahl zurücksetzen</button>
-      </div>
-      <div class="sortwrap">
-        <label for="sort">Sortieren</label>
-        <select id="sort">
-          <option value="date">Datum</option>
-          <option value="durDesc">Dauer — lang zuerst</option>
-          <option value="durAsc">Dauer — kurz zuerst</option>
-          <option value="city">Stadt A–Z</option>
-          <option value="name">Name A–Z</option>
-          <option value="cat">Kategorie</option>
-        </select>
-      </div>
+  <div class="rhead">
+    <span class="count" id="count"></span>
+    <div class="rtools">
+      <label class="tg"><input type="checkbox" id="upcoming" checked> Nur kommende</label>
+      <select id="sort" aria-label="Sortieren nach">
+        <option value="date">Nach Datum</option>
+        <option value="durDesc">Dauer — lang zuerst</option>
+        <option value="durAsc">Dauer — kurz zuerst</option>
+        <option value="city">Stadt A–Z</option>
+        <option value="name">Name A–Z</option>
+        <option value="cat">Kategorie</option>
+      </select>
+      <button class="reset" id="reset" hidden>Zurücksetzen</button>
     </div>
   </div>
-
-  <section class="next" id="next" hidden></section>
 
   <div id="out"></div>
 
@@ -269,24 +265,70 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);ap
     Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.</p>
 </div>
 
+<div class="scrim" id="scrim" hidden></div>
+
+<div class="dockwrap">
+  <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheetbar">
+      <h2 id="sheetTitle">Auswahl</h2>
+      <button id="sheetClose">Fertig</button>
+    </div>
+    <div class="sheetbody">
+      <div class="searchbox" id="pane-q" hidden>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.3 10.3 14 14"/></svg>
+        <input id="q" type="search" placeholder="Name, Stadt oder Stichwort" aria-label="Suchen">
+      </div>
+      <div class="chips" id="pane-land" hidden></div>
+      <div class="chips" id="pane-region" hidden></div>
+      <div class="chips" id="pane-stadt" hidden></div>
+      <div class="chips" id="pane-thema" hidden></div>
+    </div>
+  </div>
+
+  <nav class="dock" aria-label="Auswahl">
+    <div class="dockrow" id="dockrow">
+      <button class="dbtn" data-pane="q" aria-expanded="false">
+        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.4"/><path d="M12.6 12.6 17 17" stroke-linecap="round"/></svg>
+        <span class="dl">Suche</span><span class="dv" id="dv-q">alle</span>
+      </button>
+      <button class="dbtn" data-pane="land" aria-expanded="false">
+        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M2.8 10h14.4M10 2.8c1.9 2 2.9 4.5 2.9 7.2s-1 5.2-2.9 7.2c-1.9-2-2.9-4.5-2.9-7.2S8.1 4.8 10 2.8z"/></svg>
+        <span class="dl">Land</span><span class="dv" id="dv-land">alle</span>
+      </button>
+      <button class="dbtn" data-pane="region" aria-expanded="false">
+        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M2.8 5.4 7.4 3.4l5.2 2 4.6-2v11.2l-4.6 2-5.2-2-4.6 2z"/><path d="M7.4 3.4v13.2M12.6 5.4v13.2"/></svg>
+        <span class="dl">Region</span><span class="dv" id="dv-region">alle</span>
+      </button>
+      <button class="dbtn" data-pane="stadt" aria-expanded="false">
+        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M2.6 17.2h14.8M4.4 17.2V8.2l4.2-2.6v11.6M8.6 17.2V9.4l6.4-2.2v10"/></svg>
+        <span class="dl">Stadt</span><span class="dv" id="dv-stadt">alle</span>
+      </button>
+      <button class="dbtn" data-pane="thema" aria-expanded="false">
+        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.9"/><circle cx="13.6" cy="6.4" r="2.9"/><circle cx="6.4" cy="13.6" r="2.9"/><circle cx="13.6" cy="13.6" r="2.9"/></svg>
+        <span class="dl">Thema</span><span class="dv" id="dv-thema">alle</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
 <script>
 /* ------------------------------------------------------------------
    Datenbasis — eine Zeile je Veranstaltung:
-     n Name · c Stadt · l Bundesland · k Kategorie
+     n Name · c Stadt · l Region · p Land (fehlt = Deutschland) · k Kategorie
      s Beginn · e Ende (ISO, nächste Ausgabe)
      r Rhythmus · x 1 = fester Regeltermin, 0 = fortgeschrieben
      d Kurzbeschreibung
    Neue Veranstaltung: einfach eine Zeile ergänzen.
 ------------------------------------------------------------------- */
 const CATS = {
-  tech:  {label:"Technik",     v:"--c-tech"},
-  food:  {label:"Essen",       v:"--c-food"},
-  play:  {label:"Spiel",       v:"--c-play"},
-  music: {label:"Musik",       v:"--c-music"},
-  art:   {label:"Kultur",      v:"--c-art"},
-  film:  {label:"Film",        v:"--c-film"},
-  sport: {label:"Sport",       v:"--c-sport"},
-  trad:  {label:"Tradition",   v:"--c-trad"}
+  tech:  {label:"Technik",   v:"--c-tech",  h:"#89AAF6"},
+  food:  {label:"Essen",     v:"--c-food",  h:"#D6AE4F"},
+  play:  {label:"Spiel",     v:"--c-play",  h:"#B490EE"},
+  music: {label:"Musik",     v:"--c-music", h:"#F179A6"},
+  art:   {label:"Kultur",    v:"--c-art",   h:"#4FC3AC"},
+  film:  {label:"Film",      v:"--c-film",  h:"#9EABBE"},
+  sport: {label:"Sport",     v:"--c-sport", h:"#5FC47C"},
+  trad:  {label:"Tradition", v:"--c-trad",  h:"#EA8383"}
 };
 
 const EVENTS = [
@@ -436,9 +478,119 @@ const EVENTS = [
 {n:"Dürkheimer Wurstmarkt",c:"Bad Dürkheim",l:"Rheinland-Pfalz",k:"food",s:"2027-09-10",e:"2027-09-20",r:"jährlich, zwei Wochenenden",x:0,d:"Größtes Weinfest der Welt an der Weinstraße — Schubkarchstände statt Bierzelte."},
 {n:"Münster Marathon",c:"Münster",l:"Nordrhein-Westfalen",k:"sport",s:"2027-09-12",e:"2027-09-12",r:"jährlich",x:0,d:"Flacher Stadtmarathon durch die Altstadt und über den Promenadenring."},
 {n:"Heidelberger Herbst",c:"Heidelberg",l:"Baden-Württemberg",k:"art",s:"2027-09-25",e:"2027-09-25",r:"jährlich",x:0,d:"Altstadtfest mit Kunsthandwerkermarkt in der langen Hauptstraße."},
-{n:"Weimarer Zwiebelmarkt",c:"Weimar",l:"Thüringen",k:"food",s:"2027-10-08",e:"2027-10-10",r:"jährlich, zweites Oktoberwochenende",x:0,d:"Ältestes Volksfest Thüringens — Zwiebelzöpfe und Zwiebelkuchen in der ganzen Innenstadt."}
-];
+{n:"Weimarer Zwiebelmarkt",c:"Weimar",l:"Thüringen",k:"food",s:"2027-10-08",e:"2027-10-10",r:"jährlich, zweites Oktoberwochenende",x:0,d:"Ältestes Volksfest Thüringens — Zwiebelzöpfe und Zwiebelkuchen in der ganzen Innenstadt."},
 
+/* Österreich */
+{n:"Ars Electronica",c:"Linz",l:"Oberösterreich",p:"Österreich",k:"tech",s:"2026-09-09",e:"2026-09-13",r:"jährlich",x:0,d:"Festival für Kunst, Technologie und Gesellschaft, mit Klangwolke über der Donau."},
+{n:"Viennale",c:"Wien",l:"Wien",p:"Österreich",k:"film",s:"2026-10-22",e:"2026-11-04",r:"jährlich",x:0,d:"Österreichs größtes Filmfestival, gezeigt in den historischen Kinos der Innenstadt."},
+{n:"Christkindlmarkt Rathausplatz",c:"Wien",l:"Wien",p:"Österreich",k:"trad",s:"2026-11-13",e:"2026-12-26",r:"jährlich",x:0,d:"Der bekannteste Wiener Adventmarkt vor dem Rathaus, mit Herzerlbaum im Park."},
+{n:"Hahnenkamm-Rennen",c:"Kitzbühel",l:"Tirol",p:"Österreich",k:"sport",s:"2027-01-22",e:"2027-01-24",r:"jährlich",x:0,d:"Abfahrt auf der Streif, das gefürchtetste Rennen des alpinen Weltcups."},
+{n:"Wiener Opernball",c:"Wien",l:"Wien",p:"Österreich",k:"trad",s:"2027-02-04",e:"2027-02-04",r:"jährlich, letzter Donnerstag im Fasching",x:1,d:"Ballnacht in der Staatsoper, eröffnet vom Jungdamen- und Jungherrenkomitee."},
+{n:"Vienna City Marathon",c:"Wien",l:"Wien",p:"Österreich",k:"sport",s:"2027-04-18",e:"2027-04-18",r:"jährlich",x:0,d:"Strecke über die Ringstraße und die Donauinsel, Ziel am Burgtheater."},
+{n:"Wiener Festwochen",c:"Wien",l:"Wien",p:"Österreich",k:"art",s:"2027-05-14",e:"2027-06-20",r:"jährlich",x:0,d:"Fünf Wochen Theater, Musik und Diskurs, Eröffnung auf dem Rathausplatz bei freiem Eintritt."},
+{n:"Donauinselfest",c:"Wien",l:"Wien",p:"Österreich",k:"music",s:"2027-06-25",e:"2027-06-27",r:"jährlich",x:0,d:"Größtes Open-Air-Festival Europas mit freiem Eintritt, Bühnen entlang der Insel."},
+{n:"Salzburger Festspiele",c:"Salzburg",l:"Salzburg",p:"Österreich",k:"music",s:"2027-07-16",e:"2027-08-30",r:"jährlich",x:0,d:"Oper, Konzert und Schauspiel, zum Auftakt der Jedermann auf dem Domplatz."},
+{n:"Bregenzer Festspiele",c:"Bregenz",l:"Vorarlberg",p:"Österreich",k:"music",s:"2027-07-21",e:"2027-08-22",r:"jährlich",x:0,d:"Oper auf der Seebühne im Bodensee, jedes Bühnenbild läuft zwei Sommer lang."},
+{n:"FM4 Frequency Festival",c:"St. Pölten",l:"Niederösterreich",p:"Österreich",k:"music",s:"2027-08-19",e:"2027-08-21",r:"jährlich",x:0,d:"Rock- und Popfestival am Traisen-Gelände, Österreichs größtes seiner Art."},
+
+/* Schweiz */
+{n:"Zurich Film Festival",c:"Zürich",l:"Zürich",p:"Schweiz",k:"film",s:"2026-09-24",e:"2026-10-04",r:"jährlich",x:0,d:"Grüner Teppich am Sechseläutenplatz, Wettbewerb für erste und zweite Spielfilme."},
+{n:"Basler Herbstmesse",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"trad",s:"2026-10-24",e:"2026-11-08",r:"jährlich",x:0,d:"Ältester Jahrmarkt der Schweiz, seit 1471, verteilt auf sieben Plätze der Stadt."},
+{n:"Fête de l'Escalade",c:"Genf",l:"Genf",p:"Schweiz",k:"trad",s:"2026-12-11",e:"2026-12-13",r:"jährlich, Wochenende um den 12. Dezember",x:1,d:"Erinnerung an die abgewehrte Belagerung von 1602, mit Fackelzug und Topf aus Schokolade."},
+{n:"Basler Fasnacht",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"trad",s:"2027-02-15",e:"2027-02-17",r:"jährlich, Montag nach Aschermittwoch",x:1,d:"Beginnt mit dem Morgestraich um vier Uhr früh, wenn die Stadt das Licht löscht."},
+{n:"Sechseläuten",c:"Zürich",l:"Zürich",p:"Schweiz",k:"trad",s:"2027-04-19",e:"2027-04-19",r:"jährlich, dritter Montag im April",x:1,d:"Die Zünfte ziehen durch die Stadt, danach brennt der Böögg — seine Kopfzeit gilt als Sommerprognose."},
+{n:"Art Basel",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"art",s:"2027-06-17",e:"2027-06-20",r:"jährlich",x:0,d:"Wichtigste Messe für moderne und zeitgenössische Kunst, mit eigener Halle für Großformate."},
+{n:"Montreux Jazz Festival",c:"Montreux",l:"Waadt",p:"Schweiz",k:"music",s:"2027-07-02",e:"2027-07-17",r:"jährlich",x:0,d:"Konzerte am Genfersee, längst weit über den Jazz hinaus programmiert."},
+{n:"Locarno Film Festival",c:"Locarno",l:"Tessin",p:"Schweiz",k:"film",s:"2027-08-04",e:"2027-08-14",r:"jährlich",x:0,d:"Abendvorstellungen auf der Piazza Grande vor achttausend Zuschauern."},
+{n:"Street Parade",c:"Zürich",l:"Zürich",p:"Schweiz",k:"music",s:"2027-08-14",e:"2027-08-14",r:"jährlich",x:0,d:"Technoparade rund um das Seebecken, eine der größten der Welt."},
+
+/* Frankreich */
+{n:"Salon du Chocolat",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"food",s:"2026-10-28",e:"2026-11-01",r:"jährlich",x:0,d:"Weltgrößte Schokoladenmesse, zum Auftakt eine Modenschau aus Kakao."},
+{n:"Fête des Lumières",c:"Lyon",l:"Auvergne-Rhône-Alpes",p:"Frankreich",k:"art",s:"2026-12-05",e:"2026-12-08",r:"jährlich, um den 8. Dezember",x:1,d:"Lichtinstallationen in der ganzen Stadt, dazu Kerzen in den Fenstern der Anwohner."},
+{n:"Sirha und Bocuse d'Or",c:"Lyon",l:"Auvergne-Rhône-Alpes",p:"Frankreich",k:"food",s:"2027-01-22",e:"2027-01-26",r:"alle 2 Jahre, ungerade Jahre",x:0,d:"Fachmesse der Gastronomie mit dem wichtigsten Kochwettbewerb der Welt."},
+{n:"Carnaval de Nice",c:"Nizza",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"trad",s:"2027-02-05",e:"2027-02-21",r:"jährlich",x:0,d:"Wagenkorso und Blumenschlacht an der Promenade des Anglais."},
+{n:"Festival de Cannes",c:"Cannes",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"film",s:"2027-05-11",e:"2027-05-22",r:"jährlich",x:0,d:"Wettbewerb um die Goldene Palme, Vorführungen im Palais des Festivals."},
+{n:"Nuit Blanche",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"art",s:"2027-06-05",e:"2027-06-05",r:"jährlich",x:0,d:"Eine Nacht lang Kunst im öffentlichen Raum, Museen und Metro bleiben geöffnet."},
+{n:"24 Stunden von Le Mans",c:"Le Mans",l:"Pays de la Loire",p:"Frankreich",k:"sport",s:"2027-06-12",e:"2027-06-13",r:"jährlich",x:0,d:"Langstreckenklassiker auf dem Circuit de la Sarthe, Start am Samstagnachmittag."},
+{n:"VivaTech",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"tech",s:"2027-06-16",e:"2027-06-19",r:"jährlich",x:0,d:"Europas größte Technologiemesse für Start-ups, in der Porte de Versailles."},
+{n:"Fête de la Musique",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"music",s:"2027-06-21",e:"2027-06-21",r:"jährlich, 21. Juni",x:1,d:"Zur Sommersonnenwende spielt, wer will, überall in der Stadt — kostenlos."},
+{n:"Tour de France",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"sport",s:"2027-07-03",e:"2027-07-25",r:"jährlich",x:0,d:"Drei Wochen Rundfahrt mit wechselnder Route, Zielankunft traditionell in Paris."},
+{n:"Festival d'Avignon",c:"Avignon",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"art",s:"2027-07-06",e:"2027-07-26",r:"jährlich",x:0,d:"Theaterfestival im Papstpalast, dazu das freie Off-Programm in der ganzen Stadt."},
+
+/* Spanien */
+{n:"Mobile World Congress",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"tech",s:"2027-03-01",e:"2027-03-04",r:"jährlich",x:0,d:"Weltgrößte Messe der Mobilfunkbranche, in der Fira Gran Via."},
+{n:"Fallas",c:"Valencia",l:"Valencia",p:"Spanien",k:"trad",s:"2027-03-15",e:"2027-03-19",r:"jährlich, bis 19. März",x:1,d:"Riesige Figuren aus Pappmaché in den Straßen, am letzten Abend werden sie verbrannt."},
+{n:"Semana Santa",c:"Sevilla",l:"Andalusien",p:"Spanien",k:"trad",s:"2027-03-21",e:"2027-03-28",r:"jährlich, Karwoche",x:1,d:"Prozessionen der Bruderschaften Tag und Nacht durch die Altstadt."},
+{n:"Feria de Abril",c:"Sevilla",l:"Andalusien",p:"Spanien",k:"trad",s:"2027-04-11",e:"2027-04-17",r:"jährlich",x:0,d:"Festzelte, Sevillanas und Reiterkorso auf dem Gelände von Los Remedios."},
+{n:"Primavera Sound",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"music",s:"2027-06-03",e:"2027-06-05",r:"jährlich",x:0,d:"Indie- und Elektrofestival im Parc del Fòrum, direkt am Meer."},
+{n:"Nit de Sant Joan",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"trad",s:"2027-06-23",e:"2027-06-24",r:"jährlich, 23. Juni",x:1,d:"Johannisnacht mit Feuerwerk und Feuern an den Stadtstränden."},
+{n:"San Fermín",c:"Pamplona",l:"Navarra",p:"Spanien",k:"trad",s:"2027-07-06",e:"2027-07-14",r:"jährlich, 6. bis 14. Juli",x:1,d:"Stierlauf jeden Morgen um acht, Auftakt mit dem Chupinazo am Rathaus."},
+{n:"La Tomatina",c:"Buñol",l:"Valencia",p:"Spanien",k:"trad",s:"2027-08-25",e:"2027-08-25",r:"jährlich, letzter Mittwoch im August",x:1,d:"Eine Stunde Tomatenschlacht, danach spritzt die Feuerwehr die Gassen sauber."},
+{n:"Festival de San Sebastián",c:"San Sebastián",l:"Baskenland",p:"Spanien",k:"film",s:"2027-09-17",e:"2027-09-25",r:"jährlich",x:0,d:"Ältestes A-Festival Spaniens, Hauptpreis ist die Goldene Muschel."},
+{n:"La Mercè",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"trad",s:"2027-09-23",e:"2027-09-26",r:"jährlich, um den 24. September",x:1,d:"Stadtfest für die Schutzpatronin, mit Menschentürmen und Feuerlauf."},
+
+/* Italien */
+{n:"Biennale Arte",c:"Venedig",l:"Venetien",p:"Italien",k:"art",s:"2026-05-09",e:"2026-11-22",r:"alle 2 Jahre, gerade Jahre",x:0,d:"Länderpavillons in den Giardini und Ausstellung im Arsenale, ein halbes Jahr geöffnet."},
+{n:"Mostra del Cinema",c:"Venedig",l:"Venetien",p:"Italien",k:"film",s:"2026-09-02",e:"2026-09-12",r:"jährlich",x:0,d:"Ältestes Filmfestival der Welt, am Lido, Hauptpreis ist der Goldene Löwe."},
+{n:"Fiera del Tartufo",c:"Alba",l:"Piemont",p:"Italien",k:"food",s:"2026-10-10",e:"2026-12-06",r:"jährlich, an den Wochenenden",x:0,d:"Weiße Trüffel aus dem Piemont, verkauft und begutachtet in der Markthalle."},
+{n:"Carnevale di Venezia",c:"Venedig",l:"Venetien",p:"Italien",k:"trad",s:"2027-01-30",e:"2027-02-16",r:"jährlich, bis Faschingsdienstag",x:1,d:"Maskenbälle und Kostümkorso, Höhepunkt ist der Flug des Engels über den Markusplatz."},
+{n:"Salone del Mobile",c:"Mailand",l:"Lombardei",p:"Italien",k:"art",s:"2027-04-13",e:"2027-04-18",r:"jährlich",x:0,d:"Möbelmesse plus Fuorisalone — in dieser Woche stellt die ganze Stadt aus."},
+{n:"Giro d'Italia",c:"Mailand",l:"Lombardei",p:"Italien",k:"sport",s:"2027-05-08",e:"2027-05-30",r:"jährlich",x:0,d:"Dreiwöchige Rundfahrt um das Rosa Trikot, die Route wechselt jedes Jahr."},
+{n:"Palio di Siena",c:"Siena",l:"Toskana",p:"Italien",k:"trad",s:"2027-07-02",e:"2027-07-02",r:"zweimal jährlich, 2. Juli und 16. August",x:1,d:"Drei Runden ohne Sattel über die Piazza del Campo, geritten für die Stadtviertel."},
+{n:"Umbria Jazz",c:"Perugia",l:"Umbrien",p:"Italien",k:"music",s:"2027-07-09",e:"2027-07-18",r:"jährlich",x:0,d:"Konzerte in der Altstadt, die großen Namen in der Arena Santa Giuliana."},
+
+/* Niederlande und Belgien */
+{n:"Amsterdam Dance Event",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"music",s:"2026-10-14",e:"2026-10-18",r:"jährlich",x:0,d:"Größtes Clubfestival für elektronische Musik, tagsüber Fachkonferenz."},
+{n:"IDFA",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"film",s:"2026-11-12",e:"2026-11-22",r:"jährlich",x:0,d:"Weltgrößtes Festival für Dokumentarfilm, Zentrum ist das Tuschinski-Kino."},
+{n:"Eurosonic Noorderslag",c:"Groningen",l:"Groningen",p:"Niederlande",k:"music",s:"2027-01-13",e:"2027-01-16",r:"jährlich",x:0,d:"Showcase-Festival für europäische Newcomer, Sprungbrett in die Festivalsaison."},
+{n:"Keukenhof",c:"Lisse",l:"Südholland",p:"Niederlande",k:"art",s:"2027-03-18",e:"2027-05-16",r:"jährlich",x:0,d:"Sieben Millionen Blumenzwiebeln im Park, nur acht Wochen im Frühjahr geöffnet."},
+{n:"Koningsdag",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"trad",s:"2027-04-27",e:"2027-04-27",r:"jährlich, 27. April",x:1,d:"Das ganze Land in Orange, Flohmarkt auf der Straße und Boote auf den Grachten."},
+{n:"TNW Conference",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"tech",s:"2027-06-17",e:"2027-06-18",r:"jährlich",x:0,d:"Technologiekonferenz auf dem NDSM-Werftgelände, Schwerpunkt Start-ups und Produkt."},
+{n:"Nijmeegse Vierdaagse",c:"Nijmegen",l:"Gelderland",p:"Niederlande",k:"sport",s:"2027-07-20",e:"2027-07-23",r:"jährlich",x:0,d:"Vier Tage Marschieren über 30 bis 50 Kilometer täglich, mit Zehntausenden Teilnehmenden."},
+{n:"FOSDEM",c:"Brüssel",l:"Brüssel",p:"Belgien",k:"tech",s:"2027-01-30",e:"2027-01-31",r:"jährlich, erstes Februarwochenende",x:0,d:"Treffen der Open-Source-Entwicklung an der ULB, ohne Eintritt und ohne Anmeldung."},
+{n:"Karneval von Binche",c:"Binche",l:"Hennegau",p:"Belgien",k:"trad",s:"2027-02-07",e:"2027-02-09",r:"jährlich, an Ostern gekoppelt",x:1,d:"Die Gilles werfen am Faschingsdienstag Orangen in die Menge, UNESCO-Erbe."},
+{n:"Ommegang",c:"Brüssel",l:"Brüssel",p:"Belgien",k:"art",s:"2027-06-30",e:"2027-07-02",r:"jährlich",x:0,d:"Historischer Festzug auf dem Grote Markt, nachgestellt nach einem Einzug von 1549."},
+{n:"Gentse Feesten",c:"Gent",l:"Ostflandern",p:"Belgien",k:"trad",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Zehn Tage Stadtfest mit Straßentheater und Konzerten, weitgehend kostenlos."},
+{n:"Tomorrowland",c:"Boom",l:"Antwerpen",p:"Belgien",k:"music",s:"2027-07-16",e:"2027-07-18",r:"jährlich, an zwei Wochenenden",x:0,d:"Elektrofestival im Park De Schorre, aufwendigste Bühnenbilder der Branche."},
+
+/* Vereinigtes Königreich und Irland */
+{n:"London Film Festival",c:"London",l:"England",p:"Vereinigtes Königreich",k:"film",s:"2026-10-07",e:"2026-10-18",r:"jährlich",x:0,d:"Zwölf Tage Premieren, Zentrum ist das BFI Southbank an der Themse."},
+{n:"Hogmanay",c:"Edinburgh",l:"Schottland",p:"Vereinigtes Königreich",k:"trad",s:"2026-12-30",e:"2027-01-01",r:"jährlich, zum Jahreswechsel",x:1,d:"Fackelzug, Straßenparty und das Loony Dook im eiskalten Firth of Forth."},
+{n:"St. Patrick's Festival",c:"Dublin",l:"Leinster",p:"Irland",k:"trad",s:"2027-03-14",e:"2027-03-17",r:"jährlich, bis 17. März",x:1,d:"Parade durch die Innenstadt, dazu vier Tage Programm in der ganzen Stadt."},
+{n:"Chelsea Flower Show",c:"London",l:"England",p:"Vereinigtes Königreich",k:"art",s:"2027-05-25",e:"2027-05-29",r:"jährlich",x:0,d:"Gartenschau im Royal Hospital, die Schaugärten werden am letzten Tag verkauft."},
+{n:"Hay Festival",c:"Hay-on-Wye",l:"Wales",p:"Vereinigtes Königreich",k:"art",s:"2027-05-27",e:"2027-06-06",r:"jährlich",x:0,d:"Literaturfestival im Bücherdorf an der walisischen Grenze."},
+{n:"Bloomsday",c:"Dublin",l:"Leinster",p:"Irland",k:"art",s:"2027-06-16",e:"2027-06-16",r:"jährlich, 16. Juni",x:1,d:"Der Tag, an dem Joyces Ulysses spielt — nachgegangen in Kostüm und mit Lesungen."},
+{n:"Glastonbury Festival",c:"Pilton",l:"England",p:"Vereinigtes Königreich",k:"music",s:"2027-06-23",e:"2027-06-27",r:"jährlich, mit Ruhejahren",x:0,d:"Festival auf der Worthy Farm, die Karten sind meist in Minuten vergriffen."},
+{n:"Wimbledon",c:"London",l:"England",p:"Vereinigtes Königreich",k:"sport",s:"2027-06-28",e:"2027-07-11",r:"jährlich",x:0,d:"Ältestes Tennisturnier der Welt, auf Rasen und in weißer Kleidung."},
+{n:"Edinburgh Festival Fringe",c:"Edinburgh",l:"Schottland",p:"Vereinigtes Königreich",k:"art",s:"2027-08-06",e:"2027-08-30",r:"jährlich",x:0,d:"Größtes Kunstfestival der Welt — jeder darf auftreten, rund dreitausend Produktionen."},
+{n:"Notting Hill Carnival",c:"London",l:"England",p:"Vereinigtes Königreich",k:"trad",s:"2027-08-29",e:"2027-08-30",r:"jährlich, letztes August-Wochenende",x:1,d:"Karibischer Karneval mit Soundsystems und Umzug durch West-London."},
+{n:"Galway Oyster Festival",c:"Galway",l:"Connacht",p:"Irland",k:"food",s:"2027-09-24",e:"2027-09-26",r:"jährlich",x:0,d:"Austern und Weltmeisterschaft im Öffnen, seit 1954 Ende September."},
+
+/* Nordeuropa */
+{n:"Slush",c:"Helsinki",l:"Uusimaa",p:"Finnland",k:"tech",s:"2026-11-18",e:"2026-11-19",r:"jährlich",x:0,d:"Start-up-Konferenz in der dunkelsten Jahreszeit, bewusst ohne Tageslicht inszeniert."},
+{n:"DreamHack Winter",c:"Jönköping",l:"Jönköpings län",p:"Schweden",k:"play",s:"2026-11-27",e:"2026-11-29",r:"zweimal jährlich",x:0,d:"LAN-Party und Esport-Festival, zeitweise größtes Computertreffen der Welt."},
+{n:"Nobelpreisverleihung",c:"Stockholm",l:"Stockholms län",p:"Schweden",k:"art",s:"2026-12-10",e:"2026-12-10",r:"jährlich, 10. Dezember",x:1,d:"Verleihung im Konserthuset am Todestag Alfred Nobels, danach Bankett im Stadthaus."},
+{n:"CPH:DOX",c:"Kopenhagen",l:"Hovedstaden",p:"Dänemark",k:"film",s:"2027-03-17",e:"2027-03-28",r:"jährlich",x:0,d:"Dokumentarfilmfestival mit Konferenzprogramm zu Kunst, Wissenschaft und Politik."},
+{n:"Vappu",c:"Helsinki",l:"Uusimaa",p:"Finnland",k:"trad",s:"2027-04-30",e:"2027-05-01",r:"jährlich, 30. April",x:1,d:"Studentenmützen, Sekt und Picknick im Park — Finnlands lautester Frühlingstag."},
+{n:"Festspillene i Bergen",c:"Bergen",l:"Vestland",p:"Norwegen",k:"music",s:"2027-05-26",e:"2027-06-09",r:"jährlich",x:0,d:"Nordeuropas ältestes Musik- und Theaterfestival, teils in Griegs Wohnhaus."},
+{n:"Midsommar",c:"Stockholm",l:"Stockholms län",p:"Schweden",k:"trad",s:"2027-06-25",e:"2027-06-26",r:"jährlich, Freitag zwischen 19. und 25. Juni",x:1,d:"Maibaum, Kränze und Hering — das halbe Land fährt aufs Land."},
+{n:"Roskilde Festival",c:"Roskilde",l:"Sjælland",p:"Dänemark",k:"music",s:"2027-06-26",e:"2027-07-03",r:"jährlich",x:0,d:"Achttägiges Festival, gemeinnützig organisiert, mit vier Warm-up-Tagen."},
+{n:"Copenhagen Jazz Festival",c:"Kopenhagen",l:"Hovedstaden",p:"Dänemark",k:"music",s:"2027-07-02",e:"2027-07-11",r:"jährlich",x:0,d:"Über tausend Konzerte in Clubs, Kirchen und Hinterhöfen der ganzen Stadt."},
+{n:"Way Out West",c:"Göteborg",l:"Västra Götaland",p:"Schweden",k:"music",s:"2027-08-12",e:"2027-08-14",r:"jährlich",x:0,d:"Festival im Slottsskogen-Park, die Verpflegung ist durchgehend vegetarisch."},
+
+/* Mittel- und Südeuropa */
+{n:"Signal Festival",c:"Prag",l:"Prag",p:"Tschechien",k:"art",s:"2026-10-15",e:"2026-10-18",r:"jährlich",x:0,d:"Lichtkunst an den Fassaden der Altstadt, ausgeschildert als Rundweg."},
+{n:"Web Summit",c:"Lissabon",l:"Lissabon",p:"Portugal",k:"tech",s:"2026-11-02",e:"2026-11-05",r:"jährlich",x:0,d:"Eine der größten Technologiekonferenzen Europas, im Parque das Nações."},
+{n:"Pražské jaro",c:"Prag",l:"Prag",p:"Tschechien",k:"music",s:"2027-05-12",e:"2027-06-03",r:"jährlich, Eröffnung am 12. Mai",x:1,d:"Klassikfestival, eröffnet stets mit Smetanas Má vlast im Gemeindehaus."},
+{n:"Athens Epidaurus Festival",c:"Athen",l:"Attika",p:"Griechenland",k:"art",s:"2027-06-01",e:"2027-08-15",r:"jährlich",x:0,d:"Antikes und neues Theater im Odeon des Herodes Atticus und in Epidauros."},
+{n:"Wianki",c:"Krakau",l:"Kleinpolen",p:"Polen",k:"trad",s:"2027-06-19",e:"2027-06-19",r:"jährlich, um die Sonnenwende",x:0,d:"Kränze auf der Weichsel, Konzerte und Feuerwerk unterhalb des Wawel."},
+{n:"Festa de São João",c:"Porto",l:"Norte",p:"Portugal",k:"trad",s:"2027-06-23",e:"2027-06-24",r:"jährlich, Nacht zum 24. Juni",x:1,d:"Die ganze Stadt auf der Straße, mit Plastikhämmern, Sardinen und Heißluftballons."},
+{n:"Open'er Festival",c:"Gdynia",l:"Pommern",p:"Polen",k:"music",s:"2027-06-30",e:"2027-07-03",r:"jährlich",x:0,d:"Größtes polnisches Festival, auf einem früheren Militärflugplatz an der Ostsee."},
+{n:"Karlovy Vary IFF",c:"Karlsbad",l:"Karlsbader Region",p:"Tschechien",k:"film",s:"2027-07-02",e:"2027-07-10",r:"jährlich",x:0,d:"Filmfestival im Kurort, Zentrum ist das Hotel Thermal, das Publikum campiert im Park."},
+{n:"NOS Alive",c:"Lissabon",l:"Lissabon",p:"Portugal",k:"music",s:"2027-07-08",e:"2027-07-10",r:"jährlich",x:0,d:"Festival am Tejo in Algés, Programm zwischen Rock, Indie und Elektronik."},
+{n:"Sziget",c:"Budapest",l:"Budapest",p:"Ungarn",k:"music",s:"2027-08-11",e:"2027-08-16",r:"jährlich",x:0,d:"Sechs Tage auf der Óbudai-Insel in der Donau, Camping inklusive."},
+{n:"Budapester Weinfestival",c:"Budapest",l:"Budapest",p:"Ungarn",k:"food",s:"2027-09-09",e:"2027-09-12",r:"jährlich",x:0,d:"Ausschank ungarischer Weingüter oben auf der Burg, mit Blick über die Donau."}
+];
 /* ---------------- Helfer ---------------- */
 const MON  = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 const MABK = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
@@ -446,11 +598,17 @@ const WTAG = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","S
 const DAY = 86400000;
 const TODAY = (() => { const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); })();
 
+const $ = id => document.getElementById(id);
 const parse  = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
 const days   = ev => Math.round((parse(ev.e) - parse(ev.s)) / DAY) + 1;
 const durTxt = n => n === 1 ? "1 Tag" : n + " Tage";
 const short  = d => d.getDate() + ". " + MABK[d.getMonth()];
 const esc    = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sortDe = (a,b) => a.localeCompare(b,"de");
+const uniq   = arr => [...new Set(arr)].sort(sortDe);
+
+/* Ohne Angabe liegt eine Veranstaltung in Deutschland */
+const landVon = ev => ev.p || "Deutschland";
 
 function rangeTxt(ev){
   const a = parse(ev.s), b = parse(ev.e);
@@ -462,69 +620,81 @@ const isLive = ev => TODAY >= parse(ev.s) && TODAY <= parse(ev.e);
 const isPast = ev => TODAY > parse(ev.e);
 
 /* ---------------- Zustand ---------------- */
-const F = { laender:new Set(), cities:new Set(), cats:new Set(), q:"", upcoming:true, sort:"date" };
-const $ = id => document.getElementById(id);
-const CITIES  = [...new Set(EVENTS.map(e => e.c))].sort((a,b) => a.localeCompare(b,"de"));
-const LAENDER = [...new Set(EVENTS.map(e => e.l))].sort((a,b) => a.localeCompare(b,"de"));
+const F = { land:new Set(), region:new Set(), stadt:new Set(), thema:new Set(),
+            q:"", upcoming:true, sort:"date" };
 
-/* Zuletzt gewähltes Bundesland, Stadt und Thema — nur im Browser des Betrachters */
-const STORE = "staedtejahr.auswahl";
+const trefferLand   = ev => !F.land.size   || F.land.has(landVon(ev));
+const trefferRegion = ev => !F.region.size || F.region.has(ev.l);
+const trefferStadt  = ev => !F.stadt.size  || F.stadt.has(ev.c);
+
+const listeLaender  = () => uniq(EVENTS.map(landVon));
+const listeRegionen = () => uniq(EVENTS.filter(trefferLand).map(e => e.l));
+const listeStaedte  = () => uniq(EVENTS.filter(e => trefferLand(e) && trefferRegion(e)).map(e => e.c));
+
+/* Auswahl merken — nur im Browser des Betrachters */
+const STORE = "g04event.auswahl";
 function ladeAuswahl(){
   try {
-    const gespeichert = JSON.parse(localStorage.getItem(STORE) || "{}");
-    (gespeichert.laender || []).filter(l => LAENDER.includes(l)).forEach(l => F.laender.add(l));
-    (gespeichert.cities  || []).filter(c => CITIES.includes(c)).forEach(c => F.cities.add(c));
-    (gespeichert.cats    || []).filter(k => k in CATS).forEach(k => F.cats.add(k));
+    const g = JSON.parse(localStorage.getItem(STORE) || "{}");
+    (g.land   || []).forEach(v => F.land.add(v));
+    (g.region || []).forEach(v => F.region.add(v));
+    (g.stadt  || []).forEach(v => F.stadt.add(v));
+    (g.thema  || []).filter(k => k in CATS).forEach(k => F.thema.add(k));
+    bereinige();
   } catch(e) {}
 }
 function speichereAuswahl(){
   try {
-    localStorage.setItem(STORE, JSON.stringify(
-      {laender:[...F.laender], cities:[...F.cities], cats:[...F.cats]}));
+    localStorage.setItem(STORE, JSON.stringify({land:[...F.land], region:[...F.region],
+      stadt:[...F.stadt], thema:[...F.thema]}));
   } catch(e) {}
 }
-ladeAuswahl();
-
-/* ---------------- Bedienelemente aufbauen ---------------- */
-$("laender").innerHTML =
-  '<button class="chip" data-land="" aria-pressed="' + (F.laender.size === 0) + '">' +
-    'Alle Bundesländer <span class="n">' + LAENDER.length + '</span></button>' +
-  LAENDER.map(l => '<button class="chip" data-land="' + esc(l) + '" aria-pressed="' +
-    F.laender.has(l) + '">' + esc(l) + ' <span class="n">' +
-    EVENTS.filter(e => e.l === l).length + '</span></button>').join("");
-
-/* Die Städteliste zeigt nur Städte der gewählten Bundesländer */
-const stadtErlaubt = c =>
-  !F.laender.size || EVENTS.some(e => e.c === c && F.laender.has(e.l));
-
-function baueStaedte(){
-  const sichtbar = CITIES.filter(stadtErlaubt);
-  $("cities").innerHTML =
-    '<button class="chip" data-city="" aria-pressed="' + (F.cities.size === 0) + '">Alle Städte ' +
-      '<span class="n">' + sichtbar.length + '</span></button>' +
-    sichtbar.map(c => '<button class="chip" data-city="' + esc(c) + '" aria-pressed="' +
-      F.cities.has(c) + '">' + esc(c) + ' <span class="n">' +
-      EVENTS.filter(e => e.c === c).length + '</span></button>').join("");
+/* Wirft Regionen und Städte weg, die nicht mehr zur Auswahl darüber passen */
+function bereinige(){
+  const l = new Set(listeLaender());
+  [...F.land].forEach(v => { if (!l.has(v)) F.land.delete(v); });
+  const r = new Set(listeRegionen());
+  [...F.region].forEach(v => { if (!r.has(v)) F.region.delete(v); });
+  const s = new Set(listeStaedte());
+  [...F.stadt].forEach(v => { if (!s.has(v)) F.stadt.delete(v); });
 }
-baueStaedte();
 
-$("cats").innerHTML =
-  '<button class="chip" data-cat="" aria-pressed="' + (F.cats.size === 0) + '">Alle Themen</button>' +
-  Object.entries(CATS).map(([k,v]) =>
-    '<button class="chip k" data-cat="' + k + '" aria-pressed="' + F.cats.has(k) +
-    '" style="--cat:var(' + v.v + ')">' +
-    '<span class="dot"></span>' + v.label + ' <span class="n">' +
-    EVENTS.filter(e => e.k === k).length + '</span></button>').join("");
+/* ---------------- Auswahlfelder aufbauen ---------------- */
+function baueChips(el, alleText, werte, set, attr, zaehler){
+  el.innerHTML =
+    '<button class="chip" data-' + attr + '="" aria-pressed="' + (set.size === 0) + '">' +
+      alleText + ' <span class="n">' + werte.length + '</span></button>' +
+    werte.map(w => '<button class="chip" data-' + attr + '="' + esc(w) + '" aria-pressed="' +
+      set.has(w) + '">' + esc(w) + ' <span class="n">' + zaehler(w) + '</span></button>').join("");
+}
+const baueLand   = () => baueChips($("pane-land"), "Alle Länder", listeLaender(), F.land, "land",
+                       v => EVENTS.filter(e => landVon(e) === v).length);
+const baueRegion = () => baueChips($("pane-region"), "Alle Regionen", listeRegionen(), F.region, "region",
+                       v => EVENTS.filter(e => e.l === v).length);
+const baueStadt  = () => baueChips($("pane-stadt"), "Alle Städte", listeStaedte(), F.stadt, "stadt",
+                       v => EVENTS.filter(e => e.c === v).length);
+
+function baueThema(){
+  $("pane-thema").innerHTML =
+    '<button class="chip" data-thema="" aria-pressed="' + (F.thema.size === 0) + '">Alle Themen</button>' +
+    Object.entries(CATS).map(([k,v]) =>
+      '<button class="chip k" data-thema="' + k + '" aria-pressed="' + F.thema.has(k) +
+      '" style="--cat:var(' + v.v + ')"><span class="dot"></span>' + v.label +
+      ' <span class="n">' + EVENTS.filter(e => e.k === k).length + '</span></button>').join("");
+}
+
+ladeAuswahl();
+baueLand(); baueRegion(); baueStadt(); baueThema();
 
 /* ---------------- Filtern und Sortieren ---------------- */
 function filtered(){
   return EVENTS.filter(ev => {
-    if (F.laender.size && !F.laender.has(ev.l)) return false;
-    if (F.cities.size && !F.cities.has(ev.c)) return false;
-    if (F.cats.size   && !F.cats.has(ev.k))   return false;
+    if (!trefferLand(ev) || !trefferRegion(ev) || !trefferStadt(ev)) return false;
+    if (F.thema.size && !F.thema.has(ev.k)) return false;
     if (F.upcoming && isPast(ev)) return false;
     if (F.q){
-      const hay = (ev.n + " " + ev.c + " " + ev.l + " " + CATS[ev.k].label + " " + ev.d).toLowerCase();
+      const hay = (ev.n + " " + ev.c + " " + ev.l + " " + landVon(ev) + " " +
+                   CATS[ev.k].label + " " + ev.d).toLowerCase();
       if (!F.q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
     }
     return true;
@@ -536,17 +706,78 @@ function sorted(list){
     date:    byDate,
     durAsc:  (a,b) => days(a) - days(b) || byDate(a,b),
     durDesc: (a,b) => days(b) - days(a) || byDate(a,b),
-    city:    (a,b) => a.c.localeCompare(b.c,"de") || byDate(a,b),
-    name:    (a,b) => a.n.localeCompare(b.n,"de"),
-    cat:     (a,b) => CATS[a.k].label.localeCompare(CATS[b.k].label,"de") || byDate(a,b)
+    city:    (a,b) => sortDe(a.c, b.c) || byDate(a,b),
+    name:    (a,b) => sortDe(a.n, b.n),
+    cat:     (a,b) => sortDe(CATS[a.k].label, CATS[b.k].label) || byDate(a,b)
   }[F.sort]);
 }
 
-/* ---------------- Zeichnen ---------------- */
+/* ---------------- Nächster Termin mit Countdown ---------------- */
+let NEXT = null;
+
+function wohin(){
+  if (F.stadt.size  === 1) return "in " + [...F.stadt][0];
+  if (F.stadt.size  > 1)   return "in " + F.stadt.size + " Städten";
+  if (F.region.size === 1) return "in " + [...F.region][0];
+  if (F.region.size > 1)   return "in " + F.region.size + " Regionen";
+  if (F.land.size   === 1) return "in " + [...F.land][0];
+  if (F.land.size   > 1)   return "in " + F.land.size + " Ländern";
+  return "in Europa";
+}
+
+function renderNext(list){
+  const box = $("next");
+  const offen  = list.filter(ev => !isPast(ev));
+  const laeuft = offen.filter(isLive).sort((a,b) => parse(a.e) - parse(b.e));
+  const kommt  = offen.filter(ev => !isLive(ev)).sort((a,b) => parse(a.s) - parse(b.s));
+  const ev = laeuft[0] || kommt[0];
+
+  if (!ev){ NEXT = null; box.hidden = true; return; }
+
+  const live = isLive(ev);
+  NEXT = { target: live ? parse(ev.e).getTime() + DAY : parse(ev.s).getTime() };
+
+  box.style.setProperty("--hcat", CATS[ev.k].h);
+  box.hidden = false;
+  box.innerHTML =
+    '<div class="who"><div class="lbl">' + (live ? "Läuft gerade" : "Als Nächstes " + wohin()) + '</div>' +
+      '<h2>' + esc(ev.n) + '</h2>' +
+      '<div class="meta"><b>' + esc(ev.c) + '</b><span>' + esc(landVon(ev)) + '</span>' +
+        '<span>' + rangeTxt(ev) + '</span><span>' + durTxt(days(ev)) + '</span>' +
+        '<span>' + CATS[ev.k].label + '</span></div></div>' +
+    '<div class="cdwrap"><span class="cdl">' + (live ? "läuft noch" : "beginnt in") + '</span>' +
+      '<div class="cd" id="cd">' +
+        ['Tage','Std','Min','Sek'].map(k =>
+          '<div class="cdu"><span class="v">–</span><span class="k">' + k + '</span></div>').join("") +
+      '</div></div>';
+  tick();
+}
+
+function tick(){
+  const cd = $("cd");
+  if (!cd || !NEXT) return;
+  const ms = Math.max(0, NEXT.target - Date.now());
+
+  const tage  = Math.floor(ms / DAY);
+  const stufe = tage <= 1 ? "rot" : tage <= 3 ? "gelb" : "gruen";
+  if (cd.dataset.stufe !== stufe) cd.dataset.stufe = stufe;
+
+  const werte = [
+    String(tage),
+    String(Math.floor(ms % DAY / 3600000)).padStart(2,"0"),
+    String(Math.floor(ms % 3600000 / 60000)).padStart(2,"0"),
+    String(Math.floor(ms % 60000 / 1000)).padStart(2,"0")
+  ];
+  cd.querySelectorAll(".v").forEach((el,i) => {
+    if (el.textContent !== werte[i]) el.textContent = werte[i];
+  });
+}
+setInterval(tick, 1000);
+
+/* ---------------- Liste ---------------- */
 function evHTML(ev){
   const a = parse(ev.s), n = days(ev);
-  const datum = ev.x
-    ? rangeTxt(ev)
+  const datum = ev.x ? rangeTxt(ev)
     : '<span class="est" title="Termin aus dem jährlichen Rhythmus fortgeschrieben — bitte prüfen">' +
       rangeTxt(ev) + '</span>';
   return '<article class="ev" style="--cat:var(' + CATS[ev.k].v + ')">' +
@@ -567,113 +798,52 @@ function evHTML(ev){
       '<div><dt>Beginnt</dt><dd>' + WTAG[a.getDay()] + '</dd></div>' +
       '<div><dt>Rhythmus</dt><dd>' + esc(ev.r) + '</dd></div>' +
       '<div><dt>Ort</dt><dd>' + esc(ev.c) + ', ' + esc(ev.l) + '</dd></div>' +
+      '<div><dt>Land</dt><dd>' + esc(landVon(ev)) + '</dd></div>' +
     '</div></div></article>';
 }
 
-/* Kurzfassung der Auswahl für die Ausklapp-Knöpfe */
-function kurzListe(werte, leer, wort){
-  if (!werte.length) return leer;
-  const s = [...werte].sort((a,b) => a.localeCompare(b,"de"));
-  if (s.length <= 3) return s.join(", ");
-  return s.slice(0,2).join(", ") + " und " + (s.length - 2) + " weitere " + wort;
+function dockWert(set){
+  if (!set.size) return "alle";
+  if (set.size === 1) return [...set][0];
+  return set.size + " gewählt";
 }
-
-/* Nächste Veranstaltung samt Countdown — richtet sich nach der Städteauswahl */
-let NEXT = null;
-
-function renderNext(list){
-  const box = $("next");
-  const offen  = list.filter(ev => !isPast(ev));
-  const laeuft = offen.filter(isLive).sort((a,b) => parse(a.e) - parse(b.e));
-  const kommt  = offen.filter(ev => !isLive(ev)).sort((a,b) => parse(a.s) - parse(b.s));
-  const ev = laeuft[0] || kommt[0];
-
-  if (!ev){ NEXT = null; box.hidden = true; return; }
-
-  const live = isLive(ev);
-  NEXT = { target: live ? parse(ev.e).getTime() + DAY : parse(ev.s).getTime() };
-
-  const wo = F.cities.size === 1 ? "Als Nächstes in " + [...F.cities][0]
-           : F.cities.size > 1   ? "Als Nächstes in deiner Auswahl"
-           : "Als Nächstes in Deutschland";
-
-  box.style.setProperty("--cat", "var(" + CATS[ev.k].v + ")");
-  box.hidden = false;
-  box.innerHTML =
-    '<div class="who"><div class="lbl">' + (live ? "Läuft gerade" : wo) + '</div>' +
-      '<h2>' + esc(ev.n) + '</h2>' +
-      '<div class="meta"><span class="place">' + esc(ev.c) + '</span>' +
-        '<span>' + rangeTxt(ev) + '</span>' +
-        '<span>' + durTxt(days(ev)) + '</span>' +
-        '<span>' + CATS[ev.k].label + '</span></div></div>' +
-    '<div class="cdwrap"><span class="cdl">' + (live ? "läuft noch" : "beginnt in") + '</span>' +
-      '<div class="cd" id="cd">' +
-        ['Tage','Std','Min','Sek'].map(k =>
-          '<div class="cdu"><span class="v">–</span><span class="k">' + k + '</span></div>').join("") +
-      '</div></div>';
-  tick();
-}
-
-function tick(){
-  const cd = document.getElementById("cd");
-  if (!cd || !NEXT) return;
-  const ms = Math.max(0, NEXT.target - Date.now());
-
-  // Ampelfarbe nach verbleibenden ganzen Tagen
-  const tage  = Math.floor(ms / DAY);
-  const stufe = tage <= 1 ? "rot" : tage <= 3 ? "gelb" : "gruen";
-  if (cd.dataset.stufe !== stufe){
-    cd.dataset.stufe = stufe;
-    cd.parentElement.dataset.stufe = stufe;
-  }
-
-  const werte = [
-    Math.floor(ms / DAY),
-    String(Math.floor(ms % DAY / 3600000)).padStart(2,"0"),
-    String(Math.floor(ms % 3600000 / 60000)).padStart(2,"0"),
-    String(Math.floor(ms % 60000 / 1000)).padStart(2,"0")
-  ];
-  cd.querySelectorAll(".v").forEach((el,i) => {
-    if (el.textContent !== String(werte[i])) el.textContent = werte[i];
-  });
-}
-setInterval(tick, 1000);
 
 function render(){
   const list = sorted(filtered());
-  const active = F.laender.size || F.cities.size || F.cats.size || F.q ||
-                 !F.upcoming || F.sort !== "date";
+  const aktiv = F.land.size || F.region.size || F.stadt.size || F.thema.size || F.q ||
+                !F.upcoming || F.sort !== "date";
+
   renderNext(list);
 
-  const wo = F.cities.size === 1  ? "in " + [...F.cities][0]
-           : F.cities.size > 1    ? "in " + F.cities.size + " Städten"
-           : F.laender.size === 1 ? "in " + [...F.laender][0]
-           : F.laender.size > 1   ? "in " + F.laender.size + " Bundesländern"
-           : "in ganz Deutschland";
-  $("count").innerHTML = "<b>" + list.length + "</b> von " + EVENTS.length + " Terminen " + wo;
-  $("reset").hidden = !active;
+  $("count").innerHTML = "<b>" + list.length + "</b> von " + EVENTS.length + " Terminen " + wohin();
+  $("reset").hidden = !aktiv;
 
-  // Beschriftung der Ausklapp-Knöpfe
-  $("sumLaender").textContent = kurzListe([...F.laender], "Alle Bundesländer", "Bundesländer");
-  $("sumCities").textContent = kurzListe([...F.cities],
-    F.laender.size ? "Alle Städte der Auswahl" : "Alle Städte", "Städte");
-  $("sumCats").textContent   = kurzListe([...F.cats].map(k => CATS[k].label), "Alle Themen", "Themen");
+  // Leiste unten beschriften
+  const werte = { q: F.q || "alle", land: dockWert(F.land), region: dockWert(F.region),
+                  stadt: dockWert(F.stadt),
+                  thema: F.thema.size === 1 ? CATS[[...F.thema][0]].label : dockWert(F.thema) };
+  Object.entries(werte).forEach(([p,v]) => {
+    $("dv-" + p).textContent = v;
+    const b = document.querySelector('.dbtn[data-pane="' + p + '"]');
+    b.classList.toggle("gesetzt", v !== "alle");
+  });
 
   const out = $("out");
   if (!list.length){
     out.innerHTML = '<div class="empty"><strong>Nichts gefunden</strong>' +
-      'Für diese Auswahl ist nichts eingetragen. Wähle eine andere Stadt oder ein anderes Thema.</div>';
+      'Für diese Auswahl ist nichts eingetragen. Wähle unten ein anderes Land, eine andere Stadt ' +
+      'oder ein anderes Thema.</div>';
     return;
   }
 
   if (F.sort === "date"){
-    const groups = [];
+    const gruppen = [];
     list.forEach(ev => {
       const d = parse(ev.s), g = MON[d.getMonth()] + " " + d.getFullYear();
-      if (!groups.length || groups[groups.length-1].g !== g) groups.push({g, items:[]});
-      groups[groups.length-1].items.push(ev);
+      if (!gruppen.length || gruppen[gruppen.length-1].g !== g) gruppen.push({g, items:[]});
+      gruppen[gruppen.length-1].items.push(ev);
     });
-    out.innerHTML = groups.map(gr =>
+    out.innerHTML = gruppen.map(gr =>
       '<section class="group"><div class="gh"><h3>' + gr.g + '</h3><span class="gn">' +
       gr.items.length + (gr.items.length === 1 ? " Termin" : " Termine") + '</span></div>' +
       '<div class="list">' + gr.items.map(evHTML).join("") + '</div></section>').join("");
@@ -686,37 +856,56 @@ function render(){
   }
 }
 
-/* ---------------- Bedienung ---------------- */
-function toggleChips(container, set, attr){
+/* ---------------- Leiste und Auswahlfeld ---------------- */
+const TITEL = { q:"Suchen", land:"Land wählen", region:"Region wählen",
+                stadt:"Stadt wählen", thema:"Thema wählen" };
+const PANES = ["q","land","region","stadt","thema"];
+let offenesPane = null;
+
+function oeffne(pane){
+  if (offenesPane === pane){ schliesse(); return; }
+  offenesPane = pane;
+  PANES.forEach(p => $("pane-" + p).hidden = p !== pane);
+  $("sheetTitle").textContent = TITEL[pane];
+  $("sheet").hidden = false;
+  $("scrim").hidden = false;
+  document.querySelectorAll(".dbtn").forEach(b =>
+    b.setAttribute("aria-expanded", String(b.dataset.pane === pane)));
+  $("sheet").querySelector(".sheetbody").scrollTop = 0;
+  if (pane === "q") setTimeout(() => $("q").focus(), 40);
+}
+function schliesse(){
+  offenesPane = null;
+  $("sheet").hidden = true;
+  $("scrim").hidden = true;
+  document.querySelectorAll(".dbtn").forEach(b => b.setAttribute("aria-expanded","false"));
+}
+
+$("dockrow").addEventListener("click", e => {
+  const b = e.target.closest(".dbtn"); if (b) oeffne(b.dataset.pane);
+});
+$("sheetClose").addEventListener("click", schliesse);
+$("scrim").addEventListener("click", schliesse);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && offenesPane) schliesse(); });
+
+/* Ein Klick auf einen Chip: Wert an- oder abwählen */
+function chipKlick(container, set, attr, danach){
   container.addEventListener("click", e => {
     const b = e.target.closest(".chip"); if (!b) return;
-    const val = b.dataset[attr];
-    if (!val) set.clear();
-    else set.has(val) ? set.delete(val) : set.add(val);
+    const wert = b.dataset[attr];
+    if (!wert) set.clear();
+    else set.has(wert) ? set.delete(wert) : set.add(wert);
     [...container.children].forEach(ch =>
       ch.setAttribute("aria-pressed", ch.dataset[attr] ? set.has(ch.dataset[attr]) : set.size === 0));
+    if (danach) danach();
     speichereAuswahl();
     render();
   });
 }
-toggleChips($("cities"), F.cities, "city");
-toggleChips($("cats"),   F.cats,   "cat");
-
-/* Bundesland: schränkt zusätzlich die Städteliste ein */
-$("laender").addEventListener("click", e => {
-  const b = e.target.closest(".chip"); if (!b) return;
-  const l = b.dataset.land;
-  if (!l) F.laender.clear();
-  else F.laender.has(l) ? F.laender.delete(l) : F.laender.add(l);
-  [...$("laender").children].forEach(ch =>
-    ch.setAttribute("aria-pressed", ch.dataset.land ? F.laender.has(ch.dataset.land)
-                                                    : F.laender.size === 0));
-  // Städte, die nicht mehr zur Auswahl passen, fallen heraus
-  [...F.cities].filter(c => !stadtErlaubt(c)).forEach(c => F.cities.delete(c));
-  baueStaedte();
-  speichereAuswahl();
-  render();
-});
+chipKlick($("pane-land"),   F.land,   "land",   () => { bereinige(); baueRegion(); baueStadt(); });
+chipKlick($("pane-region"), F.region, "region", () => { bereinige(); baueStadt(); });
+chipKlick($("pane-stadt"),  F.stadt,  "stadt");
+chipKlick($("pane-thema"),  F.thema,  "thema");
 
 $("q").addEventListener("input", e => { F.q = e.target.value.trim(); render(); });
 $("sort").addEventListener("change", e => { F.sort = e.target.value; render(); });
@@ -725,19 +914,17 @@ $("upcoming").addEventListener("change", e => { F.upcoming = e.target.checked; r
 $("out").addEventListener("click", e => {
   const btn = e.target.closest(".evmain"); if (!btn) return;
   const art = btn.parentElement;
-  const open = btn.getAttribute("aria-expanded") === "true";
-  btn.setAttribute("aria-expanded", String(!open));
-  art.querySelector(".detail").hidden = open;
-  art.classList.toggle("on", !open);
+  const auf = btn.getAttribute("aria-expanded") === "true";
+  btn.setAttribute("aria-expanded", String(!auf));
+  art.querySelector(".detail").hidden = auf;
+  art.classList.toggle("on", !auf);
 });
 
 $("reset").addEventListener("click", () => {
-  F.laender.clear(); F.cities.clear(); F.cats.clear();
+  F.land.clear(); F.region.clear(); F.stadt.clear(); F.thema.clear();
   F.q = ""; F.upcoming = true; F.sort = "date";
   $("q").value = ""; $("upcoming").checked = true; $("sort").value = "date";
-  baueStaedte();
-  [...$("laender").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.land));
-  [...$("cats").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.cat));
+  baueLand(); baueRegion(); baueStadt(); baueThema();
   speichereAuswahl();
   render();
 });

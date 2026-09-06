@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="G04Event">
+  <rect width="64" height="64" rx="14" fill="#14171C"/>
+  <g stroke="#49525F" stroke-width="3" stroke-linecap="round">
+    <path d="M32 16V9"/>
+    <path d="M40 18.1l3.5-6.1"/>
+    <path d="M45.9 24l6-3.5"/>
+    <path d="M48 32h7"/>
+    <path d="M45.9 40l6 3.5"/>
+    <path d="M40 45.9l3.5 6"/>
+    <path d="M32 48v7"/>
+    <path d="M24 45.9l-3.5 6"/>
+    <path d="M18.1 40l-6 3.5"/>
+    <path d="M16 32H9"/>
+    <path d="M18.1 24l-6-3.5"/>
+    <path d="M24 18.1l-3.5-6.1"/>
+  </g>
+  <path d="M45.9 24l6-3.5" stroke="#E5A93B" stroke-width="4.6" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="13.5" fill="#19A88F"/>
+  <path d="M27 24.5h10.6v3.7h-6.4v3.9h5.9v3.6h-5.9v4.1h6.6v3.7H27z" fill="#0C1216"/>
+</svg>
