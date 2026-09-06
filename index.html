@@ -47,15 +47,32 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(36px,6vw,56px);letter
 .lede{margin:14px 0 0;max-width:54ch;color:var(--ink-2);font-size:17px}
 
 /* --- Bedienfeld --- */
-.panel{margin-top:28px;display:flex;flex-direction:column;gap:20px}
-.block{display:flex;flex-direction:column;gap:10px}
-.block>h2{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--faint);margin:0}
-.search{position:relative}
-.search input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
-  border:1px solid var(--line-2);border-radius:9px;padding:12px 14px 12px 40px}
-.search input::placeholder{color:var(--faint)}
-.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.panel{margin-top:28px;display:flex;flex-direction:column;gap:12px}
+.searchbox{position:relative}
+.searchbox input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-2);border-radius:10px;padding:12px 14px 12px 40px}
+.searchbox input::placeholder{color:var(--faint)}
+.searchbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
+
+/* Ausklappbare Auswahl */
+.block{border:1px solid var(--line-2);border-radius:10px;background:var(--surface);overflow:hidden}
+.block>summary{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;
+  list-style:none;font-size:15px}
+.block>summary::-webkit-details-marker{display:none}
+.block>summary:hover{background:var(--tint)}
+.block>summary:focus-visible{outline:2px solid var(--ring);outline-offset:-2px}
+.block .bt{font-weight:600;flex:none}
+.block .sum{color:var(--muted);font-size:14px;flex:1;min-width:0;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.block .chev{flex:none;color:var(--muted);transition:transform .18s}
+.block[open] .chev{transform:rotate(180deg)}
+.block[open]>summary{border-bottom:1px solid var(--line)}
+.block>.chips{padding:14px 15px 16px;max-height:196px;overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:var(--line-2) transparent}
+.block>.chips::-webkit-scrollbar{width:11px}
+.block>.chips::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:99px;
+  border:3.5px solid var(--surface)}
+.block>.chips::-webkit-scrollbar-track{background:transparent}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chip{font:inherit;font-size:14px;background:var(--surface);color:var(--ink-2);
   border:1px solid var(--line-2);border-radius:999px;padding:7px 14px;cursor:pointer;
@@ -182,20 +199,24 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);ap
   </header>
 
   <div class="panel">
-    <div class="block search">
+    <div class="searchbox">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.3 10.3 14 14"/></svg>
       <input id="q" type="search" placeholder="Suchen: Name, Stadt oder Stichwort" aria-label="Suchen">
     </div>
 
-    <div class="block">
-      <h2>Stadt</h2>
+    <details class="block">
+      <summary><span class="bt">Stadt</span><span class="sum" id="sumCities">Alle Städte</span>
+        <svg class="chev" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg>
+      </summary>
       <div class="chips" id="cities"></div>
-    </div>
+    </details>
 
-    <div class="block">
-      <h2>Kategorie</h2>
+    <details class="block">
+      <summary><span class="bt">Thema</span><span class="sum" id="sumCats">Alle Themen</span>
+        <svg class="chev" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg>
+      </summary>
       <div class="chips" id="cats"></div>
-    </div>
+    </details>
 
     <div class="tools">
       <div class="tools-l">
@@ -490,6 +511,14 @@ function evHTML(ev){
     '</div></div></article>';
 }
 
+/* Kurzfassung der Auswahl für die Ausklapp-Knöpfe */
+function kurzListe(werte, leer, wort){
+  if (!werte.length) return leer;
+  const s = [...werte].sort((a,b) => a.localeCompare(b,"de"));
+  if (s.length <= 3) return s.join(", ");
+  return s.slice(0,2).join(", ") + " und " + (s.length - 2) + " weitere " + wort;
+}
+
 /* Nächste Veranstaltung samt Countdown — richtet sich nach der Städteauswahl */
 let NEXT = null;
 
@@ -552,6 +581,10 @@ function render(){
            : "in " + F.cities.size + " Städten";
   $("count").innerHTML = "<b>" + list.length + "</b> von " + EVENTS.length + " Terminen " + wo;
   $("reset").hidden = !active;
+
+  // Beschriftung der beiden Ausklapp-Knöpfe
+  $("sumCities").textContent = kurzListe([...F.cities], "Alle Städte", "Städte");
+  $("sumCats").textContent   = kurzListe([...F.cats].map(k => CATS[k].label), "Alle Themen", "Themen");
 
   const out = $("out");
   if (!list.length){
