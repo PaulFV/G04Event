@@ -1,0 +1,621 @@
+<title>Städtejahr</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#E9EAEC; --surface:#FCFCFD; --surface-2:#F1F2F5; --surface-3:#E2E4E9;
+  --ink:#14171C; --ink-2:#39404A; --muted:#5C6470; --faint:#868D99;
+  --line:#D6D9DE; --line-2:#BFC4CC;
+  --c-tech:#2F62D8; --c-food:#8A6608; --c-play:#6E36C6; --c-music:#BE1D5C;
+  --c-art:#0E7A6B; --c-film:#3D4A5C; --c-sport:#12762D; --c-trad:#B03A3A;
+  --tint:rgba(20,23,28,.05);
+  --ring:#14171C;
+  --sans:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --disp:"Bricolage Grotesque","Public Sans",-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1115; --surface:#161A20; --surface-2:#1C222A; --surface-3:#232936;
+    --ink:#E8EBF0; --ink-2:#C3CAD4; --muted:#98A1AD; --faint:#79838F;
+    --line:#262C35; --line-2:#333B46;
+    --c-tech:#89AAF6; --c-food:#D6AE4F; --c-play:#B490EE; --c-music:#F179A6;
+    --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
+    --tint:rgba(255,255,255,.06);
+    --ring:#E8EBF0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1115; --surface:#161A20; --surface-2:#1C222A; --surface-3:#232936;
+  --ink:#E8EBF0; --ink-2:#C3CAD4; --muted:#98A1AD; --faint:#79838F;
+  --line:#262C35; --line-2:#333B46;
+  --c-tech:#89AAF6; --c-food:#D6AE4F; --c-play:#B490EE; --c-music:#F179A6;
+  --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
+  --tint:rgba(255,255,255,.06);
+  --ring:#E8EBF0;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;margin:0}
+:focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:4px}
+.shell{max-width:960px;margin:0 auto;padding:0 20px 80px}
+
+/* --- Kopf --- */
+.head{padding:44px 0 4px}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(36px,6vw,56px);letter-spacing:-.03em;
+  margin:0;line-height:.95}
+.lede{margin:14px 0 0;max-width:54ch;color:var(--ink-2);font-size:17px}
+
+/* --- Bedienfeld --- */
+.panel{margin-top:28px;display:flex;flex-direction:column;gap:20px}
+.block{display:flex;flex-direction:column;gap:10px}
+.block>h2{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint);margin:0}
+.search{position:relative}
+.search input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-2);border-radius:9px;padding:12px 14px 12px 40px}
+.search input::placeholder{color:var(--faint)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font:inherit;font-size:14px;background:var(--surface);color:var(--ink-2);
+  border:1px solid var(--line-2);border-radius:999px;padding:7px 14px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;line-height:1.2}
+.chip:hover{background:var(--surface-2);color:var(--ink)}
+.chip .n{font-family:var(--mono);font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:500}
+.chip[aria-pressed="true"] .n{color:var(--bg);opacity:.6}
+.chip.k{border-color:var(--cat)}
+.chip.k .dot{width:9px;height:9px;border-radius:50%;background:var(--cat);flex:none}
+.chip.k[aria-pressed="true"]{background:var(--cat);border-color:var(--cat);color:#fff}
+:root[data-theme="dark"] .chip.k[aria-pressed="true"],
+.chip.k[aria-pressed="true"]{color:var(--chiptext,#fff)}
+.chip.k[aria-pressed="true"] .dot{background:currentColor;opacity:.85}
+.chip.k[aria-pressed="true"] .n{color:currentColor;opacity:.7}
+
+/* --- Werkzeugzeile --- */
+.tools{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:space-between;
+  padding-top:18px;border-top:1px solid var(--line-2)}
+.tools-l{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.count{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.count b{color:var(--ink);font-weight:600}
+.tg{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:var(--ink-2)}
+.tg input{width:16px;height:16px;accent-color:var(--ink);margin:0;flex:none}
+.sortwrap{display:flex;align-items:center;gap:9px}
+.sortwrap label{font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600}
+select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);appearance:none;
+  border:1px solid var(--line-2);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 16px) 53%,calc(100% - 11px) 53%;background-size:5px 5px,5px 5px;
+  background-repeat:no-repeat}
+.reset{background:none;border:0;padding:0;font:inherit;font-size:13.5px;color:var(--muted);
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.reset:hover{color:var(--ink)}
+.reset[hidden]{display:none}
+
+/* --- Nächste Veranstaltung --- */
+.next{margin-top:24px;border:1px solid var(--line);border-left:5px solid var(--cat);
+  border-radius:12px;background:var(--surface);padding:18px 20px;display:flex;
+  gap:22px 28px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.next[hidden]{display:none}
+.next .who{min-width:0}
+.next .lbl{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--cat);margin-bottom:8px}
+.next h2{font-family:var(--disp);font-weight:700;font-size:clamp(21px,3.4vw,27px);
+  letter-spacing:-.022em;margin:0 0 6px;line-height:1.08}
+.next .meta{font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 9px}
+.next .meta .place{color:var(--ink-2);font-weight:500}
+.cdwrap{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.cdwrap .cdl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint)}
+.cd{display:flex;gap:7px}
+.cdu{min-width:56px;text-align:center;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:9px;padding:8px 7px}
+.cdu .v{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;display:block;line-height:1.05;color:var(--ink)}
+.cdu .k{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
+  display:block;margin-top:4px}
+
+/* --- Liste --- */
+#out{margin-top:22px}
+.group{margin-bottom:26px}
+.gh{position:sticky;top:0;z-index:2;display:flex;align-items:baseline;gap:12px;
+  padding:9px 2px;background:var(--bg);border-bottom:1px solid var(--line-2)}
+.gh h3{font-family:var(--disp);font-weight:600;font-size:18px;letter-spacing:-.015em;margin:0}
+.gh .gn{font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+.list{border:1px solid var(--line);border-top:0;border-radius:0 0 11px 11px;overflow:hidden;
+  background:var(--surface)}
+.ev{border-bottom:1px solid var(--line);border-left:4px solid var(--cat)}
+.ev:last-child{border-bottom:0}
+.ev.on{background:var(--surface-2)}
+.evmain{display:grid;grid-template-columns:66px minmax(0,1fr) auto;gap:16px;align-items:center;
+  width:100%;text-align:left;font:inherit;color:inherit;background:none;border:0;cursor:pointer;
+  padding:14px 16px 14px 15px}
+.evmain:hover{background:var(--tint)}
+.dbox{font-family:var(--mono);line-height:1.1}
+.dbox span{display:block}
+.dbox .d{font-size:22px;font-weight:600;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.dbox .m{font-size:10.5px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--cat);margin-top:3px}
+.dbox .y{font-size:10px;color:var(--faint);margin-top:2px}
+.tt{font-weight:600;font-size:16px;letter-spacing:-.008em;display:block;margin-bottom:3px}
+.sub{font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline}
+.sub .place{color:var(--ink-2);font-weight:500}
+.est{border-bottom:1px dotted var(--line-2)}
+.right{display:flex;align-items:center;gap:16px}
+.dur{text-align:right;font-family:var(--mono);line-height:1.15}
+.dur span{display:block}
+.dur .v{font-size:14.5px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dur .k{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);margin-top:3px}
+.tag{font-size:11.5px;font-weight:600;color:var(--cat);border:1px solid var(--cat);
+  border-radius:999px;padding:3px 10px;white-space:nowrap}
+.live{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--surface);background:var(--c-sport);border-radius:3px;
+  padding:2px 6px;white-space:nowrap}
+.detail{padding:0 16px 18px 15px;display:grid;gap:13px}
+.detail p{margin:0;max-width:64ch;color:var(--ink-2);font-size:14.5px}
+.dl{display:flex;flex-wrap:wrap;gap:11px 32px}
+.dl div{display:flex;flex-direction:column;gap:2px}
+.dl dt{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.dl dd{margin:0;font-family:var(--mono);font-size:13px;color:var(--ink)}
+.empty{border:1px dashed var(--line-2);border-radius:11px;padding:52px 24px;text-align:center;
+  color:var(--muted)}
+.empty strong{display:block;color:var(--ink);font-size:17px;margin-bottom:6px;font-weight:600}
+.note{margin-top:38px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;
+  color:var(--faint);max-width:72ch}
+.note b{color:var(--muted);font-weight:600}
+@media (max-width:640px){
+  .head{padding-top:32px}
+  .evmain{grid-template-columns:54px minmax(0,1fr);gap:13px;padding:13px 12px 13px 13px}
+  .right{grid-column:2;justify-content:flex-start;padding-top:6px}
+  .dur{text-align:left}
+  .tools{align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="shell">
+  <header class="head">
+    <h1>Städtejahr</h1>
+    <p class="lede">Jährliche Veranstaltungen in deutschen Städten — mit Datum, Dauer und Kategorie.
+      Stadt anklicken, Thema wählen, fertig.</p>
+  </header>
+
+  <div class="panel">
+    <div class="block search">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.3 10.3 14 14"/></svg>
+      <input id="q" type="search" placeholder="Suchen: Name, Stadt oder Stichwort" aria-label="Suchen">
+    </div>
+
+    <div class="block">
+      <h2>Stadt</h2>
+      <div class="chips" id="cities"></div>
+    </div>
+
+    <div class="block">
+      <h2>Kategorie</h2>
+      <div class="chips" id="cats"></div>
+    </div>
+
+    <div class="tools">
+      <div class="tools-l">
+        <span class="count" id="count"></span>
+        <label class="tg"><input type="checkbox" id="upcoming" checked> Nur kommende</label>
+        <button class="reset" id="reset" hidden>Auswahl zurücksetzen</button>
+      </div>
+      <div class="sortwrap">
+        <label for="sort">Sortieren</label>
+        <select id="sort">
+          <option value="date">Datum</option>
+          <option value="durDesc">Dauer — lang zuerst</option>
+          <option value="durAsc">Dauer — kurz zuerst</option>
+          <option value="city">Stadt A–Z</option>
+          <option value="name">Name A–Z</option>
+          <option value="cat">Kategorie</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <section class="next" id="next" hidden></section>
+
+  <div id="out"></div>
+
+  <p class="note"><b>Zu den Terminen:</b> Daten mit gepunkteter Linie sind aus dem jährlichen
+    Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen.
+    Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.</p>
+</div>
+
+<script>
+/* ------------------------------------------------------------------
+   Datenbasis — eine Zeile je Veranstaltung:
+     n Name · c Stadt · l Bundesland · k Kategorie
+     s Beginn · e Ende (ISO, nächste Ausgabe)
+     r Rhythmus · x 1 = fester Regeltermin, 0 = fortgeschrieben
+     d Kurzbeschreibung
+   Neue Veranstaltung: einfach eine Zeile ergänzen.
+------------------------------------------------------------------- */
+const CATS = {
+  tech:  {label:"Technik",     v:"--c-tech"},
+  food:  {label:"Essen",       v:"--c-food"},
+  play:  {label:"Spiel",       v:"--c-play"},
+  music: {label:"Musik",       v:"--c-music"},
+  art:   {label:"Kultur",      v:"--c-art"},
+  film:  {label:"Film",        v:"--c-film"},
+  sport: {label:"Sport",       v:"--c-sport"},
+  trad:  {label:"Tradition",   v:"--c-trad"}
+};
+
+const EVENTS = [
+/* Berlin */
+{n:"IFA",c:"Berlin",l:"Berlin",k:"tech",s:"2026-09-04",e:"2026-09-08",r:"jährlich",x:0,d:"Europas größte Messe für Unterhaltungselektronik und Hausgeräte, auf dem Messegelände unter dem Funkturm."},
+{n:"Berlin-Marathon",c:"Berlin",l:"Berlin",k:"sport",s:"2026-09-27",e:"2026-09-27",r:"jährlich, letztes September-Wochenende",x:1,d:"Weltrekordstrecke durch die Innenstadt, Ziel am Brandenburger Tor. Samstags zusätzlich das Inline-Skating-Rennen."},
+{n:"Festival of Lights",c:"Berlin",l:"Berlin",k:"art",s:"2026-10-09",e:"2026-10-18",r:"jährlich",x:0,d:"Zehn Abende lang werden Wahrzeichen und Fassaden mit Projektionen bespielt, Eintritt frei."},
+{n:"Jazzfest Berlin",c:"Berlin",l:"Berlin",k:"music",s:"2026-11-05",e:"2026-11-08",r:"jährlich",x:0,d:"Eines der ältesten Jazzfestivals Europas, Schwerpunkt zeitgenössische Improvisation."},
+{n:"Weihnachtsmarkt Gendarmenmarkt",c:"Berlin",l:"Berlin",k:"trad",s:"2026-11-23",e:"2026-12-31",r:"jährlich",x:1,d:"Kunsthandwerk und Bühnenprogramm zwischen den beiden Domen — einziger Berliner Markt mit Eintritt."},
+{n:"Internationale Grüne Woche",c:"Berlin",l:"Berlin",k:"food",s:"2027-01-15",e:"2027-01-24",r:"jährlich",x:0,d:"Ernährungs- und Landwirtschaftsmesse mit Länderhallen — die größte Verkostung des Landes."},
+{n:"Berlinale",c:"Berlin",l:"Berlin",k:"film",s:"2027-02-11",e:"2027-02-21",r:"jährlich",x:0,d:"Internationale Filmfestspiele mit Wettbewerb um den Goldenen Bären und großem Publikumsprogramm."},
+{n:"Karneval der Kulturen",c:"Berlin",l:"Berlin",k:"art",s:"2027-05-14",e:"2027-05-17",r:"jährlich, Pfingsten",x:1,d:"Straßenfest in Kreuzberg mit Umzug am Pfingstsonntag und über tausend Mitwirkenden."},
+{n:"re:publica",c:"Berlin",l:"Berlin",k:"tech",s:"2027-05-31",e:"2027-06-02",r:"jährlich",x:0,d:"Konferenz zu digitaler Gesellschaft, Netzpolitik und Medien in der Station Berlin."},
+{n:"Lange Nacht der Wissenschaften",c:"Berlin",l:"Berlin",k:"tech",s:"2027-06-05",e:"2027-06-05",r:"jährlich",x:0,d:"Rund siebzig Institute und Hochschulen öffnen bis Mitternacht ihre Labore."},
+{n:"Lange Nacht der Museen",c:"Berlin",l:"Berlin",k:"art",s:"2027-08-28",e:"2027-08-28",r:"jährlich",x:0,d:"Ein Ticket für rund achtzig Häuser, dazu Shuttle-Busse zwischen den Standorten."},
+{n:"Lollapalooza Berlin",c:"Berlin",l:"Berlin",k:"music",s:"2027-09-11",e:"2027-09-12",r:"jährlich",x:0,d:"Zweitägiges Festival im Olympiapark, Pop und Hip-Hop auf mehreren Bühnen."},
+
+/* Hamburg */
+{n:"Reeperbahn Festival",c:"Hamburg",l:"Hamburg",k:"music",s:"2026-09-16",e:"2026-09-19",r:"jährlich",x:0,d:"Clubfestival mit mehreren hundert Newcomer-Konzerten auf St. Pauli, dazu Musikwirtschaftskonferenz."},
+{n:"Filmfest Hamburg",c:"Hamburg",l:"Hamburg",k:"film",s:"2026-10-01",e:"2026-10-10",r:"jährlich",x:0,d:"Internationales Autorenkino ohne Wettbewerbsjury, viele Regiegespräche im Saal."},
+{n:"Hamburger Winterdom",c:"Hamburg",l:"Hamburg",k:"trad",s:"2026-11-06",e:"2026-12-06",r:"dreimal jährlich",x:0,d:"Volksfest auf dem Heiligengeistfeld, freitags Feuerwerk über der Stadt."},
+{n:"Chaos Communication Congress",c:"Hamburg",l:"Hamburg",k:"tech",s:"2026-12-27",e:"2026-12-30",r:"jährlich, zwischen den Jahren",x:1,d:"Vier Tage Vorträge zu Sicherheit, Technik und Politik im Congress Center, dazu offene Assemblies."},
+{n:"Hamburger Frühlingsdom",c:"Hamburg",l:"Hamburg",k:"trad",s:"2027-03-19",e:"2027-04-18",r:"dreimal jährlich",x:0,d:"Die Frühjahrsausgabe des Doms mit Fahrgeschäften und Schaustellerbetrieben."},
+{n:"Haspa Marathon Hamburg",c:"Hamburg",l:"Hamburg",k:"sport",s:"2027-04-25",e:"2027-04-25",r:"jährlich",x:0,d:"Flacher Frühjahrsmarathon durch Alster, Hafen und die Elbvororte."},
+{n:"Hafengeburtstag",c:"Hamburg",l:"Hamburg",k:"trad",s:"2027-05-07",e:"2027-05-09",r:"jährlich, Anfang Mai",x:0,d:"Einlaufparade, Schlepperballett und Festmeile am Elbufer — das größte Hafenfest der Welt."},
+{n:"Elbjazz",c:"Hamburg",l:"Hamburg",k:"music",s:"2027-06-04",e:"2027-06-05",r:"jährlich",x:0,d:"Jazz auf Werftgelände und in der Elbphilharmonie, Fährverkehr zwischen den Bühnen."},
+
+/* München */
+{n:"Oktoberfest",c:"München",l:"Bayern",k:"trad",s:"2026-09-19",e:"2026-10-04",r:"jährlich, Anstich am dritten September-Samstag",x:1,d:"Sechzehn Tage Wiesn auf der Theresienwiese, Trachten- und Schützenzug am ersten Sonntag."},
+{n:"Bits & Pretzels",c:"München",l:"Bayern",k:"tech",s:"2026-09-27",e:"2026-09-29",r:"jährlich",x:0,d:"Gründerkonferenz zur Wiesn-Zeit, der letzte Tag findet traditionell im Festzelt statt."},
+{n:"Tollwood Winterfestival",c:"München",l:"Bayern",k:"art",s:"2026-11-24",e:"2026-12-31",r:"zweimal jährlich",x:0,d:"Markt der Ideen, Konzertzelte und Biomarkt auf der Theresienwiese."},
+{n:"ISPO München",c:"München",l:"Bayern",k:"sport",s:"2026-11-29",e:"2026-12-01",r:"jährlich",x:0,d:"Leitmesse der Sportartikelbranche, Ausblick auf die Ausrüstung der kommenden Saison."},
+{n:"Münchner Frühlingsfest",c:"München",l:"Bayern",k:"trad",s:"2027-04-16",e:"2027-05-02",r:"jährlich",x:0,d:"Die kleine Wiesn im Frühjahr, mit Anstich, zwei Festzelten und Nachtflohmarkt."},
+{n:"DOK.fest München",c:"München",l:"Bayern",k:"film",s:"2027-05-05",e:"2027-05-16",r:"jährlich",x:0,d:"Großes Dokumentarfilmfestival, parallel als Online-Ausgabe bundesweit abrufbar."},
+{n:"Filmfest München",c:"München",l:"Bayern",k:"film",s:"2027-06-25",e:"2027-07-04",r:"jährlich",x:0,d:"Größtes Sommerfilmfestival Deutschlands, Schwerpunkt internationale Erstaufführungen."},
+{n:"Münchner Opernfestspiele",c:"München",l:"Bayern",k:"music",s:"2027-06-26",e:"2027-07-31",r:"jährlich",x:0,d:"Festspielsommer der Bayerischen Staatsoper, zum Auftakt Oper für alle auf dem Max-Joseph-Platz."},
+{n:"Tollwood Sommerfestival",c:"München",l:"Bayern",k:"art",s:"2027-06-23",e:"2027-07-18",r:"zweimal jährlich",x:0,d:"Zeltkonzerte, Straßenkunst und Kulinarik im Olympiapark Süd, Gelände frei zugänglich."},
+
+/* Köln */
+{n:"Köln Marathon",c:"Köln",l:"Nordrhein-Westfalen",k:"sport",s:"2026-10-04",e:"2026-10-04",r:"jährlich",x:0,d:"Flacher Stadtkurs über beide Rheinseiten, mit Staffel- und Halbmarathonfeldern."},
+{n:"Art Cologne",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2026-11-19",e:"2026-11-22",r:"jährlich",x:0,d:"Älteste Kunstmesse der Welt, moderne und zeitgenössische Positionen in zwei Hallen."},
+{n:"Kölner Straßenkarneval",c:"Köln",l:"Nordrhein-Westfalen",k:"trad",s:"2027-02-04",e:"2027-02-09",r:"jährlich, an Ostern gekoppelt",x:1,d:"Von Weiberfastnacht bis Veilchendienstag, Höhepunkt ist der Rosenmontagszug."},
+{n:"c/o pop",c:"Köln",l:"Nordrhein-Westfalen",k:"music",s:"2027-04-21",e:"2027-04-25",r:"jährlich",x:0,d:"Festival und Konvention für elektronische und Independent-Musik, Clubs im ganzen Stadtgebiet."},
+{n:"Christopher Street Day Köln",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2027-07-02",e:"2027-07-04",r:"jährlich",x:0,d:"Größte CSD-Demonstration Europas, dazu Straßenfest in der Altstadt."},
+{n:"Kölner Lichter",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2027-07-17",e:"2027-07-17",r:"jährlich",x:0,d:"Musiksynchrones Höhenfeuerwerk über dem Rhein, davor Schiffskorso."},
+{n:"devcom Developer Conference",c:"Köln",l:"Nordrhein-Westfalen",k:"play",s:"2027-08-23",e:"2027-08-24",r:"jährlich",x:0,d:"Fachkonferenz der Spieleentwicklung, direkt vor der gamescom im selben Gebäude."},
+{n:"gamescom",c:"Köln",l:"Nordrhein-Westfalen",k:"play",s:"2027-08-25",e:"2027-08-29",r:"jährlich",x:0,d:"Weltgrößte Messe für Computer- und Videospiele, Mittwoch ist Fach- und Medientag."},
+{n:"Anuga",c:"Köln",l:"Nordrhein-Westfalen",k:"food",s:"2027-10-09",e:"2027-10-13",r:"alle 2 Jahre, ungerade Jahre",x:0,d:"Leitmesse der Lebensmittelwirtschaft, zehn Fachmessen unter einem Dach."},
+
+/* Frankfurt am Main */
+{n:"Frankfurter Buchmesse",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2026-10-14",e:"2026-10-18",r:"jährlich",x:0,d:"Größte Buchmesse der Welt mit wechselndem Ehrengastland, am Wochenende publikumsoffen."},
+{n:"Frankfurt Marathon",c:"Frankfurt am Main",l:"Hessen",k:"sport",s:"2026-10-25",e:"2026-10-25",r:"jährlich",x:0,d:"Schneller Herbstmarathon mit Zieleinlauf in der Festhalle."},
+{n:"Frankfurter Dippemess",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2027-03-26",e:"2027-04-18",r:"zweimal jährlich",x:0,d:"Ältestes Volksfest der Stadt am Ratsweg, benannt nach den Töpferwaren der Händler."},
+{n:"Nacht der Museen",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2027-04-24",e:"2027-04-24",r:"jährlich",x:0,d:"Rund fünfzig Häuser in Frankfurt und Offenbach bis zwei Uhr nachts, ein Ticket für alle."},
+{n:"Wäldchestag",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2027-05-18",e:"2027-05-18",r:"jährlich, Dienstag nach Pfingsten",x:1,d:"Frankfurter Feiertag im Stadtwald — halber Arbeitstag, dann Kirmes und Apfelwein."},
+{n:"Apfelweinfestival",c:"Frankfurt am Main",l:"Hessen",k:"food",s:"2027-08-06",e:"2027-08-15",r:"jährlich",x:0,d:"Keltereien der Region schenken auf dem Roßmarkt aus, dazu Handkäs und Livemusik."},
+{n:"Museumsuferfest",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2027-08-28",e:"2027-08-30",r:"jährlich",x:0,d:"Drei Tage Programm auf beiden Mainufern, Museen mit vergünstigtem Kombiticket."},
+
+/* Stuttgart */
+{n:"Cannstatter Volksfest",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2026-09-25",e:"2026-10-11",r:"jährlich",x:0,d:"Zweitgrößtes Volksfest Deutschlands auf dem Wasen, Wahrzeichen ist die Fruchtsäule."},
+{n:"Retro Classics",c:"Stuttgart",l:"Baden-Württemberg",k:"tech",s:"2027-02-25",e:"2027-02-28",r:"jährlich",x:0,d:"Oldtimermesse mit Werksausstellungen, Teilemarkt und Fahrzeugauktionen."},
+{n:"Stuttgarter Frühlingsfest",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2027-04-17",e:"2027-05-09",r:"jährlich",x:0,d:"Frühjahrs-Wasen mit drei Festzelten, Höhepunkt ist das Fassanstich-Wochenende."},
+{n:"Jazzopen Stuttgart",c:"Stuttgart",l:"Baden-Württemberg",k:"music",s:"2027-07-07",e:"2027-07-18",r:"jährlich",x:0,d:"Open-Air-Konzerte auf dem Schlossplatz, Programm zwischen Jazz, Soul und Pop."},
+{n:"Stuttgarter Weindorf",c:"Stuttgart",l:"Baden-Württemberg",k:"food",s:"2027-08-25",e:"2027-09-05",r:"jährlich",x:0,d:"Weinlauben rund um Markt- und Schillerplatz, Ausschank württembergischer Lagen."},
+
+/* Düsseldorf */
+{n:"boot Düsseldorf",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"sport",s:"2027-01-16",e:"2027-01-24",r:"jährlich",x:0,d:"Weltgrößte Wassersportmesse, siebzehn Hallen von der Jolle bis zur Superyacht."},
+{n:"Japan-Tag",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-22",e:"2027-05-22",r:"jährlich",x:0,d:"Japanisch-deutsches Begegnungsfest am Rheinufer, zum Abschluss ein Feuerwerk."},
+{n:"Größte Kirmes am Rhein",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"trad",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Schützenfest auf den Oberkasseler Rheinwiesen, Riesenrad vor der Altstadtkulisse."},
+{n:"Düsseldorf Festival",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"art",s:"2027-09-09",e:"2027-09-27",r:"jährlich",x:0,d:"Tanz, Zirkus und Neue Musik, Hauptspielort ist das Zelt am Burgplatz."},
+
+/* Dresden */
+{n:"Striezelmarkt",c:"Dresden",l:"Sachsen",k:"trad",s:"2026-11-25",e:"2026-12-24",r:"jährlich, bis Heiligabend",x:1,d:"Einer der ältesten Weihnachtsmärkte Deutschlands, Stollenfest am zweiten Adventswochenende."},
+{n:"Filmfest Dresden",c:"Dresden",l:"Sachsen",k:"film",s:"2027-04-13",e:"2027-04-18",r:"jährlich",x:0,d:"Kurzfilmfestival mit internationalem und nationalem Wettbewerb um die Goldenen Reiter."},
+{n:"Dixieland Festival",c:"Dresden",l:"Sachsen",k:"music",s:"2027-05-09",e:"2027-05-16",r:"jährlich",x:0,d:"Traditionsjazz in der ganzen Stadt, Paradedampferfahrt und Straßenparade am Sonntag."},
+{n:"Dresdner Musikfestspiele",c:"Dresden",l:"Sachsen",k:"music",s:"2027-05-13",e:"2027-06-13",r:"jährlich",x:0,d:"Klassikfestival mit Konzerten in Semperoper, Frauenkirche und Kulturpalast."},
+{n:"Bunte Republik Neustadt",c:"Dresden",l:"Sachsen",k:"art",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:0,d:"Selbstorganisiertes Stadtteilfest der Äußeren Neustadt mit Hinterhofbühnen."},
+
+/* Leipzig */
+{n:"DOK Leipzig",c:"Leipzig",l:"Sachsen",k:"film",s:"2026-10-26",e:"2026-11-01",r:"jährlich",x:0,d:"Festival für Dokumentar- und Animationsfilm, gegründet 1955."},
+{n:"Games Ground",c:"Leipzig",l:"Sachsen",k:"play",s:"2026-11-27",e:"2026-11-29",r:"jährlich",x:0,d:"Spielemesse auf dem Messegelände mit Indie-Area, Cosplay und Esport-Bühne."},
+{n:"Leipziger Buchmesse",c:"Leipzig",l:"Sachsen",k:"art",s:"2027-03-18",e:"2027-03-21",r:"jährlich",x:0,d:"Publikumsmesse mit dem Lesefest Leipzig liest an hunderten Orten in der Stadt."},
+{n:"Wave-Gotik-Treffen",c:"Leipzig",l:"Sachsen",k:"music",s:"2027-05-14",e:"2027-05-17",r:"jährlich, Pfingsten",x:1,d:"Größtes Treffen der schwarzen Szene weltweit, über fünfzig Spielstätten im Stadtgebiet."},
+{n:"Bachfest Leipzig",c:"Leipzig",l:"Sachsen",k:"music",s:"2027-06-11",e:"2027-06-20",r:"jährlich",x:0,d:"Bach an den Originalschauplätzen, Thomaskirche und Nikolaikirche als Zentren."},
+
+/* Nürnberg */
+{n:"Christkindlesmarkt",c:"Nürnberg",l:"Bayern",k:"trad",s:"2026-11-27",e:"2026-12-24",r:"jährlich, bis Heiligabend",x:1,d:"Markt auf dem Hauptmarkt mit Prolog des Christkinds, Rauschgoldengel und Zwetschgenmännle."},
+{n:"Spielwarenmesse",c:"Nürnberg",l:"Bayern",k:"play",s:"2027-01-26",e:"2027-01-30",r:"jährlich",x:0,d:"Weltleitmesse für Spielwaren — reine Fachmesse mit der Neuheitenschau der Branche."},
+{n:"Embedded World",c:"Nürnberg",l:"Bayern",k:"tech",s:"2027-03-09",e:"2027-03-11",r:"jährlich",x:0,d:"Fachmesse für eingebettete Systeme, Elektronikentwicklung und Industrie-Software."},
+{n:"Nürnberger Frühlingsfest",c:"Nürnberg",l:"Bayern",k:"trad",s:"2027-03-26",e:"2027-04-11",r:"zweimal jährlich",x:0,d:"Volksfest am Dutzendteich, am Ostersonntag Feuerwerk über dem Wasser."},
+{n:"Blaue Nacht",c:"Nürnberg",l:"Bayern",k:"art",s:"2027-05-08",e:"2027-05-08",r:"jährlich",x:0,d:"Lange Kunstnacht mit blau illuminierter Altstadt und Installationen an der Kaiserburg."},
+{n:"Rock im Park",c:"Nürnberg",l:"Bayern",k:"music",s:"2027-06-04",e:"2027-06-06",r:"jährlich, Pfingsten",x:0,d:"Zwillingsfestival von Rock am Ring auf dem Zeppelinfeld, identisches Line-up."},
+{n:"Bardentreffen",c:"Nürnberg",l:"Bayern",k:"music",s:"2027-07-30",e:"2027-08-01",r:"jährlich",x:0,d:"Weltmusik auf Altstadtbühnen bei freiem Eintritt, dazu offizielle Straßenmusik."},
+
+/* Hannover */
+{n:"IAA Transportation",c:"Hannover",l:"Niedersachsen",k:"tech",s:"2026-09-15",e:"2026-09-20",r:"alle 2 Jahre, gerade Jahre",x:0,d:"Leitmesse für Nutzfahrzeuge, Logistik und Antriebswende, letzte Tage publikumsoffen."},
+{n:"Hannover Messe",c:"Hannover",l:"Niedersachsen",k:"tech",s:"2027-04-19",e:"2027-04-23",r:"jährlich",x:0,d:"Größte Industriemesse der Welt: Automatisierung, Energie und Robotik mit Partnerland."},
+{n:"Schützenfest Hannover",c:"Hannover",l:"Niedersachsen",k:"trad",s:"2027-07-02",e:"2027-07-11",r:"jährlich",x:0,d:"Größtes Schützenfest der Welt, Ausmarsch mit rund zwölftausend Teilnehmenden."},
+{n:"Maschseefest",c:"Hannover",l:"Niedersachsen",k:"art",s:"2027-07-28",e:"2027-08-15",r:"jährlich",x:0,d:"Drei Wochen Bühnen und Gastronomie rund um den See, Eintritt frei."},
+
+/* Ruhrgebiet */
+{n:"SPIEL Essen",c:"Essen",l:"Nordrhein-Westfalen",k:"play",s:"2026-10-22",e:"2026-10-25",r:"jährlich",x:0,d:"Weltgrößte Publikumsmesse für Brett- und Kartenspiele, alle Neuheiten zum Probespielen."},
+{n:"Essener Lichtwochen",c:"Essen",l:"Nordrhein-Westfalen",k:"art",s:"2026-11-06",e:"2027-01-10",r:"jährlich",x:0,d:"Leuchtbilder über der Innenstadt, ununterbrochen seit den 1950er-Jahren."},
+{n:"Dortmunder Weihnachtsmarkt",c:"Dortmund",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-19",e:"2026-12-30",r:"jährlich",x:0,d:"Bekannt für den aus rund 1.700 Fichten gebauten Weihnachtsbaum auf dem Hansaplatz."},
+{n:"Essen Motor Show",c:"Essen",l:"Nordrhein-Westfalen",k:"tech",s:"2026-12-04",e:"2026-12-13",r:"jährlich",x:0,d:"Messe für Tuning, Motorsport und Klassiker, mit Driftshow in der Halle."},
+{n:"Techno-Classica",c:"Essen",l:"Nordrhein-Westfalen",k:"tech",s:"2027-04-07",e:"2027-04-11",r:"jährlich",x:0,d:"Oldtimermesse mit den Werksmuseen der Hersteller und großem Ersatzteilmarkt."},
+{n:"Bochum Total",c:"Bochum",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-01",e:"2027-07-04",r:"jährlich",x:0,d:"Eines der größten kostenlosen Rockfestivals Europas, auf der Bochumer Kortumstraße."},
+{n:"Juicy Beats",c:"Dortmund",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-30",e:"2027-07-31",r:"jährlich",x:0,d:"Elektro- und Popfestival im Westfalenpark, Bühnen verteilt über die Parkanlage."},
+{n:"Ruhrtriennale",c:"Bochum",l:"Nordrhein-Westfalen",k:"art",s:"2027-08-13",e:"2027-09-26",r:"jährlich",x:0,d:"Festival in Industriedenkmälern des Ruhrgebiets: Musiktheater, Tanz und Installationen."},
+
+/* Bremen */
+{n:"Musikfest Bremen",c:"Bremen",l:"Bremen",k:"music",s:"2026-08-22",e:"2026-09-12",r:"jährlich",x:0,d:"Alte Musik und Kammerkonzerte an historischen Spielstätten in Bremen und im Umland."},
+{n:"Bremer Freimarkt",c:"Bremen",l:"Bremen",k:"trad",s:"2026-10-16",e:"2026-11-01",r:"jährlich",x:0,d:"Eines der ältesten Volksfeste Deutschlands, seit 1035, mit Freimarktsumzug am Samstag."},
+{n:"Bremer Sechstagerennen",c:"Bremen",l:"Bremen",k:"sport",s:"2027-01-07",e:"2027-01-12",r:"jährlich",x:0,d:"Bahnradsport in der ÖVB-Arena, sechs Nächte Madison und Sprintwertungen."},
+{n:"Breminale",c:"Bremen",l:"Bremen",k:"music",s:"2027-07-07",e:"2027-07-11",r:"jährlich",x:0,d:"Kulturfestival am Osterdeich mit freiem Eintritt, Bühnen direkt an der Weser."},
+
+/* weitere Städte */
+{n:"Enjoy Jazz",c:"Mannheim",l:"Baden-Württemberg",k:"music",s:"2026-10-02",e:"2026-11-13",r:"jährlich",x:0,d:"Sechs Wochen Jazz und Grenzgänge in Mannheim, Heidelberg und Ludwigshafen."},
+{n:"Nordische Filmtage",c:"Lübeck",l:"Schleswig-Holstein",k:"film",s:"2026-10-28",e:"2026-11-01",r:"jährlich",x:0,d:"Filme aus Skandinavien und dem Baltikum, Publikumspreis in der Lübecker Altstadt."},
+{n:"Vierschanzentournee",c:"Oberstdorf",l:"Bayern",k:"sport",s:"2026-12-28",e:"2027-01-06",r:"jährlich, feste Regeltermine",x:1,d:"Skisprung-Klassiker: Auftakt in Oberstdorf, Neujahrsspringen in Garmisch-Partenkirchen."},
+{n:"Mainzer Rosenmontagszug",c:"Mainz",l:"Rheinland-Pfalz",k:"trad",s:"2027-02-08",e:"2027-02-08",r:"jährlich, an Ostern gekoppelt",x:1,d:"Sieben Kilometer Zugweg mit Schwellköpp und politischen Motivwagen."},
+{n:"Send",c:"Münster",l:"Nordrhein-Westfalen",k:"trad",s:"2027-03-20",e:"2027-03-23",r:"dreimal jährlich",x:0,d:"Jahrmarkt auf dem Schlossplatz, seit dem Mittelalter an den Send-Terminen der Diözese."},
+{n:"Augsburger Plärrer",c:"Augsburg",l:"Bayern",k:"trad",s:"2027-04-03",e:"2027-04-19",r:"zweimal jährlich",x:0,d:"Schwabens größtes Volksfest mit Festzelten und Plärrer-Umzug am ersten Sonntag."},
+{n:"Maimarkt Mannheim",c:"Mannheim",l:"Baden-Württemberg",k:"trad",s:"2027-04-24",e:"2027-05-04",r:"jährlich",x:0,d:"Größte Regionalmesse Deutschlands, mit Tierschau, Reitturnier und Vergnügungspark."},
+{n:"Rhein in Flammen",c:"Bonn",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-01",e:"2027-05-01",r:"jährlich",x:0,d:"Schiffskonvoi zwischen Linz und Bonn, Höhenfeuerwerk an mehreren Uferorten."},
+{n:"Internationale Maifestspiele",c:"Wiesbaden",l:"Hessen",k:"art",s:"2027-05-01",e:"2027-05-31",r:"jährlich",x:0,d:"Gastspiele internationaler Ensembles am Hessischen Staatstheater, den ganzen Mai."},
+{n:"Regensburger Maidult",c:"Regensburg",l:"Bayern",k:"trad",s:"2027-05-07",e:"2027-05-23",r:"zweimal jährlich",x:0,d:"Volksfest auf dem Dultplatz an der Donau, Bierzelte und Krämermarkt."},
+{n:"Heidelberger Schlossbeleuchtung",c:"Heidelberg",l:"Baden-Württemberg",k:"art",s:"2027-06-05",e:"2027-06-05",r:"dreimal jährlich",x:0,d:"Bengalische Beleuchtung der Schlossruine, danach Feuerwerk über der Alten Brücke."},
+{n:"documenta 16",c:"Kassel",l:"Hessen",k:"art",s:"2027-06-12",e:"2027-09-19",r:"alle 5 Jahre",x:0,d:"Hundert Tage Weltausstellung zeitgenössischer Kunst, im Fridericianum und in der ganzen Stadt."},
+{n:"Erfurter Krämerbrückenfest",c:"Erfurt",l:"Thüringen",k:"trad",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:0,d:"Historisches Altstadtfest rund um die bebaute Brücke, Handwerkermarkt und Gaukler."},
+{n:"Kieler Woche",c:"Kiel",l:"Schleswig-Holstein",k:"sport",s:"2027-06-19",e:"2027-06-27",r:"jährlich",x:0,d:"Größte Segelregatta der Welt, dazu Sommerfest an der Förde und Windjammerparade."},
+{n:"Mainzer Johannisnacht",c:"Mainz",l:"Rheinland-Pfalz",k:"art",s:"2027-06-25",e:"2027-06-28",r:"jährlich",x:0,d:"Stadtfest zu Ehren Gutenbergs, mit Gautschfeier der Druckerlehrlinge."},
+{n:"Trierer Altstadtfest",c:"Trier",l:"Rheinland-Pfalz",k:"art",s:"2027-06-25",e:"2027-06-27",r:"jährlich",x:0,d:"Bühnen zwischen Porta Nigra und Hauptmarkt, Weinstände der Mosellagen."},
+{n:"Rheingau Musik Festival",c:"Wiesbaden",l:"Hessen",k:"music",s:"2027-06-26",e:"2027-09-05",r:"jährlich",x:0,d:"Über zehn Wochen Konzerte in Klöstern, Schlössern und Weingütern des Rheingaus."},
+{n:"Freiburger Weinfest",c:"Freiburg im Breisgau",l:"Baden-Württemberg",k:"food",s:"2027-07-01",e:"2027-07-06",r:"jährlich",x:0,d:"Ausschank badischer Winzergenossenschaften auf dem Münsterplatz."},
+{n:"Zelt-Musik-Festival",c:"Freiburg im Breisgau",l:"Baden-Württemberg",k:"music",s:"2027-07-07",e:"2027-07-25",r:"jährlich",x:0,d:"Konzerte im Zeltdorf am Mundenhof, Programm von Klassik bis Kabarett."},
+{n:"Schlossfestspiele Thurn und Taxis",c:"Regensburg",l:"Bayern",k:"music",s:"2027-07-08",e:"2027-07-25",r:"jährlich",x:0,d:"Open-Air-Konzerte im Innenhof von Schloss St. Emmeram."},
+{n:"Travemünder Woche",c:"Lübeck",l:"Schleswig-Holstein",k:"sport",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Segelregatta an der Lübecker Bucht, dazu Hafenfest auf der Vorderreihe."},
+{n:"Das Fest",c:"Karlsruhe",l:"Baden-Württemberg",k:"music",s:"2027-07-23",e:"2027-07-25",r:"jährlich",x:0,d:"Festival in der Günther-Klotz-Anlage, Hauptbühne mit Karte, der Hügel bleibt frei."},
+{n:"Wacken Open Air",c:"Wacken",l:"Schleswig-Holstein",k:"music",s:"2027-07-29",e:"2027-07-31",r:"jährlich",x:0,d:"Metalfestival im 1.800-Einwohner-Dorf, seit Jahren im Vorverkauf ausverkauft."},
+{n:"Zissel",c:"Kassel",l:"Hessen",k:"trad",s:"2027-07-30",e:"2027-08-02",r:"jährlich",x:0,d:"Kasseler Volks- und Wasserfest an der Fulda, mit Bootskorso und Fischerstechen."},
+{n:"Hanse Sail",c:"Rostock",l:"Mecklenburg-Vorpommern",k:"sport",s:"2027-08-05",e:"2027-08-08",r:"jährlich",x:0,d:"Traditionsseglertreffen in Warnemünde und im Stadthafen, Mitsegeln möglich."},
+{n:"Schlosslichtspiele",c:"Karlsruhe",l:"Baden-Württemberg",k:"art",s:"2027-08-05",e:"2027-09-12",r:"jährlich",x:0,d:"Projektionen auf die 170 Meter breite Schlossfassade, Eintritt frei."},
+{n:"Augsburger Friedensfest",c:"Augsburg",l:"Bayern",k:"art",s:"2027-08-08",e:"2027-08-08",r:"jährlich, 8. August",x:1,d:"Gesetzlicher Feiertag nur in Augsburg, mit Friedenstafel und Kulturprogramm."},
+{n:"Kunstfest Weimar",c:"Weimar",l:"Thüringen",k:"art",s:"2027-08-19",e:"2027-09-05",r:"jährlich",x:0,d:"Theater, Konzerte und Diskurs an historischen Orten der Klassikerstadt."},
+{n:"Hallesches Laternenfest",c:"Halle (Saale)",l:"Sachsen-Anhalt",k:"trad",s:"2027-08-27",e:"2027-08-29",r:"jährlich",x:0,d:"Größtes Volksfest Sachsen-Anhalts an der Saale, Höhepunkt ist der Bootskorso."},
+{n:"Dürkheimer Wurstmarkt",c:"Bad Dürkheim",l:"Rheinland-Pfalz",k:"food",s:"2027-09-10",e:"2027-09-20",r:"jährlich, zwei Wochenenden",x:0,d:"Größtes Weinfest der Welt an der Weinstraße — Schubkarchstände statt Bierzelte."},
+{n:"Münster Marathon",c:"Münster",l:"Nordrhein-Westfalen",k:"sport",s:"2027-09-12",e:"2027-09-12",r:"jährlich",x:0,d:"Flacher Stadtmarathon durch die Altstadt und über den Promenadenring."},
+{n:"Heidelberger Herbst",c:"Heidelberg",l:"Baden-Württemberg",k:"art",s:"2027-09-25",e:"2027-09-25",r:"jährlich",x:0,d:"Altstadtfest mit Kunsthandwerkermarkt in der langen Hauptstraße."},
+{n:"Weimarer Zwiebelmarkt",c:"Weimar",l:"Thüringen",k:"food",s:"2027-10-08",e:"2027-10-10",r:"jährlich, zweites Oktoberwochenende",x:0,d:"Ältestes Volksfest Thüringens — Zwiebelzöpfe und Zwiebelkuchen in der ganzen Innenstadt."}
+];
+
+/* ---------------- Helfer ---------------- */
+const MON  = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+const MABK = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+const WTAG = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+const DAY = 86400000;
+const TODAY = (() => { const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); })();
+
+const parse  = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const days   = ev => Math.round((parse(ev.e) - parse(ev.s)) / DAY) + 1;
+const durTxt = n => n === 1 ? "1 Tag" : n + " Tage";
+const short  = d => d.getDate() + ". " + MABK[d.getMonth()];
+const esc    = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function rangeTxt(ev){
+  const a = parse(ev.s), b = parse(ev.e);
+  if (ev.s === ev.e) return a.getDate() + ". " + MON[a.getMonth()] + " " + a.getFullYear();
+  return short(a) + (a.getFullYear() === b.getFullYear() ? "" : " " + a.getFullYear()) +
+         " – " + short(b) + " " + b.getFullYear();
+}
+const isLive = ev => TODAY >= parse(ev.s) && TODAY <= parse(ev.e);
+const isPast = ev => TODAY > parse(ev.e);
+
+/* ---------------- Zustand ---------------- */
+const F = { cities:new Set(), cats:new Set(), q:"", upcoming:true, sort:"date" };
+const $ = id => document.getElementById(id);
+const CITIES = [...new Set(EVENTS.map(e => e.c))].sort((a,b) => a.localeCompare(b,"de"));
+
+/* ---------------- Bedienelemente aufbauen ---------------- */
+$("cities").innerHTML =
+  '<button class="chip" data-city="" aria-pressed="true">Alle Städte <span class="n">' +
+    EVENTS.length + '</span></button>' +
+  CITIES.map(c => '<button class="chip" data-city="' + esc(c) + '" aria-pressed="false">' +
+    esc(c) + ' <span class="n">' + EVENTS.filter(e => e.c === c).length + '</span></button>').join("");
+
+$("cats").innerHTML =
+  '<button class="chip" data-cat="" aria-pressed="true">Alle Themen</button>' +
+  Object.entries(CATS).map(([k,v]) =>
+    '<button class="chip k" data-cat="' + k + '" aria-pressed="false" style="--cat:var(' + v.v + ')">' +
+    '<span class="dot"></span>' + v.label + ' <span class="n">' +
+    EVENTS.filter(e => e.k === k).length + '</span></button>').join("");
+
+/* ---------------- Filtern und Sortieren ---------------- */
+function filtered(){
+  return EVENTS.filter(ev => {
+    if (F.cities.size && !F.cities.has(ev.c)) return false;
+    if (F.cats.size   && !F.cats.has(ev.k))   return false;
+    if (F.upcoming && isPast(ev)) return false;
+    if (F.q){
+      const hay = (ev.n + " " + ev.c + " " + ev.l + " " + CATS[ev.k].label + " " + ev.d).toLowerCase();
+      if (!F.q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  });
+}
+function sorted(list){
+  const byDate = (a,b) => parse(a.s) - parse(b.s);
+  return [...list].sort({
+    date:    byDate,
+    durAsc:  (a,b) => days(a) - days(b) || byDate(a,b),
+    durDesc: (a,b) => days(b) - days(a) || byDate(a,b),
+    city:    (a,b) => a.c.localeCompare(b.c,"de") || byDate(a,b),
+    name:    (a,b) => a.n.localeCompare(b.n,"de"),
+    cat:     (a,b) => CATS[a.k].label.localeCompare(CATS[b.k].label,"de") || byDate(a,b)
+  }[F.sort]);
+}
+
+/* ---------------- Zeichnen ---------------- */
+function evHTML(ev){
+  const a = parse(ev.s), n = days(ev);
+  const datum = ev.x
+    ? rangeTxt(ev)
+    : '<span class="est" title="Termin aus dem jährlichen Rhythmus fortgeschrieben — bitte prüfen">' +
+      rangeTxt(ev) + '</span>';
+  return '<article class="ev" style="--cat:var(' + CATS[ev.k].v + ')">' +
+    '<button class="evmain" aria-expanded="false">' +
+      '<span class="dbox"><span class="d">' + a.getDate() + '</span>' +
+        '<span class="m">' + MABK[a.getMonth()] + '</span>' +
+        '<span class="y">' + a.getFullYear() + '</span></span>' +
+      '<span><span class="tt">' + esc(ev.n) + '</span>' +
+        '<span class="sub"><span class="place">' + esc(ev.c) + '</span><span>' + datum + '</span>' +
+        (isLive(ev) ? '<span class="live">läuft gerade</span>' : '') + '</span></span>' +
+      '<span class="right"><span class="tag">' + CATS[ev.k].label + '</span>' +
+        '<span class="dur"><span class="v">' + durTxt(n) + '</span><span class="k">Dauer</span></span>' +
+      '</span>' +
+    '</button>' +
+    '<div class="detail" hidden><p>' + esc(ev.d) + '</p><div class="dl">' +
+      '<div><dt>Zeitraum</dt><dd>' + rangeTxt(ev) + '</dd></div>' +
+      '<div><dt>Dauer</dt><dd>' + durTxt(n) + '</dd></div>' +
+      '<div><dt>Beginnt</dt><dd>' + WTAG[a.getDay()] + '</dd></div>' +
+      '<div><dt>Rhythmus</dt><dd>' + esc(ev.r) + '</dd></div>' +
+      '<div><dt>Ort</dt><dd>' + esc(ev.c) + ', ' + esc(ev.l) + '</dd></div>' +
+    '</div></div></article>';
+}
+
+/* Nächste Veranstaltung samt Countdown — richtet sich nach der Städteauswahl */
+let NEXT = null;
+
+function renderNext(list){
+  const box = $("next");
+  const offen  = list.filter(ev => !isPast(ev));
+  const laeuft = offen.filter(isLive).sort((a,b) => parse(a.e) - parse(b.e));
+  const kommt  = offen.filter(ev => !isLive(ev)).sort((a,b) => parse(a.s) - parse(b.s));
+  const ev = laeuft[0] || kommt[0];
+
+  if (!ev){ NEXT = null; box.hidden = true; return; }
+
+  const live = isLive(ev);
+  NEXT = { target: live ? parse(ev.e).getTime() + DAY : parse(ev.s).getTime() };
+
+  const wo = F.cities.size === 1 ? "Als Nächstes in " + [...F.cities][0]
+           : F.cities.size > 1   ? "Als Nächstes in deiner Auswahl"
+           : "Als Nächstes in Deutschland";
+
+  box.style.setProperty("--cat", "var(" + CATS[ev.k].v + ")");
+  box.hidden = false;
+  box.innerHTML =
+    '<div class="who"><div class="lbl">' + (live ? "Läuft gerade" : wo) + '</div>' +
+      '<h2>' + esc(ev.n) + '</h2>' +
+      '<div class="meta"><span class="place">' + esc(ev.c) + '</span>' +
+        '<span>' + rangeTxt(ev) + '</span>' +
+        '<span>' + durTxt(days(ev)) + '</span>' +
+        '<span>' + CATS[ev.k].label + '</span></div></div>' +
+    '<div class="cdwrap"><span class="cdl">' + (live ? "läuft noch" : "beginnt in") + '</span>' +
+      '<div class="cd" id="cd">' +
+        ['Tage','Std','Min','Sek'].map(k =>
+          '<div class="cdu"><span class="v">–</span><span class="k">' + k + '</span></div>').join("") +
+      '</div></div>';
+  tick();
+}
+
+function tick(){
+  const cd = document.getElementById("cd");
+  if (!cd || !NEXT) return;
+  const ms = Math.max(0, NEXT.target - Date.now());
+  const werte = [
+    Math.floor(ms / DAY),
+    String(Math.floor(ms % DAY / 3600000)).padStart(2,"0"),
+    String(Math.floor(ms % 3600000 / 60000)).padStart(2,"0"),
+    String(Math.floor(ms % 60000 / 1000)).padStart(2,"0")
+  ];
+  cd.querySelectorAll(".v").forEach((el,i) => {
+    if (el.textContent !== String(werte[i])) el.textContent = werte[i];
+  });
+}
+setInterval(tick, 1000);
+
+function render(){
+  const list = sorted(filtered());
+  const active = F.cities.size || F.cats.size || F.q || !F.upcoming || F.sort !== "date";
+  renderNext(list);
+
+  const wo = F.cities.size === 0 ? "in ganz Deutschland"
+           : F.cities.size === 1 ? "in " + [...F.cities][0]
+           : "in " + F.cities.size + " Städten";
+  $("count").innerHTML = "<b>" + list.length + "</b> von " + EVENTS.length + " Terminen " + wo;
+  $("reset").hidden = !active;
+
+  const out = $("out");
+  if (!list.length){
+    out.innerHTML = '<div class="empty"><strong>Nichts gefunden</strong>' +
+      'Für diese Auswahl ist nichts eingetragen. Wähle eine andere Stadt oder ein anderes Thema.</div>';
+    return;
+  }
+
+  if (F.sort === "date"){
+    const groups = [];
+    list.forEach(ev => {
+      const d = parse(ev.s), g = MON[d.getMonth()] + " " + d.getFullYear();
+      if (!groups.length || groups[groups.length-1].g !== g) groups.push({g, items:[]});
+      groups[groups.length-1].items.push(ev);
+    });
+    out.innerHTML = groups.map(gr =>
+      '<section class="group"><div class="gh"><h3>' + gr.g + '</h3><span class="gn">' +
+      gr.items.length + (gr.items.length === 1 ? " Termin" : " Termine") + '</span></div>' +
+      '<div class="list">' + gr.items.map(evHTML).join("") + '</div></section>').join("");
+  } else {
+    const titel = {durDesc:"Nach Dauer — lang zuerst", durAsc:"Nach Dauer — kurz zuerst",
+                   city:"Nach Stadt", name:"Alphabetisch", cat:"Nach Kategorie"}[F.sort];
+    out.innerHTML = '<section class="group"><div class="gh"><h3>' + titel + '</h3>' +
+      '<span class="gn">' + list.length + ' Termine</span></div>' +
+      '<div class="list">' + list.map(evHTML).join("") + '</div></section>';
+  }
+}
+
+/* ---------------- Bedienung ---------------- */
+function toggleChips(container, set, attr){
+  container.addEventListener("click", e => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    const val = b.dataset[attr];
+    if (!val) set.clear();
+    else set.has(val) ? set.delete(val) : set.add(val);
+    [...container.children].forEach(ch =>
+      ch.setAttribute("aria-pressed", ch.dataset[attr] ? set.has(ch.dataset[attr]) : set.size === 0));
+    render();
+  });
+}
+toggleChips($("cities"), F.cities, "city");
+toggleChips($("cats"),   F.cats,   "cat");
+
+$("q").addEventListener("input", e => { F.q = e.target.value.trim(); render(); });
+$("sort").addEventListener("change", e => { F.sort = e.target.value; render(); });
+$("upcoming").addEventListener("change", e => { F.upcoming = e.target.checked; render(); });
+
+$("out").addEventListener("click", e => {
+  const btn = e.target.closest(".evmain"); if (!btn) return;
+  const art = btn.parentElement;
+  const open = btn.getAttribute("aria-expanded") === "true";
+  btn.setAttribute("aria-expanded", String(!open));
+  art.querySelector(".detail").hidden = open;
+  art.classList.toggle("on", !open);
+});
+
+$("reset").addEventListener("click", () => {
+  F.cities.clear(); F.cats.clear();
+  F.q = ""; F.upcoming = true; F.sort = "date";
+  $("q").value = ""; $("upcoming").checked = true; $("sort").value = "date";
+  [...$("cities").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.city));
+  [...$("cats").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.cat));
+  render();
+});
+
+render();
+</script>

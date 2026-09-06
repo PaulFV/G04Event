@@ -1,0 +1,14 @@
+# Betriebssystem
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editoren
+.vscode/
+.idea/
+*.swp
+*~
+
+# Werkzeuge
+node_modules/
+.claude/
