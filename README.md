@@ -12,6 +12,8 @@ Eine einzige HTML-Datei, kein Build, keine Abhängigkeiten, kein Backend.
   (läuft gerade etwas, zählt der Countdown bis zum Ende herunter)
 - **Kategorien** — Technik, Essen, Spiel, Musik, Kultur, Film, Sport, Tradition, farblich codiert
 - **Sortierung** — nach Datum, Dauer (lang/kurz zuerst), Stadt, Name oder Kategorie
+- **Auswahl bleibt gespeichert** — zuletzt gewählte Städte und Themen sind beim nächsten Öffnen
+  wieder gesetzt (`localStorage`, bleibt im Browser des Betrachters)
 - **Suche** über Name, Stadt, Bundesland und Beschreibung
 - **Details** — Klick auf eine Zeile öffnet Beschreibung, Wochentag, Rhythmus und Bundesland
 - Helles und dunkles Design, folgt der Systemeinstellung; funktioniert auf Handy und Desktop

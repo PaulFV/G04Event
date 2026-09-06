@@ -444,17 +444,35 @@ const F = { cities:new Set(), cats:new Set(), q:"", upcoming:true, sort:"date" }
 const $ = id => document.getElementById(id);
 const CITIES = [...new Set(EVENTS.map(e => e.c))].sort((a,b) => a.localeCompare(b,"de"));
 
+/* Zuletzt gewählte Stadt und Themen — nur im Browser des Betrachters */
+const STORE = "staedtejahr.auswahl";
+function ladeAuswahl(){
+  try {
+    const gespeichert = JSON.parse(localStorage.getItem(STORE) || "{}");
+    (gespeichert.cities || []).filter(c => CITIES.includes(c)).forEach(c => F.cities.add(c));
+    (gespeichert.cats   || []).filter(k => k in CATS).forEach(k => F.cats.add(k));
+  } catch(e) {}
+}
+function speichereAuswahl(){
+  try {
+    localStorage.setItem(STORE, JSON.stringify({cities:[...F.cities], cats:[...F.cats]}));
+  } catch(e) {}
+}
+ladeAuswahl();
+
 /* ---------------- Bedienelemente aufbauen ---------------- */
 $("cities").innerHTML =
-  '<button class="chip" data-city="" aria-pressed="true">Alle Städte <span class="n">' +
-    EVENTS.length + '</span></button>' +
-  CITIES.map(c => '<button class="chip" data-city="' + esc(c) + '" aria-pressed="false">' +
-    esc(c) + ' <span class="n">' + EVENTS.filter(e => e.c === c).length + '</span></button>').join("");
+  '<button class="chip" data-city="" aria-pressed="' + (F.cities.size === 0) + '">Alle Städte ' +
+    '<span class="n">' + EVENTS.length + '</span></button>' +
+  CITIES.map(c => '<button class="chip" data-city="' + esc(c) + '" aria-pressed="' +
+    F.cities.has(c) + '">' + esc(c) + ' <span class="n">' +
+    EVENTS.filter(e => e.c === c).length + '</span></button>').join("");
 
 $("cats").innerHTML =
-  '<button class="chip" data-cat="" aria-pressed="true">Alle Themen</button>' +
+  '<button class="chip" data-cat="" aria-pressed="' + (F.cats.size === 0) + '">Alle Themen</button>' +
   Object.entries(CATS).map(([k,v]) =>
-    '<button class="chip k" data-cat="' + k + '" aria-pressed="false" style="--cat:var(' + v.v + ')">' +
+    '<button class="chip k" data-cat="' + k + '" aria-pressed="' + F.cats.has(k) +
+    '" style="--cat:var(' + v.v + ')">' +
     '<span class="dot"></span>' + v.label + ' <span class="n">' +
     EVENTS.filter(e => e.k === k).length + '</span></button>').join("");
 
@@ -622,6 +640,7 @@ function toggleChips(container, set, attr){
     else set.has(val) ? set.delete(val) : set.add(val);
     [...container.children].forEach(ch =>
       ch.setAttribute("aria-pressed", ch.dataset[attr] ? set.has(ch.dataset[attr]) : set.size === 0));
+    speichereAuswahl();
     render();
   });
 }
@@ -647,6 +666,7 @@ $("reset").addEventListener("click", () => {
   $("q").value = ""; $("upcoming").checked = true; $("sort").value = "date";
   [...$("cities").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.city));
   [...$("cats").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.cat));
+  speichereAuswahl();
   render();
 });
 
