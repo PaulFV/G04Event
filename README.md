@@ -1,4 +1,4 @@
-# Städtejahr
+# G04Event
 
 Ein Überblick über **jährlich wiederkehrende Veranstaltungen in deutschen Städten** — mit Datum,
 Dauer, Rhythmus und Kategorie. Stadt anklicken, Thema wählen, fertig.
@@ -28,19 +28,18 @@ Lokaler Server (optional):
 python -m http.server 8000
 ```
 
-## Veröffentlichen auf GitHub Pages
+## Veröffentlicht
 
-1. Repository auf GitHub anlegen und den Code hochladen:
+**https://paulfv.github.io/G04Event/**
+
+Jeder Push auf `main` aktualisiert die Seite:
 
 ```bash
-git remote add origin https://github.com/BENUTZERNAME/staedtejahr.git
-git push -u origin main
+git add -A && git commit -m "Neue Veranstaltungen" && git push
 ```
 
-2. Im Repository unter **Settings → Pages** als Quelle **GitHub Actions** wählen.
-   Der Workflow in `.github/workflows/pages.yml` veröffentlicht dann bei jedem Push auf `main`.
-
-Die Seite liegt danach unter `https://BENUTZERNAME.github.io/staedtejahr/`.
+Die Quelle steht im Repository unter **Settings → Pages**; der Workflow in
+`.github/workflows/pages.yml` übernimmt die Veröffentlichung.
 
 ## Veranstaltung hinzufügen
 
