@@ -142,16 +142,11 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);ap
 .cdu .k{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
   display:block;margin-top:4px}
 
-/* Ampel: 1 Tag oder weniger rot, bis 3 Tage gelb, sonst grün */
-.cd[data-stufe] .cdu{background:var(--sig-bg);border-color:var(--sig)}
+/* Ampel: nur die Ziffern — 1 Tag oder weniger rot, bis 3 Tage gelb, sonst grün */
 .cd[data-stufe] .cdu .v{color:var(--sig)}
-.cd[data-stufe] .cdu .k{color:var(--sig);opacity:.75}
-.cd[data-stufe="rot"]  {--sig:var(--sig-rot);   --sig-bg:var(--sig-rot-bg)}
-.cd[data-stufe="gelb"] {--sig:var(--sig-gelb);  --sig-bg:var(--sig-gelb-bg)}
-.cd[data-stufe="gruen"]{--sig:var(--sig-gruen); --sig-bg:var(--sig-gruen-bg)}
-.cdwrap[data-stufe="rot"]   .cdl{color:var(--sig-rot)}
-.cdwrap[data-stufe="gelb"]  .cdl{color:var(--sig-gelb)}
-.cdwrap[data-stufe="gruen"] .cdl{color:var(--sig-gruen)}
+.cd[data-stufe="rot"]  {--sig:var(--sig-rot)}
+.cd[data-stufe="gelb"] {--sig:var(--sig-gelb)}
+.cd[data-stufe="gruen"]{--sig:var(--sig-gruen)}
 
 /* --- Liste --- */
 #out{margin-top:22px}
