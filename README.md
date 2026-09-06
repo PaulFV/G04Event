@@ -7,9 +7,11 @@ Eine einzige HTML-Datei, kein Build, keine Abhängigkeiten, kein Backend.
 
 ## Funktionen
 
+- **Bundesland-Auswahl** — schränkt zugleich die Städteliste ein, mehrere gleichzeitig wählbar
 - **Städte-Auswahl** — jede Stadt als Schaltfläche mit Anzahl der Termine, mehrere gleichzeitig wählbar
 - **Countdown** — die nächste Veranstaltung der gewählten Stadt mit Live-Countdown bis zum Start
-  (läuft gerade etwas, zählt der Countdown bis zum Ende herunter)
+  (läuft gerade etwas, zählt der Countdown bis zum Ende herunter). Ampelfarbe nach Restzeit:
+  ab vier Tagen grün, ab drei Tagen gelb, am letzten Tag rot
 - **Kategorien** — Technik, Essen, Spiel, Musik, Kultur, Film, Sport, Tradition, farblich codiert
 - **Sortierung** — nach Datum, Dauer (lang/kurz zuerst), Stadt, Name oder Kategorie
 - **Auswahl bleibt gespeichert** — zuletzt gewählte Städte und Themen sind beim nächsten Öffnen

@@ -10,6 +10,9 @@
   --c-art:#0E7A6B; --c-film:#3D4A5C; --c-sport:#12762D; --c-trad:#B03A3A;
   --tint:rgba(20,23,28,.05);
   --ring:#14171C;
+  --sig-rot:#C0271B;   --sig-rot-bg:rgba(192,39,27,.09);
+  --sig-gelb:#8A6300;  --sig-gelb-bg:rgba(138,99,0,.11);
+  --sig-gruen:#10702A; --sig-gruen-bg:rgba(16,112,42,.09);
   --sans:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --disp:"Bricolage Grotesque","Public Sans",-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
@@ -23,6 +26,9 @@
     --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
     --tint:rgba(255,255,255,.06);
     --ring:#E8EBF0;
+    --sig-rot:#F58C80;   --sig-rot-bg:rgba(245,140,128,.13);
+    --sig-gelb:#E5B84A;  --sig-gelb-bg:rgba(229,184,74,.13);
+    --sig-gruen:#5FC47C; --sig-gruen-bg:rgba(95,196,124,.13);
   }
 }
 :root[data-theme="dark"]{
@@ -33,6 +39,9 @@
   --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
   --tint:rgba(255,255,255,.06);
   --ring:#E8EBF0;
+  --sig-rot:#F58C80;   --sig-rot-bg:rgba(245,140,128,.13);
+  --sig-gelb:#E5B84A;  --sig-gelb-bg:rgba(229,184,74,.13);
+  --sig-gruen:#5FC47C; --sig-gruen-bg:rgba(95,196,124,.13);
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
@@ -133,6 +142,17 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);ap
 .cdu .k{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
   display:block;margin-top:4px}
 
+/* Ampel: 1 Tag oder weniger rot, bis 3 Tage gelb, sonst grün */
+.cd[data-stufe] .cdu{background:var(--sig-bg);border-color:var(--sig)}
+.cd[data-stufe] .cdu .v{color:var(--sig)}
+.cd[data-stufe] .cdu .k{color:var(--sig);opacity:.75}
+.cd[data-stufe="rot"]  {--sig:var(--sig-rot);   --sig-bg:var(--sig-rot-bg)}
+.cd[data-stufe="gelb"] {--sig:var(--sig-gelb);  --sig-bg:var(--sig-gelb-bg)}
+.cd[data-stufe="gruen"]{--sig:var(--sig-gruen); --sig-bg:var(--sig-gruen-bg)}
+.cdwrap[data-stufe="rot"]   .cdl{color:var(--sig-rot)}
+.cdwrap[data-stufe="gelb"]  .cdl{color:var(--sig-gelb)}
+.cdwrap[data-stufe="gruen"] .cdl{color:var(--sig-gruen)}
+
 /* --- Liste --- */
 #out{margin-top:22px}
 .group{margin-bottom:26px}
@@ -203,6 +223,13 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);ap
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.3 10.3 14 14"/></svg>
       <input id="q" type="search" placeholder="Suchen: Name, Stadt oder Stichwort" aria-label="Suchen">
     </div>
+
+    <details class="block">
+      <summary><span class="bt">Bundesland</span><span class="sum" id="sumLaender">Alle Bundesländer</span>
+        <svg class="chev" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg>
+      </summary>
+      <div class="chips" id="laender"></div>
+    </details>
 
     <details class="block">
       <summary><span class="bt">Stadt</span><span class="sum" id="sumCities">Alle Städte</span>
@@ -440,33 +467,51 @@ const isLive = ev => TODAY >= parse(ev.s) && TODAY <= parse(ev.e);
 const isPast = ev => TODAY > parse(ev.e);
 
 /* ---------------- Zustand ---------------- */
-const F = { cities:new Set(), cats:new Set(), q:"", upcoming:true, sort:"date" };
+const F = { laender:new Set(), cities:new Set(), cats:new Set(), q:"", upcoming:true, sort:"date" };
 const $ = id => document.getElementById(id);
-const CITIES = [...new Set(EVENTS.map(e => e.c))].sort((a,b) => a.localeCompare(b,"de"));
+const CITIES  = [...new Set(EVENTS.map(e => e.c))].sort((a,b) => a.localeCompare(b,"de"));
+const LAENDER = [...new Set(EVENTS.map(e => e.l))].sort((a,b) => a.localeCompare(b,"de"));
 
-/* Zuletzt gewählte Stadt und Themen — nur im Browser des Betrachters */
+/* Zuletzt gewähltes Bundesland, Stadt und Thema — nur im Browser des Betrachters */
 const STORE = "staedtejahr.auswahl";
 function ladeAuswahl(){
   try {
     const gespeichert = JSON.parse(localStorage.getItem(STORE) || "{}");
-    (gespeichert.cities || []).filter(c => CITIES.includes(c)).forEach(c => F.cities.add(c));
-    (gespeichert.cats   || []).filter(k => k in CATS).forEach(k => F.cats.add(k));
+    (gespeichert.laender || []).filter(l => LAENDER.includes(l)).forEach(l => F.laender.add(l));
+    (gespeichert.cities  || []).filter(c => CITIES.includes(c)).forEach(c => F.cities.add(c));
+    (gespeichert.cats    || []).filter(k => k in CATS).forEach(k => F.cats.add(k));
   } catch(e) {}
 }
 function speichereAuswahl(){
   try {
-    localStorage.setItem(STORE, JSON.stringify({cities:[...F.cities], cats:[...F.cats]}));
+    localStorage.setItem(STORE, JSON.stringify(
+      {laender:[...F.laender], cities:[...F.cities], cats:[...F.cats]}));
   } catch(e) {}
 }
 ladeAuswahl();
 
 /* ---------------- Bedienelemente aufbauen ---------------- */
-$("cities").innerHTML =
-  '<button class="chip" data-city="" aria-pressed="' + (F.cities.size === 0) + '">Alle Städte ' +
-    '<span class="n">' + EVENTS.length + '</span></button>' +
-  CITIES.map(c => '<button class="chip" data-city="' + esc(c) + '" aria-pressed="' +
-    F.cities.has(c) + '">' + esc(c) + ' <span class="n">' +
-    EVENTS.filter(e => e.c === c).length + '</span></button>').join("");
+$("laender").innerHTML =
+  '<button class="chip" data-land="" aria-pressed="' + (F.laender.size === 0) + '">' +
+    'Alle Bundesländer <span class="n">' + LAENDER.length + '</span></button>' +
+  LAENDER.map(l => '<button class="chip" data-land="' + esc(l) + '" aria-pressed="' +
+    F.laender.has(l) + '">' + esc(l) + ' <span class="n">' +
+    EVENTS.filter(e => e.l === l).length + '</span></button>').join("");
+
+/* Die Städteliste zeigt nur Städte der gewählten Bundesländer */
+const stadtErlaubt = c =>
+  !F.laender.size || EVENTS.some(e => e.c === c && F.laender.has(e.l));
+
+function baueStaedte(){
+  const sichtbar = CITIES.filter(stadtErlaubt);
+  $("cities").innerHTML =
+    '<button class="chip" data-city="" aria-pressed="' + (F.cities.size === 0) + '">Alle Städte ' +
+      '<span class="n">' + sichtbar.length + '</span></button>' +
+    sichtbar.map(c => '<button class="chip" data-city="' + esc(c) + '" aria-pressed="' +
+      F.cities.has(c) + '">' + esc(c) + ' <span class="n">' +
+      EVENTS.filter(e => e.c === c).length + '</span></button>').join("");
+}
+baueStaedte();
 
 $("cats").innerHTML =
   '<button class="chip" data-cat="" aria-pressed="' + (F.cats.size === 0) + '">Alle Themen</button>' +
@@ -479,6 +524,7 @@ $("cats").innerHTML =
 /* ---------------- Filtern und Sortieren ---------------- */
 function filtered(){
   return EVENTS.filter(ev => {
+    if (F.laender.size && !F.laender.has(ev.l)) return false;
     if (F.cities.size && !F.cities.has(ev.c)) return false;
     if (F.cats.size   && !F.cats.has(ev.k))   return false;
     if (F.upcoming && isPast(ev)) return false;
@@ -577,6 +623,15 @@ function tick(){
   const cd = document.getElementById("cd");
   if (!cd || !NEXT) return;
   const ms = Math.max(0, NEXT.target - Date.now());
+
+  // Ampelfarbe nach verbleibenden ganzen Tagen
+  const tage  = Math.floor(ms / DAY);
+  const stufe = tage <= 1 ? "rot" : tage <= 3 ? "gelb" : "gruen";
+  if (cd.dataset.stufe !== stufe){
+    cd.dataset.stufe = stufe;
+    cd.parentElement.dataset.stufe = stufe;
+  }
+
   const werte = [
     Math.floor(ms / DAY),
     String(Math.floor(ms % DAY / 3600000)).padStart(2,"0"),
@@ -591,17 +646,22 @@ setInterval(tick, 1000);
 
 function render(){
   const list = sorted(filtered());
-  const active = F.cities.size || F.cats.size || F.q || !F.upcoming || F.sort !== "date";
+  const active = F.laender.size || F.cities.size || F.cats.size || F.q ||
+                 !F.upcoming || F.sort !== "date";
   renderNext(list);
 
-  const wo = F.cities.size === 0 ? "in ganz Deutschland"
-           : F.cities.size === 1 ? "in " + [...F.cities][0]
-           : "in " + F.cities.size + " Städten";
+  const wo = F.cities.size === 1  ? "in " + [...F.cities][0]
+           : F.cities.size > 1    ? "in " + F.cities.size + " Städten"
+           : F.laender.size === 1 ? "in " + [...F.laender][0]
+           : F.laender.size > 1   ? "in " + F.laender.size + " Bundesländern"
+           : "in ganz Deutschland";
   $("count").innerHTML = "<b>" + list.length + "</b> von " + EVENTS.length + " Terminen " + wo;
   $("reset").hidden = !active;
 
-  // Beschriftung der beiden Ausklapp-Knöpfe
-  $("sumCities").textContent = kurzListe([...F.cities], "Alle Städte", "Städte");
+  // Beschriftung der Ausklapp-Knöpfe
+  $("sumLaender").textContent = kurzListe([...F.laender], "Alle Bundesländer", "Bundesländer");
+  $("sumCities").textContent = kurzListe([...F.cities],
+    F.laender.size ? "Alle Städte der Auswahl" : "Alle Städte", "Städte");
   $("sumCats").textContent   = kurzListe([...F.cats].map(k => CATS[k].label), "Alle Themen", "Themen");
 
   const out = $("out");
@@ -647,6 +707,22 @@ function toggleChips(container, set, attr){
 toggleChips($("cities"), F.cities, "city");
 toggleChips($("cats"),   F.cats,   "cat");
 
+/* Bundesland: schränkt zusätzlich die Städteliste ein */
+$("laender").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  const l = b.dataset.land;
+  if (!l) F.laender.clear();
+  else F.laender.has(l) ? F.laender.delete(l) : F.laender.add(l);
+  [...$("laender").children].forEach(ch =>
+    ch.setAttribute("aria-pressed", ch.dataset.land ? F.laender.has(ch.dataset.land)
+                                                    : F.laender.size === 0));
+  // Städte, die nicht mehr zur Auswahl passen, fallen heraus
+  [...F.cities].filter(c => !stadtErlaubt(c)).forEach(c => F.cities.delete(c));
+  baueStaedte();
+  speichereAuswahl();
+  render();
+});
+
 $("q").addEventListener("input", e => { F.q = e.target.value.trim(); render(); });
 $("sort").addEventListener("change", e => { F.sort = e.target.value; render(); });
 $("upcoming").addEventListener("change", e => { F.upcoming = e.target.checked; render(); });
@@ -661,10 +737,11 @@ $("out").addEventListener("click", e => {
 });
 
 $("reset").addEventListener("click", () => {
-  F.cities.clear(); F.cats.clear();
+  F.laender.clear(); F.cities.clear(); F.cats.clear();
   F.q = ""; F.upcoming = true; F.sort = "date";
   $("q").value = ""; $("upcoming").checked = true; $("sort").value = "date";
-  [...$("cities").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.city));
+  baueStaedte();
+  [...$("laender").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.land));
   [...$("cats").children].forEach(c => c.setAttribute("aria-pressed", !c.dataset.cat));
   speichereAuswahl();
   render();
