@@ -220,6 +220,41 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .chip.k[aria-pressed="true"] .dot{background:currentColor;opacity:.85}
 .chip.k[aria-pressed="true"] .n{color:currentColor;opacity:.7}
 
+/* ---------- Eigene Termine ---------- */
+.eigenepane{display:flex;flex-direction:column;gap:18px}
+.eigenform{display:grid;gap:10px}
+.eigenform .ff{display:flex;flex-direction:column;gap:4px}
+.eigenform .ff2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.eigenform label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.eigenform input,.eigenform select,.eigenform textarea{font:inherit;font-size:14.5px;color:var(--ink);
+  background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:9px 10px}
+.eigenform textarea{resize:vertical;font-family:inherit}
+.eigenform select{appearance:none;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 15px) 55%,calc(100% - 10px) 55%;background-size:5px 5px,5px 5px;
+  background-repeat:no-repeat}
+.addbtn{justify-self:start;background:var(--ink);color:var(--bg);border:0;border-radius:999px;
+  font:inherit;font-size:14px;font-weight:600;padding:10px 20px;cursor:pointer}
+.addbtn:hover{opacity:.88}
+.eigenehead{font-size:13px;font-weight:600;color:var(--ink-2);margin:0}
+.eigeneliste{display:flex;flex-direction:column;gap:8px}
+.eigeneliste .zeile{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font-size:13.5px}
+.eigeneliste .del{background:none;border:0;color:var(--muted);cursor:pointer;font:inherit;
+  font-size:12.5px;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.eigeneliste .del:hover{color:var(--sig-rot)}
+.eigene-empty{color:var(--faint);font-size:13px;margin:0}
+.badge{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--faint);border:1px solid var(--line-2);border-radius:5px;padding:1px 5px;margin-left:7px;
+  vertical-align:middle}
+.rowactions{display:flex;justify-content:flex-end;margin-top:-4px}
+.linkbtn{background:none;border:0;font:inherit;font-size:12.5px;color:var(--muted);
+  text-decoration:underline;text-underline-offset:2px;cursor:pointer;padding:0}
+.linkbtn:hover{color:var(--sig-rot)}
+.hidden-restore{font-size:12.5px;color:var(--muted);margin:0}
+.hidden-restore button{background:none;border:0;font:inherit;color:var(--ink);text-decoration:underline;
+  cursor:pointer;padding:0;font-weight:600}
+
 @media (max-width:640px){
   .shell{padding:0 14px}
   .hero{padding:18px 16px 18px;border-radius:14px;gap:16px}
@@ -281,6 +316,40 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
       <div class="chips" id="pane-region" hidden></div>
       <div class="chips" id="pane-stadt" hidden></div>
       <div class="chips" id="pane-thema" hidden></div>
+      <div class="eigenepane" id="pane-eigene" hidden>
+        <form id="eigenForm" class="eigenform">
+          <div class="ff"><label>Name*
+            <input name="n" required maxlength="80" placeholder="z. B. Dorffest Musterstadt"></label></div>
+          <div class="ff2">
+            <label>Stadt*<input name="c" required maxlength="60"></label>
+            <label>Region<input name="l" maxlength="60" placeholder="z. B. Bayern"></label>
+          </div>
+          <div class="ff2">
+            <label>Land<input name="p" maxlength="60" placeholder="leer = Deutschland"></label>
+            <label>Kategorie
+              <select name="k">
+                <option value="tech">Technik</option>
+                <option value="food">Essen</option>
+                <option value="play">Spiel</option>
+                <option value="music">Musik</option>
+                <option value="art">Kultur</option>
+                <option value="film">Film</option>
+                <option value="sport">Sport</option>
+                <option value="trad" selected>Tradition</option>
+              </select>
+            </label>
+          </div>
+          <div class="ff2">
+            <label>Beginn*<input name="s" type="date" required></label>
+            <label>Ende<input name="e" type="date"></label>
+          </div>
+          <div class="ff"><label>Rhythmus<input name="r" maxlength="80" placeholder="z. B. jährlich"></label></div>
+          <div class="ff"><label>Beschreibung<textarea name="d" rows="2" maxlength="240"></textarea></label></div>
+          <button type="submit" class="addbtn">Termin hinzufügen</button>
+        </form>
+        <p class="eigenehead">Meine Termine</p>
+        <div id="eigeneListe"></div>
+      </div>
     </div>
   </div>
 
@@ -305,6 +374,10 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
       <button class="dbtn" data-pane="thema" aria-expanded="false">
         <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.9"/><circle cx="13.6" cy="6.4" r="2.9"/><circle cx="6.4" cy="13.6" r="2.9"/><circle cx="13.6" cy="13.6" r="2.9"/></svg>
         <span class="dl">Thema</span><span class="dv" id="dv-thema">alle</span>
+      </button>
+      <button class="dbtn" data-pane="eigene" aria-expanded="false">
+        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M10 3.5v13M3.5 10h13"/></svg>
+        <span class="dl">Eigene</span><span class="dv" id="dv-eigene">hinzufügen</span>
       </button>
     </div>
   </nav>
@@ -631,6 +704,39 @@ const uniq   = arr => [...new Set(arr)].sort(sortDe);
 /* Ohne Angabe liegt eine Veranstaltung in Deutschland */
 const landVon = ev => ev.p || "Deutschland";
 
+/* ---------------- Eigene Termine (nur im Browser des Betrachters) ---------------- */
+const EIGENE_KEY = "g04event.eigene";
+const AUSGEBLENDET_KEY = "g04event.ausgeblendet";
+let EIGENE = [];
+let AUSGEBLENDET = new Set();
+let ALLE = [];
+
+/* Eindeutige Kennung — eigene Termine haben eine id, kuratierte werden aus Name+Stadt+Beginn gebildet */
+const evId = ev => ev.id || (ev.n + "␟" + ev.c + "␟" + ev.s);
+
+function ladeEigene(){
+  try { EIGENE = JSON.parse(localStorage.getItem(EIGENE_KEY) || "[]"); } catch(e){ EIGENE = []; }
+  try { AUSGEBLENDET = new Set(JSON.parse(localStorage.getItem(AUSGEBLENDET_KEY) || "[]")); }
+  catch(e){ AUSGEBLENDET = new Set(); }
+}
+function speichereEigene(){
+  try { localStorage.setItem(EIGENE_KEY, JSON.stringify(EIGENE)); } catch(e){}
+}
+function speichereAusgeblendet(){
+  try { localStorage.setItem(AUSGEBLENDET_KEY, JSON.stringify([...AUSGEBLENDET])); } catch(e){}
+}
+function baueAlle(){
+  ALLE = EVENTS.concat(EIGENE).filter(ev => !AUSGEBLENDET.has(evId(ev)));
+}
+/* Filterauswahl, Chip-Listen und Zähler nach einer Änderung neu aufbauen */
+function aktualisiereNachAenderung(){
+  baueAlle();
+  bereinige();
+  baueLand(); baueRegion(); baueStadt(); baueThema();
+  renderEigeneListe();
+  render();
+}
+
 function rangeTxt(ev){
   const a = parse(ev.s), b = parse(ev.e);
   if (ev.s === ev.e) return a.getDate() + ". " + MON[a.getMonth()] + " " + a.getFullYear();
@@ -648,9 +754,9 @@ const trefferLand   = ev => !F.land.size   || F.land.has(landVon(ev));
 const trefferRegion = ev => !F.region.size || F.region.has(ev.l);
 const trefferStadt  = ev => !F.stadt.size  || F.stadt.has(ev.c);
 
-const listeLaender  = () => uniq(EVENTS.map(landVon));
-const listeRegionen = () => uniq(EVENTS.filter(trefferLand).map(e => e.l));
-const listeStaedte  = () => uniq(EVENTS.filter(e => trefferLand(e) && trefferRegion(e)).map(e => e.c));
+const listeLaender  = () => uniq(ALLE.map(landVon));
+const listeRegionen = () => uniq(ALLE.filter(trefferLand).map(e => e.l));
+const listeStaedte  = () => uniq(ALLE.filter(e => trefferLand(e) && trefferRegion(e)).map(e => e.c));
 
 /* Auswahl merken — nur im Browser des Betrachters */
 const STORE = "g04event.auswahl";
@@ -689,11 +795,11 @@ function baueChips(el, alleText, werte, set, attr, zaehler){
       set.has(w) + '">' + esc(w) + ' <span class="n">' + zaehler(w) + '</span></button>').join("");
 }
 const baueLand   = () => baueChips($("pane-land"), "Alle Länder", listeLaender(), F.land, "land",
-                       v => EVENTS.filter(e => landVon(e) === v).length);
+                       v => ALLE.filter(e => landVon(e) === v).length);
 const baueRegion = () => baueChips($("pane-region"), "Alle Regionen", listeRegionen(), F.region, "region",
-                       v => EVENTS.filter(e => e.l === v).length);
+                       v => ALLE.filter(e => e.l === v).length);
 const baueStadt  = () => baueChips($("pane-stadt"), "Alle Städte", listeStaedte(), F.stadt, "stadt",
-                       v => EVENTS.filter(e => e.c === v).length);
+                       v => ALLE.filter(e => e.c === v).length);
 
 function baueThema(){
   $("pane-thema").innerHTML =
@@ -701,15 +807,38 @@ function baueThema(){
     Object.entries(CATS).map(([k,v]) =>
       '<button class="chip k" data-thema="' + k + '" aria-pressed="' + F.thema.has(k) +
       '" style="--cat:var(' + v.v + ')"><span class="dot"></span>' + v.label +
-      ' <span class="n">' + EVENTS.filter(e => e.k === k).length + '</span></button>').join("");
+      ' <span class="n">' + ALLE.filter(e => e.k === k).length + '</span></button>').join("");
 }
 
+/* Liste eigener Termine im Panel, inkl. Löschen und Wiedereinblenden */
+function renderEigeneListe(){
+  $("dv-eigene").textContent = EIGENE.length ? EIGENE.length + " eigene" : "hinzufügen";
+  let html = "";
+  if (EIGENE.length){
+    html += '<div class="eigeneliste">' + EIGENE.map(ev =>
+      '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(ev.c) + ' · ' + rangeTxt(ev) + '</span>' +
+      '<button class="del" data-loeschen="' + esc(evId(ev)) + '">Löschen</button></div>').join("") +
+      '</div>';
+  } else {
+    html += '<p class="eigene-empty">Noch keine eigenen Termine hinzugefügt.</p>';
+  }
+  if (AUSGEBLENDET.size){
+    html += '<p class="hidden-restore">' + AUSGEBLENDET.size +
+      (AUSGEBLENDET.size === 1 ? ' ausgeblendeter Termin — ' : ' ausgeblendete Termine — ') +
+      '<button id="wiederEinblenden" type="button">alle wieder einblenden</button></p>';
+  }
+  $("eigeneListe").innerHTML = html;
+}
+
+ladeEigene();
+baueAlle();
 ladeAuswahl();
 baueLand(); baueRegion(); baueStadt(); baueThema();
+renderEigeneListe();
 
 /* ---------------- Filtern und Sortieren ---------------- */
 function filtered(){
-  return EVENTS.filter(ev => {
+  return ALLE.filter(ev => {
     if (!trefferLand(ev) || !trefferRegion(ev) || !trefferStadt(ev)) return false;
     if (F.thema.size && !F.thema.has(ev.k)) return false;
     if (F.upcoming && isPast(ev)) return false;
@@ -801,26 +930,32 @@ function evHTML(ev){
   const datum = ev.x ? rangeTxt(ev)
     : '<span class="est" title="Termin aus dem jährlichen Rhythmus fortgeschrieben — bitte prüfen">' +
       rangeTxt(ev) + '</span>';
+  const id = evId(ev);
+  const badge = ev.eigen ? '<span class="badge">eigene</span>' : '';
   return '<article class="ev" style="--cat:var(' + CATS[ev.k].v + ')">' +
     '<button class="evmain" aria-expanded="false">' +
       '<span class="dbox"><span class="d">' + a.getDate() + '</span>' +
         '<span class="m">' + MABK[a.getMonth()] + '</span>' +
         '<span class="y">' + a.getFullYear() + '</span></span>' +
-      '<span><span class="tt">' + esc(ev.n) + '</span>' +
+      '<span><span class="tt">' + esc(ev.n) + badge + '</span>' +
         '<span class="sub"><span class="place">' + esc(ev.c) + '</span><span>' + datum + '</span>' +
         (isLive(ev) ? '<span class="live">läuft gerade</span>' : '') + '</span></span>' +
       '<span class="right"><span class="tag">' + CATS[ev.k].label + '</span>' +
         '<span class="dur"><span class="v">' + durTxt(n) + '</span><span class="k">Dauer</span></span>' +
       '</span>' +
     '</button>' +
-    '<div class="detail" hidden><p>' + esc(ev.d) + '</p><div class="dl">' +
+    '<div class="detail" hidden><p>' + esc(ev.d || "") + '</p><div class="dl">' +
       '<div><dt>Zeitraum</dt><dd>' + rangeTxt(ev) + '</dd></div>' +
       '<div><dt>Dauer</dt><dd>' + durTxt(n) + '</dd></div>' +
       '<div><dt>Beginnt</dt><dd>' + WTAG[a.getDay()] + '</dd></div>' +
       '<div><dt>Rhythmus</dt><dd>' + esc(ev.r) + '</dd></div>' +
       '<div><dt>Ort</dt><dd>' + esc(ev.c) + ', ' + esc(ev.l) + '</dd></div>' +
       '<div><dt>Land</dt><dd>' + esc(landVon(ev)) + '</dd></div>' +
-    '</div></div></article>';
+    '</div>' +
+    '<div class="rowactions"><button class="linkbtn" type="button" data-hide="' + esc(id) +
+      '" data-eigen="' + (ev.eigen ? 1 : 0) + '">' +
+      (ev.eigen ? "Eigenen Termin löschen" : "Für mich ausblenden") + '</button></div>' +
+    '</div></article>';
 }
 
 function dockWert(set){
@@ -836,7 +971,7 @@ function render(){
 
   renderNext(list);
 
-  $("count").innerHTML = "<b>" + list.length + "</b> von " + EVENTS.length + " Terminen " + wohin();
+  $("count").innerHTML = "<b>" + list.length + "</b> von " + ALLE.length + " Terminen " + wohin();
   $("reset").hidden = !aktiv;
 
   // Leiste unten beschriften
@@ -879,8 +1014,8 @@ function render(){
 
 /* ---------------- Leiste und Auswahlfeld ---------------- */
 const TITEL = { q:"Suchen", land:"Land wählen", region:"Region wählen",
-                stadt:"Stadt wählen", thema:"Thema wählen" };
-const PANES = ["q","land","region","stadt","thema"];
+                stadt:"Stadt wählen", thema:"Thema wählen", eigene:"Eigene Termine" };
+const PANES = ["q","land","region","stadt","thema","eigene"];
 let offenesPane = null;
 
 function oeffne(pane){
@@ -894,6 +1029,7 @@ function oeffne(pane){
     b.setAttribute("aria-expanded", String(b.dataset.pane === pane)));
   $("sheet").querySelector(".sheetbody").scrollTop = 0;
   if (pane === "q") setTimeout(() => $("q").focus(), 40);
+  if (pane === "eigene") renderEigeneListe();
 }
 function schliesse(){
   offenesPane = null;
@@ -933,12 +1069,63 @@ $("sort").addEventListener("change", e => { F.sort = e.target.value; render(); }
 $("upcoming").addEventListener("change", e => { F.upcoming = e.target.checked; render(); });
 
 $("out").addEventListener("click", e => {
+  const hide = e.target.closest("[data-hide]");
+  if (hide){
+    const id = hide.dataset.hide;
+    if (hide.dataset.eigen === "1") EIGENE = EIGENE.filter(ev => evId(ev) !== id);
+    else AUSGEBLENDET.add(id);
+    speichereEigene(); speichereAusgeblendet();
+    aktualisiereNachAenderung();
+    return;
+  }
   const btn = e.target.closest(".evmain"); if (!btn) return;
   const art = btn.parentElement;
   const auf = btn.getAttribute("aria-expanded") === "true";
   btn.setAttribute("aria-expanded", String(!auf));
   art.querySelector(".detail").hidden = auf;
   art.classList.toggle("on", !auf);
+});
+
+/* ---------------- Eigene Termine: Formular und Verwaltung ---------------- */
+$("eigenForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const n = (fd.get("n") || "").trim(), c = (fd.get("c") || "").trim(), s = fd.get("s");
+  if (!n || !c || !s) return;
+  const eEnde = fd.get("e") || s;
+  const ev = {
+    id: "eigen-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    n, c,
+    l: (fd.get("l") || "").trim() || c,
+    k: (fd.get("k") || "trad"),
+    s, e: eEnde < s ? s : eEnde,
+    r: (fd.get("r") || "").trim() || "einmalig",
+    x: 1,
+    d: (fd.get("d") || "").trim(),
+    eigen: true
+  };
+  const p = (fd.get("p") || "").trim();
+  if (p) ev.p = p;
+  EIGENE.push(ev);
+  speichereEigene();
+  aktualisiereNachAenderung();
+  e.target.reset();
+});
+
+$("eigeneListe").addEventListener("click", e => {
+  const del = e.target.closest("[data-loeschen]");
+  if (del){
+    const id = del.dataset.loeschen;
+    EIGENE = EIGENE.filter(ev => evId(ev) !== id);
+    speichereEigene();
+    aktualisiereNachAenderung();
+    return;
+  }
+  if (e.target.id === "wiederEinblenden"){
+    AUSGEBLENDET.clear();
+    speichereAusgeblendet();
+    aktualisiereNachAenderung();
+  }
 });
 
 $("reset").addEventListener("click", () => {
