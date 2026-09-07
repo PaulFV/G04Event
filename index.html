@@ -769,16 +769,12 @@ const listeStaedte  = () => uniq(ALLE.filter(e => trefferLand(e) && trefferRegio
 /* Auswahl merken — nur im Browser des Betrachters */
 const STORE = "g04event.auswahl";
 
-/* Beim allerersten Start der App: schlanke Vorauswahl (5 Länder × je 5 Städte),
+/* Beim allerersten Start der App: schlanke Vorauswahl (1 Land × 5 Städte),
    damit die App nicht sofort mit allen Terminen überfüllt wirkt. Wer will,
    kann jederzeit weitere Länder/Städte hinzufügen oder alles zurücksetzen. */
-const STARTER_LAND = ["Deutschland", "Österreich", "Schweiz", "Frankreich", "Italien"];
+const STARTER_LAND = ["Deutschland"];
 const STARTER_STADT = {
-  "Deutschland": ["Berlin", "Hamburg", "München", "Köln", "Nürnberg"],
-  "Österreich":  ["Wien", "Linz", "Kitzbühel", "Salzburg", "Bregenz"],
-  "Schweiz":     ["Zürich", "Basel", "Bern", "Genf", "Montreux"],
-  "Frankreich":  ["Paris", "Lyon", "Lille", "Nizza", "Cannes"],
-  "Italien":     ["Venedig", "Mailand", "Alba", "Siena", "Perugia"]
+  "Deutschland": ["Berlin", "Hamburg", "München", "Köln", "Nürnberg"]
 };
 
 function ladeAuswahl(){
