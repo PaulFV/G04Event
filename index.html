@@ -254,6 +254,14 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .hidden-restore{font-size:12.5px;color:var(--muted);margin:0}
 .hidden-restore button{background:none;border:0;font:inherit;color:var(--ink);text-decoration:underline;
   cursor:pointer;padding:0;font-weight:600}
+#pane-stadt,#pane-land{display:flex;flex-direction:column;gap:12px}
+.neuezeile{display:flex;gap:8px}
+.neuezeile input{flex:1;min-width:0;font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-2);border-radius:9px;padding:9px 12px}
+.neuezeile button{background:var(--ink);color:var(--bg);border:0;border-radius:9px;font:inherit;
+  font-size:13.5px;font-weight:600;padding:0 16px;cursor:pointer;white-space:nowrap}
+.neuezeile button:hover{opacity:.88}
+.stadtchips,.landchips{display:flex;flex-wrap:wrap;gap:7px}
 
 @media (max-width:640px){
   .shell{padding:0 14px}
@@ -794,12 +802,93 @@ function baueChips(el, alleText, werte, set, attr, zaehler){
     werte.map(w => '<button class="chip" data-' + attr + '="' + esc(w) + '" aria-pressed="' +
       set.has(w) + '">' + esc(w) + ' <span class="n">' + zaehler(w) + '</span></button>').join("");
 }
-const baueLand   = () => baueChips($("pane-land"), "Alle Länder", listeLaender(), F.land, "land",
-                       v => ALLE.filter(e => landVon(e) === v).length);
+function baueLand(){
+  const werte = listeLaender();
+  const chipsHtml =
+    '<button class="chip" data-land="" aria-pressed="' + (F.land.size === 0) + '">Alle Länder ' +
+      '<span class="n">' + werte.length + '</span></button>' +
+    werte.map(w => '<button class="chip" data-land="' + esc(w) + '" aria-pressed="' +
+      F.land.has(w) + '">' + esc(w) + ' <span class="n">' +
+      ALLE.filter(e => landVon(e) === w).length + '</span></button>').join("");
+  $("pane-land").innerHTML =
+    '<div class="neuezeile"><input id="neuesLandInput" type="text" maxlength="60" ' +
+      'placeholder="Neues Land eintragen …">' +
+      '<button id="neuesLandBtn" type="button">Hinzufügen</button></div>' +
+    '<div class="landchips">' + chipsHtml + '</div>';
+}
 const baueRegion = () => baueChips($("pane-region"), "Alle Regionen", listeRegionen(), F.region, "region",
                        v => ALLE.filter(e => e.l === v).length);
-const baueStadt  = () => baueChips($("pane-stadt"), "Alle Städte", listeStaedte(), F.stadt, "stadt",
-                       v => ALLE.filter(e => e.c === v).length);
+function baueStadt(){
+  const werte = listeStaedte();
+  const chipsHtml =
+    '<button class="chip" data-stadt="" aria-pressed="' + (F.stadt.size === 0) + '">Alle Städte ' +
+      '<span class="n">' + werte.length + '</span></button>' +
+    werte.map(w => '<button class="chip" data-stadt="' + esc(w) + '" aria-pressed="' +
+      F.stadt.has(w) + '">' + esc(w) + ' <span class="n">' +
+      ALLE.filter(e => e.c === w).length + '</span></button>').join("");
+  $("pane-stadt").innerHTML =
+    '<div class="neuezeile"><input id="neueStadtInput" type="text" maxlength="60" ' +
+      'placeholder="Neue Stadt eintragen …">' +
+      '<button id="neueStadtBtn" type="button">Hinzufügen</button></div>' +
+    '<div class="stadtchips">' + chipsHtml + '</div>';
+}
+
+/* Neue Stadt über das Stadt-Panel anlegen — legt automatisch einen Platzhalter-Termin
+   mit dieser Stadt an (eigen, sofort im Browser sichtbar) */
+function neueStadtAnlegen(){
+  const input = $("neueStadtInput");
+  if (!input) return;
+  const wert = input.value.trim();
+  if (!wert) return;
+  input.value = "";
+  const bestehend = listeStaedte().find(s => s.toLowerCase() === wert.toLowerCase());
+  if (bestehend){
+    F.stadt.add(bestehend);
+    speichereAuswahl();
+    baueStadt();
+    render();
+    return;
+  }
+  const iso = new Date().toISOString().slice(0, 10);
+  EIGENE.push({
+    id: "eigen-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    n: "Termin in " + wert, c: wert, l: wert, k: "trad",
+    s: iso, e: iso, r: "einmalig", x: 1, d: "", eigen: true
+  });
+  speichereEigene();
+  F.stadt.add(wert);
+  aktualisiereNachAenderung();
+}
+
+/* Neues Land über das Land-Panel anlegen — legt automatisch einen Platzhalter-Termin
+   mit diesem Land an (eigen, sofort im Browser sichtbar) */
+function neuesLandAnlegen(){
+  const input = $("neuesLandInput");
+  if (!input) return;
+  const wert = input.value.trim();
+  if (!wert) return;
+  input.value = "";
+  const bestehend = listeLaender().find(s => s.toLowerCase() === wert.toLowerCase());
+  if (bestehend){
+    F.land.add(bestehend);
+    bereinige(); baueRegion(); baueStadt();
+    speichereAuswahl();
+    baueLand();
+    render();
+    return;
+  }
+  const iso = new Date().toISOString().slice(0, 10);
+  const ev = {
+    id: "eigen-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    n: "Termin in " + wert, c: wert, l: wert, k: "trad",
+    s: iso, e: iso, r: "einmalig", x: 1, d: "", eigen: true
+  };
+  if (wert.toLowerCase() !== "deutschland") ev.p = wert;
+  EIGENE.push(ev);
+  speichereEigene();
+  F.land.add(wert);
+  aktualisiereNachAenderung();
+}
 
 function baueThema(){
   $("pane-thema").innerHTML =
@@ -1059,9 +1148,22 @@ function chipKlick(container, set, attr, danach){
     render();
   });
 }
-chipKlick($("pane-land"),   F.land,   "land",   () => { bereinige(); baueRegion(); baueStadt(); });
+chipKlick($("pane-land"),   F.land,   "land",   () => { bereinige(); baueLand(); baueRegion(); baueStadt(); });
 chipKlick($("pane-region"), F.region, "region", () => { bereinige(); baueStadt(); });
-chipKlick($("pane-stadt"),  F.stadt,  "stadt");
+chipKlick($("pane-stadt"),  F.stadt,  "stadt", () => baueStadt());
+
+$("pane-stadt").addEventListener("click", e => {
+  if (e.target.id === "neueStadtBtn") neueStadtAnlegen();
+});
+$("pane-stadt").addEventListener("keydown", e => {
+  if (e.target.id === "neueStadtInput" && e.key === "Enter"){ e.preventDefault(); neueStadtAnlegen(); }
+});
+$("pane-land").addEventListener("click", e => {
+  if (e.target.id === "neuesLandBtn") neuesLandAnlegen();
+});
+$("pane-land").addEventListener("keydown", e => {
+  if (e.target.id === "neuesLandInput" && e.key === "Enter"){ e.preventDefault(); neuesLandAnlegen(); }
+});
 chipKlick($("pane-thema"),  F.thema,  "thema");
 
 $("q").addEventListener("input", e => { F.q = e.target.value.trim(); render(); });
