@@ -67,7 +67,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15p
 .shell{max-width:1000px;margin:0 auto;padding:0 18px}
 
 /* ---------- Kopf ---------- */
-.head{padding:26px 0 16px}
+.head{padding:calc(26px + env(safe-area-inset-top)) 0 16px}
 h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,7vw,42px);letter-spacing:-.03em;
   margin:0;line-height:.98}
 .lede{margin:8px 0 0;max-width:52ch;color:var(--muted);font-size:14.5px}
@@ -247,11 +247,21 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .badge{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
   color:var(--faint);border:1px solid var(--line-2);border-radius:5px;padding:1px 5px;margin-left:7px;
   vertical-align:middle}
-.rowactions{display:flex;justify-content:flex-end;margin-top:-4px}
+.rowactions{display:flex;justify-content:flex-end;gap:16px;margin-top:-4px}
 .linkbtn{background:none;border:0;font:inherit;font-size:12.5px;color:var(--muted);
   text-decoration:underline;text-underline-offset:2px;cursor:pointer;padding:0}
 .linkbtn:hover{color:var(--sig-rot)}
+.linkbtn.aktiv{color:var(--ink);font-weight:600;text-decoration:none}
 .hidden-restore{font-size:12.5px;color:var(--muted);margin:0}
+.erinnerungbox{display:flex;flex-direction:column;gap:10px;padding-bottom:14px;margin-bottom:4px;
+  border-bottom:1px solid var(--line-2)}
+.erinnerung-toggle{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink);cursor:pointer}
+.erinnerung-toggle input{width:16px;height:16px;accent-color:var(--ink)}
+.erinnerungtage{display:flex;flex-wrap:wrap;gap:7px}
+.tagchip{display:flex;align-items:center;gap:5px;background:var(--surface-2);border:1px solid var(--line-2);
+  border-radius:999px;padding:6px 12px;font-size:12.5px;color:var(--ink-2);cursor:pointer}
+.tagchip input{width:13px;height:13px;accent-color:var(--ink)}
+.eigene-hinweis{font-size:12px;color:var(--faint);margin:0;line-height:1.4}
 .hidden-restore button{background:none;border:0;font:inherit;color:var(--ink);text-decoration:underline;
   cursor:pointer;padding:0;font-weight:600}
 #pane-stadt,#pane-land{display:flex;flex-direction:column;gap:12px}
@@ -325,6 +335,9 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
       <div class="chips" id="pane-stadt" hidden></div>
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
+        <div class="erinnerungbox" id="erinnerungBox"></div>
+        <p class="eigenehead">Gemerkte Termine</p>
+        <div id="merklisteListe"></div>
         <form id="eigenForm" class="eigenform">
           <div class="ff"><label>Name*
             <input name="n" required maxlength="80" placeholder="z. B. Dorffest Musterstadt"></label></div>
@@ -745,6 +758,116 @@ function aktualisiereNachAenderung(){
   render();
 }
 
+/* ---------------- Merkliste & Erinnerungen (nur im Browser des Betrachters) ----------------
+   Keine Server, keine E-Mails — Benachrichtigungen erscheinen nur, solange die App im
+   selben Browser geöffnet wird und dabei ein gemerkter Termin im gewählten Tage-Fenster liegt. */
+const MERK_KEY = "g04event.merkliste";
+const ERINNERUNG_KEY = "g04event.erinnerung";
+const BENACHRICHTIGT_KEY = "g04event.benachrichtigt";
+const ERINNERUNG_TAGE_OPTIONEN = [0, 3, 5, 7, 10];
+let MERKZETTEL = new Set();
+let ERINNERUNG = { aktiv: false, tage: new Set([3, 7]) };
+let BENACHRICHTIGT = new Set();
+
+function ladeMerkliste(){
+  try { MERKZETTEL = new Set(JSON.parse(localStorage.getItem(MERK_KEY) || "[]")); }
+  catch(e){ MERKZETTEL = new Set(); }
+}
+function speichereMerkliste(){
+  try { localStorage.setItem(MERK_KEY, JSON.stringify([...MERKZETTEL])); } catch(e){}
+}
+function ladeErinnerung(){
+  try {
+    const g = JSON.parse(localStorage.getItem(ERINNERUNG_KEY) || "{}");
+    ERINNERUNG.aktiv = !!g.aktiv;
+    const tage = Array.isArray(g.tage) ? g.tage.filter(t => ERINNERUNG_TAGE_OPTIONEN.includes(t)) : [];
+    ERINNERUNG.tage = new Set(tage.length ? tage : [3, 7]);
+  } catch(e){}
+}
+function speichereErinnerung(){
+  try { localStorage.setItem(ERINNERUNG_KEY, JSON.stringify({ aktiv: ERINNERUNG.aktiv, tage: [...ERINNERUNG.tage] })); }
+  catch(e){}
+}
+function ladeBenachrichtigt(){
+  try { BENACHRICHTIGT = new Set(JSON.parse(localStorage.getItem(BENACHRICHTIGT_KEY) || "[]")); }
+  catch(e){ BENACHRICHTIGT = new Set(); }
+}
+function speichereBenachrichtigt(){
+  try { localStorage.setItem(BENACHRICHTIGT_KEY, JSON.stringify([...BENACHRICHTIGT])); } catch(e){}
+}
+
+/* Zeigt eine Benachrichtigung — über den Service Worker, wenn vorhanden (nötig für Android/Chrome),
+   sonst über die einfache Notification-API (Desktop-Browser). */
+function zeigeBenachrichtigung(titel, body, kennung){
+  const opts = { body, tag: kennung };
+  if (navigator.serviceWorker && navigator.serviceWorker.ready){
+    navigator.serviceWorker.ready.then(reg => reg.showNotification(titel, opts))
+      .catch(() => { try { new Notification(titel, opts); } catch(e){} });
+  } else {
+    try { new Notification(titel, opts); } catch(e){}
+  }
+}
+
+/* Prüft alle gemerkten, noch bevorstehenden Termine gegen die gewählten Erinnerungstage
+   und benachrichtigt höchstens einmal je Termin+Tag-Kombination. */
+function pruefeErinnerungen(){
+  if (!ERINNERUNG.aktiv) return;
+  if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
+  let geaendert = false;
+  ALLE.filter(ev => MERKZETTEL.has(evId(ev))).forEach(ev => {
+    const start = parse(ev.s);
+    const diffTage = Math.round((start - TODAY) / 86400000);
+    if (diffTage < 0 || !ERINNERUNG.tage.has(diffTage)) return;
+    const schluessel = evId(ev) + "|" + diffTage;
+    if (BENACHRICHTIGT.has(schluessel)) return;
+    const wann = diffTage === 0 ? "heute" : diffTage === 1 ? "morgen" : "in " + diffTage + " Tagen";
+    zeigeBenachrichtigung(ev.n, ev.c + " · " + wann + " · " + rangeTxt(ev), schluessel);
+    BENACHRICHTIGT.add(schluessel);
+    geaendert = true;
+  });
+  if (geaendert) speichereBenachrichtigt();
+}
+
+/* Liste der gemerkten Termine im Panel, mit Möglichkeit zum Entfernen */
+function renderMerklisteListe(){
+  const liste = ALLE.filter(ev => MERKZETTEL.has(evId(ev)));
+  if (liste.length){
+    $("merklisteListe").innerHTML = '<div class="eigeneliste">' + liste.map(ev =>
+      '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(ev.c) + ' · ' + rangeTxt(ev) + '</span>' +
+      '<button class="del" data-entmerken="' + esc(evId(ev)) + '">Entfernen</button></div>').join("") + '</div>';
+  } else {
+    $("merklisteListe").innerHTML = '<p class="eigene-empty">Noch keine Termine gemerkt. ' +
+      'Öffne einen Termin in der Liste und tippe auf „☆ Merken".</p>';
+  }
+}
+
+/* Erinnerungs-Einstellungen im Panel: Ein/Aus-Schalter + Tage-Auswahl */
+function renderErinnerungBox(){
+  const unterstuetzt = typeof Notification !== "undefined";
+  let html = '<p class="eigenehead">🔔 Erinnerungen</p>';
+  if (!unterstuetzt){
+    html += '<p class="eigene-empty">Dieser Browser unterstützt keine Benachrichtigungen.</p>';
+    $("erinnerungBox").innerHTML = html;
+    return;
+  }
+  const status = Notification.permission;
+  html += '<label class="erinnerung-toggle"><input type="checkbox" id="erinnerungAn" ' +
+    (ERINNERUNG.aktiv && status === "granted" ? "checked" : "") +
+    '> Benachrichtigungen für gemerkte Termine aktivieren</label>';
+  if (status === "denied"){
+    html += '<p class="eigene-empty">Benachrichtigungen sind für diese Seite in deinem Browser blockiert — ' +
+      'bitte in den Browser-Einstellungen für diese Seite erlauben.</p>';
+  }
+  html += '<div class="erinnerungtage">' + ERINNERUNG_TAGE_OPTIONEN.map(t =>
+    '<label class="tagchip"><input type="checkbox" data-tag="' + t + '" ' +
+    (ERINNERUNG.tage.has(t) ? "checked" : "") + '>' +
+    (t === 0 ? "am gleichen Tag" : t + " Tage vorher") + '</label>').join("") + '</div>';
+  html += '<p class="eigene-hinweis">Erinnerungen erscheinen, sobald du diese Seite öffnest und ein ' +
+    'gemerkter Termin im gewählten Zeitraum liegt — nicht bei komplett geschlossenem Browser. ' +
+    'Rein lokal in diesem Browser, ohne Server oder E-Mail.</p>';
+  $("erinnerungBox").innerHTML = html;
+}
+
 function rangeTxt(ev){
   const a = parse(ev.s), b = parse(ev.e);
   if (ev.s === ev.e) return a.getDate() + ". " + MON[a.getMonth()] + " " + a.getFullYear();
@@ -940,10 +1063,18 @@ function renderEigeneListe(){
 }
 
 ladeEigene();
+ladeMerkliste();
+ladeErinnerung();
+ladeBenachrichtigt();
 baueAlle();
 ladeAuswahl();
 baueLand(); baueRegion(); baueStadt(); baueThema();
 renderEigeneListe();
+renderMerklisteListe();
+renderErinnerungBox();
+if ("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
 
 /* ---------------- Filtern und Sortieren ---------------- */
 function filtered(){
@@ -1061,9 +1192,13 @@ function evHTML(ev){
       '<div><dt>Ort</dt><dd>' + esc(ev.c) + ', ' + esc(ev.l) + '</dd></div>' +
       '<div><dt>Land</dt><dd>' + esc(landVon(ev)) + '</dd></div>' +
     '</div>' +
-    '<div class="rowactions"><button class="linkbtn" type="button" data-hide="' + esc(id) +
-      '" data-eigen="' + (ev.eigen ? 1 : 0) + '">' +
-      (ev.eigen ? "Eigenen Termin löschen" : "Für mich ausblenden") + '</button></div>' +
+    '<div class="rowactions">' +
+      '<button class="linkbtn' + (MERKZETTEL.has(id) ? " aktiv" : "") + '" type="button" data-merken="' +
+        esc(id) + '">' + (MERKZETTEL.has(id) ? "★ Gemerkt" : "☆ Merken") + '</button>' +
+      '<button class="linkbtn" type="button" data-hide="' + esc(id) +
+        '" data-eigen="' + (ev.eigen ? 1 : 0) + '">' +
+        (ev.eigen ? "Eigenen Termin löschen" : "Für mich ausblenden") + '</button>' +
+    '</div>' +
     '</div></article>';
 }
 
@@ -1138,7 +1273,7 @@ function oeffne(pane){
     b.setAttribute("aria-expanded", String(b.dataset.pane === pane)));
   $("sheet").querySelector(".sheetbody").scrollTop = 0;
   if (pane === "q") setTimeout(() => $("q").focus(), 40);
-  if (pane === "eigene") renderEigeneListe();
+  if (pane === "eigene"){ renderEigeneListe(); renderMerklisteListe(); renderErinnerungBox(); }
 }
 function schliesse(){
   offenesPane = null;
@@ -1191,6 +1326,16 @@ $("sort").addEventListener("change", e => { F.sort = e.target.value; render(); }
 $("upcoming").addEventListener("change", e => { F.upcoming = e.target.checked; render(); });
 
 $("out").addEventListener("click", e => {
+  const merken = e.target.closest("[data-merken]");
+  if (merken){
+    const id = merken.dataset.merken;
+    if (MERKZETTEL.has(id)) MERKZETTEL.delete(id); else MERKZETTEL.add(id);
+    speichereMerkliste();
+    render();
+    renderMerklisteListe();
+    pruefeErinnerungen();
+    return;
+  }
   const hide = e.target.closest("[data-hide]");
   if (hide){
     const id = hide.dataset.hide;
@@ -1258,6 +1403,55 @@ $("reset").addEventListener("click", () => {
   speichereAuswahl();
   render();
 });
+
+/* ---------------- Merkliste & Erinnerungen: Bedienung ---------------- */
+$("merklisteListe").addEventListener("click", e => {
+  const btn = e.target.closest("[data-entmerken]"); if (!btn) return;
+  MERKZETTEL.delete(btn.dataset.entmerken);
+  speichereMerkliste();
+  renderMerklisteListe();
+  render();
+});
+
+$("erinnerungBox").addEventListener("change", e => {
+  if (e.target.id === "erinnerungAn"){
+    if (e.target.checked){
+      if (Notification.permission === "granted"){
+        ERINNERUNG.aktiv = true;
+        speichereErinnerung();
+        pruefeErinnerungen();
+      } else if (Notification.permission === "denied"){
+        e.target.checked = false;
+        renderErinnerungBox();
+      } else {
+        Notification.requestPermission().then(erlaubnis => {
+          ERINNERUNG.aktiv = erlaubnis === "granted";
+          speichereErinnerung();
+          if (ERINNERUNG.aktiv) pruefeErinnerungen();
+          renderErinnerungBox();
+        });
+      }
+    } else {
+      ERINNERUNG.aktiv = false;
+      speichereErinnerung();
+    }
+    return;
+  }
+  if (e.target.dataset.tag !== undefined){
+    const tag = Number(e.target.dataset.tag);
+    if (e.target.checked) ERINNERUNG.tage.add(tag); else ERINNERUNG.tage.delete(tag);
+    speichereErinnerung();
+    if (e.target.checked) pruefeErinnerungen();
+  }
+});
+
+/* Erinnerungen beim Start prüfen, beim erneuten Sichtbarwerden des Tabs
+   (z. B. Handy am nächsten Tag wieder geöffnet) und stündlich, solange geöffnet */
+pruefeErinnerungen();
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") pruefeErinnerungen();
+});
+setInterval(pruefeErinnerungen, 60 * 60 * 1000);
 
 render();
 </script>
