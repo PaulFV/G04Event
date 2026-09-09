@@ -1,7 +1,7 @@
 {
   "name": "G04Event",
   "short_name": "G04Event",
-  "description": "Jährliche Veranstaltungen in Europa — Termin, Dauer, Kategorie und Countdown.",
+  "description": "Jährliche wiederkehrende Veranstaltungen weltweit — Termin, Dauer, Kategorie und Countdown.",
   "lang": "de",
   "dir": "ltr",
   "start_url": "./",
