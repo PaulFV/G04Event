@@ -20,6 +20,7 @@
   --line:#D6D9DE; --line-2:#BFC4CC;
   --c-tech:#2F62D8; --c-food:#8A6608; --c-play:#6E36C6; --c-music:#BE1D5C;
   --c-art:#0E7A6B; --c-film:#3D4A5C; --c-sport:#12762D; --c-trad:#B03A3A;
+  --c-sonstige:#565C66;
   --tint:rgba(20,23,28,.05);
   --ring:#14171C;
   --sig-rot:#C0271B; --sig-gelb:#8A6300; --sig-gruen:#10702A;
@@ -37,6 +38,7 @@
     --line:#262C35; --line-2:#333B46;
     --c-tech:#89AAF6; --c-food:#D6AE4F; --c-play:#B490EE; --c-music:#F179A6;
     --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
+    --c-sonstige:#A7ADB8;
     --tint:rgba(255,255,255,.06);
     --ring:#E8EBF0;
     --sig-rot:#F58C80; --sig-gelb:#E5B84A; --sig-gruen:#5FC47C;
@@ -51,6 +53,7 @@
   --line:#262C35; --line-2:#333B46;
   --c-tech:#89AAF6; --c-food:#D6AE4F; --c-play:#B490EE; --c-music:#F179A6;
   --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
+  --c-sonstige:#A7ADB8;
   --tint:rgba(255,255,255,.06);
   --ring:#E8EBF0;
   --sig-rot:#F58C80; --sig-gelb:#E5B84A; --sig-gruen:#5FC47C;
@@ -305,7 +308,7 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 
 <div class="shell">
   <header class="head">
-    <h1>G04Event <span class="appver">V2.0.0</span></h1>
+    <h1>G04Event <span class="appver">V2.0.1</span></h1>
   </header>
 
   <section class="hero" id="next" hidden></section>
@@ -373,6 +376,7 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
                 <option value="film">Film</option>
                 <option value="sport">Sport</option>
                 <option value="trad" selected>Tradition</option>
+                <option value="sonstige">Sonstige</option>
               </select>
             </label>
           </div>
@@ -439,7 +443,8 @@ const CATS = {
   art:   {label:"Kultur",    v:"--c-art",   h:"#4FC3AC"},
   film:  {label:"Film",      v:"--c-film",  h:"#9EABBE"},
   sport: {label:"Sport",     v:"--c-sport", h:"#5FC47C"},
-  trad:  {label:"Tradition", v:"--c-trad",  h:"#EA8383"}
+  trad:  {label:"Tradition", v:"--c-trad",  h:"#EA8383"},
+  sonstige: {label:"Sonstige", v:"--c-sonstige", h:"#A7ADB8"}
 };
 
 const EVENTS = [
