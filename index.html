@@ -308,7 +308,7 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 
 <div class="shell">
   <header class="head">
-    <h1>G04Event <span class="appver">V2.2.0</span></h1>
+    <h1>G04Event <span class="appver">V2.2.1</span></h1>
   </header>
 
   <section class="hero" id="next" hidden></section>
@@ -1545,7 +1545,10 @@ function eigeneBearbeiten(id){
   $("editName").textContent = ev.n;
   $("editHinweis").hidden = false;
   $("eigenSubmitBtn").textContent = "Änderungen speichern";
-  form.n.focus();
+  /* Bewusst KEIN .focus() hier — das würde auf dem Handy sofort die Tastatur öffnen und
+     das Layout verschieben, noch bevor man ein Feld antippt. Stattdessen nur zum Formular
+     scrollen; die Tastatur soll erst beim Antippen eines Feldes durch den Nutzer erscheinen. */
+  form.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function eigeneBearbeitenAbbrechen(){
