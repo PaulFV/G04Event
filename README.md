@@ -85,10 +85,12 @@ für den Kopfbereich) und eine Farbvariable `--c-name` in beiden Farbschemata.
 
 ## Icon
 
-`icon.svg` ist die Vorlage — ein Jahresring aus zwölf Monatsstrichen, einer davon hervorgehoben,
-mit dem E in der Mitte. Die PNG-Größen für iOS und Android werden daraus erzeugt:
-`favicon-32.png`, `icon-180.png` (Apple Touch), `icon-192.png`, `icon-512.png` und
-`icon-512-maskable.png` (Android, ohne eigene Rundung, damit das System selbst zuschneiden kann).
+Das Logo ist ein Neon-Klecks auf Schwarz mit `G04E` auf einer türkisen Kugel. `icon-512.png`
+ist die größte Fassung, alle anderen Größen sind daraus verkleinert: `favicon-32.png`,
+`icon-180.png` (Apple Touch), `icon-192.png` und `icon-512-maskable.png`. Die maskable Fassung
+sitzt auf 78 % Fläche vor schwarzem Grund, damit Android beliebig zuschneiden kann, ohne den
+Schriftzug anzuschneiden. Ein SVG gibt es nicht mehr — die Verläufe und das Leuchten lassen sich
+als Vektor nicht sauber nachbauen.
 
 ## Zu den Terminen
 
