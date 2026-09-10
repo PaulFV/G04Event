@@ -308,7 +308,7 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 
 <div class="shell">
   <header class="head">
-    <h1>G04Event <span class="appver">V2.0.1</span></h1>
+    <h1>G04Event <span class="appver">V2.1.1</span></h1>
   </header>
 
   <section class="hero" id="next" hidden></section>
@@ -384,7 +384,15 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
             <label>Beginn*<input name="s" type="date" required></label>
             <label>Ende<input name="e" type="date"></label>
           </div>
-          <div class="ff"><label>Rhythmus<input name="r" maxlength="80" placeholder="z. B. jährlich"></label></div>
+          <div class="ff"><label>Rhythmus
+            <select name="r">
+              <option value="Einmalig" selected>Einmalig</option>
+              <option value="Jährlich">Jährlich</option>
+              <option value="Wöchentlich">Wöchentlich</option>
+              <option value="Monatlich">Monatlich</option>
+              <option value="Quartalsweise">Quartalsweise</option>
+            </select>
+          </label></div>
           <div class="ff"><label>Beschreibung<textarea name="d" rows="2" maxlength="240"></textarea></label></div>
           <p class="eigene-hinweis" id="editHinweis" hidden>Du bearbeitest „<span id="editName"></span>“ –
             <button type="button" id="editAbbrechen" style="all:unset;cursor:pointer;text-decoration:underline">abbrechen</button></p>
@@ -832,8 +840,24 @@ function speichereAusgeblendet(){
 function baueAlle(){
   ALLE = EVENTS.concat(EIGENE).filter(ev => !AUSGEBLENDET.has(evId(ev)));
 }
+
+/* Eigene Termine mit Rhythmus "Einmalig" werden nach Ablauf automatisch entfernt —
+   sie sind per Definition ein einmaliges Ereignis und müssen danach nicht mehr auftauchen. */
+function entferneAbgelaufeneEinmalige(){
+  const vorher = EIGENE.length;
+  EIGENE = EIGENE.filter(ev => !(ev.r === "Einmalig" && isPast(ev)));
+  const entfernt = EIGENE.length !== vorher;
+  if (entfernt) speichereEigene();
+  return entfernt;
+}
+/* Für den periodischen Check (Tab wieder sichtbar / stündlich): nur bei Bedarf neu rendern */
+function pruefeAbgelaufeneEinmalige(){
+  if (entferneAbgelaufeneEinmalige()) aktualisiereNachAenderung();
+}
+
 /* Filterauswahl, Chip-Listen und Zähler nach einer Änderung neu aufbauen */
 function aktualisiereNachAenderung(){
+  entferneAbgelaufeneEinmalige();
   baueAlle();
   bereinige();
   baueLand(); baueRegion(); baueStadt(); baueThema();
@@ -1167,6 +1191,7 @@ function renderEigeneListe(){
 }
 
 ladeEigene();
+entferneAbgelaufeneEinmalige();
 ladeMerkliste();
 ladeErinnerung();
 ladeBenachrichtigt();
@@ -1472,7 +1497,8 @@ function eigeneBearbeiten(id){
   form.k.value = ev.k || "trad";
   form.s.value = ev.s || "";
   form.e.value = ev.e || "";
-  form.r.value = ev.r || "";
+  form.r.value = ev.r || "Einmalig";
+  if (form.r.selectedIndex === -1) form.r.value = "Einmalig";
   form.d.value = ev.d || "";
   $("editName").textContent = ev.n;
   $("editHinweis").hidden = false;
@@ -1502,7 +1528,7 @@ $("eigenForm").addEventListener("submit", e => {
     l: kanonischerWert(regionListe, regionRoh),
     k: (fd.get("k") || "trad"),
     s, e: eEnde < s ? s : eEnde,
-    r: (fd.get("r") || "").trim() || "einmalig",
+    r: (fd.get("r") || "").trim() || "Einmalig",
     x: 1,
     d: (fd.get("d") || "").trim(),
     eigen: true
@@ -1604,9 +1630,9 @@ $("erinnerungBox").addEventListener("change", e => {
    (z. B. Handy am nächsten Tag wieder geöffnet) und stündlich, solange geöffnet */
 pruefeErinnerungen();
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") pruefeErinnerungen();
+  if (document.visibilityState === "visible"){ pruefeErinnerungen(); pruefeAbgelaufeneEinmalige(); }
 });
-setInterval(pruefeErinnerungen, 60 * 60 * 1000);
+setInterval(() => { pruefeErinnerungen(); pruefeAbgelaufeneEinmalige(); }, 60 * 60 * 1000);
 
 render();
 </script>
