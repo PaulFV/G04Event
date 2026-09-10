@@ -308,7 +308,7 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 
 <div class="shell">
   <header class="head">
-    <h1>G04Event <span class="appver">V2.1.1</span></h1>
+    <h1>G04Event <span class="appver">V2.2.0</span></h1>
   </header>
 
   <section class="hero" id="next" hidden></section>
@@ -841,23 +841,65 @@ function baueAlle(){
   ALLE = EVENTS.concat(EIGENE).filter(ev => !AUSGEBLENDET.has(evId(ev)));
 }
 
-/* Eigene Termine mit Rhythmus "Einmalig" werden nach Ablauf automatisch entfernt —
-   sie sind per Definition ein einmaliges Ereignis und müssen danach nicht mehr auftauchen. */
-function entferneAbgelaufeneEinmalige(){
-  const vorher = EIGENE.length;
-  EIGENE = EIGENE.filter(ev => !(ev.r === "Einmalig" && isPast(ev)));
-  const entfernt = EIGENE.length !== vorher;
-  if (entfernt) speichereEigene();
-  return entfernt;
+/* Datum -> "JJJJ-MM-TT" in Ortszeit (bewusst kein toISOString/UTC, damit es exakt zu
+   parse() passt, das ebenfalls lokal mit new Date(j,m-1,t) arbeitet). */
+const zuISO = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") +
+                    "-" + String(d.getDate()).padStart(2, "0");
+
+/* Monate auf ein Datum addieren, dabei den Tag an den Zielmonat anpassen, falls dieser
+   kürzer ist (z. B. 31. Januar + 1 Monat -> 28./29. Februar statt automatisch in den März
+   überzulaufen; 31. + 1 Monat in einen 30-Tage-Monat -> 30.). */
+function addMonateGeklemmt(datum, deltaMonate){
+  const tag = datum.getDate();
+  const monatsIndex = datum.getMonth() + deltaMonate;
+  const jahr = datum.getFullYear() + Math.floor(monatsIndex / 12);
+  const monat = ((monatsIndex % 12) + 12) % 12;
+  const letzterTagZielmonat = new Date(jahr, monat + 1, 0).getDate();
+  return new Date(jahr, monat, Math.min(tag, letzterTagZielmonat));
+}
+
+const RHYTHMUS_SCHRITT = {
+  "Wöchentlich":   d => new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7),
+  "Monatlich":     d => addMonateGeklemmt(d, 1),
+  "Quartalsweise": d => addMonateGeklemmt(d, 3)
+};
+
+/* Eigene Termine pflegen: "Einmalig" wird nach Ablauf entfernt; bei Wöchentlich/Monatlich/
+   Quartalsweise werden Beginn und Ende stattdessen auf den nächsten fälligen Termin
+   vorgerückt (gleicher Wochentag bzw. gleicher Kalendertag, bei Bedarf mehrfach, falls die
+   App länger nicht geöffnet war) — jeweils auf denselben Wochentag/Kalendertag, mit
+   Rücksicht auf unterschiedlich lange Monate (z. B. 31. -> 30./28./29.). */
+function pflegeEigeneTermine(){
+  let geaendert = false;
+  const bleibt = [];
+  for (const ev of EIGENE){
+    if (ev.r === "Einmalig" && isPast(ev)){
+      geaendert = true;
+      continue;
+    }
+    const schritt = RHYTHMUS_SCHRITT[ev.r];
+    if (schritt && isPast(ev)){
+      let s = parse(ev.s), e = parse(ev.e);
+      let sicherung = 0;
+      while (TODAY > e && sicherung < 1000){
+        s = schritt(s); e = schritt(e); sicherung++;
+      }
+      ev.s = zuISO(s); ev.e = zuISO(e);
+      geaendert = true;
+    }
+    bleibt.push(ev);
+  }
+  if (geaendert){ EIGENE = bleibt; speichereEigene(); }
+  return geaendert;
 }
 /* Für den periodischen Check (Tab wieder sichtbar / stündlich): nur bei Bedarf neu rendern */
-function pruefeAbgelaufeneEinmalige(){
-  if (entferneAbgelaufeneEinmalige()) aktualisiereNachAenderung();
+function pruefeEigeneTermine(){
+  if (pflegeEigeneTermine()) aktualisiereNachAenderung();
 }
 
 /* Filterauswahl, Chip-Listen und Zähler nach einer Änderung neu aufbauen */
 function aktualisiereNachAenderung(){
-  entferneAbgelaufeneEinmalige();
+  pflegeEigeneTermine();
   baueAlle();
   bereinige();
   baueLand(); baueRegion(); baueStadt(); baueThema();
@@ -1191,7 +1233,7 @@ function renderEigeneListe(){
 }
 
 ladeEigene();
-entferneAbgelaufeneEinmalige();
+pflegeEigeneTermine();
 ladeMerkliste();
 ladeErinnerung();
 ladeBenachrichtigt();
@@ -1630,9 +1672,9 @@ $("erinnerungBox").addEventListener("change", e => {
    (z. B. Handy am nächsten Tag wieder geöffnet) und stündlich, solange geöffnet */
 pruefeErinnerungen();
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible"){ pruefeErinnerungen(); pruefeAbgelaufeneEinmalige(); }
+  if (document.visibilityState === "visible"){ pruefeErinnerungen(); pruefeEigeneTermine(); }
 });
-setInterval(() => { pruefeErinnerungen(); pruefeAbgelaufeneEinmalige(); }, 60 * 60 * 1000);
+setInterval(() => { pruefeErinnerungen(); pruefeEigeneTermine(); }, 60 * 60 * 1000);
 
 render();
 </script>
