@@ -12,3 +12,8 @@ desktop.ini
 # Werkzeuge
 node_modules/
 .claude/
+
+# Android-Signierung – private Schlüssel niemals committen
+*.jks
+*.keystore
+keystore.properties

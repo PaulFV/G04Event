@@ -10,8 +10,8 @@ Die Website ist jetzt als installierbare PWA mit Manifest, Icons, Service Worker
 
 ## Was noch benötigt wird
 
-1. Betreibername, ladungsfähige Anschrift und Kontakt-E-Mail in `index.html` und `privacy.html` ergänzen.
-2. Einen eindeutigen Android-Paketnamen festlegen, zum Beispiel `de.g04event.app`.
+1. Die eingetragenen Betreiber- und Kontaktdaten in `index.html` und `privacy.html` vor der Veröffentlichung nochmals prüfen.
+2. Android-Paketname: `de.g04event.app`.
 3. Mit Bubblewrap oder PWABuilder ein Android-TWA-Projekt erzeugen und als AAB bauen.
 4. Nach dem Einrichten von Play App Signing die Datei `assetlinks.json.example` mit Paketname und SHA-256-Zertifikatsfingerprint ausfüllen.
 5. Die ausgefüllte Datei auf der Website unter `/.well-known/assetlinks.json` veröffentlichen.
