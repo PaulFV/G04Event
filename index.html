@@ -341,7 +341,7 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 <div class="shell">
   <header class="head">
     <div class="headbar">
-      <h1>G04Event <span class="appver">V2.3.1</span></h1>
+      <h1>G04Event <span class="appver">V2.4.0</span></h1>
       <button class="langbtn" id="langToggle" type="button" aria-label="Auf Deutsch wechseln">Deutsch</button>
     </div>
   </header>
@@ -458,7 +458,7 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
     </div>
   </div>
 
-  <nav class="dock" aria-label="Auswahl">
+  <nav class="dock" aria-label="Selection" data-i18n-aria="selection">
     <div class="dockrow" id="dockrow">
       <button class="dbtn" data-pane="q" aria-expanded="false">
         <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.4"/><path d="M12.6 12.6 17 17" stroke-linecap="round"/></svg>
@@ -620,7 +620,7 @@ const EVENTS = [
 {n:"Filmfest Hamburg",c:"Hamburg",l:"Hamburg",k:"film",s:"2026-10-01",e:"2026-10-10",r:"jährlich",x:0,d:"Internationales Autorenkino ohne Wettbewerbsjury, viele Regiegespräche im Saal."},
 {n:"Hamburger Winterdom",c:"Hamburg",l:"Hamburg",k:"trad",s:"2026-11-06",e:"2026-12-06",r:"dreimal jährlich",x:0,d:"Volksfest auf dem Heiligengeistfeld, freitags Feuerwerk über der Stadt."},
 {n:"Chaos Communication Congress",c:"Hamburg",l:"Hamburg",k:"tech",s:"2026-12-27",e:"2026-12-30",r:"jährlich, zwischen den Jahren",x:1,d:"Vier Tage Vorträge zu Sicherheit, Technik und Politik im Congress Center, dazu offene Assemblies."},
-{n:"Reisen & Caravaning Hamburg",c:"Hamburg",l:"Hamburg",k:"sport",s:"2027-02-04",e:"2027-02-07",r:"jährlich",x:0,d:"Norddeutschlands große Reise- und Freizeitmesse, mit Wohnmobilen, Kreuzfahrten, Fahrrädern und kulinarischer Genussreise."},
+{n:"Reisen & Caravaning Hamburg",c:"Hamburg",l:"Hamburg",k:"sport",s:"2027-02-04",e:"2027-02-07",r:"jährlich",x:0,d:"Norddeutschlands große Reise- und Freizeitmesse mit Wohnmobilen, Kreuzfahrten, Fahrrädern und kulinarischen Genussreisen."},
 {n:"Hamburger Frühlingsdom",c:"Hamburg",l:"Hamburg",k:"trad",s:"2027-03-19",e:"2027-04-18",r:"dreimal jährlich",x:0,d:"Die Frühjahrsausgabe des Doms mit Fahrgeschäften und Schaustellerbetrieben."},
 {n:"Haspa Marathon Hamburg",c:"Hamburg",l:"Hamburg",k:"sport",s:"2027-04-25",e:"2027-04-25",r:"jährlich",x:0,d:"Flacher Frühjahrsmarathon durch Alster, Hafen und die Elbvororte."},
 {n:"Hafengeburtstag",c:"Hamburg",l:"Hamburg",k:"trad",s:"2027-05-07",e:"2027-05-09",r:"jährlich, Anfang Mai",x:0,d:"Einlaufparade, Schlepperballett und Festmeile am Elbufer — das größte Hafenfest der Welt."},
@@ -831,7 +831,7 @@ const EVENTS = [
 {n:"Eurosonic Noorderslag",c:"Groningen",l:"Groningen",p:"Niederlande",k:"music",s:"2027-01-13",e:"2027-01-16",r:"jährlich",x:0,d:"Showcase-Festival für europäische Newcomer, Sprungbrett in die Festivalsaison."},
 {n:"Keukenhof",c:"Lisse",l:"Südholland",p:"Niederlande",k:"art",s:"2027-03-18",e:"2027-05-16",r:"jährlich",x:0,d:"Sieben Millionen Blumenzwiebeln im Park, nur acht Wochen im Frühjahr geöffnet."},
 {n:"Koningsdag",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"trad",s:"2027-04-27",e:"2027-04-27",r:"jährlich, 27. April",x:1,d:"Das ganze Land in Orange, Flohmarkt auf der Straße und Boote auf den Grachten."},
-{n:"TNW Conference",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"tech",s:"2027-06-17",e:"2027-06-18",r:"jährlich",x:0,d:"Technologiekonferenz auf dem NDSM-Werftgelände, Schwerpunkt Start-ups und Produkt."},
+{n:"TNW Conference",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"tech",s:"2027-06-17",e:"2027-06-18",r:"jährlich",x:0,d:"Technologiekonferenz auf dem NDSM-Werftgelände mit Schwerpunkt auf Start-ups und Produktentwicklung."},
 {n:"Nijmeegse Vierdaagse",c:"Nijmegen",l:"Gelderland",p:"Niederlande",k:"sport",s:"2027-07-20",e:"2027-07-23",r:"jährlich",x:0,d:"Vier Tage Marschieren über 30 bis 50 Kilometer täglich, mit Zehntausenden Teilnehmenden."},
 {n:"Foire de Libramont",c:"Libramont",l:"Luxemburg",p:"Belgien",k:"food",s:"2027-07-23",e:"2027-07-26",r:"jährlich, letztes Juliwochenende",x:0,d:"Belgiens größte Landwirtschaftsmesse, mit Tierschauen, Maschinenvorführungen und Ständen regionaler Erzeuger auf dem Messegelände in den Ardennen."},
 {n:"FOSDEM",c:"Brüssel",l:"Brüssel",p:"Belgien",k:"tech",s:"2027-01-30",e:"2027-01-31",r:"jährlich, erstes Februarwochenende",x:0,d:"Treffen der Open-Source-Entwicklung an der ULB, ohne Eintritt und ohne Anmeldung."},
@@ -915,7 +915,7 @@ const EVENTS = [
 {n:"Charleston Wine + Food Festival",c:"Charleston",l:"South Carolina",p:"USA",k:"food",s:"2027-03-03",e:"2027-03-07",r:"jährlich Anfang März",x:1,d:"Kulinarikfestival mit Verkostungen, Dinners und Workshops renommierter Köchinnen und Köche."},
 
 /* Rumänien — Kreis Kronstadt */
-{n:"Junii Brașovului – Sărbătoarea Junilor",c:"Kronstadt",l:"Kreis Kronstadt",p:"Rumänien",k:"trad",s:"2027-05-09",e:"2027-05-09",r:"jährlich am Thomassonntag, eine Woche nach orthodoxem Ostern",x:1,d:"Jahrhundertealter Reiterumzug der „Junii” in historischen Trachten durch die Altstadt von Kronstadt."},
+{n:"Junii Brașovului – Sărbătoarea Junilor",c:"Kronstadt",l:"Kreis Kronstadt",p:"Rumänien",k:"trad",s:"2027-05-09",e:"2027-05-09",r:"jährlich am Thomassonntag, eine Woche nach orthodoxem Ostern",x:1,d:"Jahrhundertealter Reiterumzug der „Junii“ in historischen Trachten durch die Altstadt von Kronstadt."},
 
 /* Türkei — Istanbul & Bursa */
 {n:"Istanbul Marathon",c:"Istanbul",l:"Istanbul",p:"Türkei",k:"sport",s:"2026-11-01",e:"2026-11-01",r:"jährlich im November, meist erster Sonntag",x:1,d:"Einziger Marathon der Welt, der zwei Kontinente verbindet: über die Bosporus-Brücke von Asien nach Europa."},
