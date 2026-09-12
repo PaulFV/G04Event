@@ -3,11 +3,15 @@
 Ein Überblick über **jährlich wiederkehrende Veranstaltungen in europäischen Städten** — mit Datum,
 Dauer, Rhythmus und Kategorie. Unten auswählen, oben den Countdown ablesen.
 
-**213 Termine · 19 Länder · 8 Kategorien**, Saison 2026/27.
+**262 Termine · 24 Länder · 8 Kategorien**, Saison 2026/27.
+
+Die Bedienoberfläche startet beim ersten Öffnen auf **Englisch**. Über den Schalter oben rechts
+kann jederzeit auf Deutsch gewechselt werden; die Sprache bleibt lokal im Browser gespeichert.
 
 Live: **https://paulfv.github.io/G04Event/**
 
-Eine einzige HTML-Datei, kein Build, keine Abhängigkeiten, kein Backend.
+Eine statische HTML-App ohne Build-System, Backend oder Analytics. Die App nutzt einen Service Worker
+für den App-Shell-Cache und speichert persönliche Einstellungen ausschließlich lokal im Browser.
 
 ## Funktionen
 
@@ -19,10 +23,12 @@ Eine einzige HTML-Datei, kein Build, keine Abhängigkeiten, kein Backend.
   zählt der Countdown bis zum Ende. Die Ziffern sind eine Ampel: ab vier Tagen grün,
   ab drei Tagen gelb, am letzten Tag rot.
 - **Sortierung** nach Datum, Dauer (lang/kurz zuerst), Stadt, Name oder Kategorie
-- **Auswahl bleibt gespeichert** — beim nächsten Öffnen ist alles wieder gesetzt
-  (`localStorage`, bleibt im Browser des Betrachters)
+- **Auswahl bleibt gespeichert** — Länder, Regionen, Städte, Themen und Sprache bleiben lokal im
+  Browser gesetzt (`localStorage`)
+- **Englisch und Deutsch** — Englisch als Standard beim ersten Öffnen, Sprache lokal umschaltbar
 - **Details** — Tipp auf eine Zeile öffnet Beschreibung, Wochentag, Rhythmus, Region und Land
 - Helles und dunkles Design, folgt der Systemeinstellung
+- Datenschutz und Copyright/Lizenz sind direkt in der App sowie unter `privacy.html` erreichbar
 
 ## Auf dem Handy installieren
 
@@ -33,6 +39,13 @@ Notch und Home-Indicator).
 - **Android:** Seite in Chrome öffnen → Menü → *App installieren*
 
 Danach startet sie ohne Browserleiste, mit eigenem Icon.
+
+## Google Play
+
+Die Website ist für eine Android-Verpackung als Trusted Web Activity vorbereitet. Die nächsten
+Schritte, die benötigte Privacy-Policy-URL und die Vorlage für Digital Asset Links stehen in
+[`play-store/README.md`](play-store/README.md). Vor der Veröffentlichung müssen dort und in
+[`privacy.html`](privacy.html) noch die echten Betreiber- und Kontaktdaten ergänzt werden.
 
 ## Starten
 

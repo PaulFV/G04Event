@@ -1,6 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <title>G04Event</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Jährliche wiederkehrende Veranstaltungen weltweit — Termin, Dauer, Kategorie und Countdown.">
+<meta name="description" content="Recurring events in cities around Europe — dates, duration, categories and countdown.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#E9EAEC">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1115">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -71,6 +75,10 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15p
 
 /* ---------- Kopf ---------- */
 .head{padding:calc(26px + env(safe-area-inset-top)) 0 16px}
+.headbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.langbtn{border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink-2);
+  padding:7px 12px;font:500 12px var(--sans);cursor:pointer;white-space:nowrap}
+.langbtn:hover{color:var(--ink);background:var(--surface-2)}
 h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,7vw,42px);letter-spacing:-.03em;
   margin:0;line-height:.98}
 .appver{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;
@@ -169,6 +177,28 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .note{margin:34px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;
   color:var(--faint);max-width:72ch}
 .note b{color:var(--muted);font-weight:600}
+.footer{max-width:1000px;margin:24px auto 110px;padding:14px 18px 0;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--faint);font-size:11.5px}
+.footerlinks{display:flex;gap:14px}
+.footer button{background:none;border:0;padding:0;color:var(--muted);font:inherit;text-decoration:underline;
+  text-underline-offset:2px;cursor:pointer}
+.footer button:hover{color:var(--ink)}
+.legal-scrim{position:fixed;inset:0;z-index:59;background:rgba(10,12,16,.5)}
+.legal-scrim[hidden]{display:none}
+.legalmodal{position:fixed;z-index:60;left:50%;top:50%;transform:translate(-50%,-50%);width:min(700px,calc(100% - 24px));
+  max-height:min(82vh,700px);overflow:hidden;background:var(--surface);color:var(--ink);border:1px solid var(--line-2);
+  border-radius:16px;box-shadow:0 20px 70px rgba(0,0,0,.28);display:flex;flex-direction:column}
+.legalmodal[hidden]{display:none}
+.legalbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px 12px;border-bottom:1px solid var(--line)}
+.legalbar h2{font-family:var(--disp);font-size:20px;margin:0}
+.legalbar button{background:none;border:0;font:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer}
+.legalbody{overflow:auto;padding:18px 20px 22px;font-size:14px;line-height:1.55}
+.legalbody h3{font-size:15px;margin:18px 0 5px;color:var(--ink)}
+.legalbody h3:first-child{margin-top:0}
+.legalbody p{margin:0 0 10px;color:var(--ink-2)}
+.legalbody ul{margin:5px 0 12px;padding-left:20px;color:var(--ink-2)}
+.legalbody a{color:var(--ink);text-underline-offset:2px}
+.legalbody .legal-todo{padding:10px 12px;border:1px dashed var(--line-2);border-radius:8px;color:var(--muted);font-size:13px}
 
 /* ---------- Leiste unten ---------- */
 .dockwrap{position:fixed;left:0;right:0;bottom:0;z-index:40}
@@ -305,10 +335,15 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+</head>
+<body>
 
 <div class="shell">
   <header class="head">
-    <h1>G04Event <span class="appver">V2.3.1</span></h1>
+    <div class="headbar">
+      <h1>G04Event <span class="appver">V2.3.1</span></h1>
+      <button class="langbtn" id="langToggle" type="button" aria-label="Auf Deutsch wechseln">Deutsch</button>
+    </div>
   </header>
 
   <section class="hero" id="next" hidden></section>
@@ -316,38 +351,54 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
   <div class="rhead">
     <span class="count" id="count"></span>
     <div class="rtools">
-      <label class="tg"><input type="checkbox" id="upcoming" checked> Nur kommende</label>
-      <select id="sort" aria-label="Sortieren nach">
-        <option value="date">Nach Datum</option>
-        <option value="durDesc">Dauer — lang zuerst</option>
-        <option value="durAsc">Dauer — kurz zuerst</option>
-        <option value="city">Stadt A–Z</option>
-        <option value="name">Name A–Z</option>
-        <option value="cat">Kategorie</option>
+      <label class="tg"><input type="checkbox" id="upcoming" checked> <span data-i18n="upcomingOnly">Upcoming only</span></label>
+      <select id="sort" aria-label="Sort by" data-i18n-aria="sortBy">
+        <option value="date" data-i18n="sortDate">By date</option>
+        <option value="durDesc" data-i18n="sortDurationLong">Duration — longest first</option>
+        <option value="durAsc" data-i18n="sortDurationShort">Duration — shortest first</option>
+        <option value="city" data-i18n="sortCity">City A–Z</option>
+        <option value="name" data-i18n="sortName">Name A–Z</option>
+        <option value="cat" data-i18n="sortCategory">Category</option>
       </select>
-      <button class="reset" id="reset" hidden>Zurücksetzen</button>
+      <button class="reset" id="reset" hidden data-i18n="reset">Reset</button>
     </div>
   </div>
 
   <div id="out"></div>
 
-  <p class="note"><b>Zu den Terminen:</b> Daten mit gepunkteter Linie sind aus dem jährlichen
-    Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen.
-    Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.</p>
+  <p class="note"><b data-i18n="noteTitle">About the dates:</b> <span data-i18n="noteBody">Dotted dates are projected from the annual rhythm and have not yet been confirmed — please check with the organizer before travelling. Fixed recurring dates (carnival, Oktoberfest opening, Christmas markets until Christmas Eve) are shown without a dot.</span></p>
 </div>
+
+<footer class="footer">
+  <span>© 2026 G04Event · MIT License</span>
+  <span class="footerlinks">
+    <button type="button" data-legal="privacy" data-i18n="privacyLink">Privacy</button>
+    <button type="button" data-legal="copyright" data-i18n="copyrightLink">Copyright</button>
+  </span>
+</footer>
+
+<div class="legal-scrim" id="legalScrim" hidden></div>
+<aside class="legalmodal" id="legalModal" hidden role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+  <div class="legalbar">
+    <h2 id="legalTitle"></h2>
+    <button id="legalClose" type="button" data-i18n="done">Done</button>
+  </div>
+  <div class="legalbody" id="legalBody"></div>
+</aside>
 
 <div class="scrim" id="scrim" hidden></div>
 
 <div class="dockwrap">
   <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
     <div class="sheetbar">
-      <h2 id="sheetTitle">Auswahl</h2>
-      <button id="sheetClose">Fertig</button>
+      <h2 id="sheetTitle" data-i18n="selection">Selection</h2>
+      <button id="sheetClose" data-i18n="done">Done</button>
     </div>
     <div class="sheetbody">
       <div class="searchbox" id="pane-q" hidden>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.3 10.3 14 14"/></svg>
-        <input id="q" type="search" placeholder="Name, Stadt oder Stichwort" aria-label="Suchen">
+        <input id="q" type="search" placeholder="Name, city or keyword" aria-label="Search"
+          data-i18n-placeholder="searchPlaceholder" data-i18n-aria="search">
       </div>
       <div class="chips" id="pane-land" hidden></div>
       <div class="chips" id="pane-region" hidden></div>
@@ -355,50 +406,53 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
         <div class="erinnerungbox" id="erinnerungBox"></div>
-        <p class="eigenehead">Gemerkte Termine</p>
+          <p class="eigenehead" data-i18n="savedEvents">Saved events</p>
         <div id="merklisteListe"></div>
         <form id="eigenForm" class="eigenform">
-          <div class="ff"><label>Name*
-            <input name="n" required maxlength="80" placeholder="z. B. Dorffest Musterstadt"></label></div>
+          <div class="ff"><label><span data-i18n="formName">Name*</span>
+            <input name="n" required maxlength="80" placeholder="e.g. Musterstadt village festival"
+              data-i18n-placeholder="eventNamePlaceholder"></label></div>
           <div class="ff2">
-            <label>Stadt*<input name="c" required maxlength="60"></label>
-            <label>Region<input name="l" maxlength="60" placeholder="z. B. Bayern"></label>
+            <label><span data-i18n="formCity">City*</span><input name="c" required maxlength="60"></label>
+            <label><span data-i18n="formRegion">Region</span><input name="l" maxlength="60" placeholder="e.g. Bavaria"
+              data-i18n-placeholder="regionPlaceholder"></label>
           </div>
           <div class="ff2">
-            <label>Land<input name="p" maxlength="60" placeholder="leer = Deutschland"></label>
-            <label>Kategorie
+            <label><span data-i18n="formCountry">Country</span><input name="p" maxlength="60" placeholder="blank = Germany"
+              data-i18n-placeholder="countryPlaceholder"></label>
+            <label><span data-i18n="formCategory">Category</span>
               <select name="k">
-                <option value="tech">Technik</option>
-                <option value="food">Essen</option>
-                <option value="play">Spiel</option>
-                <option value="music">Musik</option>
-                <option value="art">Kultur</option>
-                <option value="film">Film</option>
-                <option value="sport">Sport</option>
-                <option value="trad" selected>Tradition</option>
-                <option value="sonstige">Sonstige</option>
+                <option value="tech" data-i18n="catTech">Technology</option>
+                <option value="food" data-i18n="catFood">Food</option>
+                <option value="play" data-i18n="catPlay">Games</option>
+                <option value="music" data-i18n="catMusic">Music</option>
+                <option value="art" data-i18n="catArt">Culture</option>
+                <option value="film" data-i18n="catFilm">Film</option>
+                <option value="sport" data-i18n="catSport">Sport</option>
+                <option value="trad" selected data-i18n="catTrad">Tradition</option>
+                <option value="sonstige" data-i18n="catOther">Other</option>
               </select>
             </label>
           </div>
           <div class="ff2">
-            <label>Beginn*<input name="s" type="date" required></label>
-            <label>Ende<input name="e" type="date"></label>
+            <label><span data-i18n="formStart">Start*</span><input name="s" type="date" required></label>
+            <label><span data-i18n="formEnd">End</span><input name="e" type="date"></label>
           </div>
-          <div class="ff"><label>Rhythmus
+          <div class="ff"><label><span data-i18n="formRhythm">Recurrence</span>
             <select name="r">
-              <option value="Einmalig" selected>Einmalig</option>
-              <option value="Jährlich">Jährlich</option>
-              <option value="Wöchentlich">Wöchentlich</option>
-              <option value="Monatlich">Monatlich</option>
-              <option value="Quartalsweise">Quartalsweise</option>
+              <option value="Einmalig" selected data-i18n="rhythmOnce">Once</option>
+              <option value="Jährlich" data-i18n="rhythmYearly">Yearly</option>
+              <option value="Wöchentlich" data-i18n="rhythmWeekly">Weekly</option>
+              <option value="Monatlich" data-i18n="rhythmMonthly">Monthly</option>
+              <option value="Quartalsweise" data-i18n="rhythmQuarterly">Quarterly</option>
             </select>
           </label></div>
-          <div class="ff"><label>Beschreibung<textarea name="d" rows="2" maxlength="240"></textarea></label></div>
-          <p class="eigene-hinweis" id="editHinweis" hidden>Du bearbeitest „<span id="editName"></span>“ –
-            <button type="button" id="editAbbrechen" style="all:unset;cursor:pointer;text-decoration:underline">abbrechen</button></p>
-          <button type="submit" class="addbtn" id="eigenSubmitBtn">Termin hinzufügen</button>
+          <div class="ff"><label><span data-i18n="formDescription">Description</span><textarea name="d" rows="2" maxlength="240"></textarea></label></div>
+          <p class="eigene-hinweis" id="editHinweis" hidden><span data-i18n="editing">Editing</span> „<span id="editName"></span>“ —
+            <button type="button" id="editAbbrechen" data-i18n="cancel" style="all:unset;cursor:pointer;text-decoration:underline">cancel</button></p>
+          <button type="submit" class="addbtn" id="eigenSubmitBtn" data-i18n="addEvent">Add event</button>
         </form>
-        <p class="eigenehead">Meine Termine</p>
+        <p class="eigenehead" data-i18n="myEvents">My events</p>
         <div id="eigeneListe"></div>
       </div>
     </div>
@@ -408,27 +462,27 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
     <div class="dockrow" id="dockrow">
       <button class="dbtn" data-pane="q" aria-expanded="false">
         <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.4"/><path d="M12.6 12.6 17 17" stroke-linecap="round"/></svg>
-        <span class="dl">Suche</span><span class="dv" id="dv-q">alle</span>
+        <span class="dl" data-i18n="dockSearch">Search</span><span class="dv" id="dv-q">all</span>
       </button>
       <button class="dbtn" data-pane="land" aria-expanded="false">
         <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M2.8 10h14.4M10 2.8c1.9 2 2.9 4.5 2.9 7.2s-1 5.2-2.9 7.2c-1.9-2-2.9-4.5-2.9-7.2S8.1 4.8 10 2.8z"/></svg>
-        <span class="dl">Land</span><span class="dv" id="dv-land">alle</span>
+        <span class="dl" data-i18n="dockCountry">Country</span><span class="dv" id="dv-land">all</span>
       </button>
       <button class="dbtn" data-pane="region" aria-expanded="false">
         <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M2.8 5.4 7.4 3.4l5.2 2 4.6-2v11.2l-4.6 2-5.2-2-4.6 2z"/><path d="M7.4 3.4v13.2M12.6 5.4v13.2"/></svg>
-        <span class="dl">Region</span><span class="dv" id="dv-region">alle</span>
+        <span class="dl" data-i18n="dockRegion">Region</span><span class="dv" id="dv-region">all</span>
       </button>
       <button class="dbtn" data-pane="stadt" aria-expanded="false">
         <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M2.6 17.2h14.8M4.4 17.2V8.2l4.2-2.6v11.6M8.6 17.2V9.4l6.4-2.2v10"/></svg>
-        <span class="dl">Stadt</span><span class="dv" id="dv-stadt">alle</span>
+        <span class="dl" data-i18n="dockCity">City</span><span class="dv" id="dv-stadt">all</span>
       </button>
       <button class="dbtn" data-pane="thema" aria-expanded="false">
         <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.9"/><circle cx="13.6" cy="6.4" r="2.9"/><circle cx="6.4" cy="13.6" r="2.9"/><circle cx="13.6" cy="13.6" r="2.9"/></svg>
-        <span class="dl">Thema</span><span class="dv" id="dv-thema">alle</span>
+        <span class="dl" data-i18n="dockTheme">Theme</span><span class="dv" id="dv-thema">all</span>
       </button>
       <button class="dbtn" data-pane="eigene" aria-expanded="false">
         <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M10 3.5v13M3.5 10h13"/></svg>
-        <span class="dl">Eigene</span><span class="dv" id="dv-eigene">hinzufügen</span>
+        <span class="dl" data-i18n="dockOwn">Own</span><span class="dv" id="dv-eigene" data-i18n="add">add</span>
       </button>
     </div>
   </nav>
@@ -444,16 +498,107 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
    Neue Veranstaltung: einfach eine Zeile ergänzen.
 ------------------------------------------------------------------- */
 const CATS = {
-  tech:  {label:"Technik",   v:"--c-tech",  h:"#89AAF6"},
-  food:  {label:"Essen",     v:"--c-food",  h:"#D6AE4F"},
-  play:  {label:"Spiel",     v:"--c-play",  h:"#B490EE"},
-  music: {label:"Musik",     v:"--c-music", h:"#F179A6"},
-  art:   {label:"Kultur",    v:"--c-art",   h:"#4FC3AC"},
-  film:  {label:"Film",      v:"--c-film",  h:"#9EABBE"},
-  sport: {label:"Sport",     v:"--c-sport", h:"#5FC47C"},
-  trad:  {label:"Tradition", v:"--c-trad",  h:"#EA8383"},
-  sonstige: {label:"Sonstige", v:"--c-sonstige", h:"#A7ADB8"}
+  tech:  {label:"Technik",   en:"Technology", v:"--c-tech",  h:"#89AAF6"},
+  food:  {label:"Essen",     en:"Food",       v:"--c-food",  h:"#D6AE4F"},
+  play:  {label:"Spiel",     en:"Games",      v:"--c-play",  h:"#B490EE"},
+  music: {label:"Musik",     en:"Music",      v:"--c-music", h:"#F179A6"},
+  art:   {label:"Kultur",    en:"Culture",    v:"--c-art",   h:"#4FC3AC"},
+  film:  {label:"Film",      en:"Film",       v:"--c-film",  h:"#9EABBE"},
+  sport: {label:"Sport",     en:"Sport",      v:"--c-sport", h:"#5FC47C"},
+  trad:  {label:"Tradition", en:"Tradition",  v:"--c-trad",  h:"#EA8383"},
+  sonstige: {label:"Sonstige", en:"Other",     v:"--c-sonstige", h:"#A7ADB8"}
 };
+
+/* ---------------- Sprache ---------------- */
+const LANGUAGE_KEY = "g04event.sprache";
+let LANGUAGE = (() => {
+  try {
+    const gespeichert = localStorage.getItem(LANGUAGE_KEY);
+    return gespeichert === "de" || gespeichert === "en" ? gespeichert : "en";
+  } catch(e) { return "en"; }
+})();
+
+const I18N = {
+  en: {
+    upcomingOnly:"Upcoming only", sortBy:"Sort by", sortDate:"By date",
+    sortDurationLong:"Duration — longest first", sortDurationShort:"Duration — shortest first",
+    sortCity:"City A–Z", sortName:"Name A–Z", sortCategory:"Category", reset:"Reset",
+    selection:"Selection", done:"Done", search:"Search", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseCity:"Choose city", chooseTheme:"Choose theme", ownEvents:"Own events", searchPlaceholder:"Name, city or keyword",
+    noteTitle:"About the dates:",
+    noteBody:"Dotted dates are projected from the annual rhythm and have not yet been confirmed — please check with the organizer before travelling. Fixed recurring dates (carnival, Oktoberfest opening, Christmas markets until Christmas Eve) are shown without a dot.",
+    formName:"Name*", formCity:"City*", formRegion:"Region", formCountry:"Country", formCategory:"Category",
+    formStart:"Start*", formEnd:"End", formRhythm:"Recurrence", formDescription:"Description",
+    eventNamePlaceholder:"e.g. Musterstadt village festival", eventIn:"Event in", regionPlaceholder:"e.g. Bavaria",
+    countryPlaceholder:"blank = Germany", editing:"Editing", cancel:"cancel", addEvent:"Add event", saveChanges:"Save changes",
+    savedEvents:"Saved events", myEvents:"My events", dockSearch:"Search", dockCountry:"Country",
+    dockRegion:"Region", dockCity:"City", dockTheme:"Theme", dockOwn:"Own", all:"all", add:"add",
+    allCountries:"All countries", allRegions:"All regions", allCities:"All cities", allThemes:"All themes",
+    newCountryPlaceholder:"Add a new country …", newCityPlaceholder:"Add a new city …", addButton:"Add",
+    catTech:"Technology", catFood:"Food", catPlay:"Games", catMusic:"Music", catArt:"Culture",
+    catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catOther:"Other",
+    rhythmOnce:"Once", rhythmYearly:"Yearly", rhythmWeekly:"Weekly", rhythmMonthly:"Monthly", rhythmQuarterly:"Quarterly",
+    runningNow:"Running now", next:"Next", stillRunning:"still running", startsIn:"starts in",
+    countdownDays:"Days", countdownHours:"Hrs", countdownMinutes:"Min", countdownSeconds:"Sec",
+    oneDay:"1 day", manyDays:"%n% days", eventOne:"%n% of %total% event", eventMany:"%n% of %total% events",
+    termOne:"event", termMany:"events", chosen:"%n% selected",
+    today:"today", tomorrow:"tomorrow", inDays:"in %n% days",
+    inCity:"in %value%", inCities:"in %n% cities", inRegion:"in %value%", inRegions:"in %n% regions",
+    inCountry:"in %value%", inCountries:"in %n% countries", worldwide:"worldwide",
+    emptyTitle:"Nothing found", emptyBody:"No events are listed for this selection. Choose another country, city or theme.",
+    estimatedTitle:"Date projected from the annual rhythm — please check", ownBadge:"own", live:"live now",
+    detailDates:"Dates", detailDuration:"Duration", detailStarts:"Starts", detailRhythm:"Recurrence",
+    detailLocation:"Location", detailCountry:"Country", mark:"☆ Save", marked:"★ Saved",
+    hide:"Hide for me", deleteOwn:"Delete own event", edit:"Edit", delete:"Delete", remove:"Remove",
+    ownEmpty:"No own events added yet.", hiddenOne:"hidden event — ", hiddenMany:"hidden events — ",
+    restoreAll:"restore all", savedEmpty:"No events saved yet. Open an event and tap “☆ Save”.",
+    reminderTitle:"🔔 Reminders", noNotifications:"This browser does not support notifications.",
+    enableNotifications:"Enable notifications for saved events", notificationsBlocked:"Notifications are blocked for this site in your browser — allow them in the browser settings.",
+    sameDay:"on the same day", daysBefore:"%n% days before", reminderHint:"Reminders appear when you open this page and a saved event falls within the selected period — not while the browser is completely closed. Stored locally in this browser, without a server or email.",
+    privacyLink:"Privacy", copyrightLink:"Copyright", privacyTitle:"Privacy policy", copyrightTitle:"Copyright and licence",
+    switchLanguage:"Switch to German", languageButton:"Deutsch"
+  },
+  de: {
+    upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
+    sortDurationLong:"Dauer — lang zuerst", sortDurationShort:"Dauer — kurz zuerst",
+    sortCity:"Stadt A–Z", sortName:"Name A–Z", sortCategory:"Kategorie", reset:"Zurücksetzen",
+    selection:"Auswahl", done:"Fertig", search:"Suchen", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", ownEvents:"Eigene Termine", searchPlaceholder:"Name, Stadt oder Stichwort",
+    noteTitle:"Zu den Terminen:",
+    noteBody:"Daten mit gepunkteter Linie sind aus dem jährlichen Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen. Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.",
+    formName:"Name*", formCity:"Stadt*", formRegion:"Region", formCountry:"Land", formCategory:"Kategorie",
+    formStart:"Beginn*", formEnd:"Ende", formRhythm:"Rhythmus", formDescription:"Beschreibung",
+    eventNamePlaceholder:"z. B. Dorffest Musterstadt", eventIn:"Termin in", regionPlaceholder:"z. B. Bayern",
+    countryPlaceholder:"leer = Deutschland", editing:"Du bearbeitest", cancel:"abbrechen", addEvent:"Termin hinzufügen", saveChanges:"Änderungen speichern",
+    savedEvents:"Gemerkte Termine", myEvents:"Meine Termine", dockSearch:"Suche", dockCountry:"Land",
+    dockRegion:"Region", dockCity:"Stadt", dockTheme:"Thema", dockOwn:"Eigene", all:"alle", add:"hinzufügen",
+    allCountries:"Alle Länder", allRegions:"Alle Regionen", allCities:"Alle Städte", allThemes:"Alle Themen",
+    newCountryPlaceholder:"Neues Land eintragen …", newCityPlaceholder:"Neue Stadt eintragen …", addButton:"Hinzufügen",
+    catTech:"Technik", catFood:"Essen", catPlay:"Spiel", catMusic:"Musik", catArt:"Kultur",
+    catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catOther:"Sonstige",
+    rhythmOnce:"Einmalig", rhythmYearly:"Jährlich", rhythmWeekly:"Wöchentlich", rhythmMonthly:"Monatlich", rhythmQuarterly:"Quartalsweise",
+    runningNow:"Läuft gerade", next:"Als Nächstes", stillRunning:"läuft noch", startsIn:"beginnt in",
+    countdownDays:"Tage", countdownHours:"Std", countdownMinutes:"Min", countdownSeconds:"Sek",
+    oneDay:"1 Tag", manyDays:"%n% Tage", eventOne:"%n% von %total% Termin", eventMany:"%n% von %total% Terminen",
+    termOne:"Termin", termMany:"Termine", chosen:"%n% gewählt",
+    today:"heute", tomorrow:"morgen", inDays:"in %n% Tagen",
+    inCity:"in %value%", inCities:"in %n% Städten", inRegion:"in %value%", inRegions:"in %n% Regionen",
+    inCountry:"in %value%", inCountries:"in %n% Ländern", worldwide:"weltweit",
+    emptyTitle:"Nichts gefunden", emptyBody:"Für diese Auswahl ist nichts eingetragen. Wähle unten ein anderes Land, eine andere Stadt oder ein anderes Thema.",
+    estimatedTitle:"Termin aus dem jährlichen Rhythmus fortgeschrieben — bitte prüfen", ownBadge:"eigene", live:"läuft gerade",
+    detailDates:"Zeitraum", detailDuration:"Dauer", detailStarts:"Beginnt", detailRhythm:"Rhythmus",
+    detailLocation:"Ort", detailCountry:"Land", mark:"☆ Merken", marked:"★ Gemerkt",
+    hide:"Für mich ausblenden", deleteOwn:"Eigenen Termin löschen", edit:"Bearbeiten", delete:"Löschen", remove:"Entfernen",
+    ownEmpty:"Noch keine eigenen Termine hinzugefügt.", hiddenOne:"ausgeblendeter Termin — ", hiddenMany:"ausgeblendete Termine — ",
+    restoreAll:"alle wieder einblenden", savedEmpty:"Noch keine Termine gemerkt. Öffne einen Termin in der Liste und tippe auf „☆ Merken“.",
+    reminderTitle:"🔔 Erinnerungen", noNotifications:"Dieser Browser unterstützt keine Benachrichtigungen.",
+    enableNotifications:"Benachrichtigungen für gemerkte Termine aktivieren", notificationsBlocked:"Benachrichtigungen sind für diese Seite in deinem Browser blockiert — bitte in den Browser-Einstellungen für diese Seite erlauben.",
+    sameDay:"am gleichen Tag", daysBefore:"%n% Tage vorher", reminderHint:"Erinnerungen erscheinen, sobald du diese Seite öffnest und ein gemerkter Termin im gewählten Zeitraum liegt — nicht bei komplett geschlossenem Browser. Rein lokal in diesem Browser, ohne Server oder E-Mail.",
+    privacyLink:"Datenschutz", copyrightLink:"Copyright", privacyTitle:"Datenschutz", copyrightTitle:"Copyright und Lizenz",
+    switchLanguage:"Auf Englisch wechseln", languageButton:"English"
+  }
+};
+
+const t = key => I18N[LANGUAGE][key] || I18N.en[key] || key;
+const catLabel = key => CATS[key] ? (LANGUAGE === "en" ? CATS[key].en : CATS[key].label) : key;
 
 const EVENTS = [
 /* Berlin */
@@ -789,17 +934,76 @@ const EVENTS = [
 {n:"China Shanghai International Arts Festival",c:"Shanghai",l:"Shanghai",p:"China",k:"art",s:"2026-10-17",e:"2026-11-15",r:"jährlich Mitte Oktober bis Mitte November",x:1,d:"Chinas größtes staatliches Kunstfestival mit Theater, Oper, Tanz und Musik an zahlreichen Spielorten."}
 ];
 /* ---------------- Helfer ---------------- */
-const MON  = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
-const MABK = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
-const WTAG = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+const MON  = { de:["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],
+               en:["January","February","March","April","May","June","July","August","September","October","November","December"] };
+const MABK = { de:["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"],
+               en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] };
+const WTAG = { de:["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"],
+               en:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] };
 const DAY = 86400000;
 const TODAY = (() => { const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); })();
 
 const $ = id => document.getElementById(id);
+function applyLanguage(){
+  document.documentElement.lang = LANGUAGE;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+    el.setAttribute("aria-label", t(el.dataset.i18nAria));
+  });
+  $("langToggle").textContent = t("languageButton");
+  $("langToggle").setAttribute("aria-label", t("switchLanguage"));
+}
+function rechtstext(kind){
+  if (kind === "privacy") return LANGUAGE === "en" ? `
+    <h3>Scope</h3>
+    <p>G04Event is a static web app for browsing recurring events. There is no account, login, analytics, advertising or user profile.</p>
+    <h3>Operator</h3>
+    <p class="legal-todo">Before publication, please complete the operator details here: legal name, postal address and contact email.</p>
+    <h3>Data stored in your browser</h3>
+    <p>Your filters, custom events, hidden events, saved events, reminder settings and notification markers are stored only in this browser using local storage. They are not sent to a G04Event server. You can remove custom entries in the app or delete the site's browser data.</p>
+    <h3>Notifications</h3>
+    <p>Notifications are optional and use the browser's Notification API. They are shown only after you grant permission. The app checks reminders locally when the page is open or becomes visible again.</p>
+    <h3>External services</h3>
+    <p>The app loads fonts from Google Fonts. This causes the browser to connect to Google when the fonts are requested. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>. The site itself uses no analytics or advertising service.</p>
+    <h3>Contact</h3>
+    <p class="legal-todo">Please add a valid contact email before submitting the app to Google Play.</p>
+    <p>Last updated: 12 September 2026.</p>` : `
+    <h3>Geltungsbereich</h3>
+    <p>G04Event ist eine statische Web-App zum Nachschlagen wiederkehrender Veranstaltungen. Es gibt kein Konto, keinen Login, keine Analyse, keine Werbung und kein Nutzerprofil.</p>
+    <h3>Betreiber</h3>
+    <p class="legal-todo">Vor der Veröffentlichung bitte Betreiberangaben ergänzen: vollständiger Name, ladungsfähige Anschrift und Kontakt-E-Mail.</p>
+    <h3>Im Browser gespeicherte Daten</h3>
+    <p>Filter, eigene Termine, ausgeblendete Termine, Merkliste, Erinnerungseinstellungen und Benachrichtigungsmarkierungen werden ausschließlich in diesem Browser per localStorage gespeichert. Sie werden nicht an einen G04Event-Server übertragen. Eigene Einträge können in der App oder durch Löschen der Browserdaten entfernt werden.</p>
+    <h3>Benachrichtigungen</h3>
+    <p>Benachrichtigungen sind optional und verwenden die Notification API des Browsers. Sie werden erst nach deiner Erlaubnis angezeigt. Die App prüft Erinnerungen lokal, wenn die Seite geöffnet oder wieder sichtbar wird.</p>
+    <h3>Externe Dienste</h3>
+    <p>Die App lädt Schriftarten von Google Fonts. Dafür verbindet sich der Browser beim Abruf der Schriften mit Google. Siehe die <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>. Die Seite selbst verwendet keine Analyse- oder Werbedienste.</p>
+    <h3>Kontakt</h3>
+    <p class="legal-todo">Vor der Einreichung bei Google Play bitte eine gültige Kontakt-E-Mail ergänzen.</p>
+    <p>Stand: 12. September 2026.</p>`;
+  return LANGUAGE === "en" ? `
+    <h3>Software licence</h3>
+    <p>Copyright © 2026 G04Event. The source code of this project is released under the <a href="LICENSE">MIT License</a>.</p>
+    <h3>Event content</h3>
+    <p>Event names, dates, descriptions and trademarks may be protected by their respective owners. They remain the property of those owners. G04Event is not affiliated with the listed organizers unless explicitly stated.</p>
+    <h3>Data quality</h3>
+    <p>Some dates are projected from recurring patterns and are marked accordingly. Always verify dates, availability and travel information with the official organizer before making plans.</p>` : `
+    <h3>Software-Lizenz</h3>
+    <p>Copyright © 2026 G04Event. Der Quellcode dieses Projekts steht unter der <a href="LICENSE">MIT-Lizenz</a>.</p>
+    <h3>Veranstaltungsinhalte</h3>
+    <p>Namen, Termine, Beschreibungen und Marken können den Rechten ihrer jeweiligen Inhaber unterliegen und bleiben deren Eigentum. G04Event ist mit den aufgeführten Veranstaltern nicht verbunden, sofern nicht ausdrücklich angegeben.</p>
+    <h3>Datenqualität</h3>
+    <p>Einige Termine sind aus wiederkehrenden Mustern fortgeschrieben und entsprechend markiert. Termine, Verfügbarkeit und Reiseinformationen bitte vor einer Planung beim offiziellen Veranstalter prüfen.</p>`;
+}
 const parse  = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
 const days   = ev => Math.round((parse(ev.e) - parse(ev.s)) / DAY) + 1;
-const durTxt = n => n === 1 ? "1 Tag" : n + " Tage";
-const short  = d => d.getDate() + ". " + MABK[d.getMonth()];
+const durTxt = n => n === 1 ? t("oneDay") : t("manyDays").replace("%n%", n);
+const short  = d => LANGUAGE === "en"
+  ? MABK.en[d.getMonth()] + " " + d.getDate()
+  : d.getDate() + ". " + MABK.de[d.getMonth()];
 const esc    = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const sortDe = (a,b) => a.localeCompare(b,"de");
 const uniq   = arr => [...new Set(arr)].sort(sortDe);
@@ -969,7 +1173,7 @@ function pruefeErinnerungen(){
     if (diffTage < 0 || !ERINNERUNG.tage.has(diffTage)) return;
     const schluessel = evId(ev) + "|" + diffTage;
     if (BENACHRICHTIGT.has(schluessel)) return;
-    const wann = diffTage === 0 ? "heute" : diffTage === 1 ? "morgen" : "in " + diffTage + " Tagen";
+    const wann = diffTage === 0 ? t("today") : diffTage === 1 ? t("tomorrow") : t("inDays").replace("%n%", diffTage);
     zeigeBenachrichtigung(ev.n, ev.c + " · " + wann + " · " + rangeTxt(ev), schluessel);
     BENACHRICHTIGT.add(schluessel);
     geaendert = true;
@@ -983,43 +1187,47 @@ function renderMerklisteListe(){
   if (liste.length){
     $("merklisteListe").innerHTML = '<div class="eigeneliste">' + liste.map(ev =>
       '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(ev.c) + ' · ' + rangeTxt(ev) + '</span>' +
-      '<button class="del" data-entmerken="' + esc(evId(ev)) + '">Entfernen</button></div>').join("") + '</div>';
+      '<button class="del" data-entmerken="' + esc(evId(ev)) + '">' + t("remove") + '</button></div>').join("") + '</div>';
   } else {
-    $("merklisteListe").innerHTML = '<p class="eigene-empty">Noch keine Termine gemerkt. ' +
-      'Öffne einen Termin in der Liste und tippe auf „☆ Merken".</p>';
+    $("merklisteListe").innerHTML = '<p class="eigene-empty">' + t("savedEmpty") + '</p>';
   }
 }
 
 /* Erinnerungs-Einstellungen im Panel: Ein/Aus-Schalter + Tage-Auswahl */
 function renderErinnerungBox(){
   const unterstuetzt = typeof Notification !== "undefined";
-  let html = '<p class="eigenehead">🔔 Erinnerungen</p>';
+  let html = '<p class="eigenehead">' + t("reminderTitle") + '</p>';
   if (!unterstuetzt){
-    html += '<p class="eigene-empty">Dieser Browser unterstützt keine Benachrichtigungen.</p>';
+    html += '<p class="eigene-empty">' + t("noNotifications") + '</p>';
     $("erinnerungBox").innerHTML = html;
     return;
   }
   const status = Notification.permission;
   html += '<label class="erinnerung-toggle"><input type="checkbox" id="erinnerungAn" ' +
     (ERINNERUNG.aktiv && status === "granted" ? "checked" : "") +
-    '> Benachrichtigungen für gemerkte Termine aktivieren</label>';
+    '> ' + t("enableNotifications") + '</label>';
   if (status === "denied"){
-    html += '<p class="eigene-empty">Benachrichtigungen sind für diese Seite in deinem Browser blockiert — ' +
-      'bitte in den Browser-Einstellungen für diese Seite erlauben.</p>';
+    html += '<p class="eigene-empty">' + t("notificationsBlocked") + '</p>';
   }
-  html += '<div class="erinnerungtage">' + ERINNERUNG_TAGE_OPTIONEN.map(t =>
-    '<label class="tagchip"><input type="checkbox" data-tag="' + t + '" ' +
-    (ERINNERUNG.tage.has(t) ? "checked" : "") + '>' +
-    (t === 0 ? "am gleichen Tag" : t + " Tage vorher") + '</label>').join("") + '</div>';
-  html += '<p class="eigene-hinweis">Erinnerungen erscheinen, sobald du diese Seite öffnest und ein ' +
-    'gemerkter Termin im gewählten Zeitraum liegt — nicht bei komplett geschlossenem Browser. ' +
-    'Rein lokal in diesem Browser, ohne Server oder E-Mail.</p>';
+  html += '<div class="erinnerungtage">' + ERINNERUNG_TAGE_OPTIONEN.map(tag =>
+    '<label class="tagchip"><input type="checkbox" data-tag="' + tag + '" ' +
+    (ERINNERUNG.tage.has(tag) ? "checked" : "") + '>' +
+    (tag === 0 ? t("sameDay") : t("daysBefore").replace("%n%", tag)) + '</label>').join("") + '</div>';
+  html += '<p class="eigene-hinweis">' + t("reminderHint") + '</p>';
   $("erinnerungBox").innerHTML = html;
 }
 
 function rangeTxt(ev){
   const a = parse(ev.s), b = parse(ev.e);
-  if (ev.s === ev.e) return a.getDate() + ". " + MON[a.getMonth()] + " " + a.getFullYear();
+  if (ev.s === ev.e){
+    return LANGUAGE === "en"
+      ? MON.en[a.getMonth()] + " " + a.getDate() + ", " + a.getFullYear()
+      : a.getDate() + ". " + MON.de[a.getMonth()] + " " + a.getFullYear();
+  }
+  if (LANGUAGE === "en"){
+    return short(a) + (a.getFullYear() === b.getFullYear() ? " – " + short(b) + ", " + b.getFullYear()
+      : ", " + a.getFullYear() + " – " + short(b) + ", " + b.getFullYear());
+  }
   return short(a) + (a.getFullYear() === b.getFullYear() ? "" : " " + a.getFullYear()) +
          " – " + short(b) + " " + b.getFullYear();
 }
@@ -1107,7 +1315,7 @@ function bereinige(){
 /* ---------------- Auswahlfelder aufbauen ---------------- */
 function baueChips(el, alleText, werte, set, attr, zaehler){
   el.innerHTML =
-    '<button class="chip" data-' + attr + '="" aria-pressed="' + (set.size === 0) + '">' +
+      '<button class="chip" data-' + attr + '="" aria-pressed="' + (set.size === 0) + '">' +
       alleText + ' <span class="n">' + werte.length + '</span></button>' +
     werte.map(w => '<button class="chip" data-' + attr + '="' + esc(w) + '" aria-pressed="' +
       set.has(w) + '">' + esc(w) + ' <span class="n">' + zaehler(w) + '</span></button>').join("");
@@ -1115,31 +1323,31 @@ function baueChips(el, alleText, werte, set, attr, zaehler){
 function baueLand(){
   const werte = listeLaender();
   const chipsHtml =
-    '<button class="chip" data-land="" aria-pressed="' + (F.land.size === 0) + '">Alle Länder ' +
+    '<button class="chip" data-land="" aria-pressed="' + (F.land.size === 0) + '">' + t("allCountries") + ' ' +
       '<span class="n">' + werte.length + '</span></button>' +
     werte.map(w => '<button class="chip" data-land="' + esc(w) + '" aria-pressed="' +
       F.land.has(w) + '">' + esc(w) + ' <span class="n">' +
       ALLE.filter(e => landVon(e) === w).length + '</span></button>').join("");
   $("pane-land").innerHTML =
     '<div class="neuezeile"><input id="neuesLandInput" type="text" maxlength="60" ' +
-      'placeholder="Neues Land eintragen …">' +
-      '<button id="neuesLandBtn" type="button">Hinzufügen</button></div>' +
+      'placeholder="' + t("newCountryPlaceholder") + '">' +
+      '<button id="neuesLandBtn" type="button">' + t("addButton") + '</button></div>' +
     '<div class="landchips">' + chipsHtml + '</div>';
 }
-const baueRegion = () => baueChips($("pane-region"), "Alle Regionen", listeRegionen(), F.region, "region",
+const baueRegion = () => baueChips($("pane-region"), t("allRegions"), listeRegionen(), F.region, "region",
                        v => ALLE.filter(e => e.l === v).length);
 function baueStadt(){
   const werte = listeStaedte();
   const chipsHtml =
-    '<button class="chip" data-stadt="" aria-pressed="' + (F.stadt.size === 0) + '">Alle Städte ' +
+    '<button class="chip" data-stadt="" aria-pressed="' + (F.stadt.size === 0) + '">' + t("allCities") + ' ' +
       '<span class="n">' + werte.length + '</span></button>' +
     werte.map(w => '<button class="chip" data-stadt="' + esc(w) + '" aria-pressed="' +
       F.stadt.has(w) + '">' + esc(w) + ' <span class="n">' +
       ALLE.filter(e => e.c === w).length + '</span></button>').join("");
   $("pane-stadt").innerHTML =
     '<div class="neuezeile"><input id="neueStadtInput" type="text" maxlength="60" ' +
-      'placeholder="Neue Stadt eintragen …">' +
-      '<button id="neueStadtBtn" type="button">Hinzufügen</button></div>' +
+      'placeholder="' + t("newCityPlaceholder") + '">' +
+      '<button id="neueStadtBtn" type="button">' + t("addButton") + '</button></div>' +
     '<div class="stadtchips">' + chipsHtml + '</div>';
 }
 
@@ -1159,11 +1367,11 @@ function neueStadtAnlegen(){
     render();
     return;
   }
-  const iso = new Date().toISOString().slice(0, 10);
+  const iso = zuISO(new Date());
   EIGENE.push({
     id: "eigen-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-    n: "Termin in " + wert, c: wert, l: wert, k: "trad",
-    s: iso, e: iso, r: "einmalig", x: 1, d: "", eigen: true
+    n: t("eventIn") + " " + wert, c: wert, l: wert, k: "trad",
+    s: iso, e: iso, r: "Einmalig", x: 1, d: "", eigen: true
   });
   speichereEigene();
   F.stadt.add(wert);
@@ -1187,11 +1395,11 @@ function neuesLandAnlegen(){
     render();
     return;
   }
-  const iso = new Date().toISOString().slice(0, 10);
+  const iso = zuISO(new Date());
   const ev = {
     id: "eigen-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-    n: "Termin in " + wert, c: wert, l: wert, k: "trad",
-    s: iso, e: iso, r: "einmalig", x: 1, d: "", eigen: true
+    n: t("eventIn") + " " + wert, c: wert, l: wert, k: "trad",
+    s: iso, e: iso, r: "Einmalig", x: 1, d: "", eigen: true
   };
   if (wert.toLowerCase() !== "deutschland") ev.p = wert;
   EIGENE.push(ev);
@@ -1202,36 +1410,37 @@ function neuesLandAnlegen(){
 
 function baueThema(){
   $("pane-thema").innerHTML =
-    '<button class="chip" data-thema="" aria-pressed="' + (F.thema.size === 0) + '">Alle Themen</button>' +
+    '<button class="chip" data-thema="" aria-pressed="' + (F.thema.size === 0) + '">' + t("allThemes") + '</button>' +
     Object.entries(CATS).map(([k,v]) =>
       '<button class="chip k" data-thema="' + k + '" aria-pressed="' + F.thema.has(k) +
-      '" style="--cat:var(' + v.v + ')"><span class="dot"></span>' + v.label +
+      '" style="--cat:var(' + v.v + ')"><span class="dot"></span>' + catLabel(k) +
       ' <span class="n">' + ALLE.filter(e => e.k === k).length + '</span></button>').join("");
 }
 
 /* Liste eigener Termine im Panel, inkl. Bearbeiten, Löschen und Wiedereinblenden */
 function renderEigeneListe(){
-  $("dv-eigene").textContent = EIGENE.length ? EIGENE.length + " eigene" : "hinzufügen";
+  $("dv-eigene").textContent = EIGENE.length ? EIGENE.length + " " + t("ownBadge") : t("add");
   let html = "";
   if (EIGENE.length){
     html += '<div class="eigeneliste">' + EIGENE.map(ev =>
       '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(ev.c) + ' · ' + rangeTxt(ev) + '</span>' +
       '<span class="zeilebtns">' +
-      '<button class="edit" data-bearbeiten="' + esc(evId(ev)) + '">Bearbeiten</button>' +
-      '<button class="del" data-loeschen="' + esc(evId(ev)) + '">Löschen</button>' +
+      '<button class="edit" data-bearbeiten="' + esc(evId(ev)) + '">' + t("edit") + '</button>' +
+      '<button class="del" data-loeschen="' + esc(evId(ev)) + '">' + t("delete") + '</button>' +
       '</span></div>').join("") +
       '</div>';
   } else {
-    html += '<p class="eigene-empty">Noch keine eigenen Termine hinzugefügt.</p>';
+    html += '<p class="eigene-empty">' + t("ownEmpty") + '</p>';
   }
   if (AUSGEBLENDET.size){
     html += '<p class="hidden-restore">' + AUSGEBLENDET.size +
-      (AUSGEBLENDET.size === 1 ? ' ausgeblendeter Termin — ' : ' ausgeblendete Termine — ') +
-      '<button id="wiederEinblenden" type="button">alle wieder einblenden</button></p>';
+      (AUSGEBLENDET.size === 1 ? ' ' + t("hiddenOne") : ' ' + t("hiddenMany")) +
+      '<button id="wiederEinblenden" type="button">' + t("restoreAll") + '</button></p>';
   }
   $("eigeneListe").innerHTML = html;
 }
 
+applyLanguage();
 ladeEigene();
 pflegeEigeneTermine();
 ladeMerkliste();
@@ -1247,6 +1456,33 @@ if ("serviceWorker" in navigator){
   navigator.serviceWorker.register("sw.js").catch(() => {});
 }
 
+$("langToggle").addEventListener("click", () => {
+  LANGUAGE = LANGUAGE === "en" ? "de" : "en";
+  try { localStorage.setItem(LANGUAGE_KEY, LANGUAGE); } catch(e) {}
+  applyLanguage();
+  baueLand(); baueRegion(); baueStadt(); baueThema();
+  renderEigeneListe(); renderMerklisteListe(); renderErinnerungBox();
+  if (offenesPane) $("sheetTitle").textContent = t(TITEL[offenesPane]);
+  if (bearbeiteId) $("eigenSubmitBtn").textContent = t("saveChanges");
+  render();
+});
+
+function oeffneRechtliches(kind){
+  $("legalTitle").textContent = t(kind === "privacy" ? "privacyTitle" : "copyrightTitle");
+  $("legalBody").innerHTML = rechtstext(kind);
+  $("legalModal").hidden = false;
+  $("legalScrim").hidden = false;
+  $("legalClose").focus();
+}
+function schliesseRechtliches(){
+  $("legalModal").hidden = true;
+  $("legalScrim").hidden = true;
+}
+document.querySelectorAll("[data-legal]").forEach(btn =>
+  btn.addEventListener("click", () => oeffneRechtliches(btn.dataset.legal)));
+$("legalClose").addEventListener("click", schliesseRechtliches);
+$("legalScrim").addEventListener("click", schliesseRechtliches);
+
 /* ---------------- Filtern und Sortieren ---------------- */
 function filtered(){
   return ALLE.filter(ev => {
@@ -1255,7 +1491,7 @@ function filtered(){
     if (F.upcoming && isPast(ev)) return false;
     if (F.q){
       const hay = (ev.n + " " + ev.c + " " + ev.l + " " + landVon(ev) + " " +
-                   CATS[ev.k].label + " " + ev.d).toLowerCase();
+                   catLabel(ev.k) + " " + ev.d).toLowerCase();
       if (!F.q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
     }
     return true;
@@ -1269,7 +1505,7 @@ function sorted(list){
     durDesc: (a,b) => days(b) - days(a) || byDate(a,b),
     city:    (a,b) => sortDe(a.c, b.c) || byDate(a,b),
     name:    (a,b) => sortDe(a.n, b.n),
-    cat:     (a,b) => sortDe(CATS[a.k].label, CATS[b.k].label) || byDate(a,b)
+     cat:     (a,b) => sortDe(catLabel(a.k), catLabel(b.k)) || byDate(a,b)
   }[F.sort]);
 }
 
@@ -1277,13 +1513,13 @@ function sorted(list){
 let NEXT = null;
 
 function wohin(){
-  if (F.stadt.size  === 1) return "in " + [...F.stadt][0];
-  if (F.stadt.size  > 1)   return "in " + F.stadt.size + " Städten";
-  if (F.region.size === 1) return "in " + [...F.region][0];
-  if (F.region.size > 1)   return "in " + F.region.size + " Regionen";
-  if (F.land.size   === 1) return "in " + [...F.land][0];
-  if (F.land.size   > 1)   return "in " + F.land.size + " Ländern";
-  return "weltweit";
+  if (F.stadt.size  === 1) return t("inCity").replace("%value%", [...F.stadt][0]);
+  if (F.stadt.size  > 1)   return t("inCities").replace("%n%", F.stadt.size);
+  if (F.region.size === 1) return t("inRegion").replace("%value%", [...F.region][0]);
+  if (F.region.size > 1)   return t("inRegions").replace("%n%", F.region.size);
+  if (F.land.size   === 1) return t("inCountry").replace("%value%", [...F.land][0]);
+  if (F.land.size   > 1)   return t("inCountries").replace("%n%", F.land.size);
+  return t("worldwide");
 }
 
 function renderNext(list){
@@ -1301,14 +1537,14 @@ function renderNext(list){
   box.style.setProperty("--hcat", CATS[ev.k].h);
   box.hidden = false;
   box.innerHTML =
-    '<div class="who"><div class="lbl">' + (live ? "Läuft gerade" : "Als Nächstes " + wohin()) + '</div>' +
+    '<div class="who"><div class="lbl">' + (live ? t("runningNow") : t("next") + " " + wohin()) + '</div>' +
       '<h2>' + esc(ev.n) + '</h2>' +
       '<div class="meta"><b>' + esc(ev.c) + '</b><span>' + esc(landVon(ev)) + '</span>' +
         '<span>' + rangeTxt(ev) + '</span><span>' + durTxt(days(ev)) + '</span>' +
-        '<span>' + CATS[ev.k].label + '</span></div></div>' +
-    '<div class="cdwrap"><span class="cdl">' + (live ? "läuft noch" : "beginnt in") + '</span>' +
+        '<span>' + catLabel(ev.k) + '</span></div></div>' +
+    '<div class="cdwrap"><span class="cdl">' + (live ? t("stillRunning") : t("startsIn")) + '</span>' +
       '<div class="cd" id="cd">' +
-        ['Tage','Std','Min','Sek'].map(k =>
+        [t("countdownDays"),t("countdownHours"),t("countdownMinutes"),t("countdownSeconds")].map(k =>
           '<div class="cdu"><span class="v">–</span><span class="k">' + k + '</span></div>').join("") +
       '</div></div>';
   tick();
@@ -1339,44 +1575,44 @@ setInterval(tick, 1000);
 function evHTML(ev){
   const a = parse(ev.s), n = days(ev);
   const datum = ev.x ? rangeTxt(ev)
-    : '<span class="est" title="Termin aus dem jährlichen Rhythmus fortgeschrieben — bitte prüfen">' +
+    : '<span class="est" title="' + esc(t("estimatedTitle")) + '">' +
       rangeTxt(ev) + '</span>';
   const id = evId(ev);
-  const badge = ev.eigen ? '<span class="badge">eigene</span>' : '';
+  const badge = ev.eigen ? '<span class="badge">' + esc(t("ownBadge")) + '</span>' : '';
   return '<article class="ev" style="--cat:var(' + CATS[ev.k].v + ')">' +
     '<button class="evmain" aria-expanded="false">' +
       '<span class="dbox"><span class="d">' + a.getDate() + '</span>' +
-        '<span class="m">' + MABK[a.getMonth()] + '</span>' +
+        '<span class="m">' + MABK[LANGUAGE][a.getMonth()] + '</span>' +
         '<span class="y">' + a.getFullYear() + '</span></span>' +
       '<span><span class="tt">' + esc(ev.n) + badge + '</span>' +
         '<span class="sub"><span class="place">' + esc(ev.c) + '</span><span>' + datum + '</span>' +
-        (isLive(ev) ? '<span class="live">läuft gerade</span>' : '') + '</span></span>' +
-      '<span class="right"><span class="tag">' + CATS[ev.k].label + '</span>' +
-        '<span class="dur"><span class="v">' + durTxt(n) + '</span><span class="k">Dauer</span></span>' +
+        (isLive(ev) ? '<span class="live">' + t("live") + '</span>' : '') + '</span></span>' +
+      '<span class="right"><span class="tag">' + catLabel(ev.k) + '</span>' +
+        '<span class="dur"><span class="v">' + durTxt(n) + '</span><span class="k">' + t("detailDuration") + '</span></span>' +
       '</span>' +
     '</button>' +
     '<div class="detail" hidden><p>' + esc(ev.d || "") + '</p><div class="dl">' +
-      '<div><dt>Zeitraum</dt><dd>' + rangeTxt(ev) + '</dd></div>' +
-      '<div><dt>Dauer</dt><dd>' + durTxt(n) + '</dd></div>' +
-      '<div><dt>Beginnt</dt><dd>' + WTAG[a.getDay()] + '</dd></div>' +
-      '<div><dt>Rhythmus</dt><dd>' + esc(ev.r) + '</dd></div>' +
-      '<div><dt>Ort</dt><dd>' + esc(ev.c) + ', ' + esc(ev.l) + '</dd></div>' +
-      '<div><dt>Land</dt><dd>' + esc(landVon(ev)) + '</dd></div>' +
+      '<div><dt>' + t("detailDates") + '</dt><dd>' + rangeTxt(ev) + '</dd></div>' +
+      '<div><dt>' + t("detailDuration") + '</dt><dd>' + durTxt(n) + '</dd></div>' +
+      '<div><dt>' + t("detailStarts") + '</dt><dd>' + WTAG[LANGUAGE][a.getDay()] + '</dd></div>' +
+      '<div><dt>' + t("detailRhythm") + '</dt><dd>' + esc(ev.r) + '</dd></div>' +
+      '<div><dt>' + t("detailLocation") + '</dt><dd>' + esc(ev.c) + ', ' + esc(ev.l) + '</dd></div>' +
+      '<div><dt>' + t("detailCountry") + '</dt><dd>' + esc(landVon(ev)) + '</dd></div>' +
     '</div>' +
     '<div class="rowactions">' +
       '<button class="linkbtn' + (MERKZETTEL.has(id) ? " aktiv" : "") + '" type="button" data-merken="' +
-        esc(id) + '">' + (MERKZETTEL.has(id) ? "★ Gemerkt" : "☆ Merken") + '</button>' +
+        esc(id) + '">' + (MERKZETTEL.has(id) ? t("marked") : t("mark")) + '</button>' +
       '<button class="linkbtn" type="button" data-hide="' + esc(id) +
         '" data-eigen="' + (ev.eigen ? 1 : 0) + '">' +
-        (ev.eigen ? "Eigenen Termin löschen" : "Für mich ausblenden") + '</button>' +
+        (ev.eigen ? t("deleteOwn") : t("hide")) + '</button>' +
     '</div>' +
     '</div></article>';
 }
 
 function dockWert(set){
-  if (!set.size) return "alle";
+  if (!set.size) return t("all");
   if (set.size === 1) return [...set][0];
-  return set.size + " gewählt";
+  return t("chosen").replace("%n%", set.size);
 }
 
 function render(){
@@ -1386,50 +1622,51 @@ function render(){
 
   renderNext(list);
 
-  $("count").innerHTML = "<b>" + list.length + "</b> von " + ALLE.length + " Terminen " + wohin();
+  $("count").innerHTML = "<b>" + list.length + "</b> " +
+    t(list.length === 1 ? "eventOne" : "eventMany").replace("%n%", list.length).replace("%total%", ALLE.length) +
+    " " + wohin();
   $("reset").hidden = !aktiv;
 
   // Leiste unten beschriften
-  const werte = { q: F.q || "alle", land: dockWert(F.land), region: dockWert(F.region),
+  const werte = { q: F.q || t("all"), land: dockWert(F.land), region: dockWert(F.region),
                   stadt: dockWert(F.stadt),
-                  thema: F.thema.size === 1 ? CATS[[...F.thema][0]].label : dockWert(F.thema) };
+                  thema: F.thema.size === 1 ? catLabel([...F.thema][0]) : dockWert(F.thema) };
   Object.entries(werte).forEach(([p,v]) => {
     $("dv-" + p).textContent = v;
     const b = document.querySelector('.dbtn[data-pane="' + p + '"]');
-    b.classList.toggle("gesetzt", v !== "alle");
+    b.classList.toggle("gesetzt", v !== t("all"));
   });
 
   const out = $("out");
   if (!list.length){
-    out.innerHTML = '<div class="empty"><strong>Nichts gefunden</strong>' +
-      'Für diese Auswahl ist nichts eingetragen. Wähle unten ein anderes Land, eine andere Stadt ' +
-      'oder ein anderes Thema.</div>';
+    out.innerHTML = '<div class="empty"><strong>' + t("emptyTitle") + '</strong>' +
+      t("emptyBody") + '</div>';
     return;
   }
 
   if (F.sort === "date"){
     const gruppen = [];
     list.forEach(ev => {
-      const d = parse(ev.s), g = MON[d.getMonth()] + " " + d.getFullYear();
+      const d = parse(ev.s), g = MON[LANGUAGE][d.getMonth()] + " " + d.getFullYear();
       if (!gruppen.length || gruppen[gruppen.length-1].g !== g) gruppen.push({g, items:[]});
       gruppen[gruppen.length-1].items.push(ev);
     });
     out.innerHTML = gruppen.map(gr =>
       '<section class="group"><div class="gh"><h3>' + gr.g + '</h3><span class="gn">' +
-      gr.items.length + (gr.items.length === 1 ? " Termin" : " Termine") + '</span></div>' +
+      gr.items.length + " " + t(gr.items.length === 1 ? "termOne" : "termMany") + '</span></div>' +
       '<div class="list">' + gr.items.map(evHTML).join("") + '</div></section>').join("");
   } else {
-    const titel = {durDesc:"Nach Dauer — lang zuerst", durAsc:"Nach Dauer — kurz zuerst",
-                   city:"Nach Stadt", name:"Alphabetisch", cat:"Nach Kategorie"}[F.sort];
+    const titel = {durDesc:t("sortDurationLong"), durAsc:t("sortDurationShort"),
+                   city:t("sortCity"), name:t("sortName"), cat:t("sortCategory")}[F.sort];
     out.innerHTML = '<section class="group"><div class="gh"><h3>' + titel + '</h3>' +
-      '<span class="gn">' + list.length + ' Termine</span></div>' +
+      '<span class="gn">' + list.length + ' ' + t(list.length === 1 ? "termOne" : "termMany") + '</span></div>' +
       '<div class="list">' + list.map(evHTML).join("") + '</div></section>';
   }
 }
 
 /* ---------------- Leiste und Auswahlfeld ---------------- */
-const TITEL = { q:"Suchen", land:"Land wählen", region:"Region wählen",
-                stadt:"Stadt wählen", thema:"Thema wählen", eigene:"Eigene Termine" };
+const TITEL = { q:"search", land:"chooseCountry", region:"chooseRegion",
+                stadt:"chooseCity", thema:"chooseTheme", eigene:"ownEvents" };
 const PANES = ["q","land","region","stadt","thema","eigene"];
 let offenesPane = null;
 
@@ -1437,7 +1674,7 @@ function oeffne(pane){
   if (offenesPane === pane){ schliesse(); return; }
   offenesPane = pane;
   PANES.forEach(p => $("pane-" + p).hidden = p !== pane);
-  $("sheetTitle").textContent = TITEL[pane];
+  $("sheetTitle").textContent = t(TITEL[pane]);
   $("sheet").hidden = false;
   $("scrim").hidden = false;
   document.querySelectorAll(".dbtn").forEach(b =>
@@ -1539,12 +1776,12 @@ function eigeneBearbeiten(id){
   form.k.value = ev.k || "trad";
   form.s.value = ev.s || "";
   form.e.value = ev.e || "";
-  form.r.value = ev.r || "Einmalig";
+  form.r.value = ev.r === "einmalig" ? "Einmalig" : (ev.r || "Einmalig");
   if (form.r.selectedIndex === -1) form.r.value = "Einmalig";
   form.d.value = ev.d || "";
   $("editName").textContent = ev.n;
   $("editHinweis").hidden = false;
-  $("eigenSubmitBtn").textContent = "Änderungen speichern";
+  $("eigenSubmitBtn").textContent = t("saveChanges");
   /* Bewusst KEIN .focus() hier — das würde auf dem Handy sofort die Tastatur öffnen und
      das Layout verschieben, noch bevor man ein Feld antippt. Stattdessen nur zum Formular
      scrollen; die Tastatur soll erst beim Antippen eines Feldes durch den Nutzer erscheinen. */
@@ -1555,7 +1792,7 @@ function eigeneBearbeitenAbbrechen(){
   bearbeiteId = null;
   $("eigenForm").reset();
   $("editHinweis").hidden = true;
-  $("eigenSubmitBtn").textContent = "Termin hinzufügen";
+  $("eigenSubmitBtn").textContent = t("addEvent");
 }
 
 $("eigenForm").addEventListener("submit", e => {
@@ -1585,7 +1822,7 @@ $("eigenForm").addEventListener("submit", e => {
     if (idx > -1) EIGENE[idx] = { ...EIGENE[idx], ...basis, id: EIGENE[idx].id };
     bearbeiteId = null;
     $("editHinweis").hidden = true;
-    $("eigenSubmitBtn").textContent = "Termin hinzufügen";
+    $("eigenSubmitBtn").textContent = t("addEvent");
   } else {
     EIGENE.push({
       id: "eigen-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
@@ -1681,3 +1918,5 @@ setInterval(() => { pruefeErinnerungen(); pruefeEigeneTermine(); }, 60 * 60 * 10
 
 render();
 </script>
+</body>
+</html>
