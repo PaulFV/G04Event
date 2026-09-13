@@ -17,3 +17,11 @@ node_modules/
 *.jks
 *.keystore
 keystore.properties
+
+# Android/TWA-Build-Ausgaben
+play-store/android-twa/.gradle/
+play-store/android-twa/build/
+play-store/android-twa/app/build/
+play-store/android-twa/*.aab
+play-store/android-twa/*.apk
+play-store/android-twa/*.idsig

@@ -1,0 +1,50 @@
+{
+  "packageId": "de.g04event.app",
+  "host": "paulfv.github.io",
+  "name": "G04Event",
+  "launcherName": "G04Event",
+  "display": "standalone",
+  "themeColor": "#0E1115",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#0E1115",
+  "enableNotifications": true,
+  "startUrl": "/G04Event/",
+  "iconUrl": "https://paulfv.github.io/G04Event/icon-512.png",
+  "maskableIconUrl": "https://paulfv.github.io/G04Event/icon-512-maskable.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://paulfv.github.io/G04Event/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://paulfv.github.io/G04Event/",
+  "minSdkVersion": 21,
+  "orientation": "portrait-primary",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "",
+  "displayOverride": [
+    "window-controls-overlay",
+    "standalone"
+  ],
+  "appVersion": "1"
+}
