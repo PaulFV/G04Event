@@ -69,41 +69,61 @@
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
   -webkit-font-smoothing:antialiased;margin:0;
-  padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+  padding-bottom:calc(184px + env(safe-area-inset-bottom))}
 :focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:4px}
 .shell{max-width:1000px;margin:0 auto;padding:0 18px}
 
 /* ---------- Kopf ---------- */
-.head{padding:calc(26px + env(safe-area-inset-top)) 0 16px}
-.headbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.head{padding:calc(28px + env(safe-area-inset-top)) 0 18px}
+.headbar{display:flex;align-items:center;justify-content:space-between;gap:18px}
 .langbtn{border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink-2);
-  padding:7px 12px;font:500 12px var(--sans);cursor:pointer;white-space:nowrap}
+  padding:9px 18px;font:500 14px var(--sans);cursor:pointer;white-space:nowrap}
 .langbtn:hover{color:var(--ink);background:var(--surface-2)}
-h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,7vw,42px);letter-spacing:-.03em;
-  margin:0;line-height:.98}
-.appver{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;
-  color:var(--faint);vertical-align:super;margin-left:2px}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(39px,7vw,58px);letter-spacing:-.045em;
+  margin:0;line-height:.96}
+.appver{font-family:var(--mono);font-size:clamp(12px,2vw,16px);font-weight:500;letter-spacing:.02em;
+  color:var(--muted);vertical-align:middle;margin-left:8px}
 .lede{margin:8px 0 0;max-width:52ch;color:var(--muted);font-size:14.5px}
 
 /* ---------- Nächster Termin ---------- */
-.hero{background:var(--hero-bg);color:var(--hero-ink);border-radius:16px;
-  padding:20px 22px 22px;display:flex;gap:20px 30px;justify-content:space-between;
-  align-items:flex-end;flex-wrap:wrap}
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:314px;background:
+  linear-gradient(90deg,rgba(10,14,20,.98) 0%,rgba(14,19,26,.95) 43%,rgba(24,31,39,.78) 100%),var(--hero-bg);
+  color:var(--hero-ink);border:1px solid var(--line-2);border-radius:18px;padding:24px 28px 28px;
+  display:flex;flex-direction:column;gap:20px;justify-content:space-between}
 .hero[hidden]{display:none}
-.hero .who{min-width:0;flex:1 1 260px}
-.hero .lbl{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--hcat);margin-bottom:10px}
-.hero h2{font-family:var(--disp);font-weight:700;font-size:clamp(27px,6.4vw,44px);
-  letter-spacing:-.028em;margin:0 0 9px;line-height:1.02;color:var(--hero-ink)}
+.hero::before{content:"";position:absolute;z-index:-1;inset:0 0 0 34%;
+  background-image:linear-gradient(90deg,rgba(10,14,20,.02),rgba(10,14,20,.08) 55%,rgba(10,14,20,.2)),var(--hero-image,url("assets/event-hero-sprite.png"));
+  background-size:100% 100%,var(--hero-image-size,auto 400%);
+  background-position:0 0,var(--hero-image-position,var(--cover-position,0% 0%));background-repeat:no-repeat;
+  opacity:.9;filter:saturate(.92)}
+.hero::after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(7,12,18,.98) 0%,rgba(9,14,21,.82) 28%,rgba(9,14,21,.12) 65%,rgba(9,14,21,.2) 100%)}
+.hero-top,.hero-body{position:relative;z-index:1}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.hero-status{display:flex;align-items:center;gap:12px}
+.hero .live-dot{width:13px;height:13px;border-radius:50%;background:#F2BD4C;box-shadow:0 0 12px rgba(242,189,76,.65)}
+.hero .lbl{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--hcat)}
+.hero-actions{display:flex;align-items:center;gap:12px}
+.hero-bookmark,.hero-details{border:1px solid rgba(203,216,234,.34);background:rgba(11,18,27,.68);color:var(--hero-ink);cursor:pointer}
+.hero-bookmark{display:grid;place-items:center;width:48px;height:48px;border-radius:11px}
+.hero-bookmark svg{width:24px;height:24px}
+.hero-bookmark[aria-pressed="true"]{color:var(--hcat);border-color:var(--hcat)}
+.hero-details{display:flex;align-items:center;gap:18px;border-radius:12px;padding:12px 16px;font:600 14px var(--sans)}
+.hero-details span{font-size:24px;line-height:.6}
+.hero-bookmark:hover,.hero-details:hover{background:rgba(255,255,255,.13)}
+.hero-body{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;min-width:0}
+.hero .who{min-width:0;flex:1 1 auto}
+.hero h2{font-family:var(--disp);font-weight:700;font-size:clamp(31px,6.2vw,52px);
+  letter-spacing:-.04em;margin:0 0 10px;line-height:1.02;color:var(--hero-ink);max-width:18ch}
 .hero .meta{font-size:14.5px;color:var(--hero-muted);display:flex;flex-wrap:wrap;gap:2px 7px}
 .hero .meta b{color:var(--hero-ink);font-weight:600}
 .hero .meta span::before{content:"·";margin-right:7px;opacity:.45}
-.hero .cdwrap{display:flex;flex-direction:column;gap:9px;align-items:flex-start}
+.hero .cdwrap{display:flex;flex-direction:column;gap:9px;align-items:flex-start;flex:none}
 .hero .cdl{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
   color:var(--hero-muted)}
 .cd{display:flex;gap:7px}
-.cdu{min-width:62px;text-align:center;background:var(--hero-box);border-radius:11px;padding:9px 8px}
-.cdu .v{display:block;font-family:var(--mono);font-size:27px;font-weight:600;letter-spacing:-.04em;
+.cdu{min-width:76px;text-align:center;background:rgba(11,17,25,.72);border:1px solid rgba(143,166,194,.2);border-radius:11px;padding:12px 9px}
+.cdu .v{display:block;font-family:var(--mono);font-size:30px;font-weight:600;letter-spacing:-.04em;
   font-variant-numeric:tabular-nums;line-height:1.03;color:var(--hero-ink)}
 .cdu .k{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--hero-muted);margin-top:5px}
@@ -113,45 +133,88 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,7vw,42px);letter
 .cd[data-stufe="gruen"] .cdu .v{color:#6BD189}
 
 /* ---------- Ergebniskopf ---------- */
-.rhead{display:flex;align-items:center;justify-content:space-between;gap:12px 18px;flex-wrap:wrap;
-  padding:22px 0 12px}
-.count{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-.count b{color:var(--ink);font-weight:600}
-.rtools{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.tg{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13.5px;color:var(--ink-2)}
-.tg input{width:16px;height:16px;accent-color:var(--ink);margin:0;flex:none}
-select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);appearance:none;
-  border:1px solid var(--line-2);border-radius:8px;padding:7px 28px 7px 10px;cursor:pointer;
+.rhead{display:flex;flex-direction:column;gap:18px;padding:27px 0 20px}
+.count{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:16px;color:var(--muted);font-variant-numeric:tabular-nums}
+.count b{color:var(--ink);font-size:22px;font-weight:600}
+.count-icon{display:grid;place-items:center;width:29px;height:29px;color:var(--ink-2)}
+.count-icon svg{width:28px;height:28px}
+.rtools{width:100%;display:grid;grid-template-columns:auto minmax(175px,265px) auto minmax(220px,1fr);align-items:center;gap:14px}
+.tg{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:16px;color:var(--ink-2);white-space:nowrap}
+.tg input{appearance:none;width:28px;height:28px;border:1px solid var(--line-2);border-radius:5px;background:var(--surface);margin:0;flex:none;cursor:pointer}
+.tg input:checked{background:var(--ink);border-color:var(--ink)}
+.tg input:checked::after{content:"✓";display:block;color:var(--bg);font:700 23px/26px var(--sans);text-align:center}
+select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);appearance:none;
+  border:1px solid var(--line-2);border-radius:11px;padding:7px 38px 7px 16px;cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
-  background-position:calc(100% - 15px) 53%,calc(100% - 10px) 53%;background-size:5px 5px,5px 5px;
+  background-position:calc(100% - 20px) 53%,calc(100% - 14px) 53%;background-size:6px 6px,6px 6px;
   background-repeat:no-repeat}
-.reset{background:none;border:0;padding:0;font:inherit;font-size:13px;color:var(--muted);
+.reset{background:none;border:0;padding:0;font:inherit;font-size:16px;color:var(--muted);
   text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .reset:hover{color:var(--ink)}
 .reset[hidden]{display:none}
+.main-searchbox{position:relative;min-width:0}
+.main-searchbox svg{position:absolute;left:17px;top:50%;width:27px;height:27px;transform:translateY(-50%);color:var(--ink-2)}
+.main-searchbox input{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-2);border-radius:11px;padding:7px 16px 7px 58px}
+.main-searchbox input::placeholder{color:var(--faint)}
 
 /* ---------- Liste ---------- */
-.group{margin-bottom:26px}
+.group{margin-bottom:28px}
 .gh{position:sticky;top:0;z-index:2;display:flex;align-items:baseline;gap:12px;
-  padding:9px 2px;background:var(--bg);border-bottom:1px solid var(--line-2)}
-.gh h3{font-family:var(--disp);font-weight:600;font-size:17px;letter-spacing:-.015em;margin:0}
-.gh .gn{font-family:var(--mono);font-size:11.5px;color:var(--faint)}
-.list{border:1px solid var(--line);border-top:0;border-radius:0 0 11px 11px;overflow:hidden;
-  background:var(--surface)}
-.ev{border-bottom:1px solid var(--line);border-left:4px solid var(--cat)}
-.ev:last-child{border-bottom:0}
+  padding:10px 2px 12px;background:var(--bg);border:0}
+.gh h3{font-family:var(--disp);font-weight:700;font-size:25px;letter-spacing:-.03em;margin:0}
+.gh .gn{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.list{background:transparent}
+.ev{position:relative;border:1px solid var(--line-2);border-left:4px solid var(--cat);border-radius:14px;overflow:hidden;
+  margin-bottom:12px;background:var(--surface);box-shadow:0 7px 22px rgba(0,0,0,.06)}
+.ev:last-child{margin-bottom:0}
 .ev.on{background:var(--surface-2)}
-.evmain{display:grid;grid-template-columns:66px minmax(0,1fr) auto;gap:16px;align-items:center;
+.evmain{display:grid;grid-template-columns:146px 76px minmax(0,1fr) auto;gap:18px;align-items:center;
   width:100%;text-align:left;font:inherit;color:inherit;background:none;border:0;cursor:pointer;
-  padding:14px 16px 14px 15px}
+  padding:14px 94px 14px 15px}
 .evmain:hover{background:var(--tint)}
+.evvisual{position:relative;display:block;width:146px;height:112px;overflow:hidden;border-radius:10px;
+  aspect-ratio:1/1;height:auto;background-color:var(--surface-3);background-image:url("assets/event-covers-sprite.png");
+  background-repeat:no-repeat;background-size:400% 400%;background-position:0 0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.evvisual::before{content:"";position:absolute;inset:13% 15% 20% 19%;border-radius:50% 48% 42% 55%;
+  background:radial-gradient(circle at 70% 25%,rgba(255,255,255,.72) 0 4%,transparent 5%),linear-gradient(150deg,rgba(255,255,255,.28),rgba(255,255,255,.03) 48%,rgba(0,0,0,.36));
+  transform:rotate(-12deg);filter:blur(.2px)}
+.evvisual::after{content:"";position:absolute;left:-12%;right:-5%;bottom:-17%;height:50%;border-radius:50% 50% 0 0;
+  background:linear-gradient(160deg,rgba(7,17,24,.08),rgba(7,17,24,.76))}
+.visual-tech{background:linear-gradient(145deg,#24508d,#1d2f50 48%,#101923)}
+.visual-food{background:linear-gradient(145deg,#7b5324,#bd8339 45%,#33251b)}
+.visual-play{background:linear-gradient(145deg,#65438d,#2c315f 48%,#191a2b)}
+.visual-music{background:linear-gradient(145deg,#a84976,#47315f 48%,#211724)}
+.visual-art{background:linear-gradient(145deg,#257b75,#366e8d 48%,#172832)}
+.visual-film{background:linear-gradient(145deg,#647993,#394b6a 48%,#1a222f)}
+.visual-sport{background:linear-gradient(145deg,#398b59,#2e6054 48%,#16271d)}
+.visual-trad{background:linear-gradient(145deg,#9f4c4c,#684047 48%,#271c25)}
+.evvisual[class*="cover-"]{background-image:url("assets/event-covers-sprite.png");background-repeat:no-repeat;background-size:400% 400%}
+.evvisual[class*="cover-"]::before{inset:0;border-radius:0;background:linear-gradient(145deg,rgba(255,255,255,.08),transparent 42%,rgba(0,0,0,.18));transform:none;filter:none}
+.evvisual[class*="cover-"]::after{left:0;right:0;bottom:0;height:28%;border-radius:0;background:linear-gradient(180deg,transparent,rgba(3,8,14,.38))}
+.evvisual.cover-0{background-position:0% 0%}
+.evvisual.cover-1{background-position:33.333% 0%}
+.evvisual.cover-2{background-position:66.667% 0%}
+.evvisual.cover-3{background-position:100% 0%}
+.evvisual.cover-4{background-position:0% 33.333%}
+.evvisual.cover-5{background-position:33.333% 33.333%}
+.evvisual.cover-6{background-position:66.667% 33.333%}
+.evvisual.cover-7{background-position:100% 33.333%}
+.evvisual.cover-8{background-position:0% 66.667%}
+.evvisual.cover-9{background-position:33.333% 66.667%}
+.evvisual.cover-10{background-position:66.667% 66.667%}
+.evvisual.cover-11{background-position:100% 66.667%}
+.evvisual.cover-12{background-position:0% 100%}
+.evvisual.cover-13{background-position:33.333% 100%}
+.evvisual.cover-14{background-position:66.667% 100%}
+.evvisual.cover-15{background-position:100% 100%}
 .dbox{font-family:var(--mono);line-height:1.1}
 .dbox span{display:block}
 .dbox .d{font-size:22px;font-weight:600;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .dbox .m{font-size:10.5px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;
   color:var(--cat);margin-top:3px}
 .dbox .y{font-size:10px;color:var(--faint);margin-top:2px}
-.tt{font-weight:600;font-size:16px;letter-spacing:-.008em;display:block;margin-bottom:3px}
+.tt{font-weight:600;font-size:18px;letter-spacing:-.015em;display:block;margin-bottom:5px}
 .sub{font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline}
 .sub .place{color:var(--ink-2);font-weight:500}
 .est{border-bottom:1px dotted var(--line-2)}
@@ -162,10 +225,15 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .dur .k{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);margin-top:3px}
 .tag{font-size:11.5px;font-weight:600;color:var(--cat);border:1px solid var(--cat);
   border-radius:999px;padding:3px 10px;white-space:nowrap}
+.cardmark,.cardchevron{position:absolute;z-index:1;color:var(--ink-2)}
+.cardmark{top:22px;right:51px;display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;background:none;cursor:pointer}
+.cardmark svg{width:25px;height:25px}
+.cardmark:hover,.cardmark[aria-pressed="true"]{color:var(--cat)}
+.cardchevron{right:17px;top:50%;font-size:31px;font-weight:300;line-height:1;transform:translateY(-50%);pointer-events:none}
 .live{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;
   text-transform:uppercase;color:var(--surface);background:var(--c-sport);border-radius:3px;
   padding:2px 6px;white-space:nowrap}
-.detail{padding:0 16px 18px 15px;display:grid;gap:13px}
+.detail{padding:0 94px 20px 15px;display:grid;gap:13px}
 .detail p{margin:0;max-width:64ch;color:var(--ink-2);font-size:14.5px}
 .dl{display:flex;flex-wrap:wrap;gap:11px 30px}
 .dl div{display:flex;flex-direction:column;gap:2px}
@@ -177,7 +245,7 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .note{margin:34px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;
   color:var(--faint);max-width:72ch}
 .note b{color:var(--muted);font-weight:600}
-.footer{max-width:1000px;margin:24px auto 110px;padding:14px 18px 0;border-top:1px solid var(--line);
+.footer{max-width:1000px;margin:24px auto 190px;padding:14px 18px 0;border-top:1px solid var(--line);
   display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--faint);font-size:11.5px}
 .footerlinks{display:flex;gap:14px}
 .footer button{background:none;border:0;padding:0;color:var(--muted);font:inherit;text-decoration:underline;
@@ -202,33 +270,40 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 
 /* ---------- Leiste unten ---------- */
 .dockwrap{position:fixed;left:0;right:0;bottom:0;z-index:40}
-.dock{background:var(--dock-bg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-  border-top:1px solid var(--line-2);
-  padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
-.dockrow{display:flex;gap:3px;max-width:1000px;margin:0 auto}
-.dbtn{flex:1 1 0;min-width:0;background:none;border:0;border-radius:11px;padding:7px 3px 6px;
-  display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
-  color:var(--muted);font:inherit;min-height:56px;-webkit-tap-highlight-color:transparent}
-.dbtn svg{flex:none;transition:filter .15s ease}
-.dbtn .dl{font-size:10.5px;font-weight:600;letter-spacing:.01em;line-height:1.1}
-.dbtn .dv{font-size:10px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;
-  white-space:nowrap;color:var(--faint)}
-.dbtn:hover{color:var(--ink-2)}
-.dbtn.gesetzt{color:var(--ink)}
-.dbtn.gesetzt .dv{color:var(--ink);font-weight:600}
-.dbtn[aria-expanded="true"]{background:var(--surface-3);color:var(--ink)}
+.dock{background:#0B1016;color:#C6D0DF;border-top:1px solid #334052;
+  padding:10px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -12px 34px rgba(0,0,0,.28)}
+.dockrow{display:flex;gap:8px;max-width:1120px;margin:0 auto}
+.dbtn{flex:1 1 0;min-width:0;background:transparent;border:1px solid transparent;border-radius:23px;padding:11px 5px 10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;cursor:pointer;position:relative;
+  color:#AEBBD0;font:inherit;min-height:154px;-webkit-tap-highlight-color:transparent}
+.dock-icon{display:block;width:82px;height:82px;flex:none;background-image:url("assets/dock-icons-sprite.png");background-repeat:no-repeat;background-size:300% 200%;background-color:#0B1016;filter:drop-shadow(0 0 6px rgba(122,197,255,.34)) drop-shadow(0 2px 3px rgba(0,0,0,.6));transition:filter .15s ease}
+.dock-icon-q{background-position:0% 0%}
+.dock-icon-land{background-position:50% 0%}
+.dock-icon-region{background-position:100% 0%}
+.dock-icon-city{background-position:0% 100%}
+.dock-icon-theme{background-position:50% 100%}
+.dock-icon-own{background-position:100% 100%}
+.dbtn .dl{font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1.05;color:#E6EBF3}
+.dbtn .dv{font-size:18px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;color:#AEBBD0}
+.dbtn:hover{color:#D7E0ED}
+.dbtn.gesetzt .dv{color:#E8EDF5;font-weight:600}
+.dbtn[data-pane="land"].gesetzt{background:rgba(16,117,104,.28);border-color:rgba(35,192,171,.28);box-shadow:0 0 28px rgba(28,198,175,.1) inset}
+.dbtn[data-pane="land"].gesetzt::before{content:"";position:absolute;left:26%;right:26%;top:-12px;height:7px;border-radius:999px;background:#50E8CC;box-shadow:0 0 13px rgba(80,232,204,.72)}
+.dbtn[aria-expanded="true"]{background:rgba(255,255,255,.08);border-color:rgba(170,190,215,.25);color:#F1F4F8}
 
-/* Icons in Glow-Farben, passend zur restlichen Kategorie-Farbwelt der App */
-.dbtn[data-pane="q"]      svg{color:var(--c-tech)}
-.dbtn[data-pane="land"]   svg{color:var(--c-art)}
-.dbtn[data-pane="region"] svg{color:var(--c-play)}
-.dbtn[data-pane="stadt"]  svg{color:var(--c-food)}
-.dbtn[data-pane="thema"]  svg{color:var(--c-music)}
-.dbtn[data-pane="eigene"] svg{color:var(--c-sport)}
-.dbtn svg{filter:drop-shadow(0 0 4px currentColor) drop-shadow(0 0 1px currentColor)}
-.dbtn:hover svg{filter:drop-shadow(0 0 6px currentColor) drop-shadow(0 0 2px currentColor)}
-.dbtn.gesetzt svg,.dbtn[aria-expanded="true"] svg{
-  filter:drop-shadow(0 0 8px currentColor) drop-shadow(0 0 3px currentColor)}
+/* Farbige, leuchtende Icons wie in der Referenzleiste */
+.dbtn:hover .dock-icon{filter:drop-shadow(0 0 12px rgba(126,220,255,.62)) drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.dbtn.gesetzt .dock-icon,.dbtn[aria-expanded="true"] .dock-icon{
+  filter:drop-shadow(0 0 15px rgba(126,220,255,.7)) drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.dbtn[data-pane="eigene"][aria-expanded="true"]{background:rgba(95,196,124,.14)}
+.dbtn[data-pane="eigene"][aria-expanded="true"] .dl,.dbtn[data-pane="eigene"][aria-expanded="true"] .dv{color:var(--c-sport)}
+.dbtn[data-pane="stadt"][aria-expanded="true"]{background:rgba(214,174,79,.14)}
+.dbtn[data-pane="stadt"][aria-expanded="true"] .dl,.dbtn[data-pane="stadt"][aria-expanded="true"] .dv{color:var(--c-food)}
+.dbtn[data-pane="region"][aria-expanded="true"]{background:rgba(180,144,238,.14)}
+.dbtn[data-pane="region"][aria-expanded="true"] .dl,.dbtn[data-pane="region"][aria-expanded="true"] .dv{color:var(--c-play)}
+.dbtn[data-pane="land"][aria-expanded="true"]{background:rgba(79,195,172,.14)}
+.dbtn[data-pane="land"][aria-expanded="true"] .dl,.dbtn[data-pane="land"][aria-expanded="true"] .dv{color:var(--c-art)}
 
 /* ---------- Auswahlfeld über der Leiste ---------- */
 .sheet{background:var(--surface);border-top:1px solid var(--line-2);
@@ -267,23 +342,241 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .chip.k[aria-pressed="true"] .dot{background:currentColor;opacity:.85}
 .chip.k[aria-pressed="true"] .n{color:currentColor;opacity:.7}
 
+/* ---------- Themen-Auswahl ---------- */
+#pane-thema{display:block}
+.theme-intro{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:4px 0 16px;
+  color:var(--muted);font-size:16px}
+.theme-summary{white-space:nowrap;text-align:right}
+.theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#pane-thema .theme-card{position:relative;display:flex;align-items:center;width:100%;min-height:102px;padding:0 20px 0 24px;
+  border:1px solid var(--line-2);border-radius:14px;background:var(--surface);color:var(--ink);text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.04)}
+#pane-thema .theme-card:hover{background:var(--surface-2);color:var(--ink)}
+#pane-thema .theme-card[aria-pressed="true"]{background:var(--surface-3);border-color:var(--cat,var(--line-2));color:var(--ink)}
+#pane-thema .theme-card.all-themes{grid-column:1/-1;min-height:100px;background:var(--surface-3);border-color:var(--line-2)}
+.theme-rail{position:absolute;left:9px;top:12px;bottom:12px;width:7px;border-radius:999px;background:var(--cat,var(--line-2))}
+.theme-icon{display:grid;place-items:center;flex:none;width:70px;height:54px;color:var(--cat,var(--ink-2))}
+.theme-icon svg{width:50px;height:50px;filter:drop-shadow(0 0 4px currentColor)}
+.theme-name{margin-left:20px;font-size:21px;font-weight:600;letter-spacing:-.015em}
+.theme-count{margin-left:auto;font-family:var(--mono);font-size:17px;color:var(--muted);font-variant-numeric:tabular-nums}
+.theme-all-check{display:grid;place-items:center;flex:none;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--bg)}
+.theme-all-check svg{width:31px;height:31px;stroke:currentColor}
+#pane-thema .theme-card.all-themes[aria-pressed="false"] .theme-all-check{background:transparent;border:2px solid var(--muted);color:transparent}
+.theme-actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+.theme-action{min-height:62px;border:1px solid var(--line-2);border-radius:14px;background:var(--surface-2);color:var(--ink);
+  font:inherit;font-size:20px;font-weight:600;cursor:pointer}
+.theme-action:hover{background:var(--surface-3)}
+.theme-action.apply{background:#9D4B70;border-color:#B96A8A;color:#fff}
+.theme-action.apply:hover{filter:brightness(1.08)}
+.sheet.theme-open{height:calc(100vh - 78px);max-height:none;min-height:0}
+.sheet.theme-open .sheetbar{padding:18px 22px 16px}
+.sheet.theme-open .sheetbar h2{font-family:var(--disp);font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-.03em}
+.sheet.theme-open .sheetbar button{padding:4px 2px;border:0;background:none}
+.sheet.theme-open .sheetbody{flex:1;min-height:0;padding:22px 30px 30px}
+
+/* ---------- Städte-Auswahl ---------- */
+.city-topbar{display:flex;align-items:stretch;gap:16px;margin:2px 8px 26px}
+.city-searchbox{position:relative;flex:1;min-width:0}
+.city-searchbox svg{position:absolute;left:22px;top:50%;width:28px;height:28px;transform:translateY(-50%);color:var(--ink-2)}
+.city-searchbox input,.city-list-search input{width:100%;font:inherit;font-size:19px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-2);border-radius:13px;padding:17px 20px 17px 62px}
+.city-searchbox input::placeholder,.city-list-search input::placeholder{color:var(--faint)}
+.city-add{min-width:132px;border:1px solid var(--ink-2);border-radius:13px;background:var(--surface-2);color:var(--ink);
+  font:inherit;font-size:20px;font-weight:600;cursor:pointer}
+.city-add:hover{background:var(--surface-3)}
+.city-summary{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 8px 24px;color:var(--muted);font-size:20px}
+.city-summary strong{font-size:28px;color:var(--ink);font-weight:700}
+.city-summary .city-of{margin-left:8px}
+.city-clear{border:0;background:none;color:var(--muted);font:inherit;font-size:18px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.city-clear:hover{color:var(--ink)}
+.city-card{padding:22px 20px;border:1px solid var(--line-2);border-radius:16px;background:var(--surface)}
+.city-card + .city-card{margin-top:24px}
+.city-cardhead{display:flex;align-items:center;gap:16px;margin:0 0 16px}
+.city-cardhead h3{margin:0;color:var(--ink);font-family:var(--disp);font-size:25px;font-weight:700;letter-spacing:-.025em}
+.city-cardhead .city-total{color:var(--muted);font-size:19px}
+.selected-city-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+#pane-stadt .city-selected{position:relative;display:flex;align-items:center;width:100%;min-width:0;min-height:57px;padding:10px 14px 10px 15px;
+  border:1px solid var(--line-2);border-radius:15px;background:var(--surface-2);color:var(--ink);font-size:18px;text-align:left}
+#pane-stadt .city-selected:hover{background:var(--surface-3)}
+.city-check{display:grid;place-items:center;flex:none;width:27px;height:27px;margin-right:14px;border-radius:50%;background:#F5BE3F;color:#1D1D1D}
+.city-check svg{width:19px;height:19px;stroke:currentColor}
+.city-selected .city-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.city-event-count{margin-left:auto;color:var(--muted);font-family:var(--mono);font-size:15px}
+.city-remove{flex:none;margin-left:14px;color:var(--muted);font-size:28px;font-weight:300;line-height:1}
+.city-all-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.city-all-head .city-list-search{margin-left:auto;width:min(330px,45%);position:relative}
+.city-list-search svg{position:absolute;left:16px;top:50%;width:24px;height:24px;transform:translateY(-50%);color:var(--ink-2)}
+.city-list-search input{font-size:16px;padding:13px 14px 13px 50px;border-radius:10px}
+.all-city-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.all-city-column + .all-city-column{border-left:1px solid var(--line);padding-left:36px}
+#pane-stadt .city-row{display:flex;align-items:center;width:100%;min-height:59px;padding:9px 4px;border:0;border-bottom:1px solid var(--line);
+  border-radius:0;background:none;color:var(--ink);font:inherit;font-size:18px;text-align:left}
+#pane-stadt .city-row:hover{background:var(--tint)}
+#pane-stadt .city-row[aria-pressed="true"] .city-box{border-color:#F5BE3F;background:#F5BE3F;color:#1D1D1D}
+.city-box{display:grid;place-items:center;flex:none;width:27px;height:27px;margin:0 22px 0 3px;border:2px solid var(--muted);
+  border-radius:4px;color:transparent}
+.city-box svg{width:20px;height:20px;stroke:currentColor}
+.city-row .city-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.city-row .city-event-count{margin-left:auto;padding-left:12px}
+.city-empty{padding:12px 4px;color:var(--faint);font-size:16px}
+.sheet.city-open{height:calc(100vh - 78px);max-height:none;min-height:0}
+.sheet.city-open .sheetbar{padding:18px 22px 16px}
+.sheet.city-open .sheetbar h2{font-family:var(--disp);font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-.03em}
+.sheet.city-open .sheetbar button{padding:4px 2px;border:0;background:none}
+.sheet.city-open .sheetbody{flex:1;min-height:0;padding:22px 30px 30px}
+
+/* ---------- Regionen-Auswahl ---------- */
+#pane-region{display:block}
+.region-searchbox{position:relative;margin:2px 8px 26px}
+.region-searchbox svg{position:absolute;left:22px;top:50%;width:28px;height:28px;transform:translateY(-50%);color:var(--ink-2)}
+.region-searchbox input{width:100%;font:inherit;font-size:19px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-2);border-radius:13px;padding:17px 20px 17px 62px}
+.region-searchbox input::placeholder{color:var(--faint)}
+.region-summary{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 8px 24px;color:var(--ink);font-size:20px}
+.region-summary .region-total{color:var(--muted)}
+.region-summary .region-dot{padding:0 10px;color:var(--muted)}
+.region-clear{border:0;background:none;color:var(--muted);font:inherit;font-size:18px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.region-clear:hover{color:var(--ink)}
+.region-section{padding:26px 8px 0;border-top:1px solid var(--line)}
+.region-section h3{margin:0 0 18px;color:var(--ink);font-family:var(--disp);font-size:25px;font-weight:700;letter-spacing:-.025em}
+.popular-region-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#pane-region .region-choice{display:flex;align-items:center;width:100%;min-width:0;min-height:70px;padding:12px 18px;
+  border:1px solid var(--line-2);border-radius:15px;background:var(--surface);color:var(--ink);font-size:18px;text-align:left}
+#pane-region .region-choice:hover{background:var(--surface-2)}
+.region-circle{display:grid;place-items:center;flex:none;width:31px;height:31px;margin-right:18px;border:2px solid var(--ink-2);border-radius:50%;color:transparent}
+.region-circle svg{width:20px;height:20px;stroke:currentColor}
+#pane-region .region-choice[aria-pressed="true"]{border-color:var(--c-play);background:var(--surface-3)}
+#pane-region .region-choice[aria-pressed="true"] .region-circle{border-color:var(--c-play);background:var(--c-play);color:#fff}
+.region-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.region-choice .region-event-count{margin-left:auto;padding-left:10px;color:var(--muted);font-family:var(--mono);font-size:15px}
+.all-region-section{position:relative;padding-right:46px}
+.all-region-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+.all-region-head h3{margin:0}
+.region-list-wrap{position:relative}
+.all-region-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.all-region-column + .all-region-column{border-left:1px solid var(--line);padding-left:36px}
+#pane-region .region-row{display:flex;align-items:center;width:100%;min-height:59px;padding:9px 4px;border:0;border-bottom:1px solid var(--line);
+  border-radius:0;background:none;color:var(--ink);font:inherit;font-size:18px;text-align:left}
+#pane-region .region-row:hover{background:var(--tint)}
+#pane-region .region-row[aria-pressed="true"] .region-circle{border-color:var(--c-play);background:var(--c-play);color:#fff}
+.region-row .region-circle{width:29px;height:29px;margin-right:22px}
+.region-row .region-event-count{margin-left:auto;padding-left:12px;color:var(--muted);font-family:var(--mono);font-size:15px}
+.region-index{position:absolute;right:0;top:0;display:flex;flex-direction:column;align-items:center;gap:1px;width:24px;color:var(--muted)}
+.region-index button{width:24px;height:22px;padding:0;border:0;background:none;color:inherit;font:500 14px var(--mono);cursor:pointer}
+.region-index button:hover{color:var(--ink);font-weight:700}
+.region-empty{padding:12px 4px;color:var(--faint);font-size:16px}
+.sheet.region-open{height:calc(100vh - 78px);max-height:none;min-height:0}
+.sheet.region-open .sheetbar{padding:18px 22px 16px}
+.sheet.region-open .sheetbar h2{font-family:var(--disp);font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-.03em}
+.sheet.region-open .sheetbar button{padding:4px 2px;border:0;background:none}
+.sheet.region-open .sheetbody{flex:1;min-height:0;padding:22px 30px 30px}
+
+/* ---------- Länder-Auswahl ---------- */
+#pane-land{display:block}
+.country-topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;margin:2px 8px 26px}
+.country-searchbox{position:relative;min-width:0}
+.country-searchbox svg{position:absolute;left:22px;top:50%;width:28px;height:28px;transform:translateY(-50%);color:var(--ink-2)}
+.country-searchbox input{width:100%;font:inherit;font-size:19px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-2);border-radius:13px 0 0 13px;padding:17px 20px 17px 62px}
+.country-searchbox input::placeholder{color:var(--faint)}
+.country-add{display:flex;align-items:center;gap:10px;min-width:150px;padding:0 22px;border:1px solid var(--line-2);border-left:0;
+  border-radius:0 13px 13px 0;background:rgba(79,195,172,.12);color:var(--c-art);font:inherit;font-size:20px;font-weight:600;cursor:pointer}
+.country-add:hover{background:rgba(79,195,172,.2)}
+.country-add-icon{display:grid;place-items:center;width:31px;height:31px;border-radius:50%;background:var(--c-art);color:#071914}
+.country-add-icon svg{width:20px;height:20px;stroke:currentColor}
+.country-summary{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 8px 18px;color:var(--muted);font-size:20px}
+.country-summary strong{font-size:28px;color:var(--ink);font-weight:700}
+.country-clear{border:0;background:none;color:var(--muted);font:inherit;font-size:18px;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.country-clear:hover{color:var(--ink)}
+.country-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+#pane-land .country-card{display:flex;align-items:center;width:100%;min-width:0;min-height:70px;padding:12px 16px;
+  border:1px solid var(--line-2);border-radius:15px;background:var(--surface);color:var(--ink);font-size:18px;text-align:left}
+#pane-land .country-card:hover{background:var(--surface-2)}
+#pane-land .country-card[aria-pressed="true"]{border-color:var(--c-art);background:rgba(79,195,172,.12)}
+.country-check{display:grid;place-items:center;flex:none;width:31px;height:31px;margin-right:16px;border:2px solid var(--muted);
+  border-radius:50%;color:transparent}
+.country-check svg{width:20px;height:20px;stroke:currentColor}
+#pane-land .country-card[aria-pressed="true"] .country-check{border-color:var(--c-art);background:var(--c-art);color:#071914}
+.country-card .country-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.country-card .country-event-count{margin-left:auto;padding-left:10px;color:var(--muted);font-family:var(--mono);font-size:15px}
+#pane-land .country-card.all-countries .country-check{display:none}
+#pane-land .country-card.all-countries[aria-pressed="true"] .country-check{display:grid}
+.sheet.country-open{height:calc(100vh - 78px);max-height:none;min-height:0}
+.sheet.country-open .sheetbar{padding:18px 22px 16px}
+.sheet.country-open .sheetbar h2{font-family:var(--disp);font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-.03em}
+.sheet.country-open .sheetbar button{padding:9px 22px;border:1px solid var(--c-art);border-radius:999px;background:var(--c-art);color:#071914;font-size:20px}
+.sheet.country-open .sheetbody{flex:1;min-height:0;padding:22px 30px 30px}
+
 /* ---------- Eigene Termine ---------- */
-.eigenepane{display:flex;flex-direction:column;gap:18px}
-.eigenform{display:grid;gap:10px}
-.eigenform .ff{display:flex;flex-direction:column;gap:4px}
-.eigenform .ff2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.eigenform label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
-.eigenform input,.eigenform select,.eigenform textarea{font:inherit;font-size:14.5px;color:var(--ink);
-  background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:9px 10px}
-.eigenform textarea{resize:vertical;font-family:inherit}
+.eigenepane{display:flex;flex-direction:column;gap:20px;max-width:1000px;margin:0 auto}
+.own-card{display:flex;flex-direction:column;gap:16px;padding:22px 24px;background:var(--surface);
+  border:1px solid var(--line-2);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+.own-cardhead{display:flex;align-items:center;gap:14px;min-height:38px;padding-bottom:15px;
+  border-bottom:1px solid var(--line)}
+.own-cardhead h3{font-family:var(--disp);font-size:clamp(21px,3vw,28px);font-weight:700;letter-spacing:-.025em;
+  line-height:1.05;margin:0;color:var(--ink)}
+.own-icon{display:grid;place-items:center;flex:none;width:34px;height:34px;color:var(--ink-2)}
+.own-icon svg{width:31px;height:31px;display:block;filter:drop-shadow(0 0 4px currentColor)}
+.own-icon.amber{color:#F2BD4C}
+.own-icon.green{color:var(--c-sport)}
+.own-count{margin-left:auto;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink-2);
+  border:1px solid var(--line-2);border-radius:999px;padding:8px 16px;white-space:nowrap}
+.sheet.own-open{height:calc(100vh - 78px);max-height:none;min-height:0}
+.sheet.own-open .sheetbar{padding:18px 22px 16px}
+.sheet.own-open .sheetbar h2{font-family:var(--disp);font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-.03em}
+.sheet.own-open .sheetbar button{border:1px solid var(--line-2);border-radius:14px;padding:9px 18px;background:var(--surface-2)}
+.sheet.own-open .sheetbody{flex:1;min-height:0;padding:16px 22px 26px}
+.erinnerungbox{gap:0}
+.erinnerung-toggle{display:flex;align-items:center;gap:14px;font-size:17px;color:var(--ink);cursor:pointer}
+.erinnerung-toggle input{position:absolute;opacity:0;pointer-events:none}
+.own-switch{position:relative;display:inline-flex;align-items:center;width:60px;height:34px;padding:4px;
+  border-radius:999px;background:var(--line-2);transition:background .15s ease;flex:none}
+.own-switch::after{content:"";width:26px;height:26px;border-radius:50%;background:#DCE2EC;box-shadow:0 1px 3px rgba(0,0,0,.22);transition:transform .15s ease}
+.erinnerung-toggle input:checked + .own-switch{background:var(--c-sport)}
+.erinnerung-toggle input:checked + .own-switch::after{transform:translateX(26px);background:#fff}
+.erinnerung-toggle input:focus-visible + .own-switch{outline:2px solid var(--ring);outline-offset:3px}
+.own-warning{display:flex;align-items:center;gap:12px;margin-top:18px;padding:14px 0;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);color:var(--sig-gelb);font-size:16px}
+.own-warning .warning-icon{display:grid;place-items:center;flex:none;width:28px;height:28px;border:2px solid currentColor;border-radius:50%;font:700 17px var(--mono)}
+.own-warning span:not(.warning-icon){flex:1}
+.own-warning button{border:1px solid var(--muted);border-radius:999px;background:transparent;color:var(--ink);
+  padding:8px 18px;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer}
+.own-warning button:hover{background:var(--surface-2)}
+.erinnerungtage{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.tagchip{display:flex;align-items:center;justify-content:flex-start;gap:12px;min-height:56px;padding:10px 16px;
+  background:var(--surface-2);border:1px solid var(--line-2);border-radius:14px;font-size:16px;color:var(--ink);cursor:pointer}
+.tagchip:hover{background:var(--surface-3)}
+.tagchip input{appearance:none;width:22px;height:22px;margin:0;border:2px solid var(--ink-2);border-radius:3px;background:transparent;flex:none}
+.tagchip input:checked{border-color:var(--ink);background:var(--ink)}
+.tagchip input:checked::after{content:"✓";display:block;color:var(--bg);font:700 17px/18px var(--sans);text-align:center}
+.eigene-hinweis{font-size:14px;color:var(--faint);margin:0;line-height:1.45}
+.erinnerungbox > .eigene-hinweis{margin-top:15px}
+.own-empty-state{padding:8px 0 2px}
+.own-empty-title{margin:0 0 3px;color:var(--ink-2);font-size:18px}
+.own-empty-hint{margin:0;color:var(--faint);font-size:15px}
+.eigenform{display:grid;gap:16px}
+.eigenform .ff{display:flex;flex-direction:column;gap:6px}
+.eigenform .ff2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.eigenform label{font-size:16px;color:var(--ink);display:flex;flex-direction:column;gap:7px}
+.eigenform input,.eigenform select,.eigenform textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);
+  background:var(--surface-2);border:1px solid var(--line-2);border-radius:9px;padding:13px 16px}
+.eigenform input::placeholder,.eigenform textarea::placeholder{color:var(--faint)}
+.eigenform textarea{resize:vertical;min-height:92px;font-family:inherit}
 .eigenform select{appearance:none;cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
-  background-position:calc(100% - 15px) 55%,calc(100% - 10px) 55%;background-size:5px 5px,5px 5px;
+  background-position:calc(100% - 19px) 55%,calc(100% - 13px) 55%;background-size:6px 6px,6px 6px;
   background-repeat:no-repeat}
-.addbtn{justify-self:start;background:var(--ink);color:var(--bg);border:0;border-radius:999px;
-  font:inherit;font-size:14px;font-weight:600;padding:10px 20px;cursor:pointer}
-.addbtn:hover{opacity:.88}
-.eigenehead{font-size:13px;font-weight:600;color:var(--ink-2);margin:0}
+.addbtn{justify-self:start;background:var(--c-sport);color:#06140A;border:0;border-radius:12px;
+  font:inherit;font-size:16px;font-weight:700;padding:13px 30px;cursor:pointer;min-width:184px}
+.addbtn:hover{filter:brightness(1.08)}
+.own-form-actions{display:flex;align-items:center;gap:18px;margin-top:2px}
+.clearbtn{background:transparent;color:var(--ink);border:1px solid var(--line-2);border-radius:12px;
+  font:inherit;font-size:16px;font-weight:600;padding:12px 30px;cursor:pointer;min-width:150px}
+.clearbtn:hover{background:var(--surface-2)}
+.own-storage-hint{margin:0 0 0 auto;color:var(--faint);font-size:14px;text-align:right}
+.own-subsection{display:flex;flex-direction:column;gap:12px;margin-top:4px;padding-top:20px;border-top:1px solid var(--line)}
+.own-subhead{display:flex;align-items:center;gap:10px}
+.own-subhead h4{font-family:var(--disp);font-size:20px;margin:0;color:var(--ink)}
 .eigeneliste{display:flex;flex-direction:column;gap:8px}
 .eigeneliste .zeile{display:flex;align-items:center;justify-content:space-between;gap:10px;
   background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font-size:13.5px}
@@ -302,18 +595,10 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .linkbtn:hover{color:var(--sig-rot)}
 .linkbtn.aktiv{color:var(--ink);font-weight:600;text-decoration:none}
 .hidden-restore{font-size:12.5px;color:var(--muted);margin:0}
-.erinnerungbox{display:flex;flex-direction:column;gap:10px;padding-bottom:14px;margin-bottom:4px;
-  border-bottom:1px solid var(--line-2)}
-.erinnerung-toggle{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink);cursor:pointer}
-.erinnerung-toggle input{width:16px;height:16px;accent-color:var(--ink)}
-.erinnerungtage{display:flex;flex-wrap:wrap;gap:7px}
-.tagchip{display:flex;align-items:center;gap:5px;background:var(--surface-2);border:1px solid var(--line-2);
-  border-radius:999px;padding:6px 12px;font-size:12.5px;color:var(--ink-2);cursor:pointer}
-.tagchip input{width:13px;height:13px;accent-color:var(--ink)}
-.eigene-hinweis{font-size:12px;color:var(--faint);margin:0;line-height:1.4}
 .hidden-restore button{background:none;border:0;font:inherit;color:var(--ink);text-decoration:underline;
   cursor:pointer;padding:0;font-weight:600}
-#pane-stadt,#pane-land{display:flex;flex-direction:column;gap:12px}
+#pane-land{display:flex;flex-direction:column;gap:12px}
+#pane-stadt{display:block}
 .neuezeile{display:flex;gap:8px}
 .neuezeile input{flex:1;min-width:0;font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);
   border:1px solid var(--line-2);border-radius:9px;padding:9px 12px}
@@ -323,15 +608,135 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
 .stadtchips,.landchips{display:flex;flex-wrap:wrap;gap:7px}
 
 @media (max-width:640px){
+  body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
   .shell{padding:0 14px}
-  .hero{padding:18px 16px 18px;border-radius:14px;gap:16px}
+  .head{padding-top:22px}
+  .headbar{align-items:flex-start}
+  h1{font-size:clamp(34px,11vw,48px)}
+  .appver{font-size:10px;margin-left:4px}
+  .langbtn{padding:8px 13px;font-size:12px}
+  .hero{min-height:0;padding:18px 16px 19px;border-radius:14px;gap:18px}
+  .hero::before{right:-28%;width:82%;opacity:.68}
+  .hero-top{align-items:flex-start}
+  .hero-actions{gap:7px}
+  .hero-bookmark{width:40px;height:40px}
+  .hero-details{padding:9px 11px;gap:10px;font-size:13px}
+  .hero h2{font-size:clamp(27px,9vw,39px);max-width:none}
+  .hero-body{display:flex;flex-direction:column;align-items:stretch;gap:17px}
   .cdu{min-width:0;flex:1 1 0;padding:8px 4px}
-  .cdu .v{font-size:23px}
+  .cdu .v{font-size:24px}
   .hero .cdwrap{width:100%}
   .cd{width:100%}
-  .evmain{grid-template-columns:54px minmax(0,1fr);gap:13px;padding:13px 12px 13px 13px}
-  .right{grid-column:2;justify-content:flex-start;padding-top:6px}
+  .rhead{gap:14px;padding:21px 0 17px}
+  .count{font-size:13px}
+  .count b{font-size:19px}
+  .rtools{grid-template-columns:1fr 1fr;gap:10px}
+  .tg{grid-column:1/-1;font-size:14px}
+  .main-searchbox{grid-column:1/-1;grid-row:2}
+  .rtools select{grid-column:1}
+  .reset{justify-self:end;grid-column:2}
+  .gh h3{font-size:21px}
+  .gh .gn{font-size:12px}
+  .evmain{grid-template-columns:88px 53px minmax(0,1fr);gap:11px;padding:12px 82px 12px 12px;align-items:start}
+  .evvisual{width:88px;height:84px}
+  .tt{font-size:15px;margin-top:1px}
+  .sub{font-size:12px;gap:2px 7px}
+  .right{grid-column:3;justify-content:flex-start;padding-top:8px;gap:9px;flex-wrap:wrap}
   .dur{text-align:left}
+  .cardmark{top:17px;right:45px}
+  .cardchevron{right:13px;font-size:27px}
+  .detail{padding:0 14px 18px 12px}
+  .dock{padding:6px 5px calc(7px + env(safe-area-inset-bottom))}
+  .dockrow{gap:2px}
+  .dbtn{border-radius:17px;padding:6px 2px 7px;gap:3px;min-height:82px}
+  .dock-icon{width:37px;height:37px;filter:drop-shadow(0 0 4px rgba(122,197,255,.34)) drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+  .dbtn .dl{font-size:11.5px;letter-spacing:-.02em}
+  .dbtn .dv{font-size:10px}
+  .dbtn[data-pane="land"].gesetzt::before{top:-7px;height:4px}
+  .footer{margin-bottom:102px}
+  .sheet.own-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.own-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
+  .sheet.theme-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.theme-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
+  .theme-intro{align-items:flex-start;flex-direction:column;gap:3px;margin-top:0}
+  .theme-summary{text-align:left}
+  .theme-grid{grid-template-columns:1fr;gap:10px}
+  #pane-thema .theme-card{min-height:78px;padding-left:22px}
+  #pane-thema .theme-card.all-themes{min-height:78px}
+  .theme-rail{top:9px;bottom:9px}
+  .theme-icon{width:56px;height:44px}
+  .theme-icon svg{width:40px;height:40px}
+  .theme-name{margin-left:12px;font-size:18px}
+  .theme-count{font-size:15px}
+  .theme-actions{margin-top:20px;gap:10px}
+  .theme-action{min-height:54px;font-size:17px}
+  .sheet.city-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.city-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
+  .city-topbar{gap:9px;margin:0 0 18px}
+  .city-searchbox input{font-size:16px;padding:13px 10px 13px 49px}
+  .city-searchbox svg{left:16px;width:24px;height:24px}
+  .city-add{min-width:72px;font-size:17px}
+  .city-summary{align-items:flex-start;flex-wrap:wrap;margin:0 0 18px;font-size:16px}
+  .city-summary strong{font-size:23px}
+  .city-clear{font-size:15px}
+  .city-card{padding:16px 12px;border-radius:14px}
+  .city-card + .city-card{margin-top:16px}
+  .city-cardhead{flex-wrap:wrap;gap:7px;margin-bottom:12px}
+  .city-cardhead h3{font-size:21px}
+  .city-cardhead .city-total{font-size:16px}
+  .selected-city-grid{grid-template-columns:1fr;gap:8px}
+  #pane-stadt .city-selected{min-height:51px;font-size:16px}
+  .all-city-grid{grid-template-columns:1fr;gap:0}
+  .all-city-column + .all-city-column{border-left:0;padding-left:0}
+  .city-all-head .city-list-search{width:100%;margin:8px 0 0;order:3}
+  #pane-stadt .city-row{min-height:52px;font-size:16px}
+  .city-box{margin-right:16px}
+  .sheet.region-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.region-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
+  .region-searchbox{margin:0 0 18px}
+  .region-searchbox input{font-size:16px;padding:13px 10px 13px 49px}
+  .region-searchbox svg{left:16px;width:24px;height:24px}
+  .region-summary{align-items:flex-start;flex-wrap:wrap;margin:0 0 18px;font-size:16px}
+  .region-clear{font-size:15px}
+  .region-section{padding:18px 0 0}
+  .region-section h3{font-size:21px;margin-bottom:12px}
+  .popular-region-grid{grid-template-columns:1fr 1fr;gap:8px}
+  #pane-region .region-choice{min-height:56px;padding:9px 10px;font-size:15px}
+  .region-circle{width:27px;height:27px;margin-right:10px}
+  .region-choice .region-event-count{font-size:13px}
+  .all-region-section{padding-right:0}
+  .all-region-head{display:block;margin-bottom:8px}
+  .all-region-grid{grid-template-columns:1fr;gap:0}
+  .all-region-column + .all-region-column{border-left:0;padding-left:0}
+  #pane-region .region-row{min-height:52px;font-size:16px}
+  .region-row .region-circle{margin-right:16px}
+  .region-index{display:none}
+  .sheet.country-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.country-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
+  .country-topbar{grid-template-columns:minmax(0,1fr) auto;margin:0 0 18px}
+  .country-searchbox input{font-size:16px;padding:13px 8px 13px 49px}
+  .country-searchbox svg{left:16px;width:24px;height:24px}
+  .country-add{min-width:72px;padding:0 11px;gap:6px;font-size:17px}
+  .country-add-icon{width:25px;height:25px}
+  .country-add-icon svg{width:17px;height:17px}
+  .country-summary{align-items:flex-start;flex-wrap:wrap;margin:0 0 18px;font-size:16px}
+  .country-summary strong{font-size:23px}
+  .country-clear{font-size:15px}
+  .country-grid{grid-template-columns:1fr 1fr;gap:8px}
+  #pane-land .country-card{min-height:56px;padding:9px 10px;font-size:15px}
+  .country-check{width:27px;height:27px;margin-right:9px}
+  .country-check svg{width:18px;height:18px}
+  .country-card .country-event-count{font-size:13px}
+  .own-card{padding:18px 14px;border-radius:14px}
+  .own-cardhead{gap:10px}
+  .own-cardhead h3{font-size:22px}
+  .own-warning{align-items:flex-start;flex-wrap:wrap;font-size:14px}
+  .own-warning button{margin-left:40px}
+  .erinnerungtage{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .tagchip{min-height:50px;padding:8px 10px;font-size:14px;gap:8px}
+  .eigenform .ff2{grid-template-columns:1fr;gap:14px}
+  .own-form-actions{flex-wrap:wrap;gap:10px}
+  .own-storage-hint{width:100%;margin:2px 0 0;text-align:left}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -361,6 +766,11 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
         <option value="cat" data-i18n="sortCategory">Category</option>
       </select>
       <button class="reset" id="reset" hidden data-i18n="reset">Reset</button>
+      <div class="main-searchbox">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+        <input id="mainQ" type="search" placeholder="Search events…" aria-label="Search events"
+          data-i18n-placeholder="mainSearchPlaceholder" data-i18n-aria="mainSearch">
+      </div>
     </div>
   </div>
 
@@ -405,22 +815,36 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
       <div class="chips" id="pane-stadt" hidden></div>
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
-        <div class="erinnerungbox" id="erinnerungBox"></div>
-          <p class="eigenehead" data-i18n="savedEvents">Saved events</p>
-        <div id="merklisteListe"></div>
-        <form id="eigenForm" class="eigenform">
-          <div class="ff"><label><span data-i18n="formName">Name*</span>
-            <input name="n" required maxlength="80" placeholder="e.g. Musterstadt village festival"
-              data-i18n-placeholder="eventNamePlaceholder"></label></div>
-          <div class="ff2">
-            <label><span data-i18n="formCity">City*</span><input name="c" required maxlength="60"></label>
-            <label><span data-i18n="formRegion">Region</span><input name="l" maxlength="60" placeholder="e.g. Bavaria"
-              data-i18n-placeholder="regionPlaceholder"></label>
+        <section class="own-card" id="erinnerungBox"></section>
+        <section class="own-card saved-card" id="merklisteCard">
+          <div class="own-cardhead">
+            <span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 5.5h14v21l-7-4.8-7 4.8z"/></svg></span>
+            <h3 data-i18n="savedEvents">Saved events</h3>
+            <span class="own-count" id="merklisteCount">0 saved</span>
           </div>
-          <div class="ff2">
-            <label><span data-i18n="formCountry">Country</span><input name="p" maxlength="60" placeholder="blank = Germany"
-              data-i18n-placeholder="countryPlaceholder"></label>
-            <label><span data-i18n="formCategory">Category</span>
+          <div id="merklisteListe"></div>
+        </section>
+        <section class="own-card add-own-card">
+          <div class="own-cardhead">
+            <span class="own-icon green" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="10.5"/><path d="M16 10v12M10 16h12"/></svg></span>
+            <h3 data-i18n="addYourOwnEvent">Add your own event</h3>
+          </div>
+          <form id="eigenForm" class="eigenform">
+            <div class="ff2">
+              <label><span data-i18n="formName">Name*</span>
+                <input name="n" required maxlength="80" placeholder="e.g. Musterstadt village festival"
+                  data-i18n-placeholder="eventNamePlaceholder"></label>
+              <label><span data-i18n="formCity">City*</span>
+                <select name="c" id="ownCity" required>
+                  <option value="" selected disabled data-i18n="chooseCity">Choose a city</option>
+                </select>
+              </label>
+            </div>
+            <div class="ff2">
+              <label><span data-i18n="formStartDate">Start date</span><input name="s" type="date" required></label>
+              <label><span data-i18n="formEndDate">End date</span><input name="e" type="date"></label>
+            </div>
+            <div class="ff"><label><span data-i18n="formTheme">Theme</span>
               <select name="k">
                 <option value="tech" data-i18n="catTech">Technology</option>
                 <option value="food" data-i18n="catFood">Food</option>
@@ -432,28 +856,28 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
                 <option value="trad" selected data-i18n="catTrad">Tradition</option>
                 <option value="sonstige" data-i18n="catOther">Other</option>
               </select>
-            </label>
-          </div>
-          <div class="ff2">
-            <label><span data-i18n="formStart">Start*</span><input name="s" type="date" required></label>
-            <label><span data-i18n="formEnd">End</span><input name="e" type="date"></label>
-          </div>
-          <div class="ff"><label><span data-i18n="formRhythm">Recurrence</span>
-            <select name="r">
-              <option value="Einmalig" selected data-i18n="rhythmOnce">Once</option>
-              <option value="Jährlich" data-i18n="rhythmYearly">Yearly</option>
-              <option value="Wöchentlich" data-i18n="rhythmWeekly">Weekly</option>
-              <option value="Monatlich" data-i18n="rhythmMonthly">Monthly</option>
-              <option value="Quartalsweise" data-i18n="rhythmQuarterly">Quarterly</option>
-            </select>
-          </label></div>
-          <div class="ff"><label><span data-i18n="formDescription">Description</span><textarea name="d" rows="2" maxlength="240"></textarea></label></div>
+            </label></div>
+            <div class="ff"><label><span data-i18n="formNotes">Notes</span><textarea name="d" rows="3" maxlength="240" placeholder="Optional details" data-i18n-placeholder="notesPlaceholder"></textarea></label></div>
+            <input type="hidden" name="l">
+            <input type="hidden" name="p">
+            <input type="hidden" name="r" value="Einmalig">
           <p class="eigene-hinweis" id="editHinweis" hidden><span data-i18n="editing">Editing</span> „<span id="editName"></span>“ —
             <button type="button" id="editAbbrechen" data-i18n="cancel" style="all:unset;cursor:pointer;text-decoration:underline">cancel</button></p>
-          <button type="submit" class="addbtn" id="eigenSubmitBtn" data-i18n="addEvent">Add event</button>
-        </form>
-        <p class="eigenehead" data-i18n="myEvents">My events</p>
-        <div id="eigeneListe"></div>
+            <div class="own-form-actions">
+              <button type="submit" class="addbtn" id="eigenSubmitBtn" data-i18n="addEvent">Add event</button>
+              <button type="button" class="clearbtn" id="eigenClearBtn" data-i18n="clear">Clear</button>
+              <p class="own-storage-hint" data-i18n="storedLocally">Stored locally in this browser.</p>
+            </div>
+          </form>
+          <div class="own-subsection" id="ownCreatedEvents" hidden>
+            <div class="own-subhead">
+              <span class="own-icon green" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 5.5h14v21l-7-4.8-7 4.8z"/></svg></span>
+              <h4 data-i18n="myEvents">My events</h4>
+              <span class="own-count" id="ownCreatedCount"></span>
+            </div>
+            <div id="eigeneListe"></div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
@@ -461,27 +885,27 @@ select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);
   <nav class="dock" aria-label="Selection" data-i18n-aria="selection">
     <div class="dockrow" id="dockrow">
       <button class="dbtn" data-pane="q" aria-expanded="false">
-        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.4"/><path d="M12.6 12.6 17 17" stroke-linecap="round"/></svg>
+        <span class="dock-icon dock-icon-q" aria-hidden="true"></span>
         <span class="dl" data-i18n="dockSearch">Search</span><span class="dv" id="dv-q">all</span>
       </button>
       <button class="dbtn" data-pane="land" aria-expanded="false">
-        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M2.8 10h14.4M10 2.8c1.9 2 2.9 4.5 2.9 7.2s-1 5.2-2.9 7.2c-1.9-2-2.9-4.5-2.9-7.2S8.1 4.8 10 2.8z"/></svg>
+        <span class="dock-icon dock-icon-land" aria-hidden="true"></span>
         <span class="dl" data-i18n="dockCountry">Country</span><span class="dv" id="dv-land">all</span>
       </button>
       <button class="dbtn" data-pane="region" aria-expanded="false">
-        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M2.8 5.4 7.4 3.4l5.2 2 4.6-2v11.2l-4.6 2-5.2-2-4.6 2z"/><path d="M7.4 3.4v13.2M12.6 5.4v13.2"/></svg>
+        <span class="dock-icon dock-icon-region" aria-hidden="true"></span>
         <span class="dl" data-i18n="dockRegion">Region</span><span class="dv" id="dv-region">all</span>
       </button>
       <button class="dbtn" data-pane="stadt" aria-expanded="false">
-        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M2.6 17.2h14.8M4.4 17.2V8.2l4.2-2.6v11.6M8.6 17.2V9.4l6.4-2.2v10"/></svg>
+        <span class="dock-icon dock-icon-city" aria-hidden="true"></span>
         <span class="dl" data-i18n="dockCity">City</span><span class="dv" id="dv-stadt">all</span>
       </button>
       <button class="dbtn" data-pane="thema" aria-expanded="false">
-        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="6.4" cy="6.4" r="2.9"/><circle cx="13.6" cy="6.4" r="2.9"/><circle cx="6.4" cy="13.6" r="2.9"/><circle cx="13.6" cy="13.6" r="2.9"/></svg>
+        <span class="dock-icon dock-icon-theme" aria-hidden="true"></span>
         <span class="dl" data-i18n="dockTheme">Theme</span><span class="dv" id="dv-thema">all</span>
       </button>
       <button class="dbtn" data-pane="eigene" aria-expanded="false">
-        <svg width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M10 3.5v13M3.5 10h13"/></svg>
+        <span class="dock-icon dock-icon-own" aria-hidden="true"></span>
         <span class="dl" data-i18n="dockOwn">Own</span><span class="dv" id="dv-eigene" data-i18n="add">add</span>
       </button>
     </div>
@@ -523,21 +947,30 @@ const I18N = {
     upcomingOnly:"Upcoming only", sortBy:"Sort by", sortDate:"By date",
     sortDurationLong:"Duration — longest first", sortDurationShort:"Duration — shortest first",
     sortCity:"City A–Z", sortName:"Name A–Z", sortCategory:"Category", reset:"Reset",
-    selection:"Selection", done:"Done", search:"Search", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseCity:"Choose city", chooseTheme:"Choose theme", ownEvents:"Own events", searchPlaceholder:"Name, city or keyword",
+    selection:"Selection", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseCity:"Choose city", chooseTheme:"Choose theme", ownEvents:"Own events", searchPlaceholder:"Name, city or keyword",
     noteTitle:"About the dates:",
     noteBody:"Dotted dates are projected from the annual rhythm and have not yet been confirmed — please check with the organizer before travelling. Fixed recurring dates (carnival, Oktoberfest opening, Christmas markets until Christmas Eve) are shown without a dot.",
     formName:"Name*", formCity:"City*", formRegion:"Region", formCountry:"Country", formCategory:"Category",
     formStart:"Start*", formEnd:"End", formRhythm:"Recurrence", formDescription:"Description",
+    formStartDate:"Start date", formEndDate:"End date", formTheme:"Theme", formNotes:"Notes",
     eventNamePlaceholder:"e.g. Musterstadt village festival", eventIn:"Event in", regionPlaceholder:"e.g. Bavaria",
+    notesPlaceholder:"Optional details",
     countryPlaceholder:"blank = Germany", editing:"Editing", cancel:"cancel", addEvent:"Add event", saveChanges:"Save changes",
-    savedEvents:"Saved events", myEvents:"My events", dockSearch:"Search", dockCountry:"Country",
+    clear:"Clear", storedLocally:"Stored locally in this browser.", addYourOwnEvent:"Add your own event",
+    savedEvents:"Saved events", savedCount:"%n% saved", savedEmptyTitle:"No events saved yet.",
+    savedEmptyHint:"Open an event and tap ☆ Save.", myEvents:"My events", dockSearch:"Search", dockCountry:"Country",
     dockRegion:"Region", dockCity:"City", dockTheme:"Theme", dockOwn:"Own", all:"all", add:"add",
+    themePrompt:"Choose one or more themes", themeSummary:"All themes · %n% categories", applyThemes:"Apply themes",
     allCountries:"All countries", allRegions:"All regions", allCities:"All cities", allThemes:"All themes",
+    selected:"selected", of:"of", cities:"cities", citiesAfterOf:"cities", selectedCities:"Selected cities", citySearchPlaceholder:"Search or add a city…",
+    regionSearchPlaceholder:"Search regions…", popularRegions:"Popular regions", allRegionsSummary:"All regions · %n%", regionIndex:"Region index",
+    countrySearchPlaceholder:"Search or add a country…", countrySelected:"%n% country selected", countriesSelected:"%n% countries selected",
+    cityListSearchPlaceholder:"Search cities…", clearSelection:"Clear selection", noSelectedCities:"No cities selected yet.",
     newCountryPlaceholder:"Add a new country …", newCityPlaceholder:"Add a new city …", addButton:"Add",
     catTech:"Technology", catFood:"Food", catPlay:"Games", catMusic:"Music", catArt:"Culture",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catOther:"Other",
     rhythmOnce:"Once", rhythmYearly:"Yearly", rhythmWeekly:"Weekly", rhythmMonthly:"Monthly", rhythmQuarterly:"Quarterly",
-    runningNow:"Running now", next:"Next", stillRunning:"still running", startsIn:"starts in",
+    runningNow:"Running now", next:"Next", detail:"Details", stillRunning:"still running", startsIn:"starts in",
     countdownDays:"Days", countdownHours:"Hrs", countdownMinutes:"Min", countdownSeconds:"Sec",
     oneDay:"1 day", manyDays:"%n% days", eventOne:"%n% of %total% event", eventMany:"%n% of %total% events",
     termOne:"event", termMany:"events", chosen:"%n% selected",
@@ -551,9 +984,10 @@ const I18N = {
     hide:"Hide for me", deleteOwn:"Delete own event", edit:"Edit", delete:"Delete", remove:"Remove",
     ownEmpty:"No own events added yet.", hiddenOne:"hidden event — ", hiddenMany:"hidden events — ",
     restoreAll:"restore all", savedEmpty:"No events saved yet. Open an event and tap “☆ Save”.",
-    reminderTitle:"🔔 Reminders", noNotifications:"This browser does not support notifications.",
-    enableNotifications:"Enable notifications for saved events", notificationsBlocked:"Notifications are blocked for this site in your browser — allow them in the browser settings.",
-    sameDay:"on the same day", daysBefore:"%n% days before", reminderHint:"Reminders appear when you open this page and a saved event falls within the selected period — not while the browser is completely closed. Stored locally in this browser, without a server or email.",
+    reminderTitle:"Reminders", noNotifications:"This browser does not support notifications.",
+    enableNotifications:"Enable notifications for saved events", notificationsBlocked:"Notifications are blocked in your browser.",
+    browserSettings:"Browser settings", browserSettingsHint:"Open this site's notification settings in your browser and allow notifications, then try again.",
+    sameDay:"On the same day", daysBefore:"%n% days before", reminderHint:"Reminders appear when this page is open and are stored locally.",
     privacyLink:"Privacy", copyrightLink:"Copyright", privacyTitle:"Privacy policy", copyrightTitle:"Copyright and licence",
     switchLanguage:"Switch to German", languageButton:"Deutsch"
   },
@@ -561,21 +995,30 @@ const I18N = {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
     sortDurationLong:"Dauer — lang zuerst", sortDurationShort:"Dauer — kurz zuerst",
     sortCity:"Stadt A–Z", sortName:"Name A–Z", sortCategory:"Kategorie", reset:"Zurücksetzen",
-    selection:"Auswahl", done:"Fertig", search:"Suchen", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", ownEvents:"Eigene Termine", searchPlaceholder:"Name, Stadt oder Stichwort",
+    selection:"Auswahl", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", ownEvents:"Eigene Termine", searchPlaceholder:"Name, Stadt oder Stichwort",
     noteTitle:"Zu den Terminen:",
     noteBody:"Daten mit gepunkteter Linie sind aus dem jährlichen Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen. Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.",
     formName:"Name*", formCity:"Stadt*", formRegion:"Region", formCountry:"Land", formCategory:"Kategorie",
     formStart:"Beginn*", formEnd:"Ende", formRhythm:"Rhythmus", formDescription:"Beschreibung",
+    formStartDate:"Startdatum", formEndDate:"Enddatum", formTheme:"Thema", formNotes:"Notizen",
     eventNamePlaceholder:"z. B. Dorffest Musterstadt", eventIn:"Termin in", regionPlaceholder:"z. B. Bayern",
+    notesPlaceholder:"Optionale Details",
     countryPlaceholder:"leer = Deutschland", editing:"Du bearbeitest", cancel:"abbrechen", addEvent:"Termin hinzufügen", saveChanges:"Änderungen speichern",
-    savedEvents:"Gemerkte Termine", myEvents:"Meine Termine", dockSearch:"Suche", dockCountry:"Land",
+    clear:"Leeren", storedLocally:"Lokal in diesem Browser gespeichert.", addYourOwnEvent:"Eigenen Termin hinzufügen",
+    savedEvents:"Gemerkte Termine", savedCount:"%n% gespeichert", savedEmptyTitle:"Noch keine Termine gemerkt.",
+    savedEmptyHint:"Öffne einen Termin und tippe auf ☆ Merken.", myEvents:"Meine Termine", dockSearch:"Suche", dockCountry:"Land",
     dockRegion:"Region", dockCity:"Stadt", dockTheme:"Thema", dockOwn:"Eigene", all:"alle", add:"hinzufügen",
+    themePrompt:"Wähle ein oder mehrere Themen", themeSummary:"Alle Themen · %n% Kategorien", applyThemes:"Themen anwenden",
     allCountries:"Alle Länder", allRegions:"Alle Regionen", allCities:"Alle Städte", allThemes:"Alle Themen",
+    selected:"ausgewählt", of:"von", cities:"Städte", citiesAfterOf:"Städten", selectedCities:"Ausgewählte Städte", citySearchPlaceholder:"Stadt suchen oder hinzufügen…",
+    regionSearchPlaceholder:"Regionen durchsuchen…", popularRegions:"Beliebte Regionen", allRegionsSummary:"Alle Regionen · %n%", regionIndex:"Regionsindex",
+    countrySearchPlaceholder:"Land suchen oder hinzufügen…", countrySelected:"%n% Land ausgewählt", countriesSelected:"%n% Länder ausgewählt",
+    cityListSearchPlaceholder:"Städte durchsuchen…", clearSelection:"Auswahl löschen", noSelectedCities:"Noch keine Städte ausgewählt.",
     newCountryPlaceholder:"Neues Land eintragen …", newCityPlaceholder:"Neue Stadt eintragen …", addButton:"Hinzufügen",
     catTech:"Technik", catFood:"Essen", catPlay:"Spiel", catMusic:"Musik", catArt:"Kultur",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catOther:"Sonstige",
     rhythmOnce:"Einmalig", rhythmYearly:"Jährlich", rhythmWeekly:"Wöchentlich", rhythmMonthly:"Monatlich", rhythmQuarterly:"Quartalsweise",
-    runningNow:"Läuft gerade", next:"Als Nächstes", stillRunning:"läuft noch", startsIn:"beginnt in",
+    runningNow:"Läuft gerade", next:"Als Nächstes", detail:"Details", stillRunning:"läuft noch", startsIn:"beginnt in",
     countdownDays:"Tage", countdownHours:"Std", countdownMinutes:"Min", countdownSeconds:"Sek",
     oneDay:"1 Tag", manyDays:"%n% Tage", eventOne:"%n% von %total% Termin", eventMany:"%n% von %total% Terminen",
     termOne:"Termin", termMany:"Termine", chosen:"%n% gewählt",
@@ -589,9 +1032,10 @@ const I18N = {
     hide:"Für mich ausblenden", deleteOwn:"Eigenen Termin löschen", edit:"Bearbeiten", delete:"Löschen", remove:"Entfernen",
     ownEmpty:"Noch keine eigenen Termine hinzugefügt.", hiddenOne:"ausgeblendeter Termin — ", hiddenMany:"ausgeblendete Termine — ",
     restoreAll:"alle wieder einblenden", savedEmpty:"Noch keine Termine gemerkt. Öffne einen Termin in der Liste und tippe auf „☆ Merken“.",
-    reminderTitle:"🔔 Erinnerungen", noNotifications:"Dieser Browser unterstützt keine Benachrichtigungen.",
-    enableNotifications:"Benachrichtigungen für gemerkte Termine aktivieren", notificationsBlocked:"Benachrichtigungen sind für diese Seite in deinem Browser blockiert — bitte in den Browser-Einstellungen für diese Seite erlauben.",
-    sameDay:"am gleichen Tag", daysBefore:"%n% Tage vorher", reminderHint:"Erinnerungen erscheinen, sobald du diese Seite öffnest und ein gemerkter Termin im gewählten Zeitraum liegt — nicht bei komplett geschlossenem Browser. Rein lokal in diesem Browser, ohne Server oder E-Mail.",
+    reminderTitle:"Erinnerungen", noNotifications:"Dieser Browser unterstützt keine Benachrichtigungen.",
+    enableNotifications:"Benachrichtigungen für gemerkte Termine aktivieren", notificationsBlocked:"Benachrichtigungen sind in deinem Browser blockiert.",
+    browserSettings:"Browser-Einstellungen", browserSettingsHint:"Öffne die Benachrichtigungseinstellungen für diese Seite im Browser und erlaube Benachrichtigungen. Versuche es danach erneut.",
+    sameDay:"Am gleichen Tag", daysBefore:"%n% Tage vorher", reminderHint:"Erinnerungen erscheinen, wenn diese Seite geöffnet ist, und werden lokal gespeichert.",
     privacyLink:"Datenschutz", copyrightLink:"Copyright", privacyTitle:"Datenschutz", copyrightTitle:"Copyright und Lizenz",
     switchLanguage:"Auf Englisch wechseln", languageButton:"English"
   }
@@ -1008,6 +1452,21 @@ const esc    = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;","
 const sortDe = (a,b) => a.localeCompare(b,"de");
 const uniq   = arr => [...new Set(arr)].sort(sortDe);
 
+/* Städteauswahl im Formular — kuratierte und bereits eigene Termine werden angeboten.
+   Ein bereits gespeicherter eigener Ort bleibt auch dann auswählbar, wenn er nicht in
+   der aktuellen Filterauswahl sichtbar ist. */
+function baueEigeneStadtOptionen(aktuellerWert){
+  const select = $("ownCity");
+  if (!select) return;
+  const vorher = aktuellerWert !== undefined ? aktuellerWert : select.value;
+  const staedte = uniq(EVENTS.concat(EIGENE).map(ev => ev.c).filter(Boolean));
+  if (vorher && !staedte.includes(vorher)) staedte.push(vorher);
+  staedte.sort(sortDe);
+  select.innerHTML = '<option value="" disabled>' + t("chooseCity") + '</option>' +
+    staedte.map(stadt => '<option value="' + esc(stadt) + '">' + esc(stadt) + '</option>').join("");
+  select.value = vorher || "";
+}
+
 /* Ohne Angabe liegt eine Veranstaltung in Deutschland */
 const landVon = ev => ev.p || "Deutschland";
 
@@ -1107,6 +1566,7 @@ function aktualisiereNachAenderung(){
   baueAlle();
   bereinige();
   baueLand(); baueRegion(); baueStadt(); baueThema();
+  baueEigeneStadtOptionen();
   renderEigeneListe();
   render();
 }
@@ -1181,22 +1641,32 @@ function pruefeErinnerungen(){
   if (geaendert) speichereBenachrichtigt();
 }
 
+const OWN_ICONS = {
+  bell:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 23.5h15M10.5 23.5V14a5.5 5.5 0 0 1 11 0v9.5M7.5 23.5h17l-2.1 3H9.6z"/><path d="M14 28h4"/></svg>',
+  warning:'<span class="warning-icon" aria-hidden="true">!</span>',
+  bookmark:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 5.5h14v21l-7-4.8-7 4.8z"/></svg>',
+  plus:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="10.5"/><path d="M16 10v12M10 16h12"/></svg>'
+};
+
 /* Liste der gemerkten Termine im Panel, mit Möglichkeit zum Entfernen */
 function renderMerklisteListe(){
   const liste = ALLE.filter(ev => MERKZETTEL.has(evId(ev)));
+  $("merklisteCount").textContent = t("savedCount").replace("%n%", liste.length);
   if (liste.length){
     $("merklisteListe").innerHTML = '<div class="eigeneliste">' + liste.map(ev =>
       '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(ev.c) + ' · ' + rangeTxt(ev) + '</span>' +
       '<button class="del" data-entmerken="' + esc(evId(ev)) + '">' + t("remove") + '</button></div>').join("") + '</div>';
   } else {
-    $("merklisteListe").innerHTML = '<p class="eigene-empty">' + t("savedEmpty") + '</p>';
+    $("merklisteListe").innerHTML = '<div class="own-empty-state"><p class="own-empty-title">' + t("savedEmptyTitle") +
+      '</p><p class="own-empty-hint">' + t("savedEmptyHint") + '</p></div>';
   }
 }
 
 /* Erinnerungs-Einstellungen im Panel: Ein/Aus-Schalter + Tage-Auswahl */
 function renderErinnerungBox(){
   const unterstuetzt = typeof Notification !== "undefined";
-  let html = '<p class="eigenehead">' + t("reminderTitle") + '</p>';
+  let html = '<div class="own-cardhead"><span class="own-icon amber" aria-hidden="true">' + OWN_ICONS.bell +
+    '</span><h3>' + t("reminderTitle") + '</h3></div>';
   if (!unterstuetzt){
     html += '<p class="eigene-empty">' + t("noNotifications") + '</p>';
     $("erinnerungBox").innerHTML = html;
@@ -1205,14 +1675,15 @@ function renderErinnerungBox(){
   const status = Notification.permission;
   html += '<label class="erinnerung-toggle"><input type="checkbox" id="erinnerungAn" ' +
     (ERINNERUNG.aktiv && status === "granted" ? "checked" : "") +
-    '> ' + t("enableNotifications") + '</label>';
+    '><span class="own-switch" aria-hidden="true"></span><span>' + t("enableNotifications") + '</span></label>';
   if (status === "denied"){
-    html += '<p class="eigene-empty">' + t("notificationsBlocked") + '</p>';
+    html += '<div class="own-warning">' + OWN_ICONS.warning + '<span>' + t("notificationsBlocked") + '</span>' +
+      '<button type="button" id="browserSettings">' + t("browserSettings") + '</button></div>';
   }
   html += '<div class="erinnerungtage">' + ERINNERUNG_TAGE_OPTIONEN.map(tag =>
     '<label class="tagchip"><input type="checkbox" data-tag="' + tag + '" ' +
     (ERINNERUNG.tage.has(tag) ? "checked" : "") + '>' +
-    (tag === 0 ? t("sameDay") : t("daysBefore").replace("%n%", tag)) + '</label>').join("") + '</div>';
+    '<span>' + (tag === 0 ? t("sameDay") : t("daysBefore").replace("%n%", tag)) + '</span></label>').join("") + '</div>';
   html += '<p class="eigene-hinweis">' + t("reminderHint") + '</p>';
   $("erinnerungBox").innerHTML = html;
 }
@@ -1249,32 +1720,10 @@ const listeStaedte  = () => uniq(ALLE.filter(e => trefferLand(e) && trefferRegio
 /* Auswahl merken — nur im Browser des Betrachters */
 const STORE = "g04event.auswahl";
 
-/* Beim allerersten Start der App: schlanke Vorauswahl über mehrere Länder mit ihren
-   wichtigsten Städten, damit die App nicht sofort mit allen Terminen überfüllt wirkt.
-   Wer will, kann jederzeit weitere Länder/Städte hinzufügen oder alles zurücksetzen. */
-const STARTER_LAND = ["Deutschland", "Niederlande", "Frankreich", "Spanien", "Österreich",
-  "Schweiz", "Ungarn", "Polen", "Rumänien", "Griechenland", "Türkei", "Italien",
-  "Portugal", "Tschechien", "China", "Südkorea", "USA"];
-const STARTER_STADT = {
-  "Deutschland": ["Berlin", "Hamburg", "München", "Köln", "Nürnberg",
-                  "Frankfurt am Main", "Stuttgart", "Dresden", "Leipzig", "Hannover"],
-  "Niederlande": ["Amsterdam", "Groningen", "Lisse", "Nijmegen"],
-  "Frankreich": ["Paris", "Lyon", "Lille", "Nizza", "Cannes"],
-  "Spanien": ["Barcelona", "Sevilla", "Jerez de la Frontera", "Valencia", "Pamplona"],
-  "Österreich": ["Wien", "Linz", "Kitzbühel", "Salzburg", "Bregenz"],
-  "Schweiz": ["Zürich", "Basel", "Bern", "Genf", "Montreux"],
-  "Ungarn": ["Budapest"],
-  "Polen": ["Krakau", "Gdańsk", "Gdynia"],
-  "Rumänien": ["Hermannstadt", "Klausenburg", "Kronstadt"],
-  "Griechenland": ["Athen"],
-  "Türkei": ["Edirne", "Antalya", "Istanbul", "Bursa"],
-  "Italien": ["Venedig", "Mailand", "Alba", "Siena", "Perugia"],
-  "Portugal": ["Lissabon", "Santarém", "Porto"],
-  "Tschechien": ["Prag", "Znojmo", "Karlsbad", "Jihlava"],
-  "China": ["Harbin", "Hongkong", "Jinghong", "Shanghai", "Suzhou", "Wuxi", "Taicang"],
-  "Südkorea": ["Busan", "Boryeong", "Andong"],
-  "USA": ["Austin", "Louisville", "New Orleans", "Atlanta", "Charleston"]
-};
+/* Beim allerersten Start wird nur Deutschland ausgewählt. Weitere Länder und Städte
+   können danach jederzeit über die Auswahl ergänzt werden. */
+const STARTER_STADT = ["Berlin", "Hamburg", "München", "Köln", "Nürnberg",
+  "Frankfurt am Main", "Stuttgart", "Dresden", "Leipzig", "Hannover"];
 
 function ladeAuswahl(){
   const ersterBesuch = localStorage.getItem(STORE) === null;
@@ -1288,10 +1737,10 @@ function ladeAuswahl(){
   if (ersterBesuch && !F.land.size && !F.stadt.size){
     const vorhandeneLaender = new Set(listeLaender());
     const vorhandeneStaedte = new Set(ALLE.map(e => e.c));
-    STARTER_LAND.filter(l => vorhandeneLaender.has(l)).forEach(l => F.land.add(l));
-    STARTER_LAND.forEach(l => (STARTER_STADT[l] || []).forEach(c => {
+    if (vorhandeneLaender.has("Deutschland")) F.land.add("Deutschland");
+    STARTER_STADT.forEach(c => {
       if (vorhandeneStaedte.has(c)) F.stadt.add(c);
-    }));
+    });
   }
   bereinige();
   speichereAuswahl();
@@ -1322,33 +1771,114 @@ function baueChips(el, alleText, werte, set, attr, zaehler){
 }
 function baueLand(){
   const werte = listeLaender();
-  const chipsHtml =
-    '<button class="chip" data-land="" aria-pressed="' + (F.land.size === 0) + '">' + t("allCountries") + ' ' +
-      '<span class="n">' + werte.length + '</span></button>' +
-    werte.map(w => '<button class="chip" data-land="' + esc(w) + '" aria-pressed="' +
-      F.land.has(w) + '">' + esc(w) + ' <span class="n">' +
-      ALLE.filter(e => landVon(e) === w).length + '</span></button>').join("");
+  const countryCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4 10-10"/></svg>';
+  const addIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+  const countryCount = w => ALLE.filter(e => landVon(e) === w).length;
+  const countryCard = (w, all) =>
+    '<button type="button" class="chip country-card' + (all ? ' all-countries' : '') + '" data-land="' +
+      (all ? '' : esc(w)) + '" data-country-name="' + esc(w) + '" aria-pressed="' + (all ? !F.land.size : F.land.has(w)) + '">' +
+      '<span class="country-check">' + countryCheck + '</span><span class="country-name">' + esc(w) +
+      '</span><span class="country-event-count">' + (all ? werte.length : countryCount(w)) + '</span></button>';
   $("pane-land").innerHTML =
-    '<div class="neuezeile"><input id="neuesLandInput" type="text" maxlength="60" ' +
-      'placeholder="' + t("newCountryPlaceholder") + '">' +
-      '<button id="neuesLandBtn" type="button">' + t("addButton") + '</button></div>' +
-    '<div class="landchips">' + chipsHtml + '</div>';
+    '<div class="country-topbar"><div class="country-searchbox">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>' +
+      '<input id="neuesLandInput" type="search" maxlength="60" autocomplete="off" placeholder="' + t("countrySearchPlaceholder") + '"></div>' +
+      '<button id="neuesLandBtn" class="country-add" type="button"><span class="country-add-icon">' + addIcon +
+      '</span><span>' + t("addButton") + '</span></button></div>' +
+    '<div class="country-summary"><span><strong>' + F.land.size + '</strong> ' +
+      t(F.land.size === 1 ? "countrySelected" : "countriesSelected").replace("%n%", F.land.size) +
+      '</span><button id="countryClear" class="country-clear" type="button">' + t("clear") + '</button></div>' +
+    '<div class="country-grid">' + countryCard(t("allCountries"), true) + werte.map(w => countryCard(w, false)).join("") + '</div>';
+  const filterCountries = () => {
+    const needle = $("neuesLandInput").value.trim().toLocaleLowerCase();
+    $("pane-land").querySelectorAll("[data-country-name]").forEach(card => {
+      card.hidden = !!needle && !card.dataset.countryName.toLocaleLowerCase().includes(needle);
+    });
+  };
+  $("neuesLandInput").addEventListener("input", filterCountries);
 }
-const baueRegion = () => baueChips($("pane-region"), t("allRegions"), listeRegionen(), F.region, "region",
-                       v => ALLE.filter(e => e.l === v).length);
+function regionLetter(wert){
+  const erster = String(wert || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").charAt(0).toUpperCase();
+  return /^[A-Z]$/.test(erster) ? erster : "#";
+}
+
+function baueRegion(){
+  const werte = listeRegionen();
+  const regionCount = w => ALLE.filter(e => e.l === w).length;
+  const searchIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>';
+  const regionCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4 10-10"/></svg>';
+  const popular = [...werte].sort((a,b) => regionCount(b) - regionCount(a) || sortDe(a,b)).slice(0, 6);
+  const regionChoice = (w, cls) =>
+    '<button type="button" class="chip region-choice ' + cls + '" data-region="' + esc(w) + '" data-region-name="' +
+      esc(w) + '" data-region-letter="' + regionLetter(w) + '" aria-pressed="' + F.region.has(w) + '">' +
+      '<span class="region-circle">' + regionCheck + '</span><span class="region-name">' + esc(w) +
+      '</span><span class="region-event-count">' + regionCount(w) + '</span></button>';
+  const mitte = Math.ceil(werte.length / 2);
+  const rows = list => list.map(w =>
+    '<button type="button" class="chip region-row" data-region="' + esc(w) + '" data-region-name="' + esc(w) +
+      '" data-region-letter="' + regionLetter(w) + '" aria-pressed="' + F.region.has(w) + '">' +
+      '<span class="region-circle">' + regionCheck + '</span><span class="region-name">' + esc(w) +
+      '</span><span class="region-event-count">' + regionCount(w) + '</span></button>').join("");
+  const index = ["#"].concat("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
+  $("pane-region").innerHTML =
+    '<div class="region-searchbox">' + searchIcon + '<input id="regionSearch" type="search" autocomplete="off" placeholder="' +
+      t("regionSearchPlaceholder") + '"></div>' +
+    '<div class="region-summary"><span>' + t("allRegionsSummary").replace("%n%", werte.length) + '</span>' +
+      '<button id="regionClear" class="region-clear" type="button">' + t("clear") + '</button></div>' +
+    '<section class="region-section"><h3>' + t("popularRegions") + '</h3><div class="popular-region-grid">' +
+      popular.map(w => regionChoice(w, "")).join("") + '</div></section>' +
+    '<section class="region-section all-region-section"><div class="all-region-head"><h3>' + t("allRegions") + '</h3></div>' +
+      '<div class="region-list-wrap"><div class="all-region-grid"><div class="all-region-column">' + rows(werte.slice(0, mitte)) +
+      '</div><div class="all-region-column">' + rows(werte.slice(mitte)) + '</div></div>' +
+      '<div class="region-index" aria-label="' + t("regionIndex") + '">' + index.map(letter =>
+        '<button type="button" data-region-letter-jump="' + letter + '">' + letter + '</button>').join("") + '</div></div></section>';
+  const filterRegions = () => {
+    const needle = $("regionSearch").value.trim().toLocaleLowerCase();
+    $("pane-region").querySelectorAll("[data-region-name]").forEach(row => {
+      row.hidden = !!needle && !row.dataset.regionName.toLocaleLowerCase().includes(needle);
+    });
+  };
+  $("regionSearch").addEventListener("input", filterRegions);
+}
 function baueStadt(){
   const werte = listeStaedte();
-  const chipsHtml =
-    '<button class="chip" data-stadt="" aria-pressed="' + (F.stadt.size === 0) + '">' + t("allCities") + ' ' +
-      '<span class="n">' + werte.length + '</span></button>' +
-    werte.map(w => '<button class="chip" data-stadt="' + esc(w) + '" aria-pressed="' +
-      F.stadt.has(w) + '">' + esc(w) + ' <span class="n">' +
-      ALLE.filter(e => e.c === w).length + '</span></button>').join("");
+  const selected = werte.filter(w => F.stadt.has(w));
+  const cityCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4 10-10"/></svg>';
+  const searchIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>';
+  const cityCount = w => ALLE.filter(e => e.c === w).length;
+  const selectedHtml = selected.length
+    ? '<div class="selected-city-grid">' + selected.map(w =>
+        '<button type="button" class="chip city-selected" data-stadt="' + esc(w) + '" data-city="' + esc(w) + '" aria-pressed="true">' +
+          '<span class="city-check">' + cityCheck + '</span><span class="city-name">' + esc(w) +
+          '</span><span class="city-event-count">' + cityCount(w) + '</span><span class="city-remove" aria-hidden="true">×</span></button>').join("") + '</div>'
+    : '<p class="city-empty">' + t("noSelectedCities") + '</p>';
+  const mitte = Math.ceil(werte.length / 2);
+  const cityRows = list => list.map(w =>
+    '<button type="button" class="chip city-row" data-stadt="' + esc(w) + '" data-city="' + esc(w) +
+    '" aria-pressed="' + F.stadt.has(w) + '"><span class="city-box">' + cityCheck + '</span><span class="city-name">' +
+    esc(w) + '</span><span class="city-event-count">' + cityCount(w) + '</span></button>').join("");
   $("pane-stadt").innerHTML =
-    '<div class="neuezeile"><input id="neueStadtInput" type="text" maxlength="60" ' +
-      'placeholder="' + t("newCityPlaceholder") + '">' +
-      '<button id="neueStadtBtn" type="button">' + t("addButton") + '</button></div>' +
-    '<div class="stadtchips">' + chipsHtml + '</div>';
+    '<div class="city-topbar"><div class="city-searchbox">' + searchIcon +
+      '<input id="neueStadtInput" type="search" maxlength="60" autocomplete="off" placeholder="' + t("citySearchPlaceholder") + '"></div>' +
+      '<button id="neueStadtBtn" class="city-add" type="button">' + t("addButton") + '</button></div>' +
+    '<div class="city-summary"><span><strong>' + F.stadt.size + '</strong> ' + t("selected") +
+      '<span class="city-of">' + t("of") + ' ' + werte.length + ' ' + t("citiesAfterOf") + '</span></span>' +
+      '<button id="cityClear" class="city-clear" type="button">' + t("clearSelection") + '</button></div>' +
+    '<section class="city-card"><div class="city-cardhead"><h3>' + t("selectedCities") + '</h3></div>' + selectedHtml + '</section>' +
+    '<section class="city-card"><div class="city-all-head"><div class="city-cardhead"><h3>' + t("allCities") + '</h3>' +
+      '<span class="city-total">' + werte.length + ' ' + t("cities") + '</span></div>' +
+      '<div class="city-list-search">' + searchIcon + '<input id="allCitiesSearch" type="search" autocomplete="off" placeholder="' +
+      t("cityListSearchPlaceholder") + '"></div></div>' +
+      '<div class="all-city-grid"><div class="all-city-column">' + cityRows(werte.slice(0, mitte)) + '</div>' +
+      '<div class="all-city-column">' + cityRows(werte.slice(mitte)) + '</div></div></section>';
+  const filterRows = () => {
+    const needle = ($("allCitiesSearch").value || $("neueStadtInput").value || "").trim().toLocaleLowerCase();
+    $("pane-stadt").querySelectorAll("[data-city]").forEach(row => {
+      row.hidden = !!needle && !row.dataset.city.toLocaleLowerCase().includes(needle);
+    });
+  };
+  $("neueStadtInput").addEventListener("input", filterRows);
+  $("allCitiesSearch").addEventListener("input", filterRows);
 }
 
 /* Neue Stadt über das Stadt-Panel anlegen — legt automatisch einen Platzhalter-Termin
@@ -1408,18 +1938,42 @@ function neuesLandAnlegen(){
   aktualisiereNachAenderung();
 }
 
+const THEME_ICONS = {
+  tech:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="10" width="26" height="19" rx="1.5"/><path d="M6 34h36M15 34l2-5h14l2 5"/></svg>',
+  food:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8v12M10 8v8M18 8v8M10 16c0 3 2 5 4 5v19M34 8v32M34 8c-5 3-6 8-6 13h6"/></svg>',
+  play:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17h18c3 0 5 2 6 6l2 9c1 5-5 7-8 3l-4-5H19l-4 5c-3 4-9 2-8-3l2-9c1-4 3-6 6-6z"/><path d="M15 22v8M11 26h8M31 24h.1M36 28h.1"/></svg>',
+  music:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M28 29V10l14-3v19M28 29c0 3-3 5-6 5s-6-2-6-5 3-5 6-5 6 2 6 5zM42 26c0 3-3 5-6 5s-6-2-6-5 3-5 6-5 6 2 6 5z"/></svg>',
+  art:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="13" r="5"/><circle cx="12" cy="20" r="4"/><circle cx="36" cy="20" r="4"/><path d="M15 37v-3c0-5 4-9 9-9s9 4 9 9v3M4 36v-2c0-4 3-7 7-7 2 0 4 1 5 2M44 36v-2c0-4-3-7-7-7-2 0-4 1-5 2"/></svg>',
+  film:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 16h32v24H8zM8 16l3-7h32l-3 7zM15 9l4 7M24 9l4 7M33 9l4 7M14 26h.1M21 26h.1M28 26h.1M35 26h.1"/></svg>',
+  sport:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="9" r="3"/><path d="M26 17l7 4-4 7 7 5M27 22l-8 7-5 9M29 27l-8 1-5-6M35 33l7 6M18 36l-6 5"/></svg>',
+  trad:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 39h34M10 35h28M13 35V20M21 35V20M29 35V20M37 35V20M8 20h32L24 8zM6 39h36"/></svg>',
+  sonstige:'<svg viewBox="0 0 48 48" fill="currentColor"><circle cx="13" cy="24" r="3.5"/><circle cx="24" cy="24" r="3.5"/><circle cx="35" cy="24" r="3.5"/></svg>'
+};
+const THEME_CHECK = '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m7 16 6 6 12-13"/></svg>';
+
 function baueThema(){
+  const anzahl = Object.keys(CATS).length;
   $("pane-thema").innerHTML =
-    '<button class="chip" data-thema="" aria-pressed="' + (F.thema.size === 0) + '">' + t("allThemes") + '</button>' +
-    Object.entries(CATS).map(([k,v]) =>
-      '<button class="chip k" data-thema="' + k + '" aria-pressed="' + F.thema.has(k) +
-      '" style="--cat:var(' + v.v + ')"><span class="dot"></span>' + catLabel(k) +
-      ' <span class="n">' + ALLE.filter(e => e.k === k).length + '</span></button>').join("");
+    '<div class="theme-intro"><span>' + t("themePrompt") + '</span><span class="theme-summary">' +
+      t("themeSummary").replace("%n%", anzahl) + '</span></div>' +
+    '<div class="theme-grid">' +
+      '<button class="chip theme-card all-themes" data-thema="" aria-pressed="' + (F.thema.size === 0) + '">' +
+        '<span class="theme-all-check">' + THEME_CHECK + '</span><span class="theme-name">' + t("allThemes") + '</span></button>' +
+      Object.entries(CATS).map(([k,v]) =>
+        '<button class="chip theme-card k" data-thema="' + k + '" aria-pressed="' + F.thema.has(k) +
+        '" style="--cat:var(' + v.v + ')"><span class="theme-rail"></span><span class="theme-icon">' +
+        (THEME_ICONS[k] || THEME_ICONS.sonstige) + '</span><span class="theme-name">' + catLabel(k) +
+        '</span><span class="theme-count">' + ALLE.filter(e => e.k === k).length + '</span></button>').join("") +
+    '</div><div class="theme-actions"><button type="button" class="theme-action" id="themeReset">' + t("reset") +
+    '</button><button type="button" class="theme-action apply" id="themeApply">' + t("applyThemes") + '</button></div>';
 }
 
 /* Liste eigener Termine im Panel, inkl. Bearbeiten, Löschen und Wiedereinblenden */
 function renderEigeneListe(){
   $("dv-eigene").textContent = EIGENE.length ? EIGENE.length + " " + t("ownBadge") : t("add");
+  const ownCard = $("ownCreatedEvents");
+  ownCard.hidden = !(EIGENE.length || AUSGEBLENDET.size);
+  $("ownCreatedCount").textContent = EIGENE.length ? EIGENE.length + " " + t("ownBadge") : "";
   let html = "";
   if (EIGENE.length){
     html += '<div class="eigeneliste">' + EIGENE.map(ev =>
@@ -1449,6 +2003,7 @@ ladeBenachrichtigt();
 baueAlle();
 ladeAuswahl();
 baueLand(); baueRegion(); baueStadt(); baueThema();
+baueEigeneStadtOptionen();
 renderEigeneListe();
 renderMerklisteListe();
 renderErinnerungBox();
@@ -1460,7 +2015,7 @@ $("langToggle").addEventListener("click", () => {
   LANGUAGE = LANGUAGE === "en" ? "de" : "en";
   try { localStorage.setItem(LANGUAGE_KEY, LANGUAGE); } catch(e) {}
   applyLanguage();
-  baueLand(); baueRegion(); baueStadt(); baueThema();
+  baueLand(); baueRegion(); baueStadt(); baueThema(); baueEigeneStadtOptionen();
   renderEigeneListe(); renderMerklisteListe(); renderErinnerungBox();
   if (offenesPane) $("sheetTitle").textContent = t(TITEL[offenesPane]);
   if (bearbeiteId) $("eigenSubmitBtn").textContent = t("saveChanges");
@@ -1532,21 +2087,34 @@ function renderNext(list){
   if (!ev){ NEXT = null; box.hidden = true; return; }
 
   const live = isLive(ev);
+  const id = evId(ev);
+  const cover = coverTile(ev);
+  const isAugsburgerPlaerrer = /augsburger\s+plärrer/i.test(String(ev.n || ""));
   NEXT = { target: live ? parse(ev.e).getTime() + DAY : parse(ev.s).getTime() };
 
   box.style.setProperty("--hcat", CATS[ev.k].h);
+  box.style.setProperty("--cover-position", COVER_POSITIONS[cover]);
+  box.style.setProperty("--hero-image", isAugsburgerPlaerrer ? "url('assets/hero-augsburger-plaerrer.png')" : "url('assets/event-hero-sprite.png')");
+  box.style.setProperty("--hero-image-size", isAugsburgerPlaerrer ? "cover" : "auto 400%");
+  box.style.setProperty("--hero-image-position", isAugsburgerPlaerrer ? "center" : COVER_POSITIONS[cover]);
+  box.className = "hero hero-" + ev.k;
   box.hidden = false;
   box.innerHTML =
-    '<div class="who"><div class="lbl">' + (live ? t("runningNow") : t("next") + " " + wohin()) + '</div>' +
-      '<h2>' + esc(ev.n) + '</h2>' +
+    '<div class="hero-top"><div class="hero-status"><span class="live-dot" aria-hidden="true"></span>' +
+      '<span class="lbl">' + (live ? t("runningNow") : t("next") + " " + wohin()) + '</span></div>' +
+      '<div class="hero-actions"><button class="hero-bookmark" type="button" data-merken="' + esc(id) +
+        '" aria-pressed="' + MERKZETTEL.has(id) + '" aria-label="' + esc(MERKZETTEL.has(id) ? t("marked") : t("mark")) + '">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3.7-5.5 3.7z"/></svg></button>' +
+      '<button class="hero-details" type="button" data-hero-details="' + esc(id) + '">' + t("detail") + '<span aria-hidden="true">›</span></button></div></div>' +
+    '<div class="hero-body"><div class="who"><h2>' + esc(ev.n) + '</h2>' +
       '<div class="meta"><b>' + esc(ev.c) + '</b><span>' + esc(landVon(ev)) + '</span>' +
         '<span>' + rangeTxt(ev) + '</span><span>' + durTxt(days(ev)) + '</span>' +
         '<span>' + catLabel(ev.k) + '</span></div></div>' +
-    '<div class="cdwrap"><span class="cdl">' + (live ? t("stillRunning") : t("startsIn")) + '</span>' +
-      '<div class="cd" id="cd">' +
-        [t("countdownDays"),t("countdownHours"),t("countdownMinutes"),t("countdownSeconds")].map(k =>
-          '<div class="cdu"><span class="v">–</span><span class="k">' + k + '</span></div>').join("") +
-      '</div></div>';
+      '<div class="cdwrap"><span class="cdl">' + (live ? t("stillRunning") : t("startsIn")) + '</span>' +
+        '<div class="cd" id="cd">' +
+          [t("countdownDays"),t("countdownHours"),t("countdownMinutes"),t("countdownSeconds")].map(k =>
+            '<div class="cdu"><span class="v">–</span><span class="k">' + k + '</span></div>').join("") +
+        '</div></div></div>';
   tick();
 }
 
@@ -1572,6 +2140,32 @@ function tick(){
 setInterval(tick, 1000);
 
 /* ---------------- Liste ---------------- */
+const COVER_POSITIONS = [
+  "0% 0%", "33.333% 0%", "66.667% 0%", "100% 0%",
+  "0% 33.333%", "33.333% 33.333%", "66.667% 33.333%", "100% 33.333%",
+  "0% 66.667%", "33.333% 66.667%", "66.667% 66.667%", "100% 66.667%",
+  "0% 100%", "33.333% 100%", "66.667% 100%", "100% 100%"
+];
+
+function coverTile(ev){
+  const text = (String(ev.n || "") + " " + String(ev.d || "")).toLocaleLowerCase();
+  if (/vendimi|wein|wine|vino|traub|weinles|apfelwein|cider|bierfest|beer/.test(text)) return 0;
+  if (ev.k === "food") return 1;
+  if (ev.k === "music") return /jazz|blues|swing|klassik|oper/.test(text) ? 11 : 2;
+  if (ev.k === "film") return 5;
+  if (ev.k === "play") return 6;
+  if (ev.k === "tech") return 4;
+  if (ev.k === "sport") return 7;
+  if (/weihnacht|christmas|advent|nikolaus|winterdom/.test(text)) return /winterdom/.test(text) ? 15 : 8;
+  if (/oktoberfest|frühlingsfest|sommerfest|volksfest|jahrmarkt|dippemess|dom|kirmes|flohmarkt|fête/.test(text)) return 10;
+  if (/hafen|harbor|waterfront|feuerwerk|fireworks|lichterfest|lights/.test(text)) return 14;
+  if (/buch|literatur|literary|book/.test(text)) return 12;
+  if (/kunsthandwerk|handwerk|craft|keramik|pottery/.test(text)) return 13;
+  if (/karneval|carnival|parade|umzug|folklore|volkstanz|tradition/.test(text)) return 9;
+  if (ev.k === "art") return 3;
+  return ev.k === "trad" ? 9 : 3;
+}
+
 function evHTML(ev){
   const a = parse(ev.s), n = days(ev);
   const datum = ev.x ? rangeTxt(ev)
@@ -1579,8 +2173,10 @@ function evHTML(ev){
       rangeTxt(ev) + '</span>';
   const id = evId(ev);
   const badge = ev.eigen ? '<span class="badge">' + esc(t("ownBadge")) + '</span>' : '';
-  return '<article class="ev" style="--cat:var(' + CATS[ev.k].v + ')">' +
+  const saved = MERKZETTEL.has(id);
+  return '<article class="ev" data-ev-id="' + esc(id) + '" style="--cat:var(' + CATS[ev.k].v + ')">' +
     '<button class="evmain" aria-expanded="false">' +
+      '<span class="evvisual visual-' + ev.k + ' cover-' + coverTile(ev) + '" aria-hidden="true"></span>' +
       '<span class="dbox"><span class="d">' + a.getDate() + '</span>' +
         '<span class="m">' + MABK[LANGUAGE][a.getMonth()] + '</span>' +
         '<span class="y">' + a.getFullYear() + '</span></span>' +
@@ -1591,6 +2187,9 @@ function evHTML(ev){
         '<span class="dur"><span class="v">' + durTxt(n) + '</span><span class="k">' + t("detailDuration") + '</span></span>' +
       '</span>' +
     '</button>' +
+    '<button class="cardmark" type="button" data-merken="' + esc(id) + '" aria-pressed="' + saved +
+      '" aria-label="' + esc(saved ? t("marked") : t("mark")) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3.7-5.5 3.7z"/></svg></button>' +
+    '<span class="cardchevron" aria-hidden="true">›</span>' +
     '<div class="detail" hidden><p>' + esc(ev.d || "") + '</p><div class="dl">' +
       '<div><dt>' + t("detailDates") + '</dt><dd>' + rangeTxt(ev) + '</dd></div>' +
       '<div><dt>' + t("detailDuration") + '</dt><dd>' + durTxt(n) + '</dd></div>' +
@@ -1609,9 +2208,9 @@ function evHTML(ev){
     '</div></article>';
 }
 
-function dockWert(set){
+function dockWert(set, immerZaehlen){
   if (!set.size) return t("all");
-  if (set.size === 1) return [...set][0];
+  if (set.size === 1 && !immerZaehlen) return [...set][0];
   return t("chosen").replace("%n%", set.size);
 }
 
@@ -1622,13 +2221,15 @@ function render(){
 
   renderNext(list);
 
-  $("count").innerHTML = "<b>" + list.length + "</b> " +
+  $("q").value = F.q;
+  $("mainQ").value = F.q;
+  $("count").innerHTML = '<span class="count-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="1.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg></span><span><b>' + list.length + '</b> ' +
     t(list.length === 1 ? "eventOne" : "eventMany").replace("%n%", list.length).replace("%total%", ALLE.length) +
-    " " + wohin();
+    " · " + wohin() + '</span>';
   $("reset").hidden = !aktiv;
 
   // Leiste unten beschriften
-  const werte = { q: F.q || t("all"), land: dockWert(F.land), region: dockWert(F.region),
+  const werte = { q: F.q || t("all"), land: dockWert(F.land, true), region: dockWert(F.region),
                   stadt: dockWert(F.stadt),
                   thema: F.thema.size === 1 ? catLabel([...F.thema][0]) : dockWert(F.thema) };
   Object.entries(werte).forEach(([p,v]) => {
@@ -1675,6 +2276,11 @@ function oeffne(pane){
   offenesPane = pane;
   PANES.forEach(p => $("pane-" + p).hidden = p !== pane);
   $("sheetTitle").textContent = t(TITEL[pane]);
+  $("sheet").classList.toggle("own-open", pane === "eigene");
+  $("sheet").classList.toggle("theme-open", pane === "thema");
+  $("sheet").classList.toggle("city-open", pane === "stadt");
+  $("sheet").classList.toggle("region-open", pane === "region");
+  $("sheet").classList.toggle("country-open", pane === "land");
   $("sheet").hidden = false;
   $("scrim").hidden = false;
   document.querySelectorAll(".dbtn").forEach(b =>
@@ -1685,6 +2291,11 @@ function oeffne(pane){
 }
 function schliesse(){
   offenesPane = null;
+  $("sheet").classList.remove("own-open");
+  $("sheet").classList.remove("theme-open");
+  $("sheet").classList.remove("city-open");
+  $("sheet").classList.remove("region-open");
+  $("sheet").classList.remove("country-open");
   $("sheet").hidden = true;
   $("scrim").hidden = true;
   document.querySelectorAll(".dbtn").forEach(b => b.setAttribute("aria-expanded","false"));
@@ -1704,7 +2315,7 @@ function chipKlick(container, set, attr, danach){
     const wert = b.dataset[attr];
     if (!wert) set.clear();
     else set.has(wert) ? set.delete(wert) : set.add(wert);
-    [...container.children].forEach(ch =>
+    container.querySelectorAll(".chip").forEach(ch =>
       ch.setAttribute("aria-pressed", ch.dataset[attr] ? set.has(ch.dataset[attr]) : set.size === 0));
     if (danach) danach();
     speichereAuswahl();
@@ -1712,26 +2323,99 @@ function chipKlick(container, set, attr, danach){
   });
 }
 chipKlick($("pane-land"),   F.land,   "land",   () => { bereinige(); baueLand(); baueRegion(); baueStadt(); });
-chipKlick($("pane-region"), F.region, "region", () => { bereinige(); baueStadt(); });
+chipKlick($("pane-region"), F.region, "region", () => { bereinige(); baueRegion(); baueStadt(); });
 chipKlick($("pane-stadt"),  F.stadt,  "stadt", () => baueStadt());
 
 $("pane-stadt").addEventListener("click", e => {
   if (e.target.id === "neueStadtBtn") neueStadtAnlegen();
+  if (e.target.id === "cityClear"){
+    F.stadt.clear();
+    speichereAuswahl();
+    baueStadt();
+    render();
+  }
 });
 $("pane-stadt").addEventListener("keydown", e => {
   if (e.target.id === "neueStadtInput" && e.key === "Enter"){ e.preventDefault(); neueStadtAnlegen(); }
 });
 $("pane-land").addEventListener("click", e => {
-  if (e.target.id === "neuesLandBtn") neuesLandAnlegen();
+  if (e.target.closest("#neuesLandBtn")) neuesLandAnlegen();
+  if (e.target.id === "countryClear"){
+    F.land.clear();
+    bereinige();
+    speichereAuswahl();
+    baueLand();
+    baueRegion();
+    baueStadt();
+    render();
+  }
 });
 $("pane-land").addEventListener("keydown", e => {
   if (e.target.id === "neuesLandInput" && e.key === "Enter"){ e.preventDefault(); neuesLandAnlegen(); }
 });
-chipKlick($("pane-thema"),  F.thema,  "thema");
 
-$("q").addEventListener("input", e => { F.q = e.target.value.trim(); render(); });
+$("pane-region").addEventListener("click", e => {
+  if (e.target.id === "regionClear"){
+    F.region.clear();
+    bereinige();
+    speichereAuswahl();
+    baueRegion();
+    baueStadt();
+    render();
+    return;
+  }
+  const jump = e.target.closest("[data-region-letter-jump]");
+  if (jump){
+    const letter = jump.dataset.regionLetterJump;
+    const target = [...$("pane-region").querySelectorAll(".all-region-section [data-region-letter]")]
+      .find(row => row.dataset.regionLetter === letter);
+    if (target) target.scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+});
+
+chipKlick($("pane-thema"),  F.thema,  "thema", () => baueThema());
+
+$("pane-thema").addEventListener("click", e => {
+  if (e.target.closest("#themeReset")){
+    F.thema.clear();
+    speichereAuswahl();
+    baueThema();
+    render();
+    return;
+  }
+  if (e.target.closest("#themeApply")) schliesse();
+});
+
+$("q").addEventListener("input", e => {
+  F.q = e.target.value.trim();
+  $("mainQ").value = e.target.value;
+  render();
+});
+$("mainQ").addEventListener("input", e => {
+  F.q = e.target.value.trim();
+  $("q").value = e.target.value;
+  render();
+});
 $("sort").addEventListener("change", e => { F.sort = e.target.value; render(); });
 $("upcoming").addEventListener("change", e => { F.upcoming = e.target.checked; render(); });
+
+$("next").addEventListener("click", e => {
+  const merken = e.target.closest("[data-merken]");
+  if (merken){
+    const id = merken.dataset.merken;
+    if (MERKZETTEL.has(id)) MERKZETTEL.delete(id); else MERKZETTEL.add(id);
+    speichereMerkliste();
+    render();
+    renderMerklisteListe();
+    pruefeErinnerungen();
+    return;
+  }
+  const details = e.target.closest("[data-hero-details]");
+  if (details){
+    const art = [...document.querySelectorAll(".ev")].find(row => row.dataset.evId === details.dataset.heroDetails);
+    if (art) art.scrollIntoView({ behavior:"smooth", block:"center" });
+  }
+});
 
 $("out").addEventListener("click", e => {
   const merken = e.target.closest("[data-merken]");
@@ -1769,6 +2453,7 @@ function eigeneBearbeiten(id){
   if (!ev) return;
   bearbeiteId = id;
   const form = $("eigenForm");
+  baueEigeneStadtOptionen(ev.c || "");
   form.n.value = ev.n || "";
   form.c.value = ev.c || "";
   form.l.value = ev.l || "";
@@ -1835,6 +2520,7 @@ $("eigenForm").addEventListener("submit", e => {
 });
 
 $("editAbbrechen").addEventListener("click", eigeneBearbeitenAbbrechen);
+$("eigenClearBtn").addEventListener("click", eigeneBearbeitenAbbrechen);
 
 $("eigeneListe").addEventListener("click", e => {
   const bearb = e.target.closest("[data-bearbeiten]");
@@ -1861,7 +2547,7 @@ $("eigeneListe").addEventListener("click", e => {
 $("reset").addEventListener("click", () => {
   F.land.clear(); F.region.clear(); F.stadt.clear(); F.thema.clear();
   F.q = ""; F.upcoming = true; F.sort = "date";
-  $("q").value = ""; $("upcoming").checked = true; $("sort").value = "date";
+  $("q").value = ""; $("mainQ").value = ""; $("upcoming").checked = true; $("sort").value = "date";
   baueLand(); baueRegion(); baueStadt(); baueThema();
   speichereAuswahl();
   render();
@@ -1874,6 +2560,11 @@ $("merklisteListe").addEventListener("click", e => {
   speichereMerkliste();
   renderMerklisteListe();
   render();
+});
+
+$("erinnerungBox").addEventListener("click", e => {
+  if (e.target.id !== "browserSettings") return;
+  alert(t("browserSettingsHint"));
 });
 
 $("erinnerungBox").addEventListener("change", e => {
