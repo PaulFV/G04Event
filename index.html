@@ -138,7 +138,7 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(39px,7vw,58px);letter
 .count b{color:var(--ink);font-size:22px;font-weight:600}
 .count-icon{display:grid;place-items:center;width:29px;height:29px;color:var(--ink-2)}
 .count-icon svg{width:28px;height:28px}
-.rtools{width:100%;display:grid;grid-template-columns:auto minmax(175px,265px) auto minmax(220px,1fr);align-items:center;gap:14px}
+.rtools{width:100%;display:grid;grid-template-columns:auto minmax(175px,265px) auto;align-items:center;gap:14px}
 .tg{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:16px;color:var(--ink-2);white-space:nowrap}
 .tg input{appearance:none;width:28px;height:28px;border:1px solid var(--line-2);border-radius:5px;background:var(--surface);margin:0;flex:none;cursor:pointer}
 .tg input:checked{background:var(--ink);border-color:var(--ink)}
@@ -152,11 +152,6 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .reset:hover{color:var(--ink)}
 .reset[hidden]{display:none}
-.main-searchbox{position:relative;min-width:0}
-.main-searchbox svg{position:absolute;left:17px;top:50%;width:27px;height:27px;transform:translateY(-50%);color:var(--ink-2)}
-.main-searchbox input{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
-  border:1px solid var(--line-2);border-radius:11px;padding:7px 16px 7px 58px}
-.main-searchbox input::placeholder{color:var(--faint)}
 
 /* ---------- Liste ---------- */
 .group{margin-bottom:28px}
@@ -632,7 +627,6 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .count b{font-size:19px}
   .rtools{grid-template-columns:1fr 1fr;gap:10px}
   .tg{grid-column:1/-1;font-size:14px}
-  .main-searchbox{grid-column:1/-1;grid-row:2}
   .rtools select{grid-column:1}
   .reset{justify-self:end;grid-column:2}
   .gh h3{font-size:21px}
@@ -766,11 +760,6 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
         <option value="cat" data-i18n="sortCategory">Category</option>
       </select>
       <button class="reset" id="reset" hidden data-i18n="reset">Reset</button>
-      <div class="main-searchbox">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
-        <input id="mainQ" type="search" placeholder="Search events…" aria-label="Search events"
-          data-i18n-placeholder="mainSearchPlaceholder" data-i18n-aria="mainSearch">
-      </div>
     </div>
   </div>
 
@@ -2222,7 +2211,6 @@ function render(){
   renderNext(list);
 
   $("q").value = F.q;
-  $("mainQ").value = F.q;
   $("count").innerHTML = '<span class="count-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="1.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg></span><span><b>' + list.length + '</b> ' +
     t(list.length === 1 ? "eventOne" : "eventMany").replace("%n%", list.length).replace("%total%", ALLE.length) +
     " · " + wohin() + '</span>';
@@ -2388,12 +2376,6 @@ $("pane-thema").addEventListener("click", e => {
 
 $("q").addEventListener("input", e => {
   F.q = e.target.value.trim();
-  $("mainQ").value = e.target.value;
-  render();
-});
-$("mainQ").addEventListener("input", e => {
-  F.q = e.target.value.trim();
-  $("q").value = e.target.value;
   render();
 });
 $("sort").addEventListener("change", e => { F.sort = e.target.value; render(); });
@@ -2547,7 +2529,7 @@ $("eigeneListe").addEventListener("click", e => {
 $("reset").addEventListener("click", () => {
   F.land.clear(); F.region.clear(); F.stadt.clear(); F.thema.clear();
   F.q = ""; F.upcoming = true; F.sort = "date";
-  $("q").value = ""; $("mainQ").value = ""; $("upcoming").checked = true; $("sort").value = "date";
+  $("q").value = ""; $("upcoming").checked = true; $("sort").value = "date";
   baueLand(); baueRegion(); baueStadt(); baueThema();
   speichereAuswahl();
   render();
