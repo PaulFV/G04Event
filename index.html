@@ -270,8 +270,10 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .dockrow{display:flex;gap:8px;max-width:1120px;margin:0 auto}
 .dbtn{flex:1 1 0;min-width:0;background:transparent;border:1px solid transparent;border-radius:23px;padding:11px 5px 10px;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;cursor:pointer;position:relative;
-  color:#AEBBD0;font:inherit;min-height:154px;-webkit-tap-highlight-color:transparent}
+  color:#AEBBD0;font:inherit;min-height:132px;-webkit-tap-highlight-color:transparent}
 .dock-icon{display:block;width:82px;height:82px;flex:none;background-image:url("assets/dock-icons-sprite.png");background-repeat:no-repeat;background-size:300% 200%;background-color:#0B1016;filter:drop-shadow(0 0 6px rgba(122,197,255,.34)) drop-shadow(0 2px 3px rgba(0,0,0,.6));transition:filter .15s ease}
+.dock-icon-home{background-image:none;display:grid;place-items:center;color:#C6D0DF}
+.dock-icon-home svg{width:58px;height:58px;display:block;stroke:currentColor;filter:drop-shadow(0 0 6px rgba(122,197,255,.34))}
 .dock-icon-q{background-position:0% 0%}
 .dock-icon-land{background-position:50% 0%}
 .dock-icon-region{background-position:100% 0%}
@@ -279,12 +281,9 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .dock-icon-theme{background-position:50% 100%}
 .dock-icon-own{background-position:100% 100%}
 .dbtn .dl{font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1.05;color:#E6EBF3}
-.dbtn .dv{font-size:18px;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis;
-  white-space:nowrap;color:#AEBBD0}
 .dbtn:hover{color:#D7E0ED}
-.dbtn.gesetzt .dv{color:#E8EDF5;font-weight:600}
-.dbtn[data-pane="land"].gesetzt{background:rgba(16,117,104,.28);border-color:rgba(35,192,171,.28);box-shadow:0 0 28px rgba(28,198,175,.1) inset}
-.dbtn[data-pane="land"].gesetzt::before{content:"";position:absolute;left:26%;right:26%;top:-12px;height:7px;border-radius:999px;background:#50E8CC;box-shadow:0 0 13px rgba(80,232,204,.72)}
+.dbtn[data-pane="location"].gesetzt{background:rgba(16,117,104,.28);border-color:rgba(35,192,171,.28);box-shadow:0 0 28px rgba(28,198,175,.1) inset}
+.dbtn[data-pane="location"].gesetzt::before{content:"";position:absolute;left:26%;right:26%;top:-12px;height:7px;border-radius:999px;background:#50E8CC;box-shadow:0 0 13px rgba(80,232,204,.72)}
 .dbtn[aria-expanded="true"]{background:rgba(255,255,255,.08);border-color:rgba(170,190,215,.25);color:#F1F4F8}
 
 /* Farbige, leuchtende Icons wie in der Referenzleiste */
@@ -292,13 +291,11 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .dbtn.gesetzt .dock-icon,.dbtn[aria-expanded="true"] .dock-icon{
   filter:drop-shadow(0 0 15px rgba(126,220,255,.7)) drop-shadow(0 2px 3px rgba(0,0,0,.6))}
 .dbtn[data-pane="eigene"][aria-expanded="true"]{background:rgba(95,196,124,.14)}
-.dbtn[data-pane="eigene"][aria-expanded="true"] .dl,.dbtn[data-pane="eigene"][aria-expanded="true"] .dv{color:var(--c-sport)}
+.dbtn[data-pane="eigene"][aria-expanded="true"] .dl{color:var(--c-sport)}
 .dbtn[data-pane="stadt"][aria-expanded="true"]{background:rgba(214,174,79,.14)}
-.dbtn[data-pane="stadt"][aria-expanded="true"] .dl,.dbtn[data-pane="stadt"][aria-expanded="true"] .dv{color:var(--c-food)}
-.dbtn[data-pane="region"][aria-expanded="true"]{background:rgba(180,144,238,.14)}
-.dbtn[data-pane="region"][aria-expanded="true"] .dl,.dbtn[data-pane="region"][aria-expanded="true"] .dv{color:var(--c-play)}
-.dbtn[data-pane="land"][aria-expanded="true"]{background:rgba(79,195,172,.14)}
-.dbtn[data-pane="land"][aria-expanded="true"] .dl,.dbtn[data-pane="land"][aria-expanded="true"] .dv{color:var(--c-art)}
+.dbtn[data-pane="stadt"][aria-expanded="true"] .dl{color:var(--c-food)}
+.dbtn[data-pane="location"][aria-expanded="true"]{background:rgba(79,195,172,.14)}
+.dbtn[data-pane="location"][aria-expanded="true"] .dl{color:var(--c-art)}
 
 /* ---------- Auswahlfeld über der Leiste ---------- */
 .sheet{background:var(--surface);border-top:1px solid var(--line-2);
@@ -605,7 +602,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 @media (max-width:640px){
   body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
   .shell{padding:0 14px}
-  .head{padding-top:22px}
+  .head{padding-top:max(52px,calc(22px + env(safe-area-inset-top)))}
   .headbar{align-items:flex-start}
   h1{font-size:clamp(34px,11vw,48px)}
   .appver{font-size:10px;margin-left:4px}
@@ -631,22 +628,27 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .reset{justify-self:end;grid-column:2}
   .gh h3{font-size:21px}
   .gh .gn{font-size:12px}
-  .evmain{grid-template-columns:88px 53px minmax(0,1fr);gap:11px;padding:12px 82px 12px 12px;align-items:start}
-  .evvisual{width:88px;height:84px}
-  .tt{font-size:15px;margin-top:1px}
-  .sub{font-size:12px;gap:2px 7px}
-  .right{grid-column:3;justify-content:flex-start;padding-top:8px;gap:9px;flex-wrap:wrap}
+  .ev{width:calc(100% - 8px);margin-left:4px;margin-right:4px;border-radius:12px}
+  .evmain{grid-template-columns:74px 45px minmax(0,1fr);gap:8px;padding:10px 68px 10px 10px;align-items:start}
+  .evvisual{width:74px;height:72px;border-radius:8px}
+  .tt{font-size:14px;margin-top:0}
+  .sub{font-size:11px;gap:2px 6px}
+  .right{grid-column:3;justify-content:flex-start;padding-top:5px;gap:7px;flex-wrap:wrap}
   .dur{text-align:left}
-  .cardmark{top:17px;right:45px}
-  .cardchevron{right:13px;font-size:27px}
+  .dur .v{font-size:13px}
+  .dur .k{font-size:8.5px}
+  .tag{font-size:10.5px;padding:2px 8px}
+  .cardmark{top:14px;right:36px;width:25px;height:25px}
+  .cardmark svg{width:22px;height:22px}
+  .cardchevron{right:10px;font-size:25px}
   .detail{padding:0 14px 18px 12px}
   .dock{padding:6px 5px calc(7px + env(safe-area-inset-bottom))}
   .dockrow{gap:2px}
   .dbtn{border-radius:17px;padding:6px 2px 7px;gap:3px;min-height:82px}
   .dock-icon{width:37px;height:37px;filter:drop-shadow(0 0 4px rgba(122,197,255,.34)) drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+  .dock-icon-home svg{width:32px;height:32px}
   .dbtn .dl{font-size:11.5px;letter-spacing:-.02em}
-  .dbtn .dv{font-size:10px}
-  .dbtn[data-pane="land"].gesetzt::before{top:-7px;height:4px}
+  .dbtn[data-pane="location"].gesetzt::before{top:-7px;height:4px}
   .footer{margin-bottom:102px}
   .sheet.own-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
   .sheet.own-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
@@ -873,29 +875,29 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 
   <nav class="dock" aria-label="Selection" data-i18n-aria="selection">
     <div class="dockrow" id="dockrow">
+      <button class="dbtn" data-pane="home" aria-expanded="false">
+        <span class="dock-icon dock-icon-home" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 10.7 8.5-7 8.5 7"/><path d="M5.5 9.4v10.1h13V9.4M9.5 19.5v-6h5v6"/></svg></span>
+        <span class="dl" data-i18n="dockHome">Home</span>
+      </button>
       <button class="dbtn" data-pane="q" aria-expanded="false">
         <span class="dock-icon dock-icon-q" aria-hidden="true"></span>
-        <span class="dl" data-i18n="dockSearch">Search</span><span class="dv" id="dv-q">all</span>
+        <span class="dl" data-i18n="dockSearch">Search</span>
       </button>
-      <button class="dbtn" data-pane="land" aria-expanded="false">
+      <button class="dbtn" data-pane="location" aria-expanded="false">
         <span class="dock-icon dock-icon-land" aria-hidden="true"></span>
-        <span class="dl" data-i18n="dockCountry">Country</span><span class="dv" id="dv-land">all</span>
-      </button>
-      <button class="dbtn" data-pane="region" aria-expanded="false">
-        <span class="dock-icon dock-icon-region" aria-hidden="true"></span>
-        <span class="dl" data-i18n="dockRegion">Region</span><span class="dv" id="dv-region">all</span>
+        <span class="dl" data-i18n="dockLocation">Country &amp; region</span>
       </button>
       <button class="dbtn" data-pane="stadt" aria-expanded="false">
         <span class="dock-icon dock-icon-city" aria-hidden="true"></span>
-        <span class="dl" data-i18n="dockCity">City</span><span class="dv" id="dv-stadt">all</span>
+        <span class="dl" data-i18n="dockCity">City</span>
       </button>
       <button class="dbtn" data-pane="thema" aria-expanded="false">
         <span class="dock-icon dock-icon-theme" aria-hidden="true"></span>
-        <span class="dl" data-i18n="dockTheme">Theme</span><span class="dv" id="dv-thema">all</span>
+        <span class="dl" data-i18n="dockTheme">Theme</span>
       </button>
       <button class="dbtn" data-pane="eigene" aria-expanded="false">
         <span class="dock-icon dock-icon-own" aria-hidden="true"></span>
-        <span class="dl" data-i18n="dockOwn">Own</span><span class="dv" id="dv-eigene" data-i18n="add">add</span>
+        <span class="dl" data-i18n="dockSettings">Settings</span>
       </button>
     </div>
   </nav>
@@ -936,7 +938,7 @@ const I18N = {
     upcomingOnly:"Upcoming only", sortBy:"Sort by", sortDate:"By date",
     sortDurationLong:"Duration — longest first", sortDurationShort:"Duration — shortest first",
     sortCity:"City A–Z", sortName:"Name A–Z", sortCategory:"Category", reset:"Reset",
-    selection:"Selection", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseCity:"Choose city", chooseTheme:"Choose theme", ownEvents:"Own events", searchPlaceholder:"Name, city or keyword",
+    selection:"Selection", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", ownEvents:"Own events", searchPlaceholder:"Name, city or keyword",
     noteTitle:"About the dates:",
     noteBody:"Dotted dates are projected from the annual rhythm and have not yet been confirmed — please check with the organizer before travelling. Fixed recurring dates (carnival, Oktoberfest opening, Christmas markets until Christmas Eve) are shown without a dot.",
     formName:"Name*", formCity:"City*", formRegion:"Region", formCountry:"Country", formCategory:"Category",
@@ -947,8 +949,8 @@ const I18N = {
     countryPlaceholder:"blank = Germany", editing:"Editing", cancel:"cancel", addEvent:"Add event", saveChanges:"Save changes",
     clear:"Clear", storedLocally:"Stored locally in this browser.", addYourOwnEvent:"Add your own event",
     savedEvents:"Saved events", savedCount:"%n% saved", savedEmptyTitle:"No events saved yet.",
-    savedEmptyHint:"Open an event and tap ☆ Save.", myEvents:"My events", dockSearch:"Search", dockCountry:"Country",
-    dockRegion:"Region", dockCity:"City", dockTheme:"Theme", dockOwn:"Own", all:"all", add:"add",
+    savedEmptyHint:"Open an event and tap ☆ Save.", myEvents:"My events", dockHome:"Home", dockSearch:"Search", dockCountry:"Country",
+    dockLocation:"Country & region", dockRegion:"Region", dockCity:"City", dockTheme:"Theme", dockSettings:"Settings", all:"all", add:"add",
     themePrompt:"Choose one or more themes", themeSummary:"All themes · %n% categories", applyThemes:"Apply themes",
     allCountries:"All countries", allRegions:"All regions", allCities:"All cities", allThemes:"All themes",
     selected:"selected", of:"of", cities:"cities", citiesAfterOf:"cities", selectedCities:"Selected cities", citySearchPlaceholder:"Search or add a city…",
@@ -984,7 +986,7 @@ const I18N = {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
     sortDurationLong:"Dauer — lang zuerst", sortDurationShort:"Dauer — kurz zuerst",
     sortCity:"Stadt A–Z", sortName:"Name A–Z", sortCategory:"Kategorie", reset:"Zurücksetzen",
-    selection:"Auswahl", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", ownEvents:"Eigene Termine", searchPlaceholder:"Name, Stadt oder Stichwort",
+    selection:"Auswahl", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", ownEvents:"Eigene Termine", searchPlaceholder:"Name, Stadt oder Stichwort",
     noteTitle:"Zu den Terminen:",
     noteBody:"Daten mit gepunkteter Linie sind aus dem jährlichen Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen. Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.",
     formName:"Name*", formCity:"Stadt*", formRegion:"Region", formCountry:"Land", formCategory:"Kategorie",
@@ -995,8 +997,8 @@ const I18N = {
     countryPlaceholder:"leer = Deutschland", editing:"Du bearbeitest", cancel:"abbrechen", addEvent:"Termin hinzufügen", saveChanges:"Änderungen speichern",
     clear:"Leeren", storedLocally:"Lokal in diesem Browser gespeichert.", addYourOwnEvent:"Eigenen Termin hinzufügen",
     savedEvents:"Gemerkte Termine", savedCount:"%n% gespeichert", savedEmptyTitle:"Noch keine Termine gemerkt.",
-    savedEmptyHint:"Öffne einen Termin und tippe auf ☆ Merken.", myEvents:"Meine Termine", dockSearch:"Suche", dockCountry:"Land",
-    dockRegion:"Region", dockCity:"Stadt", dockTheme:"Thema", dockOwn:"Eigene", all:"alle", add:"hinzufügen",
+    savedEmptyHint:"Öffne einen Termin und tippe auf ☆ Merken.", myEvents:"Meine Termine", dockHome:"Home", dockSearch:"Suche", dockCountry:"Land",
+    dockLocation:"Land & Region", dockRegion:"Region", dockCity:"Stadt", dockTheme:"Thema", dockSettings:"Einstellungen", all:"alle", add:"hinzufügen",
     themePrompt:"Wähle ein oder mehrere Themen", themeSummary:"Alle Themen · %n% Kategorien", applyThemes:"Themen anwenden",
     allCountries:"Alle Länder", allRegions:"Alle Regionen", allCities:"Alle Städte", allThemes:"Alle Themen",
     selected:"ausgewählt", of:"von", cities:"Städte", citiesAfterOf:"Städten", selectedCities:"Ausgewählte Städte", citySearchPlaceholder:"Stadt suchen oder hinzufügen…",
@@ -1959,7 +1961,6 @@ function baueThema(){
 
 /* Liste eigener Termine im Panel, inkl. Bearbeiten, Löschen und Wiedereinblenden */
 function renderEigeneListe(){
-  $("dv-eigene").textContent = EIGENE.length ? EIGENE.length + " " + t("ownBadge") : t("add");
   const ownCard = $("ownCreatedEvents");
   ownCard.hidden = !(EIGENE.length || AUSGEBLENDET.size);
   $("ownCreatedCount").textContent = EIGENE.length ? EIGENE.length + " " + t("ownBadge") : "";
@@ -2197,12 +2198,6 @@ function evHTML(ev){
     '</div></article>';
 }
 
-function dockWert(set, immerZaehlen){
-  if (!set.size) return t("all");
-  if (set.size === 1 && !immerZaehlen) return [...set][0];
-  return t("chosen").replace("%n%", set.size);
-}
-
 function render(){
   const list = sorted(filtered());
   const aktiv = F.land.size || F.region.size || F.stadt.size || F.thema.size || F.q ||
@@ -2216,14 +2211,12 @@ function render(){
     " · " + wohin() + '</span>';
   $("reset").hidden = !aktiv;
 
-  // Leiste unten beschriften
-  const werte = { q: F.q || t("all"), land: dockWert(F.land, true), region: dockWert(F.region),
-                  stadt: dockWert(F.stadt),
-                  thema: F.thema.size === 1 ? catLabel([...F.thema][0]) : dockWert(F.thema) };
-  Object.entries(werte).forEach(([p,v]) => {
-    $("dv-" + p).textContent = v;
+  // Aktive Filter in der Leiste nur farblich markieren — die Zusatzzeile entfällt.
+  const dockStatus = { q: !!F.q, location: F.land.size > 0 || F.region.size > 0,
+                       stadt: F.stadt.size > 0, thema: F.thema.size > 0 };
+  Object.entries(dockStatus).forEach(([p, aktiv]) => {
     const b = document.querySelector('.dbtn[data-pane="' + p + '"]');
-    b.classList.toggle("gesetzt", v !== t("all"));
+    if (b) b.classList.toggle("gesetzt", aktiv);
   });
 
   const out = $("out");
@@ -2254,21 +2247,28 @@ function render(){
 }
 
 /* ---------------- Leiste und Auswahlfeld ---------------- */
-const TITEL = { q:"search", land:"chooseCountry", region:"chooseRegion",
+const TITEL = { q:"search", location:"chooseLocation", land:"chooseCountry", region:"chooseRegion",
                 stadt:"chooseCity", thema:"chooseTheme", eigene:"ownEvents" };
 const PANES = ["q","land","region","stadt","thema","eigene"];
+const PANE_GRUPPEN = { location:["land","region"] };
 let offenesPane = null;
 
 function oeffne(pane){
+  if (pane === "home"){
+    schliesse();
+    window.scrollTo(0, 0);
+    return;
+  }
   if (offenesPane === pane){ schliesse(); return; }
   offenesPane = pane;
-  PANES.forEach(p => $("pane-" + p).hidden = p !== pane);
+  const sichtbar = PANE_GRUPPEN[pane] || [pane];
+  PANES.forEach(p => $("pane-" + p).hidden = !sichtbar.includes(p));
   $("sheetTitle").textContent = t(TITEL[pane]);
   $("sheet").classList.toggle("own-open", pane === "eigene");
   $("sheet").classList.toggle("theme-open", pane === "thema");
   $("sheet").classList.toggle("city-open", pane === "stadt");
-  $("sheet").classList.toggle("region-open", pane === "region");
-  $("sheet").classList.toggle("country-open", pane === "land");
+  $("sheet").classList.toggle("region-open", pane === "region" || pane === "location");
+  $("sheet").classList.toggle("country-open", pane === "land" || pane === "location");
   $("sheet").hidden = false;
   $("scrim").hidden = false;
   document.querySelectorAll(".dbtn").forEach(b =>
