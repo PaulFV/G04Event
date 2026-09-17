@@ -86,7 +86,7 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);lett
   background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .appver{font-family:var(--mono);font-size:clamp(12px,2vw,16px);font-weight:500;letter-spacing:.02em;
   color:var(--muted);vertical-align:middle;margin-left:8px}
-.head-datetime{color:var(--muted);font:500 11px/1.2 var(--mono);letter-spacing:.02em}
+.head-datetime{color:var(--muted);font:600 12px/1.2 var(--mono);letter-spacing:.02em}
 .lede{margin:8px 0 0;max-width:52ch;color:var(--muted);font-size:14.5px}
 
 /* ---------- Nächster Termin ---------- */
@@ -611,7 +611,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   h1{font-size:clamp(22px,5.5vw,26px)}
   .brand{gap:6px}
   .appver{font-size:9px;margin-left:2px}
-  .head-datetime{font-size:9px}
+  .head-datetime{font-size:11px}
   .langbtn{padding:8px 13px;font-size:12px}
   .hero{min-height:0;padding:18px 16px 19px;border-radius:14px;gap:18px}
   .hero::before{right:-28%;width:82%;opacity:.68}
@@ -2233,8 +2233,8 @@ function render(){
   $("reset").hidden = !aktiv;
 
   // Aktive Filter in der Leiste nur farblich markieren — die Zusatzzeile entfällt.
-  const dockStatus = { q: !!F.q, location: F.land.size > 0 || F.region.size > 0,
-                       stadt: F.stadt.size > 0, thema: F.thema.size > 0 };
+  const dockStatus = { q: !homeActive && !!F.q, location: !homeActive && (F.land.size > 0 || F.region.size > 0),
+                       stadt: !homeActive && F.stadt.size > 0, thema: !homeActive && F.thema.size > 0 };
   Object.entries(dockStatus).forEach(([p, aktiv]) => {
     const b = document.querySelector('.dbtn[data-pane="' + p + '"]');
     if (b) b.classList.toggle("gesetzt", aktiv);
@@ -2273,14 +2273,18 @@ const TITEL = { q:"search", location:"chooseLocation", land:"chooseCountry", reg
 const PANES = ["q","land","region","stadt","thema","eigene"];
 const PANE_GRUPPEN = { location:["land","region"] };
 let offenesPane = null;
+let homeActive = true;
 
 function oeffne(pane){
   if (pane === "home"){
+    homeActive = true;
     schliesse();
+    render();
     window.scrollTo(0, 0);
     return;
   }
   if (offenesPane === pane){ schliesse(); return; }
+  homeActive = false;
   offenesPane = pane;
   const sichtbar = PANE_GRUPPEN[pane] || [pane];
   PANES.forEach(p => $("pane-" + p).hidden = !sichtbar.includes(p));
