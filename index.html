@@ -86,7 +86,7 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);lett
   background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .appver{font-family:var(--mono);font-size:clamp(12px,2vw,16px);font-weight:500;letter-spacing:.02em;
   color:var(--muted);vertical-align:middle;margin-left:8px}
-.head-datetime{color:var(--muted);font:600 12px/1.2 var(--mono);letter-spacing:.02em}
+.head-datetime{color:#FF7E7E;font:700 14px/1.2 var(--mono);letter-spacing:.02em;text-shadow:0 0 10px rgba(255,126,126,.2)}
 .lede{margin:8px 0 0;max-width:52ch;color:var(--muted);font-size:14.5px}
 
 /* ---------- Nächster Termin ---------- */
@@ -127,7 +127,7 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);lett
   color:var(--hero-muted)}
 .cd{display:flex;gap:7px}
 .cdu{min-width:76px;text-align:center;background:rgba(11,17,25,.72);border:1px solid rgba(143,166,194,.2);border-radius:11px;padding:12px 9px}
-.cdu .v{display:block;font-family:var(--mono);font-size:30px;font-weight:600;letter-spacing:-.04em;
+.cdu .v{display:block;font-family:var(--mono);font-size:36px;font-weight:700;letter-spacing:-.04em;
   font-variant-numeric:tabular-nums;line-height:1.03;color:var(--hero-ink)}
 .cdu .k{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--hero-muted);margin-top:5px}
@@ -289,6 +289,8 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .dbtn[data-pane="location"].gesetzt{background:rgba(16,117,104,.28);border-color:rgba(35,192,171,.28);box-shadow:0 0 28px rgba(28,198,175,.1) inset}
 .dbtn[data-pane="location"].gesetzt::before{content:"";position:absolute;left:26%;right:26%;top:-12px;height:7px;border-radius:999px;background:#50E8CC;box-shadow:0 0 13px rgba(80,232,204,.72)}
 .dbtn[aria-expanded="true"]{background:rgba(255,255,255,.08);border-color:rgba(170,190,215,.25);color:#F1F4F8}
+.dbtn[data-pane="home"].home-active{background:rgba(255,255,255,.08);border-color:rgba(170,190,215,.25);color:#F1F4F8}
+.dbtn[data-pane="home"].home-active .dl{color:var(--ink)}
 
 /* Farbige, leuchtende Icons wie in der Referenzleiste */
 .dbtn:hover .dock-icon{filter:drop-shadow(0 0 12px rgba(126,220,255,.62)) drop-shadow(0 2px 3px rgba(0,0,0,.6))}
@@ -505,6 +507,8 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 
 /* ---------- Eigene Termine ---------- */
 .eigenepane{display:flex;flex-direction:column;gap:20px;max-width:1000px;margin:0 auto}
+.settings-version{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--surface-2);color:var(--muted);font-size:14px}
+.settings-version strong{font:600 14px var(--mono);color:var(--ink)}
 .own-card{display:flex;flex-direction:column;gap:16px;padding:22px 24px;background:var(--surface);
   border:1px solid var(--line-2);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
 .own-cardhead{display:flex;align-items:center;gap:14px;min-height:38px;padding-bottom:15px;
@@ -611,7 +615,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   h1{font-size:clamp(22px,5.5vw,26px)}
   .brand{gap:6px}
   .appver{font-size:9px;margin-left:2px}
-  .head-datetime{font-size:11px}
+  .head-datetime{font-size:13px}
   .langbtn{padding:8px 13px;font-size:12px}
   .hero{min-height:0;padding:18px 16px 19px;border-radius:14px;gap:18px}
   .hero::before{right:-28%;width:82%;opacity:.68}
@@ -622,7 +626,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .hero h2{font-size:clamp(30px,10vw,43px);max-width:none}
   .hero-body{display:flex;flex-direction:column;align-items:stretch;gap:17px}
   .cdu{min-width:0;flex:1 1 0;padding:8px 4px}
-  .cdu .v{font-size:24px}
+  .cdu .v{font-size:30px}
   .hero .cdwrap{width:100%}
   .cd{width:100%}
   .rhead{gap:14px;padding:21px 0 17px}
@@ -749,7 +753,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   <header class="head">
     <div class="headbar">
       <div class="brand">
-        <h1><span class="brand-name">G04Event</span> <span class="appver">V2.4.0</span></h1>
+        <h1><span class="brand-name">G04Event</span></h1>
         <time class="head-datetime" id="headDateTime" datetime=""></time>
       </div>
       <button class="langbtn" id="langToggle" type="button" aria-label="Auf Deutsch wechseln">Deutsch</button>
@@ -815,6 +819,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
       <div class="chips" id="pane-stadt" hidden></div>
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.0</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -947,7 +952,7 @@ const I18N = {
     upcomingOnly:"Upcoming only", sortBy:"Sort by", sortDate:"By date",
     sortDurationLong:"Duration — longest first", sortDurationShort:"Duration — shortest first",
     sortCity:"City A–Z", sortName:"Name A–Z", sortCategory:"Category", reset:"Reset",
-    selection:"Selection", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", ownEvents:"Own events", searchPlaceholder:"Name, city or keyword",
+    selection:"Selection", versionLabel:"Version", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", ownEvents:"Own events", searchPlaceholder:"Name, city or keyword",
     noteTitle:"About the dates:",
     noteBody:"Dotted dates are projected from the annual rhythm and have not yet been confirmed — please check with the organizer before travelling. Fixed recurring dates (carnival, Oktoberfest opening, Christmas markets until Christmas Eve) are shown without a dot.",
     formName:"Name*", formCity:"City*", formRegion:"Region", formCountry:"Country", formCategory:"Category",
@@ -995,7 +1000,7 @@ const I18N = {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
     sortDurationLong:"Dauer — lang zuerst", sortDurationShort:"Dauer — kurz zuerst",
     sortCity:"Stadt A–Z", sortName:"Name A–Z", sortCategory:"Kategorie", reset:"Zurücksetzen",
-    selection:"Auswahl", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", ownEvents:"Eigene Termine", searchPlaceholder:"Name, Stadt oder Stichwort",
+    selection:"Auswahl", versionLabel:"Version", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", ownEvents:"Eigene Termine", searchPlaceholder:"Name, Stadt oder Stichwort",
     noteTitle:"Zu den Terminen:",
     noteBody:"Daten mit gepunkteter Linie sind aus dem jährlichen Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen. Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.",
     formName:"Name*", formCity:"Stadt*", formRegion:"Region", formCountry:"Land", formCategory:"Kategorie",
@@ -2235,6 +2240,8 @@ function render(){
   // Aktive Filter in der Leiste nur farblich markieren — die Zusatzzeile entfällt.
   const dockStatus = { q: !homeActive && !!F.q, location: !homeActive && (F.land.size > 0 || F.region.size > 0),
                        stadt: !homeActive && F.stadt.size > 0, thema: !homeActive && F.thema.size > 0 };
+  const homeBtn = document.querySelector('.dbtn[data-pane="home"]');
+  if (homeBtn) homeBtn.classList.toggle("home-active", homeActive);
   Object.entries(dockStatus).forEach(([p, aktiv]) => {
     const b = document.querySelector('.dbtn[data-pane="' + p + '"]');
     if (b) b.classList.toggle("gesetzt", aktiv);
@@ -2276,8 +2283,10 @@ let offenesPane = null;
 let homeActive = true;
 
 function oeffne(pane){
+  const homeBtn = document.querySelector('.dbtn[data-pane="home"]');
   if (pane === "home"){
     homeActive = true;
+    if (homeBtn) homeBtn.classList.add("home-active");
     schliesse();
     render();
     window.scrollTo(0, 0);
@@ -2285,6 +2294,7 @@ function oeffne(pane){
   }
   if (offenesPane === pane){ schliesse(); return; }
   homeActive = false;
+  if (homeBtn) homeBtn.classList.remove("home-active");
   offenesPane = pane;
   const sichtbar = PANE_GRUPPEN[pane] || [pane];
   PANES.forEach(p => $("pane-" + p).hidden = !sichtbar.includes(p));
