@@ -314,8 +314,10 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .dock-icon-own{background-position:100% 100%}
 .dbtn .dl{font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1.05;color:#E6EBF3}
 .dbtn:hover{color:#D7E0ED}
-.dbtn[data-pane="location"].gesetzt{background:rgba(16,117,104,.28);border-color:rgba(35,192,171,.28);box-shadow:0 0 28px rgba(28,198,175,.1) inset}
-.dbtn[data-pane="location"].gesetzt::before{content:"";position:absolute;left:26%;right:26%;top:-12px;height:7px;border-radius:999px;background:#50E8CC;box-shadow:0 0 13px rgba(80,232,204,.72)}
+/* Aktiver Filter: nur ein kleiner Strich über dem Knopf, und nur solange kein anderes Feld offen ist */
+.dbtn[data-pane="location"].gesetzt::before{content:"";position:absolute;left:36%;right:36%;top:-9px;height:4px;border-radius:999px;background:#50E8CC;box-shadow:0 0 9px rgba(80,232,204,.6)}
+.dockrow:has(.dbtn[aria-expanded="true"]) .dbtn.gesetzt:not([aria-expanded="true"])::before{display:none}
+.dockrow:has(.dbtn[aria-expanded="true"]) .dbtn.gesetzt:not([aria-expanded="true"]) .dock-icon{filter:drop-shadow(0 0 6px rgba(122,197,255,.34)) drop-shadow(0 2px 3px rgba(0,0,0,.6))}
 .dbtn[aria-expanded="true"]{background:rgba(255,255,255,.08);border-color:rgba(170,190,215,.25);color:#F1F4F8}
 .dbtn[data-pane="home"].home-active{background:rgba(255,255,255,.08);border-color:rgba(170,190,215,.25);color:#F1F4F8}
 .dbtn[data-pane="home"].home-active .dl{color:#F1F4F8}
@@ -703,6 +705,10 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .count b{font-size:15px}
   .rtools{gap:6px}
   .tg,.rtools select{height:34px;font-size:13px}
+  /* Eine Zeile: die Sortierung nimmt den Rest der Breite, lange Einträge werden gekürzt */
+  .rtools{flex-wrap:nowrap}
+  .tg,.reset{flex:none}
+  .rtools select{flex:1 1 0;min-width:0;width:auto;text-overflow:ellipsis}
   .tg{padding:0 11px 0 7px;gap:6px}
   .rtools select{padding:0 26px 0 11px;background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%}
   /* Auf dem Handy nur als runder Knopf mit Symbol */
@@ -740,12 +746,12 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .dock-icon{width:37px;height:37px;filter:drop-shadow(0 0 4px rgba(122,197,255,.34)) drop-shadow(0 1px 2px rgba(0,0,0,.6))}
   .dock-icon-home svg{width:32px;height:32px}
   .dbtn .dl{font-size:11.5px;letter-spacing:-.02em}
-  .dbtn[data-pane="location"].gesetzt::before{top:-7px;height:4px}
+  .dbtn[data-pane="location"].gesetzt::before{top:-6px;height:3px}
   .footer{margin-bottom:102px}
-  .sheet.own-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.own-open{height:calc(100vh - 78px - env(safe-area-inset-bottom) - env(safe-area-inset-top))}
   .sheet.own-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
-  .sheet.theme-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
-  .sheet.search-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.theme-open{height:calc(100vh - 78px - env(safe-area-inset-bottom) - env(safe-area-inset-top))}
+  .sheet.search-open{height:calc(100vh - 78px - env(safe-area-inset-bottom) - env(safe-area-inset-top))}
   .sheet.search-open .sheetbody{padding:10px 12px calc(22px + env(safe-area-inset-bottom))}
   .qhit{grid-template-columns:10px minmax(0,1fr);padding:9px 10px;gap:9px}
   .qhit .qk{display:none}
@@ -763,7 +769,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .theme-count{font-size:15px}
   .theme-actions{margin-top:20px;gap:10px}
   .theme-action{min-height:54px;font-size:17px}
-  .sheet.city-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.city-open{height:calc(100vh - 78px - env(safe-area-inset-bottom) - env(safe-area-inset-top))}
   .sheet.city-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
   .city-topbar{gap:9px;margin:0 0 18px}
   .city-searchbox input{font-size:16px;padding:13px 10px 13px 49px}
@@ -784,7 +790,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .city-all-head .city-list-search{width:100%;margin:8px 0 0;order:3}
   #pane-stadt .city-row{min-height:52px;font-size:16px}
   .city-box{margin-right:16px}
-  .sheet.region-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.region-open{height:calc(100vh - 78px - env(safe-area-inset-bottom) - env(safe-area-inset-top))}
   .sheet.region-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
   .region-searchbox{margin:0 0 18px}
   .region-searchbox input{font-size:16px;padding:13px 10px 13px 49px}
@@ -804,7 +810,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   #pane-region .region-row{min-height:52px;font-size:16px}
   .region-row .region-circle{margin-right:16px}
   .region-index{display:none}
-  .sheet.country-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.country-open{height:calc(100vh - 78px - env(safe-area-inset-bottom) - env(safe-area-inset-top))}
   .sheet.country-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
   .country-topbar{grid-template-columns:minmax(0,1fr) auto;margin:0 0 18px}
   .country-searchbox input{font-size:16px;padding:13px 8px 13px 49px}
@@ -939,7 +945,7 @@ try {
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.10</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.11</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1175,375 +1181,375 @@ const catLabel = key => CATS[key] ? (LANGUAGE === "en" ? CATS[key].en : CATS[key
 
 const EVENTS = [
 /* Berlin */
-{n:"IFA",c:"Berlin",l:"Berlin",k:"tech",s:"2027-09-03",e:"2027-09-07",r:"jährlich",x:1,d:"Europas größte Messe für Unterhaltungselektronik und Hausgeräte, auf dem Messegelände unter dem Funkturm."},
-{n:"Berlin-Marathon",c:"Berlin",l:"Berlin",k:"sport",s:"2026-09-27",e:"2026-09-27",r:"jährlich, letztes September-Wochenende",x:1,d:"Weltrekordstrecke durch die Innenstadt, Ziel am Brandenburger Tor. Samstags zusätzlich das Inline-Skating-Rennen."},
-{n:"Festival of Lights",c:"Berlin",l:"Berlin",k:"art",s:"2026-10-09",e:"2026-10-18",r:"jährlich",x:0,d:"Zehn Abende lang werden Wahrzeichen und Fassaden mit Projektionen bespielt, Eintritt frei."},
-{n:"Jazzfest Berlin",c:"Berlin",l:"Berlin",k:"music",s:"2026-11-05",e:"2026-11-08",r:"jährlich",x:0,d:"Eines der ältesten Jazzfestivals Europas, Schwerpunkt zeitgenössische Improvisation."},
-{n:"Weihnachtsmarkt Gendarmenmarkt",c:"Berlin",l:"Berlin",k:"trad",s:"2026-11-23",e:"2026-12-31",r:"jährlich",x:1,d:"Kunsthandwerk und Bühnenprogramm zwischen den beiden Domen — einziger Berliner Markt mit Eintritt."},
-{n:"Internationale Grüne Woche",c:"Berlin",l:"Berlin",k:"food",s:"2027-01-15",e:"2027-01-24",r:"jährlich",x:0,d:"Ernährungs- und Landwirtschaftsmesse mit Länderhallen — die größte Verkostung des Landes."},
-{n:"Berlinale",c:"Berlin",l:"Berlin",k:"film",s:"2027-02-11",e:"2027-02-21",r:"jährlich",x:0,d:"Internationale Filmfestspiele mit Wettbewerb um den Goldenen Bären und großem Publikumsprogramm."},
-{n:"Karneval der Kulturen",c:"Berlin",l:"Berlin",k:"art",s:"2027-05-14",e:"2027-05-17",r:"jährlich, Pfingsten",x:1,d:"Straßenfest in Kreuzberg mit Umzug am Pfingstsonntag und über tausend Mitwirkenden."},
-{n:"re:publica",c:"Berlin",l:"Berlin",k:"tech",s:"2027-05-31",e:"2027-06-02",r:"jährlich",x:0,d:"Konferenz zu digitaler Gesellschaft, Netzpolitik und Medien in der Station Berlin."},
-{n:"Lange Nacht der Wissenschaften",c:"Berlin",l:"Berlin",k:"tech",s:"2027-06-05",e:"2027-06-05",r:"jährlich",x:0,d:"Rund siebzig Institute und Hochschulen öffnen bis Mitternacht ihre Labore."},
-{n:"Lange Nacht der Museen",c:"Berlin",l:"Berlin",k:"art",s:"2027-08-28",e:"2027-08-28",r:"jährlich",x:0,d:"Ein Ticket für rund achtzig Häuser, dazu Shuttle-Busse zwischen den Standorten."},
-{n:"Lollapalooza Berlin",c:"Berlin",l:"Berlin",k:"music",s:"2027-09-11",e:"2027-09-12",r:"jährlich",x:0,d:"Zweitägiges Festival im Olympiapark, Pop und Hip-Hop auf mehreren Bühnen."},
+{n:"IFA",c:"Berlin",l:"Berlin",k:"tech",s:"2027-09-03",e:"2027-09-07",r:"jährlich",x:1,d:"Europas größte Messe für Unterhaltungselektronik und Hausgeräte, auf dem Messegelände unter dem Funkturm.",en:"Europe's largest trade fair for consumer electronics and home appliances, on the fairgrounds beneath the Radio Tower."},
+{n:"Berlin-Marathon",c:"Berlin",l:"Berlin",k:"sport",s:"2026-09-27",e:"2026-09-27",r:"jährlich, letztes September-Wochenende",x:1,d:"Weltrekordstrecke durch die Innenstadt, Ziel am Brandenburger Tor. Samstags zusätzlich das Inline-Skating-Rennen.",en:"World-record course through the city centre, finishing at the Brandenburg Gate. An inline-skating race runs on the Saturday."},
+{n:"Festival of Lights",c:"Berlin",l:"Berlin",k:"art",s:"2026-10-09",e:"2026-10-18",r:"jährlich",x:0,d:"Zehn Abende lang werden Wahrzeichen und Fassaden mit Projektionen bespielt, Eintritt frei.",en:"For ten evenings landmarks and façades become canvases for projections, free admission."},
+{n:"Jazzfest Berlin",c:"Berlin",l:"Berlin",k:"music",s:"2026-11-05",e:"2026-11-08",r:"jährlich",x:0,d:"Eines der ältesten Jazzfestivals Europas, Schwerpunkt zeitgenössische Improvisation.",en:"One of Europe's oldest jazz festivals, with a focus on contemporary improvisation."},
+{n:"Weihnachtsmarkt Gendarmenmarkt",c:"Berlin",l:"Berlin",k:"trad",s:"2026-11-23",e:"2026-12-31",r:"jährlich",x:1,d:"Kunsthandwerk und Bühnenprogramm zwischen den beiden Domen — einziger Berliner Markt mit Eintritt.",en:"Crafts and a stage programme between the two cathedrals — Berlin's only market with an entry fee."},
+{n:"Internationale Grüne Woche",c:"Berlin",l:"Berlin",k:"food",s:"2027-01-15",e:"2027-01-24",r:"jährlich",x:0,d:"Ernährungs- und Landwirtschaftsmesse mit Länderhallen — die größte Verkostung des Landes.",en:"Food and agriculture fair with national halls — the biggest tasting in the country."},
+{n:"Berlinale",c:"Berlin",l:"Berlin",k:"film",s:"2027-02-11",e:"2027-02-21",r:"jährlich",x:0,d:"Internationale Filmfestspiele mit Wettbewerb um den Goldenen Bären und großem Publikumsprogramm.",en:"International film festival competing for the Golden Bear, with a large public programme."},
+{n:"Karneval der Kulturen",c:"Berlin",l:"Berlin",k:"art",s:"2027-05-14",e:"2027-05-17",r:"jährlich, Pfingsten",x:1,d:"Straßenfest in Kreuzberg mit Umzug am Pfingstsonntag und über tausend Mitwirkenden.",en:"Street festival in Kreuzberg with a parade on Whit Sunday and more than a thousand performers."},
+{n:"re:publica",c:"Berlin",l:"Berlin",k:"tech",s:"2027-05-31",e:"2027-06-02",r:"jährlich",x:0,d:"Konferenz zu digitaler Gesellschaft, Netzpolitik und Medien in der Station Berlin.",en:"Conference on digital society, internet policy and media at Station Berlin."},
+{n:"Lange Nacht der Wissenschaften",c:"Berlin",l:"Berlin",k:"tech",s:"2027-06-05",e:"2027-06-05",r:"jährlich",x:0,d:"Rund siebzig Institute und Hochschulen öffnen bis Mitternacht ihre Labore.",en:"Around seventy institutes and universities open their labs until midnight."},
+{n:"Lange Nacht der Museen",c:"Berlin",l:"Berlin",k:"art",s:"2027-08-28",e:"2027-08-28",r:"jährlich",x:0,d:"Ein Ticket für rund achtzig Häuser, dazu Shuttle-Busse zwischen den Standorten.",en:"One ticket for around eighty venues, with shuttle buses between the locations."},
+{n:"Lollapalooza Berlin",c:"Berlin",l:"Berlin",k:"music",s:"2027-09-11",e:"2027-09-12",r:"jährlich",x:0,d:"Zweitägiges Festival im Olympiapark, Pop und Hip-Hop auf mehreren Bühnen.",en:"Two-day festival in the Olympic Park, pop and hip-hop on several stages."},
 
 /* Hamburg */
-{n:"Reeperbahn Festival",c:"Hamburg",l:"Hamburg",k:"music",s:"2026-09-16",e:"2026-09-19",r:"jährlich",x:0,d:"Clubfestival mit mehreren hundert Newcomer-Konzerten auf St. Pauli, dazu Musikwirtschaftskonferenz."},
-{n:"Filmfest Hamburg",c:"Hamburg",l:"Hamburg",k:"film",s:"2026-10-01",e:"2026-10-10",r:"jährlich",x:0,d:"Internationales Autorenkino ohne Wettbewerbsjury, viele Regiegespräche im Saal."},
-{n:"Hamburger Winterdom",c:"Hamburg",l:"Hamburg",k:"trad",s:"2026-11-06",e:"2026-12-06",r:"dreimal jährlich",x:0,d:"Volksfest auf dem Heiligengeistfeld, freitags Feuerwerk über der Stadt."},
-{n:"Chaos Communication Congress",c:"Hamburg",l:"Hamburg",k:"tech",s:"2026-12-27",e:"2026-12-30",r:"jährlich, zwischen den Jahren",x:1,d:"Vier Tage Vorträge zu Sicherheit, Technik und Politik im Congress Center, dazu offene Assemblies."},
-{n:"Reisen & Caravaning Hamburg",c:"Hamburg",l:"Hamburg",k:"sport",s:"2027-02-04",e:"2027-02-07",r:"jährlich",x:0,d:"Norddeutschlands große Reise- und Freizeitmesse mit Wohnmobilen, Kreuzfahrten, Fahrrädern und kulinarischen Genussreisen."},
-{n:"Hamburger Frühlingsdom",c:"Hamburg",l:"Hamburg",k:"trad",s:"2027-03-19",e:"2027-04-18",r:"dreimal jährlich",x:0,d:"Die Frühjahrsausgabe des Doms mit Fahrgeschäften und Schaustellerbetrieben."},
-{n:"Haspa Marathon Hamburg",c:"Hamburg",l:"Hamburg",k:"sport",s:"2027-04-25",e:"2027-04-25",r:"jährlich",x:0,d:"Flacher Frühjahrsmarathon durch Alster, Hafen und die Elbvororte."},
-{n:"Hafengeburtstag",c:"Hamburg",l:"Hamburg",k:"trad",s:"2027-05-07",e:"2027-05-09",r:"jährlich, Anfang Mai",x:0,d:"Einlaufparade, Schlepperballett und Festmeile am Elbufer — das größte Hafenfest der Welt."},
-{n:"Elbjazz",c:"Hamburg",l:"Hamburg",k:"music",s:"2027-06-04",e:"2027-06-05",r:"jährlich",x:0,d:"Jazz auf Werftgelände und in der Elbphilharmonie, Fährverkehr zwischen den Bühnen."},
+{n:"Reeperbahn Festival",c:"Hamburg",l:"Hamburg",k:"music",s:"2026-09-16",e:"2026-09-19",r:"jährlich",x:0,d:"Clubfestival mit mehreren hundert Newcomer-Konzerten auf St. Pauli, dazu Musikwirtschaftskonferenz.",en:"Club festival with hundreds of newcomer concerts in St. Pauli, plus a music-industry conference."},
+{n:"Filmfest Hamburg",c:"Hamburg",l:"Hamburg",k:"film",s:"2026-10-01",e:"2026-10-10",r:"jährlich",x:0,d:"Internationales Autorenkino ohne Wettbewerbsjury, viele Regiegespräche im Saal.",en:"International auteur cinema without a competition jury, with many director talks in the cinema."},
+{n:"Hamburger Winterdom",c:"Hamburg",l:"Hamburg",k:"trad",s:"2026-11-06",e:"2026-12-06",r:"dreimal jährlich",x:0,d:"Volksfest auf dem Heiligengeistfeld, freitags Feuerwerk über der Stadt.",en:"Funfair on the Heiligengeistfeld, fireworks over the city on Fridays."},
+{n:"Chaos Communication Congress",c:"Hamburg",l:"Hamburg",k:"tech",s:"2026-12-27",e:"2026-12-30",r:"jährlich, zwischen den Jahren",x:1,d:"Vier Tage Vorträge zu Sicherheit, Technik und Politik im Congress Center, dazu offene Assemblies.",en:"Four days of talks on security, technology and politics at the Congress Center, plus open assemblies."},
+{n:"Reisen & Caravaning Hamburg",c:"Hamburg",l:"Hamburg",k:"sport",s:"2027-02-04",e:"2027-02-07",r:"jährlich",x:0,d:"Norddeutschlands große Reise- und Freizeitmesse mit Wohnmobilen, Kreuzfahrten, Fahrrädern und kulinarischen Genussreisen.",en:"Northern Germany's big travel and leisure fair with motorhomes, cruises, bikes and culinary trips."},
+{n:"Hamburger Frühlingsdom",c:"Hamburg",l:"Hamburg",k:"trad",s:"2027-03-19",e:"2027-04-18",r:"dreimal jährlich",x:0,d:"Die Frühjahrsausgabe des Doms mit Fahrgeschäften und Schaustellerbetrieben.",en:"The spring edition of the Dom funfair with rides and showmen's stalls."},
+{n:"Haspa Marathon Hamburg",c:"Hamburg",l:"Hamburg",k:"sport",s:"2027-04-25",e:"2027-04-25",r:"jährlich",x:0,d:"Flacher Frühjahrsmarathon durch Alster, Hafen und die Elbvororte.",en:"Flat spring marathon along the Alster, the harbour and the Elbe suburbs."},
+{n:"Hafengeburtstag",c:"Hamburg",l:"Hamburg",k:"trad",s:"2027-05-07",e:"2027-05-09",r:"jährlich, Anfang Mai",x:0,d:"Einlaufparade, Schlepperballett und Festmeile am Elbufer — das größte Hafenfest der Welt.",en:"Arrival parade, tugboat ballet and a festival mile on the Elbe — the world's biggest harbour festival."},
+{n:"Elbjazz",c:"Hamburg",l:"Hamburg",k:"music",s:"2027-06-04",e:"2027-06-05",r:"jährlich",x:0,d:"Jazz auf Werftgelände und in der Elbphilharmonie, Fährverkehr zwischen den Bühnen.",en:"Jazz in shipyards and in the Elbphilharmonie, with ferries between the stages."},
 
 /* München */
-{n:"Oktoberfest",c:"München",l:"Bayern",k:"trad",s:"2026-09-19",e:"2026-10-04",r:"jährlich, Anstich am dritten September-Samstag",x:1,d:"Sechzehn Tage Wiesn auf der Theresienwiese, Trachten- und Schützenzug am ersten Sonntag."},
-{n:"Bits & Pretzels",c:"München",l:"Bayern",k:"tech",s:"2026-09-27",e:"2026-09-29",r:"jährlich",x:0,d:"Gründerkonferenz zur Wiesn-Zeit, der letzte Tag findet traditionell im Festzelt statt."},
-{n:"Tollwood Winterfestival",c:"München",l:"Bayern",k:"art",s:"2026-11-24",e:"2026-12-31",r:"zweimal jährlich",x:0,d:"Markt der Ideen, Konzertzelte und Biomarkt auf der Theresienwiese."},
-{n:"ISPO München",c:"München",l:"Bayern",k:"sport",s:"2026-11-29",e:"2026-12-01",r:"jährlich",x:0,d:"Leitmesse der Sportartikelbranche, Ausblick auf die Ausrüstung der kommenden Saison."},
-{n:"Münchner Frühlingsfest",c:"München",l:"Bayern",k:"trad",s:"2027-04-16",e:"2027-05-02",r:"jährlich",x:0,d:"Die kleine Wiesn im Frühjahr, mit Anstich, zwei Festzelten und Nachtflohmarkt."},
-{n:"DOK.fest München",c:"München",l:"Bayern",k:"film",s:"2027-05-05",e:"2027-05-16",r:"jährlich",x:0,d:"Großes Dokumentarfilmfestival, parallel als Online-Ausgabe bundesweit abrufbar."},
-{n:"Filmfest München",c:"München",l:"Bayern",k:"film",s:"2027-06-25",e:"2027-07-04",r:"jährlich",x:0,d:"Größtes Sommerfilmfestival Deutschlands, Schwerpunkt internationale Erstaufführungen."},
-{n:"Münchner Opernfestspiele",c:"München",l:"Bayern",k:"music",s:"2027-06-26",e:"2027-07-31",r:"jährlich",x:0,d:"Festspielsommer der Bayerischen Staatsoper, zum Auftakt Oper für alle auf dem Max-Joseph-Platz."},
-{n:"Tollwood Sommerfestival",c:"München",l:"Bayern",k:"art",s:"2027-06-23",e:"2027-07-18",r:"zweimal jährlich",x:0,d:"Zeltkonzerte, Straßenkunst und Kulinarik im Olympiapark Süd, Gelände frei zugänglich."},
+{n:"Oktoberfest",c:"München",l:"Bayern",k:"trad",s:"2026-09-19",e:"2026-10-04",r:"jährlich, Anstich am dritten September-Samstag",x:1,d:"Sechzehn Tage Wiesn auf der Theresienwiese, Trachten- und Schützenzug am ersten Sonntag.",en:"Sixteen days of Wiesn on the Theresienwiese, costume and riflemen's parade on the first Sunday."},
+{n:"Bits & Pretzels",c:"München",l:"Bayern",k:"tech",s:"2026-09-27",e:"2026-09-29",r:"jährlich",x:0,d:"Gründerkonferenz zur Wiesn-Zeit, der letzte Tag findet traditionell im Festzelt statt.",en:"Founders' conference during Oktoberfest; the last day traditionally takes place in a beer tent."},
+{n:"Tollwood Winterfestival",c:"München",l:"Bayern",k:"art",s:"2026-11-24",e:"2026-12-31",r:"zweimal jährlich",x:0,d:"Markt der Ideen, Konzertzelte und Biomarkt auf der Theresienwiese.",en:"Market of ideas, concert tents and an organic market on the Theresienwiese."},
+{n:"ISPO München",c:"München",l:"Bayern",k:"sport",s:"2026-11-29",e:"2026-12-01",r:"jährlich",x:0,d:"Leitmesse der Sportartikelbranche, Ausblick auf die Ausrüstung der kommenden Saison.",en:"Leading sporting-goods trade fair with a look at next season's gear."},
+{n:"Münchner Frühlingsfest",c:"München",l:"Bayern",k:"trad",s:"2027-04-16",e:"2027-05-02",r:"jährlich",x:0,d:"Die kleine Wiesn im Frühjahr, mit Anstich, zwei Festzelten und Nachtflohmarkt.",en:"The little Wiesn in spring, with keg tapping, two beer tents and a night flea market."},
+{n:"DOK.fest München",c:"München",l:"Bayern",k:"film",s:"2027-05-05",e:"2027-05-16",r:"jährlich",x:0,d:"Großes Dokumentarfilmfestival, parallel als Online-Ausgabe bundesweit abrufbar.",en:"Major documentary film festival, also streamed online across Germany."},
+{n:"Filmfest München",c:"München",l:"Bayern",k:"film",s:"2027-06-25",e:"2027-07-04",r:"jährlich",x:0,d:"Größtes Sommerfilmfestival Deutschlands, Schwerpunkt internationale Erstaufführungen.",en:"Germany's biggest summer film festival, focusing on international premieres."},
+{n:"Münchner Opernfestspiele",c:"München",l:"Bayern",k:"music",s:"2027-06-26",e:"2027-07-31",r:"jährlich",x:0,d:"Festspielsommer der Bayerischen Staatsoper, zum Auftakt Oper für alle auf dem Max-Joseph-Platz.",en:"Summer festival of the Bavarian State Opera, opening with free opera for all on Max-Joseph-Platz."},
+{n:"Tollwood Sommerfestival",c:"München",l:"Bayern",k:"art",s:"2027-06-23",e:"2027-07-18",r:"zweimal jährlich",x:0,d:"Zeltkonzerte, Straßenkunst und Kulinarik im Olympiapark Süd, Gelände frei zugänglich.",en:"Tent concerts, street art and food in Olympic Park South, free entry to the grounds."},
 
 /* Köln */
-{n:"Köln Marathon",c:"Köln",l:"Nordrhein-Westfalen",k:"sport",s:"2026-10-04",e:"2026-10-04",r:"jährlich",x:0,d:"Flacher Stadtkurs über beide Rheinseiten, mit Staffel- und Halbmarathonfeldern."},
-{n:"Art Cologne",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2026-11-19",e:"2026-11-22",r:"jährlich",x:0,d:"Älteste Kunstmesse der Welt, moderne und zeitgenössische Positionen in zwei Hallen."},
-{n:"Kölner Straßenkarneval",c:"Köln",l:"Nordrhein-Westfalen",k:"trad",s:"2027-02-04",e:"2027-02-09",r:"jährlich, an Ostern gekoppelt",x:1,d:"Von Weiberfastnacht bis Veilchendienstag, Höhepunkt ist der Rosenmontagszug."},
-{n:"c/o pop",c:"Köln",l:"Nordrhein-Westfalen",k:"music",s:"2027-04-21",e:"2027-04-25",r:"jährlich",x:0,d:"Festival und Konvention für elektronische und Independent-Musik, Clubs im ganzen Stadtgebiet."},
-{n:"Christopher Street Day Köln",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2027-07-02",e:"2027-07-04",r:"jährlich",x:0,d:"Größte CSD-Demonstration Europas, dazu Straßenfest in der Altstadt."},
-{n:"Kölner Lichter",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2027-07-17",e:"2027-07-17",r:"jährlich",x:0,d:"Musiksynchrones Höhenfeuerwerk über dem Rhein, davor Schiffskorso."},
-{n:"devcom Developer Conference",c:"Köln",l:"Nordrhein-Westfalen",k:"play",s:"2027-08-23",e:"2027-08-24",r:"jährlich",x:0,d:"Fachkonferenz der Spieleentwicklung, direkt vor der gamescom im selben Gebäude."},
-{n:"gamescom",c:"Köln",l:"Nordrhein-Westfalen",k:"play",s:"2027-08-25",e:"2027-08-29",r:"jährlich",x:0,d:"Weltgrößte Messe für Computer- und Videospiele, Mittwoch ist Fach- und Medientag."},
-{n:"Anuga",c:"Köln",l:"Nordrhein-Westfalen",k:"food",s:"2027-10-09",e:"2027-10-13",r:"alle 2 Jahre, ungerade Jahre",x:0,d:"Leitmesse der Lebensmittelwirtschaft, zehn Fachmessen unter einem Dach."},
+{n:"Köln Marathon",c:"Köln",l:"Nordrhein-Westfalen",k:"sport",s:"2026-10-04",e:"2026-10-04",r:"jährlich",x:0,d:"Flacher Stadtkurs über beide Rheinseiten, mit Staffel- und Halbmarathonfeldern.",en:"Flat city course on both banks of the Rhine, with relay and half-marathon fields."},
+{n:"Art Cologne",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2026-11-19",e:"2026-11-22",r:"jährlich",x:0,d:"Älteste Kunstmesse der Welt, moderne und zeitgenössische Positionen in zwei Hallen.",en:"The world's oldest art fair, modern and contemporary works in two halls."},
+{n:"Kölner Straßenkarneval",c:"Köln",l:"Nordrhein-Westfalen",k:"trad",s:"2027-02-04",e:"2027-02-09",r:"jährlich, an Ostern gekoppelt",x:1,d:"Von Weiberfastnacht bis Veilchendienstag, Höhepunkt ist der Rosenmontagszug.",en:"From Women's Carnival Thursday to Shrove Tuesday, the highlight is the Rose Monday parade."},
+{n:"c/o pop",c:"Köln",l:"Nordrhein-Westfalen",k:"music",s:"2027-04-21",e:"2027-04-25",r:"jährlich",x:0,d:"Festival und Konvention für elektronische und Independent-Musik, Clubs im ganzen Stadtgebiet.",en:"Festival and convention for electronic and independent music, with clubs all over the city."},
+{n:"Christopher Street Day Köln",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2027-07-02",e:"2027-07-04",r:"jährlich",x:0,d:"Größte CSD-Demonstration Europas, dazu Straßenfest in der Altstadt.",en:"Europe's largest Pride demonstration, plus a street festival in the old town."},
+{n:"Kölner Lichter",c:"Köln",l:"Nordrhein-Westfalen",k:"art",s:"2027-07-17",e:"2027-07-17",r:"jährlich",x:0,d:"Musiksynchrones Höhenfeuerwerk über dem Rhein, davor Schiffskorso.",en:"Fireworks over the Rhine synchronised to music, preceded by a parade of ships."},
+{n:"devcom Developer Conference",c:"Köln",l:"Nordrhein-Westfalen",k:"play",s:"2027-08-23",e:"2027-08-24",r:"jährlich",x:0,d:"Fachkonferenz der Spieleentwicklung, direkt vor der gamescom im selben Gebäude.",en:"Game-development conference, right before gamescom in the same building."},
+{n:"gamescom",c:"Köln",l:"Nordrhein-Westfalen",k:"play",s:"2027-08-25",e:"2027-08-29",r:"jährlich",x:0,d:"Weltgrößte Messe für Computer- und Videospiele, Mittwoch ist Fach- und Medientag.",en:"The world's largest fair for computer and video games; Wednesday is the trade and media day."},
+{n:"Anuga",c:"Köln",l:"Nordrhein-Westfalen",k:"food",s:"2027-10-09",e:"2027-10-13",r:"alle 2 Jahre, ungerade Jahre",x:0,d:"Leitmesse der Lebensmittelwirtschaft, zehn Fachmessen unter einem Dach.",en:"Leading food-industry fair, ten trade shows under one roof."},
 
 /* Frankfurt am Main */
-{n:"Frankfurter Buchmesse",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2026-10-14",e:"2026-10-18",r:"jährlich",x:0,d:"Größte Buchmesse der Welt mit wechselndem Ehrengastland, am Wochenende publikumsoffen."},
-{n:"Frankfurt Marathon",c:"Frankfurt am Main",l:"Hessen",k:"sport",s:"2026-10-25",e:"2026-10-25",r:"jährlich",x:0,d:"Schneller Herbstmarathon mit Zieleinlauf in der Festhalle."},
-{n:"Frankfurter Dippemess",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2027-03-26",e:"2027-04-18",r:"zweimal jährlich",x:0,d:"Ältestes Volksfest der Stadt am Ratsweg, benannt nach den Töpferwaren der Händler."},
-{n:"Nacht der Museen",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2027-04-24",e:"2027-04-24",r:"jährlich",x:0,d:"Rund fünfzig Häuser in Frankfurt und Offenbach bis zwei Uhr nachts, ein Ticket für alle."},
-{n:"Wäldchestag",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2027-05-18",e:"2027-05-18",r:"jährlich, Dienstag nach Pfingsten",x:1,d:"Frankfurter Feiertag im Stadtwald — halber Arbeitstag, dann Kirmes und Apfelwein."},
-{n:"Apfelweinfestival",c:"Frankfurt am Main",l:"Hessen",k:"food",s:"2027-08-06",e:"2027-08-15",r:"jährlich",x:0,d:"Keltereien der Region schenken auf dem Roßmarkt aus, dazu Handkäs und Livemusik."},
-{n:"Museumsuferfest",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2027-08-28",e:"2027-08-30",r:"jährlich",x:0,d:"Drei Tage Programm auf beiden Mainufern, Museen mit vergünstigtem Kombiticket."},
+{n:"Frankfurter Buchmesse",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2026-10-14",e:"2026-10-18",r:"jährlich",x:0,d:"Größte Buchmesse der Welt mit wechselndem Ehrengastland, am Wochenende publikumsoffen.",en:"The world's largest book fair with a changing guest-of-honour country, open to the public at the weekend."},
+{n:"Frankfurt Marathon",c:"Frankfurt am Main",l:"Hessen",k:"sport",s:"2026-10-25",e:"2026-10-25",r:"jährlich",x:0,d:"Schneller Herbstmarathon mit Zieleinlauf in der Festhalle.",en:"Fast autumn marathon finishing inside the Festhalle."},
+{n:"Frankfurter Dippemess",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2027-03-26",e:"2027-04-18",r:"zweimal jährlich",x:0,d:"Ältestes Volksfest der Stadt am Ratsweg, benannt nach den Töpferwaren der Händler.",en:"The city's oldest funfair on the Ratsweg, named after the traders' pottery."},
+{n:"Nacht der Museen",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2027-04-24",e:"2027-04-24",r:"jährlich",x:0,d:"Rund fünfzig Häuser in Frankfurt und Offenbach bis zwei Uhr nachts, ein Ticket für alle.",en:"Around fifty venues in Frankfurt and Offenbach until 2 a.m., one ticket for all."},
+{n:"Wäldchestag",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2027-05-18",e:"2027-05-18",r:"jährlich, Dienstag nach Pfingsten",x:1,d:"Frankfurter Feiertag im Stadtwald — halber Arbeitstag, dann Kirmes und Apfelwein.",en:"Frankfurt's own holiday in the city forest — half a working day, then funfair and cider."},
+{n:"Apfelweinfestival",c:"Frankfurt am Main",l:"Hessen",k:"food",s:"2027-08-06",e:"2027-08-15",r:"jährlich",x:0,d:"Keltereien der Region schenken auf dem Roßmarkt aus, dazu Handkäs und Livemusik.",en:"Regional cider makers pour on Roßmarkt, with Handkäs cheese and live music."},
+{n:"Museumsuferfest",c:"Frankfurt am Main",l:"Hessen",k:"art",s:"2027-08-28",e:"2027-08-30",r:"jährlich",x:0,d:"Drei Tage Programm auf beiden Mainufern, Museen mit vergünstigtem Kombiticket.",en:"Three days of programme on both banks of the Main, museums with a discounted combined ticket."},
 
 /* Stuttgart */
-{n:"Cannstatter Volksfest",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2026-09-25",e:"2026-10-11",r:"jährlich",x:0,d:"Zweitgrößtes Volksfest Deutschlands auf dem Wasen, Wahrzeichen ist die Fruchtsäule."},
-{n:"CMT Stuttgart",c:"Stuttgart",l:"Baden-Württemberg",k:"sport",s:"2027-01-16",e:"2027-01-24",r:"jährlich",x:0,d:"Weltgrößte Publikumsmesse für Urlaub und Freizeit — Reiseziele, Wohnmobile und Campingausrüstung auf dem Messegelände."},
-{n:"Retro Classics",c:"Stuttgart",l:"Baden-Württemberg",k:"tech",s:"2027-02-25",e:"2027-02-28",r:"jährlich",x:0,d:"Oldtimermesse mit Werksausstellungen, Teilemarkt und Fahrzeugauktionen."},
-{n:"Stuttgarter Frühlingsfest",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2027-04-17",e:"2027-05-09",r:"jährlich",x:0,d:"Frühjahrs-Wasen mit drei Festzelten, Höhepunkt ist das Fassanstich-Wochenende."},
-{n:"Jazzopen Stuttgart",c:"Stuttgart",l:"Baden-Württemberg",k:"music",s:"2027-07-07",e:"2027-07-18",r:"jährlich",x:0,d:"Open-Air-Konzerte auf dem Schlossplatz, Programm zwischen Jazz, Soul und Pop."},
-{n:"Stuttgarter Weindorf",c:"Stuttgart",l:"Baden-Württemberg",k:"food",s:"2027-08-25",e:"2027-09-05",r:"jährlich",x:0,d:"Weinlauben rund um Markt- und Schillerplatz, Ausschank württembergischer Lagen."},
+{n:"Cannstatter Volksfest",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2026-09-25",e:"2026-10-11",r:"jährlich",x:0,d:"Zweitgrößtes Volksfest Deutschlands auf dem Wasen, Wahrzeichen ist die Fruchtsäule.",en:"Germany's second-largest funfair on the Wasen, its landmark is the fruit column."},
+{n:"CMT Stuttgart",c:"Stuttgart",l:"Baden-Württemberg",k:"sport",s:"2027-01-16",e:"2027-01-24",r:"jährlich",x:0,d:"Weltgrößte Publikumsmesse für Urlaub und Freizeit — Reiseziele, Wohnmobile und Campingausrüstung auf dem Messegelände.",en:"The world's largest consumer fair for holidays and leisure — destinations, motorhomes and camping gear."},
+{n:"Retro Classics",c:"Stuttgart",l:"Baden-Württemberg",k:"tech",s:"2027-02-25",e:"2027-02-28",r:"jährlich",x:0,d:"Oldtimermesse mit Werksausstellungen, Teilemarkt und Fahrzeugauktionen.",en:"Classic-car fair with manufacturer exhibits, parts market and vehicle auctions."},
+{n:"Stuttgarter Frühlingsfest",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2027-04-17",e:"2027-05-09",r:"jährlich",x:0,d:"Frühjahrs-Wasen mit drei Festzelten, Höhepunkt ist das Fassanstich-Wochenende.",en:"Spring Wasen with three beer tents, the highlight is the keg-tapping weekend."},
+{n:"Jazzopen Stuttgart",c:"Stuttgart",l:"Baden-Württemberg",k:"music",s:"2027-07-07",e:"2027-07-18",r:"jährlich",x:0,d:"Open-Air-Konzerte auf dem Schlossplatz, Programm zwischen Jazz, Soul und Pop.",en:"Open-air concerts on Schlossplatz, programme between jazz, soul and pop."},
+{n:"Stuttgarter Weindorf",c:"Stuttgart",l:"Baden-Württemberg",k:"food",s:"2027-08-25",e:"2027-09-05",r:"jährlich",x:0,d:"Weinlauben rund um Markt- und Schillerplatz, Ausschank württembergischer Lagen.",en:"Wine arbours around Marktplatz and Schillerplatz, serving Württemberg wines."},
 
 /* Düsseldorf */
-{n:"boot Düsseldorf",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"sport",s:"2027-01-16",e:"2027-01-24",r:"jährlich",x:0,d:"Weltgrößte Wassersportmesse, siebzehn Hallen von der Jolle bis zur Superyacht."},
-{n:"Japan-Tag",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-22",e:"2027-05-22",r:"jährlich",x:0,d:"Japanisch-deutsches Begegnungsfest am Rheinufer, zum Abschluss ein Feuerwerk."},
-{n:"Größte Kirmes am Rhein",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"trad",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Schützenfest auf den Oberkasseler Rheinwiesen, Riesenrad vor der Altstadtkulisse."},
-{n:"Düsseldorf Festival",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"art",s:"2027-09-09",e:"2027-09-27",r:"jährlich",x:0,d:"Tanz, Zirkus und Neue Musik, Hauptspielort ist das Zelt am Burgplatz."},
+{n:"boot Düsseldorf",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"sport",s:"2027-01-16",e:"2027-01-24",r:"jährlich",x:0,d:"Weltgrößte Wassersportmesse, siebzehn Hallen von der Jolle bis zur Superyacht.",en:"The world's largest water-sports fair, seventeen halls from dinghy to superyacht."},
+{n:"Japan-Tag",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-22",e:"2027-05-22",r:"jährlich",x:0,d:"Japanisch-deutsches Begegnungsfest am Rheinufer, zum Abschluss ein Feuerwerk.",en:"Japanese-German festival on the Rhine promenade, ending with fireworks."},
+{n:"Größte Kirmes am Rhein",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"trad",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Schützenfest auf den Oberkasseler Rheinwiesen, Riesenrad vor der Altstadtkulisse.",en:"Riflemen's funfair on the Oberkassel Rhine meadows, Ferris wheel facing the old-town skyline."},
+{n:"Düsseldorf Festival",c:"Düsseldorf",l:"Nordrhein-Westfalen",k:"art",s:"2027-09-09",e:"2027-09-27",r:"jährlich",x:0,d:"Tanz, Zirkus und Neue Musik, Hauptspielort ist das Zelt am Burgplatz.",en:"Dance, circus and new music, the main venue is the tent on Burgplatz."},
 
 /* Dresden */
-{n:"Striezelmarkt",c:"Dresden",l:"Sachsen",k:"trad",s:"2026-11-25",e:"2026-12-24",r:"jährlich, bis Heiligabend",x:1,d:"Einer der ältesten Weihnachtsmärkte Deutschlands, Stollenfest am zweiten Adventswochenende."},
-{n:"Filmfest Dresden",c:"Dresden",l:"Sachsen",k:"film",s:"2027-04-13",e:"2027-04-18",r:"jährlich",x:0,d:"Kurzfilmfestival mit internationalem und nationalem Wettbewerb um die Goldenen Reiter."},
-{n:"Dixieland Festival",c:"Dresden",l:"Sachsen",k:"music",s:"2027-05-09",e:"2027-05-16",r:"jährlich",x:0,d:"Traditionsjazz in der ganzen Stadt, Paradedampferfahrt und Straßenparade am Sonntag."},
-{n:"Dresdner Musikfestspiele",c:"Dresden",l:"Sachsen",k:"music",s:"2027-05-13",e:"2027-06-13",r:"jährlich",x:0,d:"Klassikfestival mit Konzerten in Semperoper, Frauenkirche und Kulturpalast."},
-{n:"Bunte Republik Neustadt",c:"Dresden",l:"Sachsen",k:"art",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:0,d:"Selbstorganisiertes Stadtteilfest der Äußeren Neustadt mit Hinterhofbühnen."},
+{n:"Striezelmarkt",c:"Dresden",l:"Sachsen",k:"trad",s:"2026-11-25",e:"2026-12-24",r:"jährlich, bis Heiligabend",x:1,d:"Einer der ältesten Weihnachtsmärkte Deutschlands, Stollenfest am zweiten Adventswochenende.",en:"One of Germany's oldest Christmas markets, Stollen festival on the second Advent weekend."},
+{n:"Filmfest Dresden",c:"Dresden",l:"Sachsen",k:"film",s:"2027-04-13",e:"2027-04-18",r:"jährlich",x:0,d:"Kurzfilmfestival mit internationalem und nationalem Wettbewerb um die Goldenen Reiter.",en:"Short film festival with international and national competitions for the Golden Horsemen."},
+{n:"Dixieland Festival",c:"Dresden",l:"Sachsen",k:"music",s:"2027-05-09",e:"2027-05-16",r:"jährlich",x:0,d:"Traditionsjazz in der ganzen Stadt, Paradedampferfahrt und Straßenparade am Sonntag.",en:"Traditional jazz all over the city, a paddle-steamer parade and a street parade on Sunday."},
+{n:"Dresdner Musikfestspiele",c:"Dresden",l:"Sachsen",k:"music",s:"2027-05-13",e:"2027-06-13",r:"jährlich",x:0,d:"Klassikfestival mit Konzerten in Semperoper, Frauenkirche und Kulturpalast.",en:"Classical music festival with concerts in the Semperoper, Frauenkirche and Kulturpalast."},
+{n:"Bunte Republik Neustadt",c:"Dresden",l:"Sachsen",k:"art",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:0,d:"Selbstorganisiertes Stadtteilfest der Äußeren Neustadt mit Hinterhofbühnen.",en:"Self-organised neighbourhood festival in the Outer Neustadt with backyard stages."},
 
 /* Leipzig */
-{n:"DOK Leipzig",c:"Leipzig",l:"Sachsen",k:"film",s:"2026-10-26",e:"2026-11-01",r:"jährlich",x:0,d:"Festival für Dokumentar- und Animationsfilm, gegründet 1955."},
-{n:"Games Ground",c:"Leipzig",l:"Sachsen",k:"play",s:"2026-11-27",e:"2026-11-29",r:"jährlich",x:0,d:"Spielemesse auf dem Messegelände mit Indie-Area, Cosplay und Esport-Bühne."},
-{n:"Leipziger Buchmesse",c:"Leipzig",l:"Sachsen",k:"art",s:"2027-03-18",e:"2027-03-21",r:"jährlich",x:0,d:"Publikumsmesse mit dem Lesefest Leipzig liest an hunderten Orten in der Stadt."},
-{n:"Wave-Gotik-Treffen",c:"Leipzig",l:"Sachsen",k:"music",s:"2027-05-14",e:"2027-05-17",r:"jährlich, Pfingsten",x:1,d:"Größtes Treffen der schwarzen Szene weltweit, über fünfzig Spielstätten im Stadtgebiet."},
-{n:"Bachfest Leipzig",c:"Leipzig",l:"Sachsen",k:"music",s:"2027-06-11",e:"2027-06-20",r:"jährlich",x:0,d:"Bach an den Originalschauplätzen, Thomaskirche und Nikolaikirche als Zentren."},
+{n:"DOK Leipzig",c:"Leipzig",l:"Sachsen",k:"film",s:"2026-10-26",e:"2026-11-01",r:"jährlich",x:0,d:"Festival für Dokumentar- und Animationsfilm, gegründet 1955.",en:"Festival for documentary and animated film, founded in 1955."},
+{n:"Games Ground",c:"Leipzig",l:"Sachsen",k:"play",s:"2026-11-27",e:"2026-11-29",r:"jährlich",x:0,d:"Spielemesse auf dem Messegelände mit Indie-Area, Cosplay und Esport-Bühne.",en:"Games fair on the fairgrounds with an indie area, cosplay and an esports stage."},
+{n:"Leipziger Buchmesse",c:"Leipzig",l:"Sachsen",k:"art",s:"2027-03-18",e:"2027-03-21",r:"jährlich",x:0,d:"Publikumsmesse mit dem Lesefest Leipzig liest an hunderten Orten in der Stadt.",en:"Public book fair with the reading festival “Leipzig liest” at hundreds of venues across the city."},
+{n:"Wave-Gotik-Treffen",c:"Leipzig",l:"Sachsen",k:"music",s:"2027-05-14",e:"2027-05-17",r:"jährlich, Pfingsten",x:1,d:"Größtes Treffen der schwarzen Szene weltweit, über fünfzig Spielstätten im Stadtgebiet.",en:"The world's largest gathering of the goth scene, more than fifty venues across the city."},
+{n:"Bachfest Leipzig",c:"Leipzig",l:"Sachsen",k:"music",s:"2027-06-11",e:"2027-06-20",r:"jährlich",x:0,d:"Bach an den Originalschauplätzen, Thomaskirche und Nikolaikirche als Zentren.",en:"Bach in his original venues, centred on St. Thomas and St. Nicholas churches."},
 
 /* Nürnberg */
-{n:"Christkindlesmarkt",c:"Nürnberg",l:"Bayern",k:"trad",s:"2026-11-27",e:"2026-12-24",r:"jährlich, bis Heiligabend",x:1,d:"Markt auf dem Hauptmarkt mit Prolog des Christkinds, Rauschgoldengel und Zwetschgenmännle."},
-{n:"Consumenta",c:"Nürnberg",l:"Bayern",k:"trad",s:"2026-10-31",e:"2026-11-08",r:"jährlich",x:0,d:"Verbrauchermesse für Wohnen, Garten, Freizeit und Genuss mit rund 900 Ausstellern auf dem gesamten Messegelände."},
-{n:"Spielwarenmesse",c:"Nürnberg",l:"Bayern",k:"play",s:"2027-01-26",e:"2027-01-30",r:"jährlich",x:0,d:"Weltleitmesse für Spielwaren — reine Fachmesse mit der Neuheitenschau der Branche."},
-{n:"Embedded World",c:"Nürnberg",l:"Bayern",k:"tech",s:"2027-03-09",e:"2027-03-11",r:"jährlich",x:0,d:"Fachmesse für eingebettete Systeme, Elektronikentwicklung und Industrie-Software."},
-{n:"Freizeit Messe Nürnberg",c:"Nürnberg",l:"Bayern",k:"sport",s:"2027-03-10",e:"2027-03-14",r:"jährlich",x:0,d:"Nordbayerns größte Urlaubs- und Freizeitmesse seit 1966, mit Wohnmobilen, Reisezielen und Outdoor-Ausrüstung."},
-{n:"Nürnberger Frühlingsfest",c:"Nürnberg",l:"Bayern",k:"trad",s:"2027-03-26",e:"2027-04-11",r:"zweimal jährlich",x:0,d:"Volksfest am Dutzendteich, am Ostersonntag Feuerwerk über dem Wasser."},
-{n:"Blaue Nacht",c:"Nürnberg",l:"Bayern",k:"art",s:"2027-05-08",e:"2027-05-08",r:"jährlich",x:0,d:"Lange Kunstnacht mit blau illuminierter Altstadt und Installationen an der Kaiserburg."},
-{n:"Rock im Park",c:"Nürnberg",l:"Bayern",k:"music",s:"2027-06-04",e:"2027-06-06",r:"jährlich, Pfingsten",x:0,d:"Zwillingsfestival von Rock am Ring auf dem Zeppelinfeld, identisches Line-up."},
-{n:"Bardentreffen",c:"Nürnberg",l:"Bayern",k:"music",s:"2027-07-30",e:"2027-08-01",r:"jährlich",x:0,d:"Weltmusik auf Altstadtbühnen bei freiem Eintritt, dazu offizielle Straßenmusik."},
+{n:"Christkindlesmarkt",c:"Nürnberg",l:"Bayern",k:"trad",s:"2026-11-27",e:"2026-12-24",r:"jährlich, bis Heiligabend",x:1,d:"Markt auf dem Hauptmarkt mit Prolog des Christkinds, Rauschgoldengel und Zwetschgenmännle.",en:"Market on the Hauptmarkt opened by the Christkind's prologue, with gold-foil angels and prune figures."},
+{n:"Consumenta",c:"Nürnberg",l:"Bayern",k:"trad",s:"2026-10-31",e:"2026-11-08",r:"jährlich",x:0,d:"Verbrauchermesse für Wohnen, Garten, Freizeit und Genuss mit rund 900 Ausstellern auf dem gesamten Messegelände.",en:"Consumer fair for home, garden, leisure and food with around 900 exhibitors across the fairgrounds."},
+{n:"Spielwarenmesse",c:"Nürnberg",l:"Bayern",k:"play",s:"2027-01-26",e:"2027-01-30",r:"jährlich",x:0,d:"Weltleitmesse für Spielwaren — reine Fachmesse mit der Neuheitenschau der Branche.",en:"The world's leading toy fair — trade visitors only, with the industry's novelty show."},
+{n:"Embedded World",c:"Nürnberg",l:"Bayern",k:"tech",s:"2027-03-09",e:"2027-03-11",r:"jährlich",x:0,d:"Fachmesse für eingebettete Systeme, Elektronikentwicklung und Industrie-Software.",en:"Trade fair for embedded systems, electronics development and industrial software."},
+{n:"Freizeit Messe Nürnberg",c:"Nürnberg",l:"Bayern",k:"sport",s:"2027-03-10",e:"2027-03-14",r:"jährlich",x:0,d:"Nordbayerns größte Urlaubs- und Freizeitmesse seit 1966, mit Wohnmobilen, Reisezielen und Outdoor-Ausrüstung.",en:"Northern Bavaria's biggest holiday and leisure fair since 1966, with motorhomes, destinations and outdoor gear."},
+{n:"Nürnberger Frühlingsfest",c:"Nürnberg",l:"Bayern",k:"trad",s:"2027-03-26",e:"2027-04-11",r:"zweimal jährlich",x:0,d:"Volksfest am Dutzendteich, am Ostersonntag Feuerwerk über dem Wasser.",en:"Funfair at the Dutzendteich lake, fireworks over the water on Easter Sunday."},
+{n:"Blaue Nacht",c:"Nürnberg",l:"Bayern",k:"art",s:"2027-05-08",e:"2027-05-08",r:"jährlich",x:0,d:"Lange Kunstnacht mit blau illuminierter Altstadt und Installationen an der Kaiserburg.",en:"Long art night with the old town lit in blue and installations at the Imperial Castle."},
+{n:"Rock im Park",c:"Nürnberg",l:"Bayern",k:"music",s:"2027-06-04",e:"2027-06-06",r:"jährlich, Pfingsten",x:0,d:"Zwillingsfestival von Rock am Ring auf dem Zeppelinfeld, identisches Line-up.",en:"Twin festival of Rock am Ring on the Zeppelin Field, with an identical line-up."},
+{n:"Bardentreffen",c:"Nürnberg",l:"Bayern",k:"music",s:"2027-07-30",e:"2027-08-01",r:"jährlich",x:0,d:"Weltmusik auf Altstadtbühnen bei freiem Eintritt, dazu offizielle Straßenmusik.",en:"World music on old-town stages with free entry, plus official street music."},
 
 /* Hannover */
-{n:"IAA Transportation",c:"Hannover",l:"Niedersachsen",k:"tech",s:"2026-09-15",e:"2026-09-20",r:"alle 2 Jahre, gerade Jahre",x:0,d:"Leitmesse für Nutzfahrzeuge, Logistik und Antriebswende, letzte Tage publikumsoffen."},
-{n:"Passion Pferd",c:"Hannover",l:"Niedersachsen",k:"sport",s:"2026-12-03",e:"2026-12-06",r:"jährlich",x:0,d:"Eine der größten Pferdemessen Deutschlands, mit Live-Vorführungen, Fachvorträgen und der Galaschau 'Nacht der Pferde'."},
-{n:"Hannover Messe",c:"Hannover",l:"Niedersachsen",k:"tech",s:"2027-04-19",e:"2027-04-23",r:"jährlich",x:0,d:"Größte Industriemesse der Welt: Automatisierung, Energie und Robotik mit Partnerland."},
-{n:"Schützenfest Hannover",c:"Hannover",l:"Niedersachsen",k:"trad",s:"2027-07-02",e:"2027-07-11",r:"jährlich",x:0,d:"Größtes Schützenfest der Welt, Ausmarsch mit rund zwölftausend Teilnehmenden."},
-{n:"Maschseefest",c:"Hannover",l:"Niedersachsen",k:"art",s:"2027-07-28",e:"2027-08-15",r:"jährlich",x:0,d:"Drei Wochen Bühnen und Gastronomie rund um den See, Eintritt frei."},
+{n:"IAA Transportation",c:"Hannover",l:"Niedersachsen",k:"tech",s:"2026-09-15",e:"2026-09-20",r:"alle 2 Jahre, gerade Jahre",x:0,d:"Leitmesse für Nutzfahrzeuge, Logistik und Antriebswende, letzte Tage publikumsoffen.",en:"Leading fair for commercial vehicles, logistics and clean drives, open to the public on the last days."},
+{n:"Passion Pferd",c:"Hannover",l:"Niedersachsen",k:"sport",s:"2026-12-03",e:"2026-12-06",r:"jährlich",x:0,d:"Eine der größten Pferdemessen Deutschlands, mit Live-Vorführungen, Fachvorträgen und der Galaschau 'Nacht der Pferde'.",en:"One of Germany's biggest horse fairs, with live shows, talks and the gala “Night of the Horses”."},
+{n:"Hannover Messe",c:"Hannover",l:"Niedersachsen",k:"tech",s:"2027-04-19",e:"2027-04-23",r:"jährlich",x:0,d:"Größte Industriemesse der Welt: Automatisierung, Energie und Robotik mit Partnerland.",en:"The world's largest industrial fair: automation, energy and robotics with a partner country."},
+{n:"Schützenfest Hannover",c:"Hannover",l:"Niedersachsen",k:"trad",s:"2027-07-02",e:"2027-07-11",r:"jährlich",x:0,d:"Größtes Schützenfest der Welt, Ausmarsch mit rund zwölftausend Teilnehmenden.",en:"The world's largest riflemen's festival, with a parade of around twelve thousand participants."},
+{n:"Maschseefest",c:"Hannover",l:"Niedersachsen",k:"art",s:"2027-07-28",e:"2027-08-15",r:"jährlich",x:0,d:"Drei Wochen Bühnen und Gastronomie rund um den See, Eintritt frei.",en:"Three weeks of stages and food around the lake, free admission."},
 
 /* Ruhrgebiet */
-{n:"SPIEL Essen",c:"Essen",l:"Nordrhein-Westfalen",k:"play",s:"2026-10-22",e:"2026-10-25",r:"jährlich",x:0,d:"Weltgrößte Publikumsmesse für Brett- und Kartenspiele, alle Neuheiten zum Probespielen."},
-{n:"Essener Lichtwochen",c:"Essen",l:"Nordrhein-Westfalen",k:"art",s:"2026-11-06",e:"2027-01-10",r:"jährlich",x:0,d:"Leuchtbilder über der Innenstadt, ununterbrochen seit den 1950er-Jahren."},
-{n:"Dortmunder Weihnachtsmarkt",c:"Dortmund",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-19",e:"2026-12-30",r:"jährlich",x:0,d:"Bekannt für den aus rund 1.700 Fichten gebauten Weihnachtsbaum auf dem Hansaplatz."},
-{n:"Essen Motor Show",c:"Essen",l:"Nordrhein-Westfalen",k:"tech",s:"2026-12-04",e:"2026-12-13",r:"jährlich",x:0,d:"Messe für Tuning, Motorsport und Klassiker, mit Driftshow in der Halle."},
-{n:"Techno-Classica",c:"Essen",l:"Nordrhein-Westfalen",k:"tech",s:"2027-04-07",e:"2027-04-11",r:"jährlich",x:0,d:"Oldtimermesse mit den Werksmuseen der Hersteller und großem Ersatzteilmarkt."},
-{n:"Bochum Total",c:"Bochum",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-01",e:"2027-07-04",r:"jährlich",x:0,d:"Eines der größten kostenlosen Rockfestivals Europas, auf der Bochumer Kortumstraße."},
-{n:"Juicy Beats",c:"Dortmund",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-30",e:"2027-07-31",r:"jährlich",x:0,d:"Elektro- und Popfestival im Westfalenpark, Bühnen verteilt über die Parkanlage."},
-{n:"Ruhrtriennale",c:"Bochum",l:"Nordrhein-Westfalen",k:"art",s:"2027-08-13",e:"2027-09-26",r:"jährlich",x:0,d:"Festival in Industriedenkmälern des Ruhrgebiets: Musiktheater, Tanz und Installationen."},
+{n:"SPIEL Essen",c:"Essen",l:"Nordrhein-Westfalen",k:"play",s:"2026-10-22",e:"2026-10-25",r:"jährlich",x:0,d:"Weltgrößte Publikumsmesse für Brett- und Kartenspiele, alle Neuheiten zum Probespielen.",en:"The world's largest public fair for board and card games, every new release ready to try."},
+{n:"Essener Lichtwochen",c:"Essen",l:"Nordrhein-Westfalen",k:"art",s:"2026-11-06",e:"2027-01-10",r:"jährlich",x:0,d:"Leuchtbilder über der Innenstadt, ununterbrochen seit den 1950er-Jahren.",en:"Light pictures above the city centre, running without a break since the 1950s."},
+{n:"Dortmunder Weihnachtsmarkt",c:"Dortmund",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-19",e:"2026-12-30",r:"jährlich",x:0,d:"Bekannt für den aus rund 1.700 Fichten gebauten Weihnachtsbaum auf dem Hansaplatz.",en:"Known for the Christmas tree built from around 1,700 spruces on Hansaplatz."},
+{n:"Essen Motor Show",c:"Essen",l:"Nordrhein-Westfalen",k:"tech",s:"2026-12-04",e:"2026-12-13",r:"jährlich",x:0,d:"Messe für Tuning, Motorsport und Klassiker, mit Driftshow in der Halle.",en:"Fair for tuning, motorsport and classics, with a drift show inside the hall."},
+{n:"Techno-Classica",c:"Essen",l:"Nordrhein-Westfalen",k:"tech",s:"2027-04-07",e:"2027-04-11",r:"jährlich",x:0,d:"Oldtimermesse mit den Werksmuseen der Hersteller und großem Ersatzteilmarkt.",en:"Classic-car fair with the manufacturers' museums and a big spare-parts market."},
+{n:"Bochum Total",c:"Bochum",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-01",e:"2027-07-04",r:"jährlich",x:0,d:"Eines der größten kostenlosen Rockfestivals Europas, auf der Bochumer Kortumstraße.",en:"One of Europe's largest free rock festivals, on Bochum's Kortumstraße."},
+{n:"Juicy Beats",c:"Dortmund",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-30",e:"2027-07-31",r:"jährlich",x:0,d:"Elektro- und Popfestival im Westfalenpark, Bühnen verteilt über die Parkanlage.",en:"Electronic and pop festival in Westfalenpark, stages spread across the park."},
+{n:"Ruhrtriennale",c:"Bochum",l:"Nordrhein-Westfalen",k:"art",s:"2027-08-13",e:"2027-09-26",r:"jährlich",x:0,d:"Festival in Industriedenkmälern des Ruhrgebiets: Musiktheater, Tanz und Installationen.",en:"Festival in industrial monuments of the Ruhr: music theatre, dance and installations."},
 
 /* Bremen */
-{n:"Musikfest Bremen",c:"Bremen",l:"Bremen",k:"music",s:"2027-08-21",e:"2027-09-11",r:"jährlich",x:1,d:"Alte Musik und Kammerkonzerte an historischen Spielstätten in Bremen und im Umland."},
-{n:"Bremer Freimarkt",c:"Bremen",l:"Bremen",k:"trad",s:"2026-10-16",e:"2026-11-01",r:"jährlich",x:0,d:"Eines der ältesten Volksfeste Deutschlands, seit 1035, mit Freimarktsumzug am Samstag."},
-{n:"Bremer Sechstagerennen",c:"Bremen",l:"Bremen",k:"sport",s:"2027-01-07",e:"2027-01-12",r:"jährlich",x:0,d:"Bahnradsport in der ÖVB-Arena, sechs Nächte Madison und Sprintwertungen."},
-{n:"Breminale",c:"Bremen",l:"Bremen",k:"music",s:"2027-07-07",e:"2027-07-11",r:"jährlich",x:0,d:"Kulturfestival am Osterdeich mit freiem Eintritt, Bühnen direkt an der Weser."},
+{n:"Musikfest Bremen",c:"Bremen",l:"Bremen",k:"music",s:"2027-08-21",e:"2027-09-11",r:"jährlich",x:1,d:"Alte Musik und Kammerkonzerte an historischen Spielstätten in Bremen und im Umland.",en:"Early music and chamber concerts at historic venues in Bremen and the surrounding region."},
+{n:"Bremer Freimarkt",c:"Bremen",l:"Bremen",k:"trad",s:"2026-10-16",e:"2026-11-01",r:"jährlich",x:0,d:"Eines der ältesten Volksfeste Deutschlands, seit 1035, mit Freimarktsumzug am Samstag.",en:"One of Germany's oldest funfairs, since 1035, with the Freimarkt parade on Saturday."},
+{n:"Bremer Sechstagerennen",c:"Bremen",l:"Bremen",k:"sport",s:"2027-01-07",e:"2027-01-12",r:"jährlich",x:0,d:"Bahnradsport in der ÖVB-Arena, sechs Nächte Madison und Sprintwertungen.",en:"Track cycling in the ÖVB Arena, six nights of madison and sprint races."},
+{n:"Breminale",c:"Bremen",l:"Bremen",k:"music",s:"2027-07-07",e:"2027-07-11",r:"jährlich",x:0,d:"Kulturfestival am Osterdeich mit freiem Eintritt, Bühnen direkt an der Weser.",en:"Culture festival on the Osterdeich with free entry, stages right on the Weser."},
 
 /* Ludwigsburg */
-{n:"Venezianische Messe",c:"Ludwigsburg",l:"Baden-Württemberg",k:"trad",s:"2027-09-03",e:"2027-09-05",r:"jährlich, erstes Septemberwochenende",x:0,d:"Bis zu zweitausend kostümierte Teilnehmende verwandeln den Marktplatz in ein venezianisches Fest mit Umzügen, Kunsthandwerkermarkt und Maskenball im Residenzschloss."},
+{n:"Venezianische Messe",c:"Ludwigsburg",l:"Baden-Württemberg",k:"trad",s:"2027-09-03",e:"2027-09-05",r:"jährlich, erstes Septemberwochenende",x:0,d:"Bis zu zweitausend kostümierte Teilnehmende verwandeln den Marktplatz in ein venezianisches Fest mit Umzügen, Kunsthandwerkermarkt und Maskenball im Residenzschloss.",en:"Up to two thousand costumed participants turn the market square into a Venetian festival with parades, a crafts market and a masked ball in the palace."},
 
 /* Aalen */
-{n:"JAAmarkt",c:"Aalen",l:"Baden-Württemberg",k:"art",s:"2027-07-10",e:"2027-07-11",r:"jährlich",x:0,d:"Kunsthandwerkermarkt im Stadtgarten mit Fokus auf regionale Kreativszene und Nachhaltigkeit, Eintritt frei."},
+{n:"JAAmarkt",c:"Aalen",l:"Baden-Württemberg",k:"art",s:"2027-07-10",e:"2027-07-11",r:"jährlich",x:0,d:"Kunsthandwerkermarkt im Stadtgarten mit Fokus auf regionale Kreativszene und Nachhaltigkeit, Eintritt frei.",en:"Crafts market in the city garden focusing on the regional creative scene and sustainability, free entry."},
 
 /* weitere Städte */
-{n:"Enjoy Jazz",c:"Mannheim",l:"Baden-Württemberg",k:"music",s:"2026-10-02",e:"2026-11-13",r:"jährlich",x:0,d:"Sechs Wochen Jazz und Grenzgänge in Mannheim, Heidelberg und Ludwigshafen."},
-{n:"Nordische Filmtage",c:"Lübeck",l:"Schleswig-Holstein",k:"film",s:"2026-10-28",e:"2026-11-01",r:"jährlich",x:0,d:"Filme aus Skandinavien und dem Baltikum, Publikumspreis in der Lübecker Altstadt."},
-{n:"Vierschanzentournee",c:"Oberstdorf",l:"Bayern",k:"sport",s:"2026-12-28",e:"2027-01-06",r:"jährlich, feste Regeltermine",x:1,d:"Skisprung-Klassiker: Auftakt in Oberstdorf, Neujahrsspringen in Garmisch-Partenkirchen."},
-{n:"Mainzer Rosenmontagszug",c:"Mainz",l:"Rheinland-Pfalz",k:"trad",s:"2027-02-08",e:"2027-02-08",r:"jährlich, an Ostern gekoppelt",x:1,d:"Sieben Kilometer Zugweg mit Schwellköpp und politischen Motivwagen."},
-{n:"Send",c:"Münster",l:"Nordrhein-Westfalen",k:"trad",s:"2027-03-20",e:"2027-03-23",r:"dreimal jährlich",x:0,d:"Jahrmarkt auf dem Schlossplatz, seit dem Mittelalter an den Send-Terminen der Diözese."},
-{n:"Augsburger Plärrer",c:"Augsburg",l:"Bayern",k:"trad",s:"2027-04-03",e:"2027-04-19",r:"zweimal jährlich",x:0,d:"Schwabens größtes Volksfest mit Festzelten und Plärrer-Umzug am ersten Sonntag."},
-{n:"Maimarkt Mannheim",c:"Mannheim",l:"Baden-Württemberg",k:"trad",s:"2027-04-24",e:"2027-05-04",r:"jährlich",x:0,d:"Größte Regionalmesse Deutschlands, mit Tierschau, Reitturnier und Vergnügungspark."},
-{n:"Rhein in Flammen",c:"Bonn",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-01",e:"2027-05-01",r:"jährlich",x:0,d:"Schiffskonvoi zwischen Linz und Bonn, Höhenfeuerwerk an mehreren Uferorten."},
-{n:"Internationale Maifestspiele",c:"Wiesbaden",l:"Hessen",k:"art",s:"2027-05-01",e:"2027-05-31",r:"jährlich",x:0,d:"Gastspiele internationaler Ensembles am Hessischen Staatstheater, den ganzen Mai."},
-{n:"Regensburger Maidult",c:"Regensburg",l:"Bayern",k:"trad",s:"2027-05-07",e:"2027-05-23",r:"zweimal jährlich",x:0,d:"Volksfest auf dem Dultplatz an der Donau, Bierzelte und Krämermarkt."},
-{n:"Heidelberger Schlossbeleuchtung",c:"Heidelberg",l:"Baden-Württemberg",k:"art",s:"2027-06-05",e:"2027-06-05",r:"dreimal jährlich",x:0,d:"Bengalische Beleuchtung der Schlossruine, danach Feuerwerk über der Alten Brücke."},
-{n:"documenta 16",c:"Kassel",l:"Hessen",k:"art",s:"2027-06-12",e:"2027-09-19",r:"alle 5 Jahre",x:0,d:"Hundert Tage Weltausstellung zeitgenössischer Kunst, im Fridericianum und in der ganzen Stadt."},
-{n:"Erfurter Krämerbrückenfest",c:"Erfurt",l:"Thüringen",k:"trad",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:0,d:"Historisches Altstadtfest rund um die bebaute Brücke, Handwerkermarkt und Gaukler."},
-{n:"Kieler Woche",c:"Kiel",l:"Schleswig-Holstein",k:"sport",s:"2027-06-19",e:"2027-06-27",r:"jährlich",x:0,d:"Größte Segelregatta der Welt, dazu Sommerfest an der Förde und Windjammerparade."},
-{n:"Mainzer Johannisnacht",c:"Mainz",l:"Rheinland-Pfalz",k:"art",s:"2027-06-25",e:"2027-06-28",r:"jährlich",x:0,d:"Stadtfest zu Ehren Gutenbergs, mit Gautschfeier der Druckerlehrlinge."},
-{n:"Trierer Altstadtfest",c:"Trier",l:"Rheinland-Pfalz",k:"art",s:"2027-06-25",e:"2027-06-27",r:"jährlich",x:0,d:"Bühnen zwischen Porta Nigra und Hauptmarkt, Weinstände der Mosellagen."},
-{n:"Rheingau Musik Festival",c:"Wiesbaden",l:"Hessen",k:"music",s:"2027-06-26",e:"2027-09-05",r:"jährlich",x:0,d:"Über zehn Wochen Konzerte in Klöstern, Schlössern und Weingütern des Rheingaus."},
-{n:"Freiburger Weinfest",c:"Freiburg im Breisgau",l:"Baden-Württemberg",k:"food",s:"2027-07-01",e:"2027-07-06",r:"jährlich",x:0,d:"Ausschank badischer Winzergenossenschaften auf dem Münsterplatz."},
-{n:"Zelt-Musik-Festival",c:"Freiburg im Breisgau",l:"Baden-Württemberg",k:"music",s:"2027-07-07",e:"2027-07-25",r:"jährlich",x:0,d:"Konzerte im Zeltdorf am Mundenhof, Programm von Klassik bis Kabarett."},
-{n:"Schlossfestspiele Thurn und Taxis",c:"Regensburg",l:"Bayern",k:"music",s:"2027-07-08",e:"2027-07-25",r:"jährlich",x:0,d:"Open-Air-Konzerte im Innenhof von Schloss St. Emmeram."},
-{n:"Travemünder Woche",c:"Lübeck",l:"Schleswig-Holstein",k:"sport",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Segelregatta an der Lübecker Bucht, dazu Hafenfest auf der Vorderreihe."},
-{n:"Das Fest",c:"Karlsruhe",l:"Baden-Württemberg",k:"music",s:"2027-07-23",e:"2027-07-25",r:"jährlich",x:0,d:"Festival in der Günther-Klotz-Anlage, Hauptbühne mit Karte, der Hügel bleibt frei."},
-{n:"Wacken Open Air",c:"Wacken",l:"Schleswig-Holstein",k:"music",s:"2027-07-29",e:"2027-07-31",r:"jährlich",x:0,d:"Metalfestival im 1.800-Einwohner-Dorf, seit Jahren im Vorverkauf ausverkauft."},
-{n:"Zissel",c:"Kassel",l:"Hessen",k:"trad",s:"2027-07-30",e:"2027-08-02",r:"jährlich",x:0,d:"Kasseler Volks- und Wasserfest an der Fulda, mit Bootskorso und Fischerstechen."},
-{n:"Hanse Sail",c:"Rostock",l:"Mecklenburg-Vorpommern",k:"sport",s:"2027-08-05",e:"2027-08-08",r:"jährlich",x:0,d:"Traditionsseglertreffen in Warnemünde und im Stadthafen, Mitsegeln möglich."},
-{n:"Schlosslichtspiele",c:"Karlsruhe",l:"Baden-Württemberg",k:"art",s:"2027-08-05",e:"2027-09-12",r:"jährlich",x:0,d:"Projektionen auf die 170 Meter breite Schlossfassade, Eintritt frei."},
-{n:"Augsburger Friedensfest",c:"Augsburg",l:"Bayern",k:"art",s:"2027-08-08",e:"2027-08-08",r:"jährlich, 8. August",x:1,d:"Gesetzlicher Feiertag nur in Augsburg, mit Friedenstafel und Kulturprogramm."},
-{n:"Kunstfest Weimar",c:"Weimar",l:"Thüringen",k:"art",s:"2027-08-19",e:"2027-09-05",r:"jährlich",x:0,d:"Theater, Konzerte und Diskurs an historischen Orten der Klassikerstadt."},
-{n:"Hallesches Laternenfest",c:"Halle (Saale)",l:"Sachsen-Anhalt",k:"trad",s:"2027-08-27",e:"2027-08-29",r:"jährlich",x:0,d:"Größtes Volksfest Sachsen-Anhalts an der Saale, Höhepunkt ist der Bootskorso."},
-{n:"Dürkheimer Wurstmarkt",c:"Bad Dürkheim",l:"Rheinland-Pfalz",k:"food",s:"2027-09-10",e:"2027-09-20",r:"jährlich, zwei Wochenenden",x:0,d:"Größtes Weinfest der Welt an der Weinstraße — Schubkarchstände statt Bierzelte."},
-{n:"Münster Marathon",c:"Münster",l:"Nordrhein-Westfalen",k:"sport",s:"2027-09-12",e:"2027-09-12",r:"jährlich",x:0,d:"Flacher Stadtmarathon durch die Altstadt und über den Promenadenring."},
-{n:"Heidelberger Herbst",c:"Heidelberg",l:"Baden-Württemberg",k:"art",s:"2027-09-25",e:"2027-09-25",r:"jährlich",x:0,d:"Altstadtfest mit Kunsthandwerkermarkt in der langen Hauptstraße."},
-{n:"Weimarer Zwiebelmarkt",c:"Weimar",l:"Thüringen",k:"food",s:"2027-10-08",e:"2027-10-10",r:"jährlich, zweites Oktoberwochenende",x:0,d:"Ältestes Volksfest Thüringens — Zwiebelzöpfe und Zwiebelkuchen in der ganzen Innenstadt."},
+{n:"Enjoy Jazz",c:"Mannheim",l:"Baden-Württemberg",k:"music",s:"2026-10-02",e:"2026-11-13",r:"jährlich",x:0,d:"Sechs Wochen Jazz und Grenzgänge in Mannheim, Heidelberg und Ludwigshafen.",en:"Six weeks of jazz and crossover in Mannheim, Heidelberg and Ludwigshafen."},
+{n:"Nordische Filmtage",c:"Lübeck",l:"Schleswig-Holstein",k:"film",s:"2026-10-28",e:"2026-11-01",r:"jährlich",x:0,d:"Filme aus Skandinavien und dem Baltikum, Publikumspreis in der Lübecker Altstadt.",en:"Films from Scandinavia and the Baltic states, with an audience award in Lübeck's old town."},
+{n:"Vierschanzentournee",c:"Oberstdorf",l:"Bayern",k:"sport",s:"2026-12-28",e:"2027-01-06",r:"jährlich, feste Regeltermine",x:1,d:"Skisprung-Klassiker: Auftakt in Oberstdorf, Neujahrsspringen in Garmisch-Partenkirchen.",en:"Ski-jumping classic: opening in Oberstdorf, New Year's jump in Garmisch-Partenkirchen."},
+{n:"Mainzer Rosenmontagszug",c:"Mainz",l:"Rheinland-Pfalz",k:"trad",s:"2027-02-08",e:"2027-02-08",r:"jährlich, an Ostern gekoppelt",x:1,d:"Sieben Kilometer Zugweg mit Schwellköpp und politischen Motivwagen.",en:"Seven-kilometre parade route with carnival heads and political satire floats."},
+{n:"Send",c:"Münster",l:"Nordrhein-Westfalen",k:"trad",s:"2027-03-20",e:"2027-03-23",r:"dreimal jährlich",x:0,d:"Jahrmarkt auf dem Schlossplatz, seit dem Mittelalter an den Send-Terminen der Diözese.",en:"Funfair on Schlossplatz, held on the diocese's Send dates since the Middle Ages."},
+{n:"Augsburger Plärrer",c:"Augsburg",l:"Bayern",k:"trad",s:"2027-04-03",e:"2027-04-19",r:"zweimal jährlich",x:0,d:"Schwabens größtes Volksfest mit Festzelten und Plärrer-Umzug am ersten Sonntag.",en:"Swabia's biggest funfair with beer tents and the Plärrer parade on the first Sunday."},
+{n:"Maimarkt Mannheim",c:"Mannheim",l:"Baden-Württemberg",k:"trad",s:"2027-04-24",e:"2027-05-04",r:"jährlich",x:0,d:"Größte Regionalmesse Deutschlands, mit Tierschau, Reitturnier und Vergnügungspark.",en:"Germany's largest regional fair, with livestock show, riding tournament and amusement park."},
+{n:"Rhein in Flammen",c:"Bonn",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-01",e:"2027-05-01",r:"jährlich",x:0,d:"Schiffskonvoi zwischen Linz und Bonn, Höhenfeuerwerk an mehreren Uferorten.",en:"Convoy of ships between Linz and Bonn, fireworks at several riverside towns."},
+{n:"Internationale Maifestspiele",c:"Wiesbaden",l:"Hessen",k:"art",s:"2027-05-01",e:"2027-05-31",r:"jährlich",x:0,d:"Gastspiele internationaler Ensembles am Hessischen Staatstheater, den ganzen Mai.",en:"International ensembles on tour at the Hessian State Theatre, all through May."},
+{n:"Regensburger Maidult",c:"Regensburg",l:"Bayern",k:"trad",s:"2027-05-07",e:"2027-05-23",r:"zweimal jährlich",x:0,d:"Volksfest auf dem Dultplatz an der Donau, Bierzelte und Krämermarkt.",en:"Funfair on the Dult grounds by the Danube, beer tents and a traders' market."},
+{n:"Heidelberger Schlossbeleuchtung",c:"Heidelberg",l:"Baden-Württemberg",k:"art",s:"2027-06-05",e:"2027-06-05",r:"dreimal jährlich",x:0,d:"Bengalische Beleuchtung der Schlossruine, danach Feuerwerk über der Alten Brücke.",en:"Bengal-light illumination of the castle ruins, followed by fireworks over the Old Bridge."},
+{n:"documenta 16",c:"Kassel",l:"Hessen",k:"art",s:"2027-06-12",e:"2027-09-19",r:"alle 5 Jahre",x:0,d:"Hundert Tage Weltausstellung zeitgenössischer Kunst, im Fridericianum und in der ganzen Stadt.",en:"A hundred days of the world exhibition of contemporary art, in the Fridericianum and all over the city."},
+{n:"Erfurter Krämerbrückenfest",c:"Erfurt",l:"Thüringen",k:"trad",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:0,d:"Historisches Altstadtfest rund um die bebaute Brücke, Handwerkermarkt und Gaukler.",en:"Historic old-town festival around the inhabited bridge, crafts market and jugglers."},
+{n:"Kieler Woche",c:"Kiel",l:"Schleswig-Holstein",k:"sport",s:"2027-06-19",e:"2027-06-27",r:"jährlich",x:0,d:"Größte Segelregatta der Welt, dazu Sommerfest an der Förde und Windjammerparade.",en:"The world's largest sailing regatta, plus a summer festival on the fjord and a tall-ship parade."},
+{n:"Mainzer Johannisnacht",c:"Mainz",l:"Rheinland-Pfalz",k:"art",s:"2027-06-25",e:"2027-06-28",r:"jährlich",x:0,d:"Stadtfest zu Ehren Gutenbergs, mit Gautschfeier der Druckerlehrlinge.",en:"City festival in honour of Gutenberg, with the traditional dunking of printing apprentices."},
+{n:"Trierer Altstadtfest",c:"Trier",l:"Rheinland-Pfalz",k:"art",s:"2027-06-25",e:"2027-06-27",r:"jährlich",x:0,d:"Bühnen zwischen Porta Nigra und Hauptmarkt, Weinstände der Mosellagen.",en:"Stages between the Porta Nigra and the main market, wine stands from the Moselle vineyards."},
+{n:"Rheingau Musik Festival",c:"Wiesbaden",l:"Hessen",k:"music",s:"2027-06-26",e:"2027-09-05",r:"jährlich",x:0,d:"Über zehn Wochen Konzerte in Klöstern, Schlössern und Weingütern des Rheingaus.",en:"More than ten weeks of concerts in monasteries, palaces and wineries of the Rheingau."},
+{n:"Freiburger Weinfest",c:"Freiburg im Breisgau",l:"Baden-Württemberg",k:"food",s:"2027-07-01",e:"2027-07-06",r:"jährlich",x:0,d:"Ausschank badischer Winzergenossenschaften auf dem Münsterplatz.",en:"Baden winegrowers' cooperatives pouring on Münsterplatz."},
+{n:"Zelt-Musik-Festival",c:"Freiburg im Breisgau",l:"Baden-Württemberg",k:"music",s:"2027-07-07",e:"2027-07-25",r:"jährlich",x:0,d:"Konzerte im Zeltdorf am Mundenhof, Programm von Klassik bis Kabarett.",en:"Concerts in the tent village at Mundenhof, programme from classical to cabaret."},
+{n:"Schlossfestspiele Thurn und Taxis",c:"Regensburg",l:"Bayern",k:"music",s:"2027-07-08",e:"2027-07-25",r:"jährlich",x:0,d:"Open-Air-Konzerte im Innenhof von Schloss St. Emmeram.",en:"Open-air concerts in the courtyard of St. Emmeram Palace."},
+{n:"Travemünder Woche",c:"Lübeck",l:"Schleswig-Holstein",k:"sport",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Segelregatta an der Lübecker Bucht, dazu Hafenfest auf der Vorderreihe.",en:"Sailing regatta in the Bay of Lübeck, plus a harbour festival on the Vorderreihe."},
+{n:"Das Fest",c:"Karlsruhe",l:"Baden-Württemberg",k:"music",s:"2027-07-23",e:"2027-07-25",r:"jährlich",x:0,d:"Festival in der Günther-Klotz-Anlage, Hauptbühne mit Karte, der Hügel bleibt frei.",en:"Festival in the Günther-Klotz park, main stage with tickets, the hill stays free."},
+{n:"Wacken Open Air",c:"Wacken",l:"Schleswig-Holstein",k:"music",s:"2027-07-29",e:"2027-07-31",r:"jährlich",x:0,d:"Metalfestival im 1.800-Einwohner-Dorf, seit Jahren im Vorverkauf ausverkauft.",en:"Metal festival in a village of 1,800 people, sold out in advance for years."},
+{n:"Zissel",c:"Kassel",l:"Hessen",k:"trad",s:"2027-07-30",e:"2027-08-02",r:"jährlich",x:0,d:"Kasseler Volks- und Wasserfest an der Fulda, mit Bootskorso und Fischerstechen.",en:"Kassel's folk and water festival on the Fulda, with boat parade and fishermen's jousting."},
+{n:"Hanse Sail",c:"Rostock",l:"Mecklenburg-Vorpommern",k:"sport",s:"2027-08-05",e:"2027-08-08",r:"jährlich",x:0,d:"Traditionsseglertreffen in Warnemünde und im Stadthafen, Mitsegeln möglich.",en:"Tall-ship gathering in Warnemünde and the city harbour, sailing along is possible."},
+{n:"Schlosslichtspiele",c:"Karlsruhe",l:"Baden-Württemberg",k:"art",s:"2027-08-05",e:"2027-09-12",r:"jährlich",x:0,d:"Projektionen auf die 170 Meter breite Schlossfassade, Eintritt frei.",en:"Projections on the 170-metre-wide palace façade, free admission."},
+{n:"Augsburger Friedensfest",c:"Augsburg",l:"Bayern",k:"art",s:"2027-08-08",e:"2027-08-08",r:"jährlich, 8. August",x:1,d:"Gesetzlicher Feiertag nur in Augsburg, mit Friedenstafel und Kulturprogramm.",en:"A public holiday only in Augsburg, with a peace banquet and cultural programme."},
+{n:"Kunstfest Weimar",c:"Weimar",l:"Thüringen",k:"art",s:"2027-08-19",e:"2027-09-05",r:"jährlich",x:0,d:"Theater, Konzerte und Diskurs an historischen Orten der Klassikerstadt.",en:"Theatre, concerts and debate at historic sites of the city of German classicism."},
+{n:"Hallesches Laternenfest",c:"Halle (Saale)",l:"Sachsen-Anhalt",k:"trad",s:"2027-08-27",e:"2027-08-29",r:"jährlich",x:0,d:"Größtes Volksfest Sachsen-Anhalts an der Saale, Höhepunkt ist der Bootskorso.",en:"Saxony-Anhalt's biggest folk festival on the Saale, the highlight is the boat parade."},
+{n:"Dürkheimer Wurstmarkt",c:"Bad Dürkheim",l:"Rheinland-Pfalz",k:"food",s:"2027-09-10",e:"2027-09-20",r:"jährlich, zwei Wochenenden",x:0,d:"Größtes Weinfest der Welt an der Weinstraße — Schubkarchstände statt Bierzelte.",en:"The world's largest wine festival on the Wine Route — wheelbarrow stands instead of beer tents."},
+{n:"Münster Marathon",c:"Münster",l:"Nordrhein-Westfalen",k:"sport",s:"2027-09-12",e:"2027-09-12",r:"jährlich",x:0,d:"Flacher Stadtmarathon durch die Altstadt und über den Promenadenring.",en:"Flat city marathon through the old town and around the promenade ring."},
+{n:"Heidelberger Herbst",c:"Heidelberg",l:"Baden-Württemberg",k:"art",s:"2027-09-25",e:"2027-09-25",r:"jährlich",x:0,d:"Altstadtfest mit Kunsthandwerkermarkt in der langen Hauptstraße.",en:"Old-town festival with a crafts market along the long Hauptstraße."},
+{n:"Weimarer Zwiebelmarkt",c:"Weimar",l:"Thüringen",k:"food",s:"2027-10-08",e:"2027-10-10",r:"jährlich, zweites Oktoberwochenende",x:0,d:"Ältestes Volksfest Thüringens — Zwiebelzöpfe und Zwiebelkuchen in der ganzen Innenstadt.",en:"Thuringia's oldest folk festival — onion braids and onion tart all over the city centre."},
 
 /* Österreich */
-{n:"Ars Electronica",c:"Linz",l:"Oberösterreich",p:"Österreich",k:"tech",s:"2026-09-09",e:"2026-09-13",r:"jährlich",x:0,d:"Festival für Kunst, Technologie und Gesellschaft, mit Klangwolke über der Donau."},
-{n:"Wiener Weinwandertag",c:"Wien",l:"Wien",p:"Österreich",k:"food",s:"2026-09-26",e:"2026-09-27",r:"jährlich",x:0,d:"Vier Wanderrouten durch die Wiener Weinbaugebiete Nussdorf, Grinzing, Stammersdorf und Mauer, mit Verkostungsständen der Heurigen entlang der Strecke."},
-{n:"Viennale",c:"Wien",l:"Wien",p:"Österreich",k:"film",s:"2026-10-22",e:"2026-11-04",r:"jährlich",x:0,d:"Österreichs größtes Filmfestival, gezeigt in den historischen Kinos der Innenstadt."},
-{n:"Christkindlmarkt Rathausplatz",c:"Wien",l:"Wien",p:"Österreich",k:"trad",s:"2026-11-13",e:"2026-12-26",r:"jährlich",x:0,d:"Der bekannteste Wiener Adventmarkt vor dem Rathaus, mit Herzerlbaum im Park."},
-{n:"Hahnenkamm-Rennen",c:"Kitzbühel",l:"Tirol",p:"Österreich",k:"sport",s:"2027-01-22",e:"2027-01-24",r:"jährlich",x:0,d:"Abfahrt auf der Streif, das gefürchtetste Rennen des alpinen Weltcups."},
-{n:"Wiener Opernball",c:"Wien",l:"Wien",p:"Österreich",k:"trad",s:"2027-02-04",e:"2027-02-04",r:"jährlich, letzter Donnerstag im Fasching",x:1,d:"Ballnacht in der Staatsoper, eröffnet vom Jungdamen- und Jungherrenkomitee."},
-{n:"Vienna City Marathon",c:"Wien",l:"Wien",p:"Österreich",k:"sport",s:"2027-04-18",e:"2027-04-18",r:"jährlich",x:0,d:"Strecke über die Ringstraße und die Donauinsel, Ziel am Burgtheater."},
-{n:"Wiener Festwochen",c:"Wien",l:"Wien",p:"Österreich",k:"art",s:"2027-05-14",e:"2027-06-20",r:"jährlich",x:0,d:"Fünf Wochen Theater, Musik und Diskurs, Eröffnung auf dem Rathausplatz bei freiem Eintritt."},
-{n:"Donauinselfest",c:"Wien",l:"Wien",p:"Österreich",k:"music",s:"2027-06-25",e:"2027-06-27",r:"jährlich",x:0,d:"Größtes Open-Air-Festival Europas mit freiem Eintritt, Bühnen entlang der Insel."},
-{n:"Salzburger Festspiele",c:"Salzburg",l:"Salzburg",p:"Österreich",k:"music",s:"2027-07-16",e:"2027-08-30",r:"jährlich",x:0,d:"Oper, Konzert und Schauspiel, zum Auftakt der Jedermann auf dem Domplatz."},
-{n:"Bregenzer Festspiele",c:"Bregenz",l:"Vorarlberg",p:"Österreich",k:"music",s:"2027-07-21",e:"2027-08-22",r:"jährlich",x:0,d:"Oper auf der Seebühne im Bodensee, jedes Bühnenbild läuft zwei Sommer lang."},
-{n:"FM4 Frequency Festival",c:"St. Pölten",l:"Niederösterreich",p:"Österreich",k:"music",s:"2027-08-19",e:"2027-08-21",r:"jährlich",x:0,d:"Rock- und Popfestival am Traisen-Gelände, Österreichs größtes seiner Art."},
+{n:"Ars Electronica",c:"Linz",l:"Oberösterreich",p:"Österreich",k:"tech",s:"2026-09-09",e:"2026-09-13",r:"jährlich",x:0,d:"Festival für Kunst, Technologie und Gesellschaft, mit Klangwolke über der Donau.",en:"Festival for art, technology and society, with the Klangwolke sound cloud over the Danube."},
+{n:"Wiener Weinwandertag",c:"Wien",l:"Wien",p:"Österreich",k:"food",s:"2026-09-26",e:"2026-09-27",r:"jährlich",x:0,d:"Vier Wanderrouten durch die Wiener Weinbaugebiete Nussdorf, Grinzing, Stammersdorf und Mauer, mit Verkostungsständen der Heurigen entlang der Strecke.",en:"Four hiking routes through Vienna's wine districts Nussdorf, Grinzing, Stammersdorf and Mauer, with tasting stands of the Heurigen along the way."},
+{n:"Viennale",c:"Wien",l:"Wien",p:"Österreich",k:"film",s:"2026-10-22",e:"2026-11-04",r:"jährlich",x:0,d:"Österreichs größtes Filmfestival, gezeigt in den historischen Kinos der Innenstadt.",en:"Austria's largest film festival, shown in the historic cinemas of the city centre."},
+{n:"Christkindlmarkt Rathausplatz",c:"Wien",l:"Wien",p:"Österreich",k:"trad",s:"2026-11-13",e:"2026-12-26",r:"jährlich",x:0,d:"Der bekannteste Wiener Adventmarkt vor dem Rathaus, mit Herzerlbaum im Park.",en:"Vienna's best-known Advent market in front of the City Hall, with a tree of hearts in the park."},
+{n:"Hahnenkamm-Rennen",c:"Kitzbühel",l:"Tirol",p:"Österreich",k:"sport",s:"2027-01-22",e:"2027-01-24",r:"jährlich",x:0,d:"Abfahrt auf der Streif, das gefürchtetste Rennen des alpinen Weltcups.",en:"Downhill on the Streif, the most feared race of the Alpine World Cup."},
+{n:"Wiener Opernball",c:"Wien",l:"Wien",p:"Österreich",k:"trad",s:"2027-02-04",e:"2027-02-04",r:"jährlich, letzter Donnerstag im Fasching",x:1,d:"Ballnacht in der Staatsoper, eröffnet vom Jungdamen- und Jungherrenkomitee.",en:"Ball night in the State Opera, opened by the debutante committee."},
+{n:"Vienna City Marathon",c:"Wien",l:"Wien",p:"Österreich",k:"sport",s:"2027-04-18",e:"2027-04-18",r:"jährlich",x:0,d:"Strecke über die Ringstraße und die Donauinsel, Ziel am Burgtheater.",en:"Course along the Ringstraße and the Danube Island, finishing at the Burgtheater."},
+{n:"Wiener Festwochen",c:"Wien",l:"Wien",p:"Österreich",k:"art",s:"2027-05-14",e:"2027-06-20",r:"jährlich",x:0,d:"Fünf Wochen Theater, Musik und Diskurs, Eröffnung auf dem Rathausplatz bei freiem Eintritt.",en:"Five weeks of theatre, music and debate, opening on Rathausplatz with free entry."},
+{n:"Donauinselfest",c:"Wien",l:"Wien",p:"Österreich",k:"music",s:"2027-06-25",e:"2027-06-27",r:"jährlich",x:0,d:"Größtes Open-Air-Festival Europas mit freiem Eintritt, Bühnen entlang der Insel.",en:"Europe's largest open-air festival with free entry, stages along the island."},
+{n:"Salzburger Festspiele",c:"Salzburg",l:"Salzburg",p:"Österreich",k:"music",s:"2027-07-16",e:"2027-08-30",r:"jährlich",x:0,d:"Oper, Konzert und Schauspiel, zum Auftakt der Jedermann auf dem Domplatz.",en:"Opera, concerts and drama, opening with Jedermann on the Cathedral Square."},
+{n:"Bregenzer Festspiele",c:"Bregenz",l:"Vorarlberg",p:"Österreich",k:"music",s:"2027-07-21",e:"2027-08-22",r:"jährlich",x:0,d:"Oper auf der Seebühne im Bodensee, jedes Bühnenbild läuft zwei Sommer lang.",en:"Opera on the lake stage in Lake Constance, each set runs for two summers."},
+{n:"FM4 Frequency Festival",c:"St. Pölten",l:"Niederösterreich",p:"Österreich",k:"music",s:"2027-08-19",e:"2027-08-21",r:"jährlich",x:0,d:"Rock- und Popfestival am Traisen-Gelände, Österreichs größtes seiner Art.",en:"Rock and pop festival on the Traisen grounds, Austria's largest of its kind."},
 
 /* Schweiz */
-{n:"Zurich Film Festival",c:"Zürich",l:"Zürich",p:"Schweiz",k:"film",s:"2026-09-24",e:"2026-10-04",r:"jährlich",x:0,d:"Grüner Teppich am Sechseläutenplatz, Wettbewerb für erste und zweite Spielfilme."},
-{n:"Basler Herbstmesse",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"trad",s:"2026-10-24",e:"2026-11-08",r:"jährlich",x:0,d:"Ältester Jahrmarkt der Schweiz, seit 1471, verteilt auf sieben Plätze der Stadt."},
-{n:"Zibelemärit",c:"Bern",l:"Bern",p:"Schweiz",k:"food",s:"2026-11-23",e:"2026-11-23",r:"jährlich, vierter Montag im November",x:1,d:"Berns traditioneller Zwiebelmarkt seit dem Mittelalter, Stände mit Zwiebelzöpfen und -kränzen auf dem Bundesplatz, abends Konfettischlacht in der Altstadt."},
-{n:"Fête de l'Escalade",c:"Genf",l:"Genf",p:"Schweiz",k:"trad",s:"2026-12-11",e:"2026-12-13",r:"jährlich, Wochenende um den 12. Dezember",x:1,d:"Erinnerung an die abgewehrte Belagerung von 1602, mit Fackelzug und Topf aus Schokolade."},
-{n:"Basler Fasnacht",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"trad",s:"2027-02-15",e:"2027-02-17",r:"jährlich, Montag nach Aschermittwoch",x:1,d:"Beginnt mit dem Morgestraich um vier Uhr früh, wenn die Stadt das Licht löscht."},
-{n:"Sechseläuten",c:"Zürich",l:"Zürich",p:"Schweiz",k:"trad",s:"2027-04-19",e:"2027-04-19",r:"jährlich, dritter Montag im April",x:1,d:"Die Zünfte ziehen durch die Stadt, danach brennt der Böögg — seine Kopfzeit gilt als Sommerprognose."},
-{n:"Art Basel",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"art",s:"2027-06-17",e:"2027-06-20",r:"jährlich",x:0,d:"Wichtigste Messe für moderne und zeitgenössische Kunst, mit eigener Halle für Großformate."},
-{n:"Montreux Jazz Festival",c:"Montreux",l:"Waadt",p:"Schweiz",k:"music",s:"2027-07-02",e:"2027-07-17",r:"jährlich",x:0,d:"Konzerte am Genfersee, längst weit über den Jazz hinaus programmiert."},
-{n:"Locarno Film Festival",c:"Locarno",l:"Tessin",p:"Schweiz",k:"film",s:"2027-08-04",e:"2027-08-14",r:"jährlich",x:0,d:"Abendvorstellungen auf der Piazza Grande vor achttausend Zuschauern."},
-{n:"Street Parade",c:"Zürich",l:"Zürich",p:"Schweiz",k:"music",s:"2027-08-14",e:"2027-08-14",r:"jährlich",x:0,d:"Technoparade rund um das Seebecken, eine der größten der Welt."},
+{n:"Zurich Film Festival",c:"Zürich",l:"Zürich",p:"Schweiz",k:"film",s:"2026-09-24",e:"2026-10-04",r:"jährlich",x:0,d:"Grüner Teppich am Sechseläutenplatz, Wettbewerb für erste und zweite Spielfilme.",en:"Green carpet on Sechseläutenplatz, competition for first and second feature films."},
+{n:"Basler Herbstmesse",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"trad",s:"2026-10-24",e:"2026-11-08",r:"jährlich",x:0,d:"Ältester Jahrmarkt der Schweiz, seit 1471, verteilt auf sieben Plätze der Stadt.",en:"Switzerland's oldest fair, since 1471, spread across seven squares of the city."},
+{n:"Zibelemärit",c:"Bern",l:"Bern",p:"Schweiz",k:"food",s:"2026-11-23",e:"2026-11-23",r:"jährlich, vierter Montag im November",x:1,d:"Berns traditioneller Zwiebelmarkt seit dem Mittelalter, Stände mit Zwiebelzöpfen und -kränzen auf dem Bundesplatz, abends Konfettischlacht in der Altstadt.",en:"Bern's traditional onion market since the Middle Ages, with onion braids and wreaths on Bundesplatz and a confetti battle in the old town in the evening."},
+{n:"Fête de l'Escalade",c:"Genf",l:"Genf",p:"Schweiz",k:"trad",s:"2026-12-11",e:"2026-12-13",r:"jährlich, Wochenende um den 12. Dezember",x:1,d:"Erinnerung an die abgewehrte Belagerung von 1602, mit Fackelzug und Topf aus Schokolade.",en:"Commemorates the repelled siege of 1602, with a torchlight procession and a chocolate cauldron."},
+{n:"Basler Fasnacht",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"trad",s:"2027-02-15",e:"2027-02-17",r:"jährlich, Montag nach Aschermittwoch",x:1,d:"Beginnt mit dem Morgestraich um vier Uhr früh, wenn die Stadt das Licht löscht.",en:"Begins with the Morgestraich at four in the morning, when the city switches off its lights."},
+{n:"Sechseläuten",c:"Zürich",l:"Zürich",p:"Schweiz",k:"trad",s:"2027-04-19",e:"2027-04-19",r:"jährlich, dritter Montag im April",x:1,d:"Die Zünfte ziehen durch die Stadt, danach brennt der Böögg — seine Kopfzeit gilt als Sommerprognose.",en:"The guilds parade through the city, then the Böögg burns — the time until its head explodes is the summer forecast."},
+{n:"Art Basel",c:"Basel",l:"Basel-Stadt",p:"Schweiz",k:"art",s:"2027-06-17",e:"2027-06-20",r:"jährlich",x:0,d:"Wichtigste Messe für moderne und zeitgenössische Kunst, mit eigener Halle für Großformate.",en:"The most important fair for modern and contemporary art, with its own hall for large-scale works."},
+{n:"Montreux Jazz Festival",c:"Montreux",l:"Waadt",p:"Schweiz",k:"music",s:"2027-07-02",e:"2027-07-17",r:"jährlich",x:0,d:"Konzerte am Genfersee, längst weit über den Jazz hinaus programmiert.",en:"Concerts on Lake Geneva, programmed far beyond jazz for years."},
+{n:"Locarno Film Festival",c:"Locarno",l:"Tessin",p:"Schweiz",k:"film",s:"2027-08-04",e:"2027-08-14",r:"jährlich",x:0,d:"Abendvorstellungen auf der Piazza Grande vor achttausend Zuschauern.",en:"Evening screenings on the Piazza Grande in front of eight thousand spectators."},
+{n:"Street Parade",c:"Zürich",l:"Zürich",p:"Schweiz",k:"music",s:"2027-08-14",e:"2027-08-14",r:"jährlich",x:0,d:"Technoparade rund um das Seebecken, eine der größten der Welt.",en:"Techno parade around the lake basin, one of the largest in the world."},
 
 /* Frankreich */
-{n:"Braderie de Lille",c:"Lille",l:"Hauts-de-France",p:"Frankreich",k:"trad",s:"2027-09-04",e:"2027-09-05",r:"jährlich, erstes Septemberwochenende",x:1,d:"Größter Flohmarkt Europas — die gesamte Innenstadt wird zum Trödelmarkt, dazu die traditionellen Muscheln mit Pommes die ganze Nacht."},
-{n:"Salon du Chocolat",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"food",s:"2026-10-28",e:"2026-11-01",r:"jährlich",x:0,d:"Weltgrößte Schokoladenmesse, zum Auftakt eine Modenschau aus Kakao."},
-{n:"Fête des Lumières",c:"Lyon",l:"Auvergne-Rhône-Alpes",p:"Frankreich",k:"art",s:"2026-12-05",e:"2026-12-08",r:"jährlich, um den 8. Dezember",x:1,d:"Lichtinstallationen in der ganzen Stadt, dazu Kerzen in den Fenstern der Anwohner."},
-{n:"Sirha und Bocuse d'Or",c:"Lyon",l:"Auvergne-Rhône-Alpes",p:"Frankreich",k:"food",s:"2027-01-22",e:"2027-01-26",r:"alle 2 Jahre, ungerade Jahre",x:0,d:"Fachmesse der Gastronomie mit dem wichtigsten Kochwettbewerb der Welt."},
-{n:"Carnaval de Nice",c:"Nizza",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"trad",s:"2027-02-05",e:"2027-02-21",r:"jährlich",x:0,d:"Wagenkorso und Blumenschlacht an der Promenade des Anglais."},
-{n:"Festival de Cannes",c:"Cannes",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"film",s:"2027-05-11",e:"2027-05-22",r:"jährlich",x:0,d:"Wettbewerb um die Goldene Palme, Vorführungen im Palais des Festivals."},
-{n:"Nuit Blanche",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"art",s:"2027-06-05",e:"2027-06-05",r:"jährlich",x:0,d:"Eine Nacht lang Kunst im öffentlichen Raum, Museen und Metro bleiben geöffnet."},
-{n:"24 Stunden von Le Mans",c:"Le Mans",l:"Pays de la Loire",p:"Frankreich",k:"sport",s:"2027-06-12",e:"2027-06-13",r:"jährlich",x:0,d:"Langstreckenklassiker auf dem Circuit de la Sarthe, Start am Samstagnachmittag."},
-{n:"VivaTech",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"tech",s:"2027-06-16",e:"2027-06-19",r:"jährlich",x:0,d:"Europas größte Technologiemesse für Start-ups, in der Porte de Versailles."},
-{n:"Fête de la Musique",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"music",s:"2027-06-21",e:"2027-06-21",r:"jährlich, 21. Juni",x:1,d:"Zur Sommersonnenwende spielt, wer will, überall in der Stadt — kostenlos."},
-{n:"Tour de France",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"sport",s:"2027-07-03",e:"2027-07-25",r:"jährlich",x:0,d:"Drei Wochen Rundfahrt mit wechselnder Route, Zielankunft traditionell in Paris."},
-{n:"Festival d'Avignon",c:"Avignon",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"art",s:"2027-07-06",e:"2027-07-26",r:"jährlich",x:0,d:"Theaterfestival im Papstpalast, dazu das freie Off-Programm in der ganzen Stadt."},
+{n:"Braderie de Lille",c:"Lille",l:"Hauts-de-France",p:"Frankreich",k:"trad",s:"2027-09-04",e:"2027-09-05",r:"jährlich, erstes Septemberwochenende",x:1,d:"Größter Flohmarkt Europas — die gesamte Innenstadt wird zum Trödelmarkt, dazu die traditionellen Muscheln mit Pommes die ganze Nacht.",en:"Europe's largest flea market — the whole city centre becomes a bric-a-brac market, with traditional mussels and fries all night."},
+{n:"Salon du Chocolat",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"food",s:"2026-10-28",e:"2026-11-01",r:"jährlich",x:0,d:"Weltgrößte Schokoladenmesse, zum Auftakt eine Modenschau aus Kakao.",en:"The world's largest chocolate fair, opening with a fashion show made of cocoa."},
+{n:"Fête des Lumières",c:"Lyon",l:"Auvergne-Rhône-Alpes",p:"Frankreich",k:"art",s:"2026-12-05",e:"2026-12-08",r:"jährlich, um den 8. Dezember",x:1,d:"Lichtinstallationen in der ganzen Stadt, dazu Kerzen in den Fenstern der Anwohner.",en:"Light installations all over the city, with candles in the residents' windows."},
+{n:"Sirha und Bocuse d'Or",c:"Lyon",l:"Auvergne-Rhône-Alpes",p:"Frankreich",k:"food",s:"2027-01-22",e:"2027-01-26",r:"alle 2 Jahre, ungerade Jahre",x:0,d:"Fachmesse der Gastronomie mit dem wichtigsten Kochwettbewerb der Welt.",en:"Catering trade fair with the world's most important cooking competition."},
+{n:"Carnaval de Nice",c:"Nizza",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"trad",s:"2027-02-05",e:"2027-02-21",r:"jährlich",x:0,d:"Wagenkorso und Blumenschlacht an der Promenade des Anglais.",en:"Float parade and battle of flowers on the Promenade des Anglais."},
+{n:"Festival de Cannes",c:"Cannes",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"film",s:"2027-05-11",e:"2027-05-22",r:"jährlich",x:0,d:"Wettbewerb um die Goldene Palme, Vorführungen im Palais des Festivals.",en:"Competition for the Palme d'Or, screenings in the Palais des Festivals."},
+{n:"Nuit Blanche",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"art",s:"2027-06-05",e:"2027-06-05",r:"jährlich",x:0,d:"Eine Nacht lang Kunst im öffentlichen Raum, Museen und Metro bleiben geöffnet.",en:"One night of art in public space, museums and the metro stay open."},
+{n:"24 Stunden von Le Mans",c:"Le Mans",l:"Pays de la Loire",p:"Frankreich",k:"sport",s:"2027-06-12",e:"2027-06-13",r:"jährlich",x:0,d:"Langstreckenklassiker auf dem Circuit de la Sarthe, Start am Samstagnachmittag.",en:"Endurance classic on the Circuit de la Sarthe, starting on Saturday afternoon."},
+{n:"VivaTech",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"tech",s:"2027-06-16",e:"2027-06-19",r:"jährlich",x:0,d:"Europas größte Technologiemesse für Start-ups, in der Porte de Versailles.",en:"Europe's largest tech fair for start-ups, at Porte de Versailles."},
+{n:"Fête de la Musique",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"music",s:"2027-06-21",e:"2027-06-21",r:"jährlich, 21. Juni",x:1,d:"Zur Sommersonnenwende spielt, wer will, überall in der Stadt — kostenlos.",en:"On the summer solstice anyone can play anywhere in the city — for free."},
+{n:"Tour de France",c:"Paris",l:"Île-de-France",p:"Frankreich",k:"sport",s:"2027-07-03",e:"2027-07-25",r:"jährlich",x:0,d:"Drei Wochen Rundfahrt mit wechselnder Route, Zielankunft traditionell in Paris.",en:"Three-week stage race with a changing route, traditionally finishing in Paris."},
+{n:"Festival d'Avignon",c:"Avignon",l:"Provence-Alpes-Côte d'Azur",p:"Frankreich",k:"art",s:"2027-07-06",e:"2027-07-26",r:"jährlich",x:0,d:"Theaterfestival im Papstpalast, dazu das freie Off-Programm in der ganzen Stadt.",en:"Theatre festival in the Papal Palace, plus the independent Off programme all over the city."},
 
 /* Spanien */
-{n:"Fiestas de la Vendimia",c:"Jerez de la Frontera",l:"Andalusien",p:"Spanien",k:"food",s:"2026-08-29",e:"2026-09-13",r:"jährlich",x:0,d:"Sherry-Erntefest mit traditioneller Traubenpressung vor der Kathedrale, dazu Flamenco, Umzüge und Verkostungen in den Bodegas."},
-{n:"Mobile World Congress",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"tech",s:"2027-03-01",e:"2027-03-04",r:"jährlich",x:0,d:"Weltgrößte Messe der Mobilfunkbranche, in der Fira Gran Via."},
-{n:"Fallas",c:"Valencia",l:"Valencia",p:"Spanien",k:"trad",s:"2027-03-15",e:"2027-03-19",r:"jährlich, bis 19. März",x:1,d:"Riesige Figuren aus Pappmaché in den Straßen, am letzten Abend werden sie verbrannt."},
-{n:"Semana Santa",c:"Sevilla",l:"Andalusien",p:"Spanien",k:"trad",s:"2027-03-21",e:"2027-03-28",r:"jährlich, Karwoche",x:1,d:"Prozessionen der Bruderschaften Tag und Nacht durch die Altstadt."},
-{n:"Feria de Abril",c:"Sevilla",l:"Andalusien",p:"Spanien",k:"trad",s:"2027-04-11",e:"2027-04-17",r:"jährlich",x:0,d:"Festzelte, Sevillanas und Reiterkorso auf dem Gelände von Los Remedios."},
-{n:"Primavera Sound",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"music",s:"2027-06-03",e:"2027-06-05",r:"jährlich",x:0,d:"Indie- und Elektrofestival im Parc del Fòrum, direkt am Meer."},
-{n:"Nit de Sant Joan",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"trad",s:"2027-06-23",e:"2027-06-24",r:"jährlich, 23. Juni",x:1,d:"Johannisnacht mit Feuerwerk und Feuern an den Stadtstränden."},
-{n:"San Fermín",c:"Pamplona",l:"Navarra",p:"Spanien",k:"trad",s:"2027-07-06",e:"2027-07-14",r:"jährlich, 6. bis 14. Juli",x:1,d:"Stierlauf jeden Morgen um acht, Auftakt mit dem Chupinazo am Rathaus."},
-{n:"La Tomatina",c:"Buñol",l:"Valencia",p:"Spanien",k:"trad",s:"2027-08-25",e:"2027-08-25",r:"jährlich, letzter Mittwoch im August",x:1,d:"Eine Stunde Tomatenschlacht, danach spritzt die Feuerwehr die Gassen sauber."},
-{n:"Festival de San Sebastián",c:"San Sebastián",l:"Baskenland",p:"Spanien",k:"film",s:"2027-09-17",e:"2027-09-25",r:"jährlich",x:0,d:"Ältestes A-Festival Spaniens, Hauptpreis ist die Goldene Muschel."},
-{n:"La Mercè",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"trad",s:"2027-09-23",e:"2027-09-26",r:"jährlich, um den 24. September",x:1,d:"Stadtfest für die Schutzpatronin, mit Menschentürmen und Feuerlauf."},
+{n:"Fiestas de la Vendimia",c:"Jerez de la Frontera",l:"Andalusien",p:"Spanien",k:"food",s:"2026-08-29",e:"2026-09-13",r:"jährlich",x:0,d:"Sherry-Erntefest mit traditioneller Traubenpressung vor der Kathedrale, dazu Flamenco, Umzüge und Verkostungen in den Bodegas.",en:"Sherry harvest festival with traditional grape pressing in front of the cathedral, plus flamenco, parades and tastings in the bodegas."},
+{n:"Mobile World Congress",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"tech",s:"2027-03-01",e:"2027-03-04",r:"jährlich",x:0,d:"Weltgrößte Messe der Mobilfunkbranche, in der Fira Gran Via.",en:"The world's largest mobile-industry fair, at Fira Gran Via."},
+{n:"Fallas",c:"Valencia",l:"Valencia",p:"Spanien",k:"trad",s:"2027-03-15",e:"2027-03-19",r:"jährlich, bis 19. März",x:1,d:"Riesige Figuren aus Pappmaché in den Straßen, am letzten Abend werden sie verbrannt.",en:"Giant papier-mâché figures in the streets, burned on the last night."},
+{n:"Semana Santa",c:"Sevilla",l:"Andalusien",p:"Spanien",k:"trad",s:"2027-03-21",e:"2027-03-28",r:"jährlich, Karwoche",x:1,d:"Prozessionen der Bruderschaften Tag und Nacht durch die Altstadt.",en:"Brotherhood processions day and night through the old town."},
+{n:"Feria de Abril",c:"Sevilla",l:"Andalusien",p:"Spanien",k:"trad",s:"2027-04-11",e:"2027-04-17",r:"jährlich",x:0,d:"Festzelte, Sevillanas und Reiterkorso auf dem Gelände von Los Remedios.",en:"Marquees, sevillanas and a riders' parade on the Los Remedios fairground."},
+{n:"Primavera Sound",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"music",s:"2027-06-03",e:"2027-06-05",r:"jährlich",x:0,d:"Indie- und Elektrofestival im Parc del Fòrum, direkt am Meer.",en:"Indie and electronic festival in Parc del Fòrum, right by the sea."},
+{n:"Nit de Sant Joan",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"trad",s:"2027-06-23",e:"2027-06-24",r:"jährlich, 23. Juni",x:1,d:"Johannisnacht mit Feuerwerk und Feuern an den Stadtstränden.",en:"Midsummer night with fireworks and bonfires on the city beaches."},
+{n:"San Fermín",c:"Pamplona",l:"Navarra",p:"Spanien",k:"trad",s:"2027-07-06",e:"2027-07-14",r:"jährlich, 6. bis 14. Juli",x:1,d:"Stierlauf jeden Morgen um acht, Auftakt mit dem Chupinazo am Rathaus.",en:"Bull run every morning at eight, opening with the Chupinazo at the town hall."},
+{n:"La Tomatina",c:"Buñol",l:"Valencia",p:"Spanien",k:"trad",s:"2027-08-25",e:"2027-08-25",r:"jährlich, letzter Mittwoch im August",x:1,d:"Eine Stunde Tomatenschlacht, danach spritzt die Feuerwehr die Gassen sauber.",en:"One hour of tomato battle, then the fire brigade hoses the streets clean."},
+{n:"Festival de San Sebastián",c:"San Sebastián",l:"Baskenland",p:"Spanien",k:"film",s:"2027-09-17",e:"2027-09-25",r:"jährlich",x:0,d:"Ältestes A-Festival Spaniens, Hauptpreis ist die Goldene Muschel.",en:"Spain's oldest A-list festival, the main prize is the Golden Shell."},
+{n:"La Mercè",c:"Barcelona",l:"Katalonien",p:"Spanien",k:"trad",s:"2027-09-23",e:"2027-09-26",r:"jährlich, um den 24. September",x:1,d:"Stadtfest für die Schutzpatronin, mit Menschentürmen und Feuerlauf.",en:"City festival for the patron saint, with human towers and fire runs."},
 
 /* Italien */
-{n:"Biennale Arte",c:"Venedig",l:"Venetien",p:"Italien",k:"art",s:"2026-05-09",e:"2026-11-22",r:"alle 2 Jahre, gerade Jahre",x:0,d:"Länderpavillons in den Giardini und Ausstellung im Arsenale, ein halbes Jahr geöffnet."},
-{n:"Mostra del Cinema",c:"Venedig",l:"Venetien",p:"Italien",k:"film",s:"2026-09-02",e:"2026-09-12",r:"jährlich",x:0,d:"Ältestes Filmfestival der Welt, am Lido, Hauptpreis ist der Goldene Löwe."},
-{n:"Fiera del Tartufo",c:"Alba",l:"Piemont",p:"Italien",k:"food",s:"2026-10-10",e:"2026-12-06",r:"jährlich, an den Wochenenden",x:0,d:"Weiße Trüffel aus dem Piemont, verkauft und begutachtet in der Markthalle."},
-{n:"Carnevale di Venezia",c:"Venedig",l:"Venetien",p:"Italien",k:"trad",s:"2027-01-30",e:"2027-02-16",r:"jährlich, bis Faschingsdienstag",x:1,d:"Maskenbälle und Kostümkorso, Höhepunkt ist der Flug des Engels über den Markusplatz."},
-{n:"Salone del Mobile",c:"Mailand",l:"Lombardei",p:"Italien",k:"art",s:"2027-04-13",e:"2027-04-18",r:"jährlich",x:0,d:"Möbelmesse plus Fuorisalone — in dieser Woche stellt die ganze Stadt aus."},
-{n:"Giro d'Italia",c:"Mailand",l:"Lombardei",p:"Italien",k:"sport",s:"2027-05-08",e:"2027-05-30",r:"jährlich",x:0,d:"Dreiwöchige Rundfahrt um das Rosa Trikot, die Route wechselt jedes Jahr."},
-{n:"Palio di Siena",c:"Siena",l:"Toskana",p:"Italien",k:"trad",s:"2027-07-02",e:"2027-07-02",r:"zweimal jährlich, 2. Juli und 16. August",x:1,d:"Drei Runden ohne Sattel über die Piazza del Campo, geritten für die Stadtviertel."},
-{n:"Umbria Jazz",c:"Perugia",l:"Umbrien",p:"Italien",k:"music",s:"2027-07-09",e:"2027-07-18",r:"jährlich",x:0,d:"Konzerte in der Altstadt, die großen Namen in der Arena Santa Giuliana."},
-{n:"Vinitaly",c:"Verona",l:"Venetien",p:"Italien",k:"food",s:"2027-04-11",e:"2027-04-14",r:"jährlich",x:0,d:"Weltgrößte Fachmesse für Wein und Spirituosen, mit Verkostungen italienischer Weingüter auf dem Messegelände Veronafiere."},
+{n:"Biennale Arte",c:"Venedig",l:"Venetien",p:"Italien",k:"art",s:"2026-05-09",e:"2026-11-22",r:"alle 2 Jahre, gerade Jahre",x:0,d:"Länderpavillons in den Giardini und Ausstellung im Arsenale, ein halbes Jahr geöffnet.",en:"National pavilions in the Giardini and an exhibition in the Arsenale, open for half a year."},
+{n:"Mostra del Cinema",c:"Venedig",l:"Venetien",p:"Italien",k:"film",s:"2026-09-02",e:"2026-09-12",r:"jährlich",x:0,d:"Ältestes Filmfestival der Welt, am Lido, Hauptpreis ist der Goldene Löwe.",en:"The world's oldest film festival, on the Lido, the main prize is the Golden Lion."},
+{n:"Fiera del Tartufo",c:"Alba",l:"Piemont",p:"Italien",k:"food",s:"2026-10-10",e:"2026-12-06",r:"jährlich, an den Wochenenden",x:0,d:"Weiße Trüffel aus dem Piemont, verkauft und begutachtet in der Markthalle.",en:"White truffles from Piedmont, sold and inspected in the market hall."},
+{n:"Carnevale di Venezia",c:"Venedig",l:"Venetien",p:"Italien",k:"trad",s:"2027-01-30",e:"2027-02-16",r:"jährlich, bis Faschingsdienstag",x:1,d:"Maskenbälle und Kostümkorso, Höhepunkt ist der Flug des Engels über den Markusplatz.",en:"Masked balls and costume parades, the highlight is the Flight of the Angel over St Mark's Square."},
+{n:"Salone del Mobile",c:"Mailand",l:"Lombardei",p:"Italien",k:"art",s:"2027-04-13",e:"2027-04-18",r:"jährlich",x:0,d:"Möbelmesse plus Fuorisalone — in dieser Woche stellt die ganze Stadt aus.",en:"Furniture fair plus Fuorisalone — this week the whole city exhibits."},
+{n:"Giro d'Italia",c:"Mailand",l:"Lombardei",p:"Italien",k:"sport",s:"2027-05-08",e:"2027-05-30",r:"jährlich",x:0,d:"Dreiwöchige Rundfahrt um das Rosa Trikot, die Route wechselt jedes Jahr.",en:"Three-week stage race for the pink jersey, the route changes every year."},
+{n:"Palio di Siena",c:"Siena",l:"Toskana",p:"Italien",k:"trad",s:"2027-07-02",e:"2027-07-02",r:"zweimal jährlich, 2. Juli und 16. August",x:1,d:"Drei Runden ohne Sattel über die Piazza del Campo, geritten für die Stadtviertel.",en:"Three bareback laps around the Piazza del Campo, ridden for the city districts."},
+{n:"Umbria Jazz",c:"Perugia",l:"Umbrien",p:"Italien",k:"music",s:"2027-07-09",e:"2027-07-18",r:"jährlich",x:0,d:"Konzerte in der Altstadt, die großen Namen in der Arena Santa Giuliana.",en:"Concerts in the old town, the big names in the Arena Santa Giuliana."},
+{n:"Vinitaly",c:"Verona",l:"Venetien",p:"Italien",k:"food",s:"2027-04-11",e:"2027-04-14",r:"jährlich",x:0,d:"Weltgrößte Fachmesse für Wein und Spirituosen, mit Verkostungen italienischer Weingüter auf dem Messegelände Veronafiere.",en:"The world's largest trade fair for wine and spirits, with tastings of Italian wineries at Veronafiere."},
 
 /* Niederlande und Belgien */
-{n:"IJhallen",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"trad",s:"2026-09-19",e:"2026-09-20",r:"mehrmals jährlich",x:0,d:"Einer der größten Flohmärkte Europas in den ehemaligen NDSM-Werfthallen, mit hunderten Ständen."},
-{n:"Amsterdam Dance Event",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"music",s:"2026-10-14",e:"2026-10-18",r:"jährlich",x:0,d:"Größtes Clubfestival für elektronische Musik, tagsüber Fachkonferenz."},
-{n:"IDFA",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"film",s:"2026-11-12",e:"2026-11-22",r:"jährlich",x:0,d:"Weltgrößtes Festival für Dokumentarfilm, Zentrum ist das Tuschinski-Kino."},
-{n:"Eurosonic Noorderslag",c:"Groningen",l:"Groningen",p:"Niederlande",k:"music",s:"2027-01-13",e:"2027-01-16",r:"jährlich",x:0,d:"Showcase-Festival für europäische Newcomer, Sprungbrett in die Festivalsaison."},
-{n:"Keukenhof",c:"Lisse",l:"Südholland",p:"Niederlande",k:"art",s:"2027-03-18",e:"2027-05-16",r:"jährlich",x:0,d:"Sieben Millionen Blumenzwiebeln im Park, nur acht Wochen im Frühjahr geöffnet."},
-{n:"Koningsdag",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"trad",s:"2027-04-27",e:"2027-04-27",r:"jährlich, 27. April",x:1,d:"Das ganze Land in Orange, Flohmarkt auf der Straße und Boote auf den Grachten."},
-{n:"TNW Conference",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"tech",s:"2027-06-17",e:"2027-06-18",r:"jährlich",x:0,d:"Technologiekonferenz auf dem NDSM-Werftgelände mit Schwerpunkt auf Start-ups und Produktentwicklung."},
-{n:"Nijmeegse Vierdaagse",c:"Nijmegen",l:"Gelderland",p:"Niederlande",k:"sport",s:"2027-07-20",e:"2027-07-23",r:"jährlich",x:0,d:"Vier Tage Marschieren über 30 bis 50 Kilometer täglich, mit Zehntausenden Teilnehmenden."},
-{n:"Foire de Libramont",c:"Libramont",l:"Luxemburg",p:"Belgien",k:"food",s:"2027-07-23",e:"2027-07-26",r:"jährlich, letztes Juliwochenende",x:0,d:"Belgiens größte Landwirtschaftsmesse, mit Tierschauen, Maschinenvorführungen und Ständen regionaler Erzeuger auf dem Messegelände in den Ardennen."},
-{n:"FOSDEM",c:"Brüssel",l:"Brüssel",p:"Belgien",k:"tech",s:"2027-01-30",e:"2027-01-31",r:"jährlich, erstes Februarwochenende",x:0,d:"Treffen der Open-Source-Entwicklung an der ULB, ohne Eintritt und ohne Anmeldung."},
-{n:"Karneval von Binche",c:"Binche",l:"Hennegau",p:"Belgien",k:"trad",s:"2027-02-07",e:"2027-02-09",r:"jährlich, an Ostern gekoppelt",x:1,d:"Die Gilles werfen am Faschingsdienstag Orangen in die Menge, UNESCO-Erbe."},
-{n:"Ommegang",c:"Brüssel",l:"Brüssel",p:"Belgien",k:"art",s:"2027-06-30",e:"2027-07-02",r:"jährlich",x:0,d:"Historischer Festzug auf dem Grote Markt, nachgestellt nach einem Einzug von 1549."},
-{n:"Gentse Feesten",c:"Gent",l:"Ostflandern",p:"Belgien",k:"trad",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Zehn Tage Stadtfest mit Straßentheater und Konzerten, weitgehend kostenlos."},
-{n:"Tomorrowland",c:"Boom",l:"Antwerpen",p:"Belgien",k:"music",s:"2027-07-16",e:"2027-07-18",r:"jährlich, an zwei Wochenenden",x:0,d:"Elektrofestival im Park De Schorre, aufwendigste Bühnenbilder der Branche."},
+{n:"IJhallen",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"trad",s:"2026-09-19",e:"2026-09-20",r:"mehrmals jährlich",x:0,d:"Einer der größten Flohmärkte Europas in den ehemaligen NDSM-Werfthallen, mit hunderten Ständen.",en:"One of Europe's largest flea markets in the former NDSM shipyard halls, with hundreds of stalls."},
+{n:"Amsterdam Dance Event",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"music",s:"2026-10-14",e:"2026-10-18",r:"jährlich",x:0,d:"Größtes Clubfestival für elektronische Musik, tagsüber Fachkonferenz.",en:"The largest club festival for electronic music, with a trade conference by day."},
+{n:"IDFA",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"film",s:"2026-11-12",e:"2026-11-22",r:"jährlich",x:0,d:"Weltgrößtes Festival für Dokumentarfilm, Zentrum ist das Tuschinski-Kino.",en:"The world's largest documentary festival, centred on the Tuschinski cinema."},
+{n:"Eurosonic Noorderslag",c:"Groningen",l:"Groningen",p:"Niederlande",k:"music",s:"2027-01-13",e:"2027-01-16",r:"jährlich",x:0,d:"Showcase-Festival für europäische Newcomer, Sprungbrett in die Festivalsaison.",en:"Showcase festival for European newcomers, a springboard into the festival season."},
+{n:"Keukenhof",c:"Lisse",l:"Südholland",p:"Niederlande",k:"art",s:"2027-03-18",e:"2027-05-16",r:"jährlich",x:0,d:"Sieben Millionen Blumenzwiebeln im Park, nur acht Wochen im Frühjahr geöffnet.",en:"Seven million flower bulbs in the park, open for only eight weeks in spring."},
+{n:"Koningsdag",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"trad",s:"2027-04-27",e:"2027-04-27",r:"jährlich, 27. April",x:1,d:"Das ganze Land in Orange, Flohmarkt auf der Straße und Boote auf den Grachten.",en:"The whole country in orange, street flea markets and boats on the canals."},
+{n:"TNW Conference",c:"Amsterdam",l:"Nordholland",p:"Niederlande",k:"tech",s:"2027-06-17",e:"2027-06-18",r:"jährlich",x:0,d:"Technologiekonferenz auf dem NDSM-Werftgelände mit Schwerpunkt auf Start-ups und Produktentwicklung.",en:"Tech conference on the NDSM shipyard grounds focusing on start-ups and product development."},
+{n:"Nijmeegse Vierdaagse",c:"Nijmegen",l:"Gelderland",p:"Niederlande",k:"sport",s:"2027-07-20",e:"2027-07-23",r:"jährlich",x:0,d:"Vier Tage Marschieren über 30 bis 50 Kilometer täglich, mit Zehntausenden Teilnehmenden.",en:"Four days of marching 30 to 50 kilometres a day, with tens of thousands of participants."},
+{n:"Foire de Libramont",c:"Libramont",l:"Luxemburg",p:"Belgien",k:"food",s:"2027-07-23",e:"2027-07-26",r:"jährlich, letztes Juliwochenende",x:0,d:"Belgiens größte Landwirtschaftsmesse, mit Tierschauen, Maschinenvorführungen und Ständen regionaler Erzeuger auf dem Messegelände in den Ardennen.",en:"Belgium's largest agricultural fair, with livestock shows, machinery demos and regional producers in the Ardennes."},
+{n:"FOSDEM",c:"Brüssel",l:"Brüssel",p:"Belgien",k:"tech",s:"2027-01-30",e:"2027-01-31",r:"jährlich, erstes Februarwochenende",x:0,d:"Treffen der Open-Source-Entwicklung an der ULB, ohne Eintritt und ohne Anmeldung.",en:"Gathering of open-source development at ULB, free and without registration."},
+{n:"Karneval von Binche",c:"Binche",l:"Hennegau",p:"Belgien",k:"trad",s:"2027-02-07",e:"2027-02-09",r:"jährlich, an Ostern gekoppelt",x:1,d:"Die Gilles werfen am Faschingsdienstag Orangen in die Menge, UNESCO-Erbe.",en:"On Shrove Tuesday the Gilles throw oranges into the crowd, UNESCO heritage."},
+{n:"Ommegang",c:"Brüssel",l:"Brüssel",p:"Belgien",k:"art",s:"2027-06-30",e:"2027-07-02",r:"jährlich",x:0,d:"Historischer Festzug auf dem Grote Markt, nachgestellt nach einem Einzug von 1549.",en:"Historic pageant on the Grote Markt, re-enacting a royal entry of 1549."},
+{n:"Gentse Feesten",c:"Gent",l:"Ostflandern",p:"Belgien",k:"trad",s:"2027-07-16",e:"2027-07-25",r:"jährlich",x:0,d:"Zehn Tage Stadtfest mit Straßentheater und Konzerten, weitgehend kostenlos.",en:"Ten days of city festival with street theatre and concerts, mostly free."},
+{n:"Tomorrowland",c:"Boom",l:"Antwerpen",p:"Belgien",k:"music",s:"2027-07-16",e:"2027-07-18",r:"jährlich, an zwei Wochenenden",x:0,d:"Elektrofestival im Park De Schorre, aufwendigste Bühnenbilder der Branche.",en:"Electronic festival in De Schorre park, with the most elaborate stage designs in the business."},
 
 /* Vereinigtes Königreich und Irland */
-{n:"London Film Festival",c:"London",l:"England",p:"Vereinigtes Königreich",k:"film",s:"2026-10-07",e:"2026-10-18",r:"jährlich",x:0,d:"Zwölf Tage Premieren, Zentrum ist das BFI Southbank an der Themse."},
-{n:"Hogmanay",c:"Edinburgh",l:"Schottland",p:"Vereinigtes Königreich",k:"trad",s:"2026-12-30",e:"2027-01-01",r:"jährlich, zum Jahreswechsel",x:1,d:"Fackelzug, Straßenparty und das Loony Dook im eiskalten Firth of Forth."},
-{n:"St. Patrick's Festival",c:"Dublin",l:"Leinster",p:"Irland",k:"trad",s:"2027-03-14",e:"2027-03-17",r:"jährlich, bis 17. März",x:1,d:"Parade durch die Innenstadt, dazu vier Tage Programm in der ganzen Stadt."},
-{n:"Chelsea Flower Show",c:"London",l:"England",p:"Vereinigtes Königreich",k:"art",s:"2027-05-25",e:"2027-05-29",r:"jährlich",x:0,d:"Gartenschau im Royal Hospital, die Schaugärten werden am letzten Tag verkauft."},
-{n:"Hay Festival",c:"Hay-on-Wye",l:"Wales",p:"Vereinigtes Königreich",k:"art",s:"2027-05-27",e:"2027-06-06",r:"jährlich",x:0,d:"Literaturfestival im Bücherdorf an der walisischen Grenze."},
-{n:"Bloomsday",c:"Dublin",l:"Leinster",p:"Irland",k:"art",s:"2027-06-16",e:"2027-06-16",r:"jährlich, 16. Juni",x:1,d:"Der Tag, an dem Joyces Ulysses spielt — nachgegangen in Kostüm und mit Lesungen."},
-{n:"Glastonbury Festival",c:"Pilton",l:"England",p:"Vereinigtes Königreich",k:"music",s:"2027-06-23",e:"2027-06-27",r:"jährlich, mit Ruhejahren",x:0,d:"Festival auf der Worthy Farm, die Karten sind meist in Minuten vergriffen."},
-{n:"Wimbledon",c:"London",l:"England",p:"Vereinigtes Königreich",k:"sport",s:"2027-06-28",e:"2027-07-11",r:"jährlich",x:0,d:"Ältestes Tennisturnier der Welt, auf Rasen und in weißer Kleidung."},
-{n:"Edinburgh Festival Fringe",c:"Edinburgh",l:"Schottland",p:"Vereinigtes Königreich",k:"art",s:"2027-08-06",e:"2027-08-30",r:"jährlich",x:0,d:"Größtes Kunstfestival der Welt — jeder darf auftreten, rund dreitausend Produktionen."},
-{n:"Notting Hill Carnival",c:"London",l:"England",p:"Vereinigtes Königreich",k:"trad",s:"2027-08-29",e:"2027-08-30",r:"jährlich, letztes August-Wochenende",x:1,d:"Karibischer Karneval mit Soundsystems und Umzug durch West-London."},
-{n:"Galway Oyster Festival",c:"Galway",l:"Connacht",p:"Irland",k:"food",s:"2027-09-24",e:"2027-09-26",r:"jährlich",x:0,d:"Austern und Weltmeisterschaft im Öffnen, seit 1954 Ende September."},
+{n:"London Film Festival",c:"London",l:"England",p:"Vereinigtes Königreich",k:"film",s:"2026-10-07",e:"2026-10-18",r:"jährlich",x:0,d:"Zwölf Tage Premieren, Zentrum ist das BFI Southbank an der Themse.",en:"Twelve days of premieres, centred on BFI Southbank by the Thames."},
+{n:"Hogmanay",c:"Edinburgh",l:"Schottland",p:"Vereinigtes Königreich",k:"trad",s:"2026-12-30",e:"2027-01-01",r:"jährlich, zum Jahreswechsel",x:1,d:"Fackelzug, Straßenparty und das Loony Dook im eiskalten Firth of Forth.",en:"Torchlight procession, street party and the Loony Dook in the icy Firth of Forth."},
+{n:"St. Patrick's Festival",c:"Dublin",l:"Leinster",p:"Irland",k:"trad",s:"2027-03-14",e:"2027-03-17",r:"jährlich, bis 17. März",x:1,d:"Parade durch die Innenstadt, dazu vier Tage Programm in der ganzen Stadt.",en:"Parade through the city centre, plus four days of events all over the city."},
+{n:"Chelsea Flower Show",c:"London",l:"England",p:"Vereinigtes Königreich",k:"art",s:"2027-05-25",e:"2027-05-29",r:"jährlich",x:0,d:"Gartenschau im Royal Hospital, die Schaugärten werden am letzten Tag verkauft.",en:"Garden show at the Royal Hospital, the show gardens are sold on the last day."},
+{n:"Hay Festival",c:"Hay-on-Wye",l:"Wales",p:"Vereinigtes Königreich",k:"art",s:"2027-05-27",e:"2027-06-06",r:"jährlich",x:0,d:"Literaturfestival im Bücherdorf an der walisischen Grenze.",en:"Literature festival in the book town on the Welsh border."},
+{n:"Bloomsday",c:"Dublin",l:"Leinster",p:"Irland",k:"art",s:"2027-06-16",e:"2027-06-16",r:"jährlich, 16. Juni",x:1,d:"Der Tag, an dem Joyces Ulysses spielt — nachgegangen in Kostüm und mit Lesungen.",en:"The day on which Joyce's Ulysses is set — retraced in costume and with readings."},
+{n:"Glastonbury Festival",c:"Pilton",l:"England",p:"Vereinigtes Königreich",k:"music",s:"2027-06-23",e:"2027-06-27",r:"jährlich, mit Ruhejahren",x:0,d:"Festival auf der Worthy Farm, die Karten sind meist in Minuten vergriffen.",en:"Festival on Worthy Farm, tickets usually sell out within minutes."},
+{n:"Wimbledon",c:"London",l:"England",p:"Vereinigtes Königreich",k:"sport",s:"2027-06-28",e:"2027-07-11",r:"jährlich",x:0,d:"Ältestes Tennisturnier der Welt, auf Rasen und in weißer Kleidung.",en:"The world's oldest tennis tournament, on grass and in white clothing."},
+{n:"Edinburgh Festival Fringe",c:"Edinburgh",l:"Schottland",p:"Vereinigtes Königreich",k:"art",s:"2027-08-06",e:"2027-08-30",r:"jährlich",x:0,d:"Größtes Kunstfestival der Welt — jeder darf auftreten, rund dreitausend Produktionen.",en:"The world's largest arts festival — anyone can perform, around three thousand productions."},
+{n:"Notting Hill Carnival",c:"London",l:"England",p:"Vereinigtes Königreich",k:"trad",s:"2027-08-29",e:"2027-08-30",r:"jährlich, letztes August-Wochenende",x:1,d:"Karibischer Karneval mit Soundsystems und Umzug durch West-London.",en:"Caribbean carnival with sound systems and a parade through West London."},
+{n:"Galway Oyster Festival",c:"Galway",l:"Connacht",p:"Irland",k:"food",s:"2027-09-24",e:"2027-09-26",r:"jährlich",x:0,d:"Austern und Weltmeisterschaft im Öffnen, seit 1954 Ende September.",en:"Oysters and the world oyster-opening championship, held at the end of September since 1954."},
 
 /* Nordeuropa */
-{n:"Slush",c:"Helsinki",l:"Uusimaa",p:"Finnland",k:"tech",s:"2026-11-18",e:"2026-11-19",r:"jährlich",x:0,d:"Start-up-Konferenz in der dunkelsten Jahreszeit, bewusst ohne Tageslicht inszeniert."},
-{n:"DreamHack Winter",c:"Jönköping",l:"Jönköpings län",p:"Schweden",k:"play",s:"2026-11-27",e:"2026-11-29",r:"zweimal jährlich",x:0,d:"LAN-Party und Esport-Festival, zeitweise größtes Computertreffen der Welt."},
-{n:"Nobelpreisverleihung",c:"Stockholm",l:"Stockholms län",p:"Schweden",k:"art",s:"2026-12-10",e:"2026-12-10",r:"jährlich, 10. Dezember",x:1,d:"Verleihung im Konserthuset am Todestag Alfred Nobels, danach Bankett im Stadthaus."},
-{n:"CPH:DOX",c:"Kopenhagen",l:"Hovedstaden",p:"Dänemark",k:"film",s:"2027-03-17",e:"2027-03-28",r:"jährlich",x:0,d:"Dokumentarfilmfestival mit Konferenzprogramm zu Kunst, Wissenschaft und Politik."},
-{n:"Vappu",c:"Helsinki",l:"Uusimaa",p:"Finnland",k:"trad",s:"2027-04-30",e:"2027-05-01",r:"jährlich, 30. April",x:1,d:"Studentenmützen, Sekt und Picknick im Park — Finnlands lautester Frühlingstag."},
-{n:"Festspillene i Bergen",c:"Bergen",l:"Vestland",p:"Norwegen",k:"music",s:"2027-05-26",e:"2027-06-09",r:"jährlich",x:0,d:"Nordeuropas ältestes Musik- und Theaterfestival, teils in Griegs Wohnhaus."},
-{n:"Midsommar",c:"Stockholm",l:"Stockholms län",p:"Schweden",k:"trad",s:"2027-06-25",e:"2027-06-26",r:"jährlich, Freitag zwischen 19. und 25. Juni",x:1,d:"Maibaum, Kränze und Hering — das halbe Land fährt aufs Land."},
-{n:"Roskilde Festival",c:"Roskilde",l:"Sjælland",p:"Dänemark",k:"music",s:"2027-06-26",e:"2027-07-03",r:"jährlich",x:0,d:"Achttägiges Festival, gemeinnützig organisiert, mit vier Warm-up-Tagen."},
-{n:"Copenhagen Jazz Festival",c:"Kopenhagen",l:"Hovedstaden",p:"Dänemark",k:"music",s:"2027-07-02",e:"2027-07-11",r:"jährlich",x:0,d:"Über tausend Konzerte in Clubs, Kirchen und Hinterhöfen der ganzen Stadt."},
-{n:"Way Out West",c:"Göteborg",l:"Västra Götaland",p:"Schweden",k:"music",s:"2027-08-12",e:"2027-08-14",r:"jährlich",x:0,d:"Festival im Slottsskogen-Park, die Verpflegung ist durchgehend vegetarisch."},
-{n:"Kiviks Marknad",c:"Kivik",l:"Schonen",p:"Schweden",k:"trad",s:"2027-07-23",e:"2027-07-25",r:"jährlich",x:0,d:"Eine der ältesten und größten Handelsmessen Schwedens, seit dem 17. Jahrhundert am selben Ort in Schonen abgehalten."},
+{n:"Slush",c:"Helsinki",l:"Uusimaa",p:"Finnland",k:"tech",s:"2026-11-18",e:"2026-11-19",r:"jährlich",x:0,d:"Start-up-Konferenz in der dunkelsten Jahreszeit, bewusst ohne Tageslicht inszeniert.",en:"Start-up conference in the darkest season, deliberately staged without daylight."},
+{n:"DreamHack Winter",c:"Jönköping",l:"Jönköpings län",p:"Schweden",k:"play",s:"2026-11-27",e:"2026-11-29",r:"zweimal jährlich",x:0,d:"LAN-Party und Esport-Festival, zeitweise größtes Computertreffen der Welt.",en:"LAN party and esports festival, at times the world's largest computer gathering."},
+{n:"Nobelpreisverleihung",c:"Stockholm",l:"Stockholms län",p:"Schweden",k:"art",s:"2026-12-10",e:"2026-12-10",r:"jährlich, 10. Dezember",x:1,d:"Verleihung im Konserthuset am Todestag Alfred Nobels, danach Bankett im Stadthaus.",en:"Award ceremony in the Konserthuset on the anniversary of Alfred Nobel's death, followed by a banquet in the City Hall."},
+{n:"CPH:DOX",c:"Kopenhagen",l:"Hovedstaden",p:"Dänemark",k:"film",s:"2027-03-17",e:"2027-03-28",r:"jährlich",x:0,d:"Dokumentarfilmfestival mit Konferenzprogramm zu Kunst, Wissenschaft und Politik.",en:"Documentary film festival with a conference programme on art, science and politics."},
+{n:"Vappu",c:"Helsinki",l:"Uusimaa",p:"Finnland",k:"trad",s:"2027-04-30",e:"2027-05-01",r:"jährlich, 30. April",x:1,d:"Studentenmützen, Sekt und Picknick im Park — Finnlands lautester Frühlingstag.",en:"Student caps, sparkling wine and picnics in the park — Finland's loudest spring day."},
+{n:"Festspillene i Bergen",c:"Bergen",l:"Vestland",p:"Norwegen",k:"music",s:"2027-05-26",e:"2027-06-09",r:"jährlich",x:0,d:"Nordeuropas ältestes Musik- und Theaterfestival, teils in Griegs Wohnhaus.",en:"Northern Europe's oldest music and theatre festival, partly in Grieg's home."},
+{n:"Midsommar",c:"Stockholm",l:"Stockholms län",p:"Schweden",k:"trad",s:"2027-06-25",e:"2027-06-26",r:"jährlich, Freitag zwischen 19. und 25. Juni",x:1,d:"Maibaum, Kränze und Hering — das halbe Land fährt aufs Land.",en:"Maypole, wreaths and herring — half the country heads to the countryside."},
+{n:"Roskilde Festival",c:"Roskilde",l:"Sjælland",p:"Dänemark",k:"music",s:"2027-06-26",e:"2027-07-03",r:"jährlich",x:0,d:"Achttägiges Festival, gemeinnützig organisiert, mit vier Warm-up-Tagen.",en:"Eight-day non-profit festival with four warm-up days."},
+{n:"Copenhagen Jazz Festival",c:"Kopenhagen",l:"Hovedstaden",p:"Dänemark",k:"music",s:"2027-07-02",e:"2027-07-11",r:"jährlich",x:0,d:"Über tausend Konzerte in Clubs, Kirchen und Hinterhöfen der ganzen Stadt.",en:"More than a thousand concerts in clubs, churches and backyards across the city."},
+{n:"Way Out West",c:"Göteborg",l:"Västra Götaland",p:"Schweden",k:"music",s:"2027-08-12",e:"2027-08-14",r:"jährlich",x:0,d:"Festival im Slottsskogen-Park, die Verpflegung ist durchgehend vegetarisch.",en:"Festival in Slottsskogen park, the catering is entirely vegetarian."},
+{n:"Kiviks Marknad",c:"Kivik",l:"Schonen",p:"Schweden",k:"trad",s:"2027-07-23",e:"2027-07-25",r:"jährlich",x:0,d:"Eine der ältesten und größten Handelsmessen Schwedens, seit dem 17. Jahrhundert am selben Ort in Schonen abgehalten.",en:"One of Sweden's oldest and largest trade fairs, held at the same place in Skåne since the 17th century."},
 
 /* Mittel- und Südeuropa */
-{n:"Signal Festival",c:"Prag",l:"Prag",p:"Tschechien",k:"art",s:"2026-10-15",e:"2026-10-18",r:"jährlich",x:0,d:"Lichtkunst an den Fassaden der Altstadt, ausgeschildert als Rundweg."},
-{n:"Znojemské historické vinobraní",c:"Znojmo",l:"Südmähren",p:"Tschechien",k:"food",s:"2026-09-11",e:"2026-09-13",r:"jährlich",x:0,d:"Historisches Weinlesefest der südmährischen Weinstadt, mit Festzug in Renaissancekostümen und Verkostung lokaler Weine."},
-{n:"Web Summit",c:"Lissabon",l:"Lissabon",p:"Portugal",k:"tech",s:"2026-11-02",e:"2026-11-05",r:"jährlich",x:0,d:"Eine der größten Technologiekonferenzen Europas, im Parque das Nações."},
-{n:"Pražské jaro",c:"Prag",l:"Prag",p:"Tschechien",k:"music",s:"2027-05-12",e:"2027-06-03",r:"jährlich, Eröffnung am 12. Mai",x:1,d:"Klassikfestival, eröffnet stets mit Smetanas Má vlast im Gemeindehaus."},
-{n:"Athens Epidaurus Festival",c:"Athen",l:"Attika",p:"Griechenland",k:"art",s:"2027-06-01",e:"2027-08-15",r:"jährlich",x:0,d:"Antikes und neues Theater im Odeon des Herodes Atticus und in Epidauros."},
-{n:"Wianki",c:"Krakau",l:"Kleinpolen",p:"Polen",k:"trad",s:"2027-06-19",e:"2027-06-19",r:"jährlich, um die Sonnenwende",x:0,d:"Kränze auf der Weichsel, Konzerte und Feuerwerk unterhalb des Wawel."},
-{n:"Feira Nacional de Agricultura",c:"Santarém",l:"Santarém",p:"Portugal",k:"food",s:"2027-06-05",e:"2027-06-13",r:"jährlich",x:0,d:"Portugals große Landwirtschafts- und Weinmesse, mit Viehschauen, Verkostungen und traditionellen Stierkampf-Vorführungen."},
-{n:"Jarmark św. Dominika",c:"Gdańsk",l:"Pommern",p:"Polen",k:"trad",s:"2027-07-31",e:"2027-08-22",r:"jährlich",x:0,d:"Jahrmarkt in der Gdańsker Altstadt seit dem 13. Jahrhundert, mit Antiquitäten, Kunsthandwerk, Straßenkunst und Kulinarik über mehrere Wochen."},
-{n:"Festa de São João",c:"Porto",l:"Norte",p:"Portugal",k:"trad",s:"2027-06-23",e:"2027-06-24",r:"jährlich, Nacht zum 24. Juni",x:1,d:"Die ganze Stadt auf der Straße, mit Plastikhämmern, Sardinen und Heißluftballons."},
-{n:"Open'er Festival",c:"Gdynia",l:"Pommern",p:"Polen",k:"music",s:"2027-06-30",e:"2027-07-03",r:"jährlich",x:0,d:"Größtes polnisches Festival, auf einem früheren Militärflugplatz an der Ostsee."},
-{n:"Karlovy Vary IFF",c:"Karlsbad",l:"Karlsbader Region",p:"Tschechien",k:"film",s:"2027-07-02",e:"2027-07-10",r:"jährlich",x:0,d:"Filmfestival im Kurort, Zentrum ist das Hotel Thermal, das Publikum campiert im Park."},
-{n:"NOS Alive",c:"Lissabon",l:"Lissabon",p:"Portugal",k:"music",s:"2027-07-08",e:"2027-07-10",r:"jährlich",x:0,d:"Festival am Tejo in Algés, Programm zwischen Rock, Indie und Elektronik."},
-{n:"Sziget",c:"Budapest",l:"Budapest",p:"Ungarn",k:"music",s:"2027-08-11",e:"2027-08-16",r:"jährlich",x:0,d:"Sechs Tage auf der Óbudai-Insel in der Donau, Camping inklusive."},
-{n:"Budapester Weinfestival",c:"Budapest",l:"Budapest",p:"Ungarn",k:"food",s:"2027-09-09",e:"2027-09-12",r:"jährlich",x:0,d:"Ausschank ungarischer Weingüter oben auf der Burg, mit Blick über die Donau."},
+{n:"Signal Festival",c:"Prag",l:"Prag",p:"Tschechien",k:"art",s:"2026-10-15",e:"2026-10-18",r:"jährlich",x:0,d:"Lichtkunst an den Fassaden der Altstadt, ausgeschildert als Rundweg.",en:"Light art on the façades of the old town, signposted as a walking route."},
+{n:"Znojemské historické vinobraní",c:"Znojmo",l:"Südmähren",p:"Tschechien",k:"food",s:"2026-09-11",e:"2026-09-13",r:"jährlich",x:0,d:"Historisches Weinlesefest der südmährischen Weinstadt, mit Festzug in Renaissancekostümen und Verkostung lokaler Weine.",en:"Historic wine-harvest festival of the South Moravian wine town, with a parade in Renaissance costumes and tastings of local wines."},
+{n:"Web Summit",c:"Lissabon",l:"Lissabon",p:"Portugal",k:"tech",s:"2026-11-02",e:"2026-11-05",r:"jährlich",x:0,d:"Eine der größten Technologiekonferenzen Europas, im Parque das Nações.",en:"One of Europe's largest tech conferences, in Parque das Nações."},
+{n:"Pražské jaro",c:"Prag",l:"Prag",p:"Tschechien",k:"music",s:"2027-05-12",e:"2027-06-03",r:"jährlich, Eröffnung am 12. Mai",x:1,d:"Klassikfestival, eröffnet stets mit Smetanas Má vlast im Gemeindehaus.",en:"Classical music festival, always opening with Smetana's Má vlast in the Municipal House."},
+{n:"Athens Epidaurus Festival",c:"Athen",l:"Attika",p:"Griechenland",k:"art",s:"2027-06-01",e:"2027-08-15",r:"jährlich",x:0,d:"Antikes und neues Theater im Odeon des Herodes Atticus und in Epidauros.",en:"Ancient and modern theatre in the Odeon of Herodes Atticus and in Epidaurus."},
+{n:"Wianki",c:"Krakau",l:"Kleinpolen",p:"Polen",k:"trad",s:"2027-06-19",e:"2027-06-19",r:"jährlich, um die Sonnenwende",x:0,d:"Kränze auf der Weichsel, Konzerte und Feuerwerk unterhalb des Wawel.",en:"Wreaths on the Vistula, concerts and fireworks below Wawel Castle."},
+{n:"Feira Nacional de Agricultura",c:"Santarém",l:"Santarém",p:"Portugal",k:"food",s:"2027-06-05",e:"2027-06-13",r:"jährlich",x:0,d:"Portugals große Landwirtschafts- und Weinmesse, mit Viehschauen, Verkostungen und traditionellen Stierkampf-Vorführungen.",en:"Portugal's big agriculture and wine fair, with livestock shows, tastings and traditional bullfighting displays."},
+{n:"Jarmark św. Dominika",c:"Gdańsk",l:"Pommern",p:"Polen",k:"trad",s:"2027-07-31",e:"2027-08-22",r:"jährlich",x:0,d:"Jahrmarkt in der Gdańsker Altstadt seit dem 13. Jahrhundert, mit Antiquitäten, Kunsthandwerk, Straßenkunst und Kulinarik über mehrere Wochen.",en:"Fair in Gdańsk's old town since the 13th century, with antiques, crafts, street art and food over several weeks."},
+{n:"Festa de São João",c:"Porto",l:"Norte",p:"Portugal",k:"trad",s:"2027-06-23",e:"2027-06-24",r:"jährlich, Nacht zum 24. Juni",x:1,d:"Die ganze Stadt auf der Straße, mit Plastikhämmern, Sardinen und Heißluftballons.",en:"The whole city takes to the streets, with plastic hammers, sardines and hot-air balloons."},
+{n:"Open'er Festival",c:"Gdynia",l:"Pommern",p:"Polen",k:"music",s:"2027-06-30",e:"2027-07-03",r:"jährlich",x:0,d:"Größtes polnisches Festival, auf einem früheren Militärflugplatz an der Ostsee.",en:"Poland's largest festival, on a former military airfield on the Baltic coast."},
+{n:"Karlovy Vary IFF",c:"Karlsbad",l:"Karlsbader Region",p:"Tschechien",k:"film",s:"2027-07-02",e:"2027-07-10",r:"jährlich",x:0,d:"Filmfestival im Kurort, Zentrum ist das Hotel Thermal, das Publikum campiert im Park.",en:"Film festival in the spa town, centred on Hotel Thermal, with the audience camping in the park."},
+{n:"NOS Alive",c:"Lissabon",l:"Lissabon",p:"Portugal",k:"music",s:"2027-07-08",e:"2027-07-10",r:"jährlich",x:0,d:"Festival am Tejo in Algés, Programm zwischen Rock, Indie und Elektronik.",en:"Festival on the Tagus in Algés, programme between rock, indie and electronic."},
+{n:"Sziget",c:"Budapest",l:"Budapest",p:"Ungarn",k:"music",s:"2027-08-11",e:"2027-08-16",r:"jährlich",x:0,d:"Sechs Tage auf der Óbudai-Insel in der Donau, Camping inklusive.",en:"Six days on Óbuda Island in the Danube, camping included."},
+{n:"Budapester Weinfestival",c:"Budapest",l:"Budapest",p:"Ungarn",k:"food",s:"2027-09-09",e:"2027-09-12",r:"jährlich",x:0,d:"Ausschank ungarischer Weingüter oben auf der Burg, mit Blick über die Donau.",en:"Hungarian wineries pouring up on the castle hill, with views over the Danube."},
 
 /* Markgröninger Schäferlauf — auf Wunsch recherchiert (lift-online.de), nahe Ludwigsburg */
-{n:"Markgröninger Schäferlauf",c:"Markgröningen",l:"Baden-Württemberg",k:"trad",s:"2027-08-27",e:"2027-08-30",r:"jährlich, meist letztes Augustwochenende",x:0,d:"Traditionsreiches Schäferfest mit historischem Festzug und dem legendären Wettlauf der Schäferinnen und Schäfer."},
+{n:"Markgröninger Schäferlauf",c:"Markgröningen",l:"Baden-Württemberg",k:"trad",s:"2027-08-27",e:"2027-08-30",r:"jährlich, meist letztes Augustwochenende",x:0,d:"Traditionsreiches Schäferfest mit historischem Festzug und dem legendären Wettlauf der Schäferinnen und Schäfer.",en:"Traditional shepherds' festival with a historic parade and the legendary barefoot race of the shepherds."},
 
 /* Rumänien */
-{n:"Sibiu International Theatre Festival",c:"Hermannstadt",l:"Kreis Hermannstadt",p:"Rumänien",k:"art",s:"2027-06-18",e:"2027-06-27",r:"jährlich, Ende Juni",x:1,d:"Eines der größten Theaterfestivals Europas: hunderte Vorstellungen, Straßenkunst und internationale Compagnien in der Altstadt."},
-{n:"UNTOLD Festival",c:"Klausenburg",l:"Kreis Klausenburg",p:"Rumänien",k:"music",s:"2027-08-05",e:"2027-08-08",r:"jährlich, erstes Augustwochenende",x:1,d:"Mehrfach ausgezeichnetes Elektro- und Pop-Festival mit internationalen Top-DJs und aufwendigen Bühnenshows."},
-{n:"Sibiu Christmas Market",c:"Hermannstadt",l:"Kreis Hermannstadt",p:"Rumänien",k:"trad",s:"2026-11-13",e:"2027-01-03",r:"jährlich, 13. November bis 3. Januar",x:1,d:"Einer der größten Weihnachtsmärkte Rumäniens auf dem Großen Ring mit Ständen, Glühwein und Konzerten."},
+{n:"Sibiu International Theatre Festival",c:"Hermannstadt",l:"Kreis Hermannstadt",p:"Rumänien",k:"art",s:"2027-06-18",e:"2027-06-27",r:"jährlich, Ende Juni",x:1,d:"Eines der größten Theaterfestivals Europas: hunderte Vorstellungen, Straßenkunst und internationale Compagnien in der Altstadt.",en:"One of Europe's largest theatre festivals: hundreds of performances, street art and international companies in the old town."},
+{n:"UNTOLD Festival",c:"Klausenburg",l:"Kreis Klausenburg",p:"Rumänien",k:"music",s:"2027-08-05",e:"2027-08-08",r:"jährlich, erstes Augustwochenende",x:1,d:"Mehrfach ausgezeichnetes Elektro- und Pop-Festival mit internationalen Top-DJs und aufwendigen Bühnenshows.",en:"Award-winning electronic and pop festival with international top DJs and elaborate stage shows."},
+{n:"Sibiu Christmas Market",c:"Hermannstadt",l:"Kreis Hermannstadt",p:"Rumänien",k:"trad",s:"2026-11-13",e:"2027-01-03",r:"jährlich, 13. November bis 3. Januar",x:1,d:"Einer der größten Weihnachtsmärkte Rumäniens auf dem Großen Ring mit Ständen, Glühwein und Konzerten.",en:"One of Romania's largest Christmas markets on the Large Square, with stalls, mulled wine and concerts."},
 
 /* Türkei */
-{n:"Kırkpınar Ölringen",c:"Edirne",l:"Provinz Edirne",p:"Türkei",k:"sport",s:"2027-07-02",e:"2027-07-04",r:"jährlich, erstes Juliwochenende",x:1,d:"Ältestes durchgehend ausgetragenes Sportturnier der Welt (seit 1346): traditionelles Ölringen auf der Sarayiçi-Wiese."},
-{n:"Antalya Golden Orange Film Festival",c:"Antalya",l:"Provinz Antalya",p:"Türkei",k:"film",s:"2026-10-24",e:"2026-10-31",r:"jährlich, letzte Oktoberwoche",x:1,d:"Ältestes und renommiertestes Filmfestival der Türkei (seit 1963) mit nationalem und internationalem Wettbewerb."},
-{n:"Kakava-Fest (Hıdırellez)",c:"Edirne",l:"Provinz Edirne",p:"Türkei",k:"trad",s:"2027-05-05",e:"2027-05-06",r:"jährlich, fest am 5./6. Mai",x:1,d:"Frühlingsfest der Roma-Gemeinschaft am Ufer der Tunca mit Feuer, Musik und Tanz zur Nacht von Hıdırellez."},
+{n:"Kırkpınar Ölringen",c:"Edirne",l:"Provinz Edirne",p:"Türkei",k:"sport",s:"2027-07-02",e:"2027-07-04",r:"jährlich, erstes Juliwochenende",x:1,d:"Ältestes durchgehend ausgetragenes Sportturnier der Welt (seit 1346): traditionelles Ölringen auf der Sarayiçi-Wiese.",en:"The world's oldest continuously held sporting event (since 1346): traditional oil wrestling on the Sarayiçi meadow."},
+{n:"Antalya Golden Orange Film Festival",c:"Antalya",l:"Provinz Antalya",p:"Türkei",k:"film",s:"2026-10-24",e:"2026-10-31",r:"jährlich, letzte Oktoberwoche",x:1,d:"Ältestes und renommiertestes Filmfestival der Türkei (seit 1963) mit nationalem und internationalem Wettbewerb.",en:"Turkey's oldest and most prestigious film festival (since 1963), with national and international competitions."},
+{n:"Kakava-Fest (Hıdırellez)",c:"Edirne",l:"Provinz Edirne",p:"Türkei",k:"trad",s:"2027-05-05",e:"2027-05-06",r:"jährlich, fest am 5./6. Mai",x:1,d:"Frühlingsfest der Roma-Gemeinschaft am Ufer der Tunca mit Feuer, Musik und Tanz zur Nacht von Hıdırellez.",en:"Spring festival of the Roma community on the banks of the Tunca, with fire, music and dancing on Hıdırellez night."},
 
 /* China */
-{n:"Harbin International Ice and Snow Festival",c:"Harbin",l:"Heilongjiang",p:"China",k:"art",s:"2026-12-25",e:"2027-02-15",r:"jährlich, von Weihnachten bis Mitte Februar",x:0,d:"Weltberühmtes Winterfestival mit riesigen beleuchteten Eis- und Schneeskulpturen im Ice and Snow World Park."},
-{n:"Tai Hang Feuerdrachentanz",c:"Hongkong",l:"Hongkong",p:"China",k:"trad",s:"2026-09-24",e:"2026-09-26",r:"jährlich, 3 Nächte rund um das Mondfest",x:1,d:"Traditioneller Feuerdrachentanz durch die Gassen von Tai Hang zum Mondfest, seit über 140 Jahren gepflegter Brauch."},
-{n:"Wasserspritzfest der Dai",c:"Jinghong",l:"Xishuangbanna, Yunnan",p:"China",k:"play",s:"2027-04-13",e:"2027-04-15",r:"jährlich, immer 13.–15. April",x:1,d:"Neujahrsfest der Dai-Minderheit mit Drachenbootrennen, Tempelzeremonien und ausgelassenen Wasserschlachten."},
+{n:"Harbin International Ice and Snow Festival",c:"Harbin",l:"Heilongjiang",p:"China",k:"art",s:"2026-12-25",e:"2027-02-15",r:"jährlich, von Weihnachten bis Mitte Februar",x:0,d:"Weltberühmtes Winterfestival mit riesigen beleuchteten Eis- und Schneeskulpturen im Ice and Snow World Park.",en:"World-famous winter festival with huge illuminated ice and snow sculptures in the Ice and Snow World park."},
+{n:"Tai Hang Feuerdrachentanz",c:"Hongkong",l:"Hongkong",p:"China",k:"trad",s:"2026-09-24",e:"2026-09-26",r:"jährlich, 3 Nächte rund um das Mondfest",x:1,d:"Traditioneller Feuerdrachentanz durch die Gassen von Tai Hang zum Mondfest, seit über 140 Jahren gepflegter Brauch.",en:"Traditional fire dragon dance through the lanes of Tai Hang for the Mid-Autumn Festival, a custom kept for more than 140 years."},
+{n:"Wasserspritzfest der Dai",c:"Jinghong",l:"Xishuangbanna, Yunnan",p:"China",k:"play",s:"2027-04-13",e:"2027-04-15",r:"jährlich, immer 13.–15. April",x:1,d:"Neujahrsfest der Dai-Minderheit mit Drachenbootrennen, Tempelzeremonien und ausgelassenen Wasserschlachten.",en:"New Year festival of the Dai minority with dragon-boat races, temple ceremonies and exuberant water fights."},
 
 /* Südkorea */
-{n:"Busan International Film Festival",c:"Busan",l:"Busan",p:"Südkorea",k:"film",s:"2026-10-06",e:"2026-10-15",r:"jährlich, Anfang/Mitte Oktober",x:0,d:"Größtes Filmfestival Asiens mit internationalen Wettbewerbsbeiträgen und Galas am Haeundae-Strand."},
-{n:"Boryeong Mud Festival",c:"Boryeong",l:"Chungcheongnam-do",p:"Südkorea",k:"play",s:"2027-07-23",e:"2027-08-08",r:"jährlich, letzte Juliwoche bis erste Augustwoche",x:0,d:"Matschfestival am Daecheon-Strand mit Schlammpools, Rutschen, Konzerten und Schlammringen."},
-{n:"Andong International Mask Dance Festival",c:"Andong",l:"Gyeongsangbuk-do",p:"Südkorea",k:"trad",s:"2026-09-25",e:"2026-10-04",r:"jährlich, Ende September bis Anfang Oktober",x:0,d:"Internationales Maskentanzfestival mit traditionellen koreanischen Talchum-Aufführungen und Gastgruppen aus aller Welt."},
+{n:"Busan International Film Festival",c:"Busan",l:"Busan",p:"Südkorea",k:"film",s:"2026-10-06",e:"2026-10-15",r:"jährlich, Anfang/Mitte Oktober",x:0,d:"Größtes Filmfestival Asiens mit internationalen Wettbewerbsbeiträgen und Galas am Haeundae-Strand.",en:"Asia's largest film festival, with international competition entries and galas on Haeundae Beach."},
+{n:"Boryeong Mud Festival",c:"Boryeong",l:"Chungcheongnam-do",p:"Südkorea",k:"play",s:"2027-07-23",e:"2027-08-08",r:"jährlich, letzte Juliwoche bis erste Augustwoche",x:0,d:"Matschfestival am Daecheon-Strand mit Schlammpools, Rutschen, Konzerten und Schlammringen.",en:"Mud festival on Daecheon Beach with mud pools, slides, concerts and mud wrestling."},
+{n:"Andong International Mask Dance Festival",c:"Andong",l:"Gyeongsangbuk-do",p:"Südkorea",k:"trad",s:"2026-09-25",e:"2026-10-04",r:"jährlich, Ende September bis Anfang Oktober",x:0,d:"Internationales Maskentanzfestival mit traditionellen koreanischen Talchum-Aufführungen und Gastgruppen aus aller Welt.",en:"International mask-dance festival with traditional Korean talchum performances and guest troupes from around the world."},
 
 /* USA */
-{n:"SXSW",c:"Austin",l:"Texas",p:"USA",k:"tech",s:"2027-03-13",e:"2027-03-21",r:"jährlich, Mitte März",x:0,d:"Branchentreffen für Technologie, Musik und Film mit Konferenzen, Startup-Messen und Live-Showcases."},
-{n:"Kentucky Derby",c:"Louisville",l:"Kentucky",p:"USA",k:"sport",s:"2027-05-01",e:"2027-05-01",r:"jährlich, erster Samstag im Mai",x:1,d:"Berühmtestes Pferderennen der USA, Auftakt der Triple Crown, bekannt für große Hüte und Mint Juleps."},
-{n:"Mardi Gras",c:"New Orleans",l:"Louisiana",p:"USA",k:"trad",s:"2027-02-09",e:"2027-02-09",r:"jährlich, Faschingsdienstag",x:1,d:"Höhepunkt der Karnevalssaison mit Umzügen, Perlenketten und Kostümen am Fat Tuesday vor der Fastenzeit."},
-{n:"Peachtree Road Race",c:"Atlanta",l:"Georgia",p:"USA",k:"sport",s:"2027-07-04",e:"2027-07-04",r:"jährlich am 4. Juli",x:1,d:"Weltgrößter 10-km-Straßenlauf, jedes Jahr am US-Unabhängigkeitstag in Atlanta mit zehntausenden Teilnehmenden."},
-{n:"Atlanta Dogwood Festival",c:"Atlanta",l:"Georgia",p:"USA",k:"art",s:"2027-04-09",e:"2027-04-11",r:"jährlich im April, im Piedmont Park",x:0,d:"Kunst- und Frühlingsfest im Piedmont Park mit Künstlermarkt, Gartenschauen und Live-Musik."},
-{n:"Spoleto Festival USA",c:"Charleston",l:"South Carolina",p:"USA",k:"art",s:"2027-05-28",e:"2027-06-12",r:"jährlich, 17 Tage im späten Frühjahr",x:0,d:"Renommiertes Festival für Oper, Theater, Tanz und Musik an historischen Spielstätten in Charleston."},
-{n:"Charleston Wine + Food Festival",c:"Charleston",l:"South Carolina",p:"USA",k:"food",s:"2027-03-03",e:"2027-03-07",r:"jährlich Anfang März",x:1,d:"Kulinarikfestival mit Verkostungen, Dinners und Workshops renommierter Köchinnen und Köche."},
+{n:"SXSW",c:"Austin",l:"Texas",p:"USA",k:"tech",s:"2027-03-13",e:"2027-03-21",r:"jährlich, Mitte März",x:0,d:"Branchentreffen für Technologie, Musik und Film mit Konferenzen, Startup-Messen und Live-Showcases.",en:"Industry gathering for technology, music and film with conferences, start-up expos and live showcases."},
+{n:"Kentucky Derby",c:"Louisville",l:"Kentucky",p:"USA",k:"sport",s:"2027-05-01",e:"2027-05-01",r:"jährlich, erster Samstag im Mai",x:1,d:"Berühmtestes Pferderennen der USA, Auftakt der Triple Crown, bekannt für große Hüte und Mint Juleps.",en:"America's most famous horse race, first leg of the Triple Crown, known for big hats and mint juleps."},
+{n:"Mardi Gras",c:"New Orleans",l:"Louisiana",p:"USA",k:"trad",s:"2027-02-09",e:"2027-02-09",r:"jährlich, Faschingsdienstag",x:1,d:"Höhepunkt der Karnevalssaison mit Umzügen, Perlenketten und Kostümen am Fat Tuesday vor der Fastenzeit.",en:"Climax of the carnival season with parades, beads and costumes on Fat Tuesday before Lent."},
+{n:"Peachtree Road Race",c:"Atlanta",l:"Georgia",p:"USA",k:"sport",s:"2027-07-04",e:"2027-07-04",r:"jährlich am 4. Juli",x:1,d:"Weltgrößter 10-km-Straßenlauf, jedes Jahr am US-Unabhängigkeitstag in Atlanta mit zehntausenden Teilnehmenden.",en:"The world's largest 10K road race, every year on Independence Day in Atlanta with tens of thousands of runners."},
+{n:"Atlanta Dogwood Festival",c:"Atlanta",l:"Georgia",p:"USA",k:"art",s:"2027-04-09",e:"2027-04-11",r:"jährlich im April, im Piedmont Park",x:0,d:"Kunst- und Frühlingsfest im Piedmont Park mit Künstlermarkt, Gartenschauen und Live-Musik.",en:"Arts and spring festival in Piedmont Park with an artists' market, garden shows and live music."},
+{n:"Spoleto Festival USA",c:"Charleston",l:"South Carolina",p:"USA",k:"art",s:"2027-05-28",e:"2027-06-12",r:"jährlich, 17 Tage im späten Frühjahr",x:0,d:"Renommiertes Festival für Oper, Theater, Tanz und Musik an historischen Spielstätten in Charleston.",en:"Renowned festival of opera, theatre, dance and music at historic venues in Charleston."},
+{n:"Charleston Wine + Food Festival",c:"Charleston",l:"South Carolina",p:"USA",k:"food",s:"2027-03-03",e:"2027-03-07",r:"jährlich Anfang März",x:1,d:"Kulinarikfestival mit Verkostungen, Dinners und Workshops renommierter Köchinnen und Köche.",en:"Food festival with tastings, dinners and workshops by renowned chefs."},
 
 /* Rumänien — Kreis Kronstadt */
-{n:"Junii Brașovului – Sărbătoarea Junilor",c:"Kronstadt",l:"Kreis Kronstadt",p:"Rumänien",k:"trad",s:"2027-05-09",e:"2027-05-09",r:"jährlich am Thomassonntag, eine Woche nach orthodoxem Ostern",x:1,d:"Jahrhundertealter Reiterumzug der „Junii“ in historischen Trachten durch die Altstadt von Kronstadt."},
+{n:"Junii Brașovului – Sărbătoarea Junilor",c:"Kronstadt",l:"Kreis Kronstadt",p:"Rumänien",k:"trad",s:"2027-05-09",e:"2027-05-09",r:"jährlich am Thomassonntag, eine Woche nach orthodoxem Ostern",x:1,d:"Jahrhundertealter Reiterumzug der „Junii“ in historischen Trachten durch die Altstadt von Kronstadt.",en:"Centuries-old riders' parade of the “Junii” in historic costume through the old town of Brașov."},
 
 /* Türkei — Istanbul & Bursa */
-{n:"Istanbul Marathon",c:"Istanbul",l:"Istanbul",p:"Türkei",k:"sport",s:"2026-11-01",e:"2026-11-01",r:"jährlich im November, meist erster Sonntag",x:1,d:"Einziger Marathon der Welt, der zwei Kontinente verbindet: über die Bosporus-Brücke von Asien nach Europa."},
-{n:"Istanbul Lale Festivali (Tulpenfestival)",c:"Istanbul",l:"Istanbul",p:"Türkei",k:"trad",s:"2027-04-01",e:"2027-04-30",r:"jährlich im April",x:0,d:"Millionen Tulpen blühen in Parks wie Emirgan und Gülhane; städtisches Frühlingsfest der Stadtverwaltung Istanbul."},
-{n:"Internationales Bursa-Festival",c:"Bursa",l:"Bursa",p:"Türkei",k:"music",s:"2027-07-20",e:"2027-08-09",r:"jährlich Ende Juli bis Anfang August",x:0,d:"Traditionsreiches Kultur- und Musikfestival mit Konzerten und Theater im Kültürpark-Freilichttheater, seit 1963."},
-{n:"Goldener-Karagöz-Volkstanzwettbewerb",c:"Bursa",l:"Bursa",p:"Türkei",k:"trad",s:"2027-07-07",e:"2027-07-12",r:"jährlich im Juli",x:0,d:"Internationaler Volkstanz-Wettbewerb zu Ehren der Bursa-Symbolfigur Karagöz, mit Tanzgruppen aus aller Welt."},
+{n:"Istanbul Marathon",c:"Istanbul",l:"Istanbul",p:"Türkei",k:"sport",s:"2026-11-01",e:"2026-11-01",r:"jährlich im November, meist erster Sonntag",x:1,d:"Einziger Marathon der Welt, der zwei Kontinente verbindet: über die Bosporus-Brücke von Asien nach Europa.",en:"The world's only marathon joining two continents: across the Bosphorus Bridge from Asia to Europe."},
+{n:"Istanbul Lale Festivali (Tulpenfestival)",c:"Istanbul",l:"Istanbul",p:"Türkei",k:"trad",s:"2027-04-01",e:"2027-04-30",r:"jährlich im April",x:0,d:"Millionen Tulpen blühen in Parks wie Emirgan und Gülhane; städtisches Frühlingsfest der Stadtverwaltung Istanbul.",en:"Millions of tulips bloom in parks such as Emirgan and Gülhane; the city of Istanbul's spring festival."},
+{n:"Internationales Bursa-Festival",c:"Bursa",l:"Bursa",p:"Türkei",k:"music",s:"2027-07-20",e:"2027-08-09",r:"jährlich Ende Juli bis Anfang August",x:0,d:"Traditionsreiches Kultur- und Musikfestival mit Konzerten und Theater im Kültürpark-Freilichttheater, seit 1963.",en:"Long-standing culture and music festival with concerts and theatre in the Kültürpark open-air theatre, since 1963."},
+{n:"Goldener-Karagöz-Volkstanzwettbewerb",c:"Bursa",l:"Bursa",p:"Türkei",k:"trad",s:"2027-07-07",e:"2027-07-12",r:"jährlich im Juli",x:0,d:"Internationaler Volkstanz-Wettbewerb zu Ehren der Bursa-Symbolfigur Karagöz, mit Tanzgruppen aus aller Welt.",en:"International folk-dance competition in honour of Bursa's shadow-play figure Karagöz, with dance groups from around the world."},
 
 /* Tschechien — Jihlava */
-{n:"Ji.hlava International Documentary Film Festival",c:"Jihlava",l:"Vysočina",p:"Tschechien",k:"film",s:"2026-10-23",e:"2026-11-01",r:"jährlich Ende Oktober/Anfang November",x:1,d:"Größtes Dokumentarfilmfestival Mitteleuropas, seit 1997 in Jihlava."},
+{n:"Ji.hlava International Documentary Film Festival",c:"Jihlava",l:"Vysočina",p:"Tschechien",k:"film",s:"2026-10-23",e:"2026-11-01",r:"jährlich Ende Oktober/Anfang November",x:1,d:"Größtes Dokumentarfilmfestival Mitteleuropas, seit 1997 in Jihlava.",en:"Central Europe's largest documentary film festival, in Jihlava since 1997."},
 
 /* China — Suzhou, Wuxi, Taicang, Shanghai */
-{n:"Jiangnan-Kultur- und Kunst-Tourismusfestival",c:"Suzhou",l:"Jiangsu",p:"China",k:"art",s:"2027-04-24",e:"2027-05-24",r:"jährlich im Frühling, Ende April bis Ende Mai",x:0,d:"Großes Kultur- und Tourismusfestival mit hunderten Aufführungen, Ausstellungen und Feiern der Jiangnan-Kultur."},
-{n:"Taihu-Yuantouzhu-Kirschblütenfest",c:"Wuxi",l:"Jiangsu",p:"China",k:"trad",s:"2027-03-01",e:"2027-04-15",r:"jährlich im Frühling, je nach Blütezeit",x:0,d:"Kirschblütenfest am Taihu-See auf der Halbinsel Yuantouzhu mit tausenden Bäumen und abendlicher Illumination."},
-{n:"Shuangfeng-Lammfleisch-Food- und Kulturfestival",c:"Taicang",l:"Jiangsu",p:"China",k:"food",s:"2026-12-05",e:"2027-02-05",r:"jährlich im Spätherbst/Winter",x:0,d:"Food- und Kulturfestival rund um die regionale Spezialität Lammfleisch im Ort Shuangfeng bei Taicang."},
-{n:"Shanghai International Film Festival",c:"Shanghai",l:"Shanghai",p:"China",k:"film",s:"2027-06-11",e:"2027-06-20",r:"jährlich Mitte Juni",x:0,d:"Chinas größtes internationales Filmfestival mit Wettbewerb, Filmvorführungen und Filmmarkt."},
-{n:"China Shanghai International Arts Festival",c:"Shanghai",l:"Shanghai",p:"China",k:"art",s:"2026-10-17",e:"2026-11-15",r:"jährlich Mitte Oktober bis Mitte November",x:1,d:"Chinas größtes staatliches Kunstfestival mit Theater, Oper, Tanz und Musik an zahlreichen Spielorten."},
+{n:"Jiangnan-Kultur- und Kunst-Tourismusfestival",c:"Suzhou",l:"Jiangsu",p:"China",k:"art",s:"2027-04-24",e:"2027-05-24",r:"jährlich im Frühling, Ende April bis Ende Mai",x:0,d:"Großes Kultur- und Tourismusfestival mit hunderten Aufführungen, Ausstellungen und Feiern der Jiangnan-Kultur.",en:"Large culture and tourism festival with hundreds of performances, exhibitions and celebrations of Jiangnan culture."},
+{n:"Taihu-Yuantouzhu-Kirschblütenfest",c:"Wuxi",l:"Jiangsu",p:"China",k:"trad",s:"2027-03-01",e:"2027-04-15",r:"jährlich im Frühling, je nach Blütezeit",x:0,d:"Kirschblütenfest am Taihu-See auf der Halbinsel Yuantouzhu mit tausenden Bäumen und abendlicher Illumination.",en:"Cherry-blossom festival at Lake Tai on the Yuantouzhu peninsula, with thousands of trees and evening illuminations."},
+{n:"Shuangfeng-Lammfleisch-Food- und Kulturfestival",c:"Taicang",l:"Jiangsu",p:"China",k:"food",s:"2026-12-05",e:"2027-02-05",r:"jährlich im Spätherbst/Winter",x:0,d:"Food- und Kulturfestival rund um die regionale Spezialität Lammfleisch im Ort Shuangfeng bei Taicang.",en:"Food and culture festival around the regional speciality lamb in the village of Shuangfeng near Taicang."},
+{n:"Shanghai International Film Festival",c:"Shanghai",l:"Shanghai",p:"China",k:"film",s:"2027-06-11",e:"2027-06-20",r:"jährlich Mitte Juni",x:0,d:"Chinas größtes internationales Filmfestival mit Wettbewerb, Filmvorführungen und Filmmarkt.",en:"China's largest international film festival, with competition, screenings and a film market."},
+{n:"China Shanghai International Arts Festival",c:"Shanghai",l:"Shanghai",p:"China",k:"art",s:"2026-10-17",e:"2026-11-15",r:"jährlich Mitte Oktober bis Mitte November",x:1,d:"Chinas größtes staatliches Kunstfestival mit Theater, Oper, Tanz und Musik an zahlreichen Spielorten.",en:"China's largest state arts festival, with theatre, opera, dance and music at many venues."},
 /* ---- Ergänzt September 2026: weitere große Termine in Deutschland ---- */
-{n:"Beethovenfest Bonn",c:"Bonn",l:"Nordrhein-Westfalen",k:"music",s:"2026-09-03",e:"2026-10-03",r:"jährlich",x:1,d:"Klassikfestival in Beethovens Geburtsstadt mit Orchestern aus aller Welt, 2027 zum 200. Todestag als Jubiläumsausgabe."},
-{n:"Internationale Hofer Filmtage",c:"Hof",l:"Bayern",k:"film",s:"2026-10-20",e:"2026-10-25",r:"jährlich, Ende Oktober",x:1,d:"Traditionsreiches Festival für den jungen deutschen Film, 2026 zum 60. Mal."},
-{n:"Weihnachtsmarkt am Kölner Dom",c:"Köln",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-16",e:"2026-12-23",r:"jährlich",x:1,d:"Rund 140 Buden unter einem der höchsten Christbäume NRWs auf dem Roncalliplatz direkt vor dem Dom."},
-{n:"Alt-Rothenburger Reiterlesmarkt",c:"Rothenburg ob der Tauber",l:"Bayern",k:"trad",s:"2026-11-20",e:"2026-12-23",r:"jährlich",x:1,d:"Einer der ältesten Weihnachtsmärkte Deutschlands zwischen den Fachwerkhäusern der ummauerten Altstadt."},
-{n:"Aachener Weihnachtsmarkt",c:"Aachen",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-20",e:"2026-12-23",r:"jährlich",x:1,d:"Markt rund um Dom und Rathaus, bekannt für Aachener Printen und Glühwein in der Altstadt."},
-{n:"Frankfurter Weihnachtsmarkt",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2026-11-23",e:"2026-12-22",r:"jährlich",x:1,d:"Über 200 Stände auf Römerberg, Paulsplatz und Mainkai, mit Turmbläsern und 26 Meter hohem Baum."},
-{n:"Erfurter Weihnachtsmarkt",c:"Erfurt",l:"Thüringen",k:"trad",s:"2026-11-24",e:"2026-12-22",r:"jährlich",x:1,d:"Markt auf dem Domplatz vor der Kulisse von Dom und Severikirche, mit großer Pyramide und Riesenrad."},
-{n:"Stuttgarter Weihnachtsmarkt",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2026-11-25",e:"2026-12-23",r:"jährlich",x:1,d:"Einer der größten Weihnachtsmärkte Europas, bekannt für die liebevoll geschmückten Budendächer."},
-{n:"Filmfestival Max Ophüls Preis",c:"Saarbrücken",l:"Saarland",k:"film",s:"2027-01-25",e:"2027-01-31",r:"jährlich, Ende Januar",x:1,d:"Wichtigstes Festival für den jungen Film aus Deutschland, Österreich und der Schweiz."},
-{n:"ITB Berlin",c:"Berlin",l:"Berlin",k:"sport",s:"2027-03-16",e:"2027-03-18",r:"jährlich",x:1,d:"Weltgrößte Reisemesse auf dem Messegelände unter dem Funkturm, 2027 ausnahmsweise Mitte März."},
-{n:"Baumblütenfest",c:"Werder (Havel)",l:"Brandenburg",k:"trad",s:"2027-04-24",e:"2027-05-02",r:"jährlich, zur Obstbaumblüte",x:0,d:"Ältestes Volksfest Brandenburgs zwischen blühenden Obstplantagen, mit Obstweinen aus der Region."},
-{n:"Internationale Kurzfilmtage Oberhausen",c:"Oberhausen",l:"Nordrhein-Westfalen",k:"film",s:"2027-04-27",e:"2027-05-02",r:"jährlich",x:1,d:"Eines der ältesten Kurzfilmfestivals der Welt, seit 1954 in Oberhausen."},
-{n:"Mayday",c:"Dortmund",l:"Nordrhein-Westfalen",k:"music",s:"2027-04-30",e:"2027-04-30",r:"jährlich, 30. April",x:1,d:"Techno-Rave in den Westfalenhallen, zwölf Stunden auf vier Floors in den Mai hinein."},
-{n:"Eschborn–Frankfurt",c:"Frankfurt am Main",l:"Hessen",k:"sport",s:"2027-05-01",e:"2027-05-01",r:"jährlich, 1. Mai",x:1,d:"Radklassiker der World Tour von Eschborn über den Taunus bis ins Frankfurter Bankenviertel."},
-{n:"Ruhrfestspiele",c:"Recklinghausen",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-01",e:"2027-06-13",r:"jährlich, ab 1. Mai",x:0,d:"Eines der ältesten Theaterfestivals Europas, entstanden aus einem Tausch von Kohle gegen Kunst."},
-{n:"Erlanger Bergkirchweih",c:"Erlangen",l:"Bayern",k:"trad",s:"2027-05-13",e:"2027-05-24",r:"jährlich, ab Donnerstag vor Pfingsten",x:1,d:"Bierfest unter alten Bäumen auf den Felsenkellern am Burgberg, seit 1755."},
-{n:"Rock am Ring",c:"Nürburg",l:"Rheinland-Pfalz",k:"music",s:"2027-06-04",e:"2027-06-06",r:"jährlich",x:1,d:"Großes Rockfestival am Nürburgring, Schwesterfestival von Rock im Park."},
-{n:"Skulptur Projekte Münster",c:"Münster",l:"Nordrhein-Westfalen",k:"art",s:"2027-06-13",e:"2027-10-03",r:"alle 10 Jahre",x:1,d:"Internationale Kunst im öffentlichen Raum, nur alle zehn Jahre, 2027 zum 50. Jubiläum."},
-{n:"Hurricane Festival",c:"Scheeßel",l:"Niedersachsen",k:"music",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:1,d:"Rock- und Popfestival auf dem Eichenring, mit fast identischem Programm wie das Southside."},
-{n:"Southside Festival",c:"Neuhausen ob Eck",l:"Baden-Württemberg",k:"music",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:1,d:"Süddeutsches Schwesterfestival des Hurricane auf einem ehemaligen Flugplatz."},
-{n:"Störtebeker Festspiele",c:"Ralswiek",l:"Mecklenburg-Vorpommern",k:"art",s:"2027-06-19",e:"2027-09-04",r:"jährlich, Juni bis September",x:1,d:"Piratenspektakel auf der Naturbühne auf Rügen, mit Schiffen, Pferden und Feuerwerk über dem Bodden."},
-{n:"CHIO Aachen",c:"Aachen",l:"Nordrhein-Westfalen",k:"sport",s:"2027-06-25",e:"2027-07-04",r:"jährlich",x:1,d:"Weltfest des Pferdesports in der Soers: Springen, Dressur, Vielseitigkeit, Fahren und Voltigieren."},
-{n:"Landshuter Hochzeit 1475",c:"Landshut",l:"Bayern",k:"trad",s:"2027-06-25",e:"2027-07-18",r:"alle 4 Jahre",x:1,d:"Mittelalterfest mit rund 2.500 Mitwirkenden, das die Fürstenhochzeit von 1475 nachstellt."},
-{n:"Karl-May-Spiele",c:"Bad Segeberg",l:"Schleswig-Holstein",k:"art",s:"2027-06-26",e:"2027-09-05",r:"jährlich, Ende Juni bis Anfang September",x:1,d:"Winnetou-Abenteuer auf der Freilichtbühne am Kalkberg, seit 1952."},
-{n:"Rudolstadt-Festival",c:"Rudolstadt",l:"Thüringen",k:"music",s:"2027-07-01",e:"2027-07-04",r:"jährlich, erstes Juliwochenende",x:1,d:"Größtes Folk-, Roots- und Weltmusikfestival Deutschlands, verteilt über die ganze Stadt."},
-{n:"Challenge Roth",c:"Roth",l:"Bayern",k:"sport",s:"2027-07-04",e:"2027-07-04",r:"jährlich, erstes Juliwochenende",x:1,d:"Größter Langdistanz-Triathlon der Welt, mit der berühmten Stimmung am Solarer Berg."},
-{n:"splash! Festival",c:"Gräfenhainichen",l:"Sachsen-Anhalt",k:"music",s:"2027-07-08",e:"2027-07-10",r:"jährlich",x:1,d:"Größtes Hip-Hop-Festival Europas zwischen den Tagebau-Baggern von Ferropolis."},
-{n:"Saarbrücker Altstadtfest",c:"Saarbrücken",l:"Saarland",k:"art",s:"2027-07-09",e:"2027-07-11",r:"jährlich, Anfang Juli",x:0,d:"Stadtfest mit Bühnen und Ständen in der Altstadt rund um den St. Johanner Markt."},
-{n:"Deichbrand Festival",c:"Cuxhaven",l:"Niedersachsen",k:"music",s:"2027-07-15",e:"2027-07-18",r:"jährlich",x:1,d:"Rockfestival am Meer auf dem Seeflughafen Cuxhaven/Nordholz."},
-{n:"Parookaville",c:"Weeze",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-16",e:"2027-07-18",r:"jährlich",x:1,d:"Elektronikfestival als eigene Festivalstadt auf dem Flughafen Weeze."},
-{n:"Bayreuther Festspiele",c:"Bayreuth",l:"Bayern",k:"music",s:"2027-07-24",e:"2027-08-24",r:"jährlich",x:1,d:"Wagner-Opern im Festspielhaus auf dem Grünen Hügel, Karten oft erst nach Jahren Wartezeit."},
-{n:"Nature One",c:"Kastellaun",l:"Rheinland-Pfalz",k:"music",s:"2027-07-29",e:"2027-08-01",r:"jährlich",x:1,d:"Techno-Festival auf einer früheren Raketenbasis im Hunsrück, 2027 zum 30. Mal."},
-{n:"Gäubodenvolksfest",c:"Straubing",l:"Bayern",k:"trad",s:"2027-08-13",e:"2027-08-23",r:"jährlich, rund um Mariä Himmelfahrt",x:1,d:"Zweitgrößtes Volksfest Bayerns mit sieben Festzelten und über einer Million Besuchern."},
-{n:"Rheingauer Weinwoche",c:"Wiesbaden",l:"Hessen",k:"food",s:"2027-08-13",e:"2027-08-22",r:"jährlich",x:1,d:"Über 100 Stände mit Rheingauer Weinen und Sekten rund um Marktkirche und Schlossplatz."},
-{n:"Summer Breeze Open Air",c:"Dinkelsbühl",l:"Bayern",k:"music",s:"2027-08-18",e:"2027-08-21",r:"jährlich",x:1,d:"Eines der größten Metalfestivals Deutschlands, 2027 zum 30. Jubiläum."},
-{n:"Potsdamer Schlössernacht",c:"Potsdam",l:"Brandenburg",k:"art",s:"2027-08-20",e:"2027-08-22",r:"jährlich, 2026 Pause",x:1,d:"Park Sanssouci bei Nacht mit Lichtkunst, Musik und Theater zwischen den Schlössern."},
-{n:"IAA Mobility",c:"München",l:"Bayern",k:"tech",s:"2027-09-07",e:"2027-09-12",r:"alle 2 Jahre",x:1,d:"Messe für Auto und Mobilität, mit Fachkongress auf dem Messegelände und Open Space in der Innenstadt."},
-{n:"Pützchens Markt",c:"Bonn",l:"Nordrhein-Westfalen",k:"trad",s:"2027-09-10",e:"2027-09-14",r:"jährlich, zweites Septemberwochenende",x:0,d:"Traditionsreiches Volksfest in Beuel mit rund 500 Schaustellern und Feuerwerk am letzten Abend."},
+{n:"Beethovenfest Bonn",c:"Bonn",l:"Nordrhein-Westfalen",k:"music",s:"2026-09-03",e:"2026-10-03",r:"jährlich",x:1,d:"Klassikfestival in Beethovens Geburtsstadt mit Orchestern aus aller Welt, 2027 zum 200. Todestag als Jubiläumsausgabe.",en:"Classical music festival in Beethoven's birthplace with orchestras from all over the world; 2027 is the anniversary edition for the 200th anniversary of his death."},
+{n:"Internationale Hofer Filmtage",c:"Hof",l:"Bayern",k:"film",s:"2026-10-20",e:"2026-10-25",r:"jährlich, Ende Oktober",x:1,d:"Traditionsreiches Festival für den jungen deutschen Film, 2026 zum 60. Mal.",en:"Long-standing festival for young German cinema, in 2026 for the 60th time."},
+{n:"Weihnachtsmarkt am Kölner Dom",c:"Köln",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-16",e:"2026-12-23",r:"jährlich",x:1,d:"Rund 140 Buden unter einem der höchsten Christbäume NRWs auf dem Roncalliplatz direkt vor dem Dom.",en:"Around 140 stalls beneath one of the tallest Christmas trees in North Rhine-Westphalia, on Roncalliplatz right in front of the cathedral."},
+{n:"Alt-Rothenburger Reiterlesmarkt",c:"Rothenburg ob der Tauber",l:"Bayern",k:"trad",s:"2026-11-20",e:"2026-12-23",r:"jährlich",x:1,d:"Einer der ältesten Weihnachtsmärkte Deutschlands zwischen den Fachwerkhäusern der ummauerten Altstadt.",en:"One of Germany's oldest Christmas markets, among the half-timbered houses of the walled old town."},
+{n:"Aachener Weihnachtsmarkt",c:"Aachen",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-20",e:"2026-12-23",r:"jährlich",x:1,d:"Markt rund um Dom und Rathaus, bekannt für Aachener Printen und Glühwein in der Altstadt.",en:"Market around the cathedral and town hall, known for Aachener Printen gingerbread and mulled wine in the old town."},
+{n:"Frankfurter Weihnachtsmarkt",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2026-11-23",e:"2026-12-22",r:"jährlich",x:1,d:"Über 200 Stände auf Römerberg, Paulsplatz und Mainkai, mit Turmbläsern und 26 Meter hohem Baum.",en:"More than 200 stalls on Römerberg, Paulsplatz and Mainkai, with tower brass players and a 26-metre tree."},
+{n:"Erfurter Weihnachtsmarkt",c:"Erfurt",l:"Thüringen",k:"trad",s:"2026-11-24",e:"2026-12-22",r:"jährlich",x:1,d:"Markt auf dem Domplatz vor der Kulisse von Dom und Severikirche, mit großer Pyramide und Riesenrad.",en:"Market on Cathedral Square in front of the cathedral and St. Severus, with a large pyramid and a Ferris wheel."},
+{n:"Stuttgarter Weihnachtsmarkt",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2026-11-25",e:"2026-12-23",r:"jährlich",x:1,d:"Einer der größten Weihnachtsmärkte Europas, bekannt für die liebevoll geschmückten Budendächer.",en:"One of Europe's largest Christmas markets, known for its lovingly decorated stall roofs."},
+{n:"Filmfestival Max Ophüls Preis",c:"Saarbrücken",l:"Saarland",k:"film",s:"2027-01-25",e:"2027-01-31",r:"jährlich, Ende Januar",x:1,d:"Wichtigstes Festival für den jungen Film aus Deutschland, Österreich und der Schweiz.",en:"The most important festival for young cinema from Germany, Austria and Switzerland."},
+{n:"ITB Berlin",c:"Berlin",l:"Berlin",k:"sport",s:"2027-03-16",e:"2027-03-18",r:"jährlich",x:1,d:"Weltgrößte Reisemesse auf dem Messegelände unter dem Funkturm, 2027 ausnahmsweise Mitte März.",en:"The world's largest travel trade fair, on the fairgrounds beneath the Radio Tower, exceptionally in mid-March in 2027."},
+{n:"Baumblütenfest",c:"Werder (Havel)",l:"Brandenburg",k:"trad",s:"2027-04-24",e:"2027-05-02",r:"jährlich, zur Obstbaumblüte",x:0,d:"Ältestes Volksfest Brandenburgs zwischen blühenden Obstplantagen, mit Obstweinen aus der Region.",en:"Brandenburg's oldest folk festival among blossoming orchards, with fruit wines from the region."},
+{n:"Internationale Kurzfilmtage Oberhausen",c:"Oberhausen",l:"Nordrhein-Westfalen",k:"film",s:"2027-04-27",e:"2027-05-02",r:"jährlich",x:1,d:"Eines der ältesten Kurzfilmfestivals der Welt, seit 1954 in Oberhausen.",en:"One of the world's oldest short film festivals, in Oberhausen since 1954."},
+{n:"Mayday",c:"Dortmund",l:"Nordrhein-Westfalen",k:"music",s:"2027-04-30",e:"2027-04-30",r:"jährlich, 30. April",x:1,d:"Techno-Rave in den Westfalenhallen, zwölf Stunden auf vier Floors in den Mai hinein.",en:"Techno rave in the Westfalenhallen, twelve hours on four floors into May Day."},
+{n:"Eschborn–Frankfurt",c:"Frankfurt am Main",l:"Hessen",k:"sport",s:"2027-05-01",e:"2027-05-01",r:"jährlich, 1. Mai",x:1,d:"Radklassiker der World Tour von Eschborn über den Taunus bis ins Frankfurter Bankenviertel.",en:"World Tour cycling classic from Eschborn over the Taunus hills into Frankfurt's banking district."},
+{n:"Ruhrfestspiele",c:"Recklinghausen",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-01",e:"2027-06-13",r:"jährlich, ab 1. Mai",x:0,d:"Eines der ältesten Theaterfestivals Europas, entstanden aus einem Tausch von Kohle gegen Kunst.",en:"One of Europe's oldest theatre festivals, born from a swap of coal for art."},
+{n:"Erlanger Bergkirchweih",c:"Erlangen",l:"Bayern",k:"trad",s:"2027-05-13",e:"2027-05-24",r:"jährlich, ab Donnerstag vor Pfingsten",x:1,d:"Bierfest unter alten Bäumen auf den Felsenkellern am Burgberg, seit 1755.",en:"Beer festival under old trees on the rock cellars of the Burgberg, since 1755."},
+{n:"Rock am Ring",c:"Nürburg",l:"Rheinland-Pfalz",k:"music",s:"2027-06-04",e:"2027-06-06",r:"jährlich",x:1,d:"Großes Rockfestival am Nürburgring, Schwesterfestival von Rock im Park.",en:"Big rock festival at the Nürburgring, sister festival of Rock im Park."},
+{n:"Skulptur Projekte Münster",c:"Münster",l:"Nordrhein-Westfalen",k:"art",s:"2027-06-13",e:"2027-10-03",r:"alle 10 Jahre",x:1,d:"Internationale Kunst im öffentlichen Raum, nur alle zehn Jahre, 2027 zum 50. Jubiläum.",en:"International art in public space, only every ten years, in 2027 for its 50th anniversary."},
+{n:"Hurricane Festival",c:"Scheeßel",l:"Niedersachsen",k:"music",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:1,d:"Rock- und Popfestival auf dem Eichenring, mit fast identischem Programm wie das Southside.",en:"Rock and pop festival on the Eichenring, with almost the same line-up as Southside."},
+{n:"Southside Festival",c:"Neuhausen ob Eck",l:"Baden-Württemberg",k:"music",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:1,d:"Süddeutsches Schwesterfestival des Hurricane auf einem ehemaligen Flugplatz.",en:"Southern German sister festival of Hurricane, on a former airfield."},
+{n:"Störtebeker Festspiele",c:"Ralswiek",l:"Mecklenburg-Vorpommern",k:"art",s:"2027-06-19",e:"2027-09-04",r:"jährlich, Juni bis September",x:1,d:"Piratenspektakel auf der Naturbühne auf Rügen, mit Schiffen, Pferden und Feuerwerk über dem Bodden.",en:"Pirate spectacle on the open-air stage on Rügen, with ships, horses and fireworks over the lagoon."},
+{n:"CHIO Aachen",c:"Aachen",l:"Nordrhein-Westfalen",k:"sport",s:"2027-06-25",e:"2027-07-04",r:"jährlich",x:1,d:"Weltfest des Pferdesports in der Soers: Springen, Dressur, Vielseitigkeit, Fahren und Voltigieren.",en:"World equestrian festival in the Soers: show jumping, dressage, eventing, driving and vaulting."},
+{n:"Landshuter Hochzeit 1475",c:"Landshut",l:"Bayern",k:"trad",s:"2027-06-25",e:"2027-07-18",r:"alle 4 Jahre",x:1,d:"Mittelalterfest mit rund 2.500 Mitwirkenden, das die Fürstenhochzeit von 1475 nachstellt.",en:"Medieval festival with around 2,500 performers re-enacting the royal wedding of 1475."},
+{n:"Karl-May-Spiele",c:"Bad Segeberg",l:"Schleswig-Holstein",k:"art",s:"2027-06-26",e:"2027-09-05",r:"jährlich, Ende Juni bis Anfang September",x:1,d:"Winnetou-Abenteuer auf der Freilichtbühne am Kalkberg, seit 1952.",en:"Winnetou adventures on the open-air stage at the Kalkberg, since 1952."},
+{n:"Rudolstadt-Festival",c:"Rudolstadt",l:"Thüringen",k:"music",s:"2027-07-01",e:"2027-07-04",r:"jährlich, erstes Juliwochenende",x:1,d:"Größtes Folk-, Roots- und Weltmusikfestival Deutschlands, verteilt über die ganze Stadt.",en:"Germany's largest folk, roots and world music festival, spread across the whole town."},
+{n:"Challenge Roth",c:"Roth",l:"Bayern",k:"sport",s:"2027-07-04",e:"2027-07-04",r:"jährlich, erstes Juliwochenende",x:1,d:"Größter Langdistanz-Triathlon der Welt, mit der berühmten Stimmung am Solarer Berg.",en:"The world's largest long-distance triathlon, with the famous atmosphere at Solarer Berg."},
+{n:"splash! Festival",c:"Gräfenhainichen",l:"Sachsen-Anhalt",k:"music",s:"2027-07-08",e:"2027-07-10",r:"jährlich",x:1,d:"Größtes Hip-Hop-Festival Europas zwischen den Tagebau-Baggern von Ferropolis.",en:"Europe's largest hip-hop festival among the open-pit mining excavators of Ferropolis."},
+{n:"Saarbrücker Altstadtfest",c:"Saarbrücken",l:"Saarland",k:"art",s:"2027-07-09",e:"2027-07-11",r:"jährlich, Anfang Juli",x:0,d:"Stadtfest mit Bühnen und Ständen in der Altstadt rund um den St. Johanner Markt.",en:"City festival with stages and stalls in the old town around St. Johanner Markt."},
+{n:"Deichbrand Festival",c:"Cuxhaven",l:"Niedersachsen",k:"music",s:"2027-07-15",e:"2027-07-18",r:"jährlich",x:1,d:"Rockfestival am Meer auf dem Seeflughafen Cuxhaven/Nordholz.",en:"Rock festival by the sea at the Cuxhaven/Nordholz seaplane airport."},
+{n:"Parookaville",c:"Weeze",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-16",e:"2027-07-18",r:"jährlich",x:1,d:"Elektronikfestival als eigene Festivalstadt auf dem Flughafen Weeze.",en:"Electronic festival as its own festival city at Weeze airport."},
+{n:"Bayreuther Festspiele",c:"Bayreuth",l:"Bayern",k:"music",s:"2027-07-24",e:"2027-08-24",r:"jährlich",x:1,d:"Wagner-Opern im Festspielhaus auf dem Grünen Hügel, Karten oft erst nach Jahren Wartezeit.",en:"Wagner operas in the Festival Theatre on the Green Hill, tickets often only after years of waiting."},
+{n:"Nature One",c:"Kastellaun",l:"Rheinland-Pfalz",k:"music",s:"2027-07-29",e:"2027-08-01",r:"jährlich",x:1,d:"Techno-Festival auf einer früheren Raketenbasis im Hunsrück, 2027 zum 30. Mal.",en:"Techno festival on a former missile base in the Hunsrück, in 2027 for the 30th time."},
+{n:"Gäubodenvolksfest",c:"Straubing",l:"Bayern",k:"trad",s:"2027-08-13",e:"2027-08-23",r:"jährlich, rund um Mariä Himmelfahrt",x:1,d:"Zweitgrößtes Volksfest Bayerns mit sieben Festzelten und über einer Million Besuchern.",en:"Bavaria's second-largest funfair with seven beer tents and more than a million visitors."},
+{n:"Rheingauer Weinwoche",c:"Wiesbaden",l:"Hessen",k:"food",s:"2027-08-13",e:"2027-08-22",r:"jährlich",x:1,d:"Über 100 Stände mit Rheingauer Weinen und Sekten rund um Marktkirche und Schlossplatz.",en:"More than 100 stalls with Rheingau wines and sparkling wines around the Marktkirche and Schlossplatz."},
+{n:"Summer Breeze Open Air",c:"Dinkelsbühl",l:"Bayern",k:"music",s:"2027-08-18",e:"2027-08-21",r:"jährlich",x:1,d:"Eines der größten Metalfestivals Deutschlands, 2027 zum 30. Jubiläum.",en:"One of Germany's biggest metal festivals, celebrating its 30th anniversary in 2027."},
+{n:"Potsdamer Schlössernacht",c:"Potsdam",l:"Brandenburg",k:"art",s:"2027-08-20",e:"2027-08-22",r:"jährlich, 2026 Pause",x:1,d:"Park Sanssouci bei Nacht mit Lichtkunst, Musik und Theater zwischen den Schlössern.",en:"Sanssouci Park by night with light art, music and theatre between the palaces."},
+{n:"IAA Mobility",c:"München",l:"Bayern",k:"tech",s:"2027-09-07",e:"2027-09-12",r:"alle 2 Jahre",x:1,d:"Messe für Auto und Mobilität, mit Fachkongress auf dem Messegelände und Open Space in der Innenstadt.",en:"Car and mobility fair, with a trade congress on the fairgrounds and an open space in the city centre."},
+{n:"Pützchens Markt",c:"Bonn",l:"Nordrhein-Westfalen",k:"trad",s:"2027-09-10",e:"2027-09-14",r:"jährlich, zweites Septemberwochenende",x:0,d:"Traditionsreiches Volksfest in Beuel mit rund 500 Schaustellern und Feuerwerk am letzten Abend.",en:"Long-standing funfair in Beuel with around 500 showmen and fireworks on the last evening."},
 ];
 /* ---------------- Helfer ---------------- */
 const MON  = { de:["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],
@@ -1654,6 +1660,36 @@ function baueEigeneStadtOptionen(aktuellerWert){
 
 /* Ohne Angabe liegt eine Veranstaltung in Deutschland */
 const landVon = ev => ev.p || "Deutschland";
+/* Englische Anzeige für Länder, Regionen, Städte und Rhythmus. Daten und Filter bleiben deutsch. */
+const LAND_ANZEIGE_EN = { "Deutschland":"Germany", "Österreich":"Austria", "Schweiz":"Switzerland", "Frankreich":"France",
+  "Spanien":"Spain", "Italien":"Italy", "Vereinigtes Königreich":"United Kingdom", "Niederlande":"Netherlands", "Belgien":"Belgium",
+  "Tschechien":"Czechia", "Schweden":"Sweden", "Rumänien":"Romania", "Polen":"Poland", "Irland":"Ireland", "Dänemark":"Denmark",
+  "Ungarn":"Hungary", "Finnland":"Finland", "Norwegen":"Norway", "Griechenland":"Greece", "Türkei":"Türkiye", "Südkorea":"South Korea" };
+const REGION_EN = { "Bayern":"Bavaria", "Nordrhein-Westfalen":"North Rhine-Westphalia", "Hessen":"Hesse", "Sachsen":"Saxony",
+  "Niedersachsen":"Lower Saxony", "Rheinland-Pfalz":"Rhineland-Palatinate", "Thüringen":"Thuringia",
+  "Mecklenburg-Vorpommern":"Mecklenburg-Western Pomerania", "Sachsen-Anhalt":"Saxony-Anhalt", "Oberösterreich":"Upper Austria",
+  "Wien":"Vienna", "Tirol":"Tyrol", "Niederösterreich":"Lower Austria", "Zürich":"Zurich", "Genf":"Geneva", "Waadt":"Vaud",
+  "Tessin":"Ticino", "Andalusien":"Andalusia", "Katalonien":"Catalonia", "Baskenland":"Basque Country", "Venetien":"Veneto",
+  "Piemont":"Piedmont", "Lombardei":"Lombardy", "Toskana":"Tuscany", "Umbrien":"Umbria", "Nordholland":"North Holland",
+  "Südholland":"South Holland", "Brüssel":"Brussels", "Hennegau":"Hainaut", "Ostflandern":"East Flanders", "Antwerpen":"Antwerp",
+  "Schottland":"Scotland", "Jönköpings län":"Jönköping County", "Stockholms län":"Stockholm County", "Schonen":"Skåne",
+  "Prag":"Prague", "Südmähren":"South Moravia", "Lissabon":"Lisbon", "Attika":"Attica", "Kleinpolen":"Lesser Poland",
+  "Pommern":"Pomerania", "Karlsbader Region":"Karlovy Vary Region", "Kreis Hermannstadt":"Sibiu County",
+  "Kreis Klausenburg":"Cluj County", "Kreis Kronstadt":"Brașov County", "Provinz Edirne":"Edirne Province",
+  "Provinz Antalya":"Antalya Province", "Hongkong":"Hong Kong" };
+const STADT_EN = { "München":"Munich", "Köln":"Cologne", "Frankfurt am Main":"Frankfurt", "Nürnberg":"Nuremberg",
+  "Hannover":"Hanover", "Wien":"Vienna", "Zürich":"Zurich", "Genf":"Geneva", "Nizza":"Nice", "Sevilla":"Seville",
+  "Venedig":"Venice", "Mailand":"Milan", "Brüssel":"Brussels", "Gent":"Ghent", "Kopenhagen":"Copenhagen", "Göteborg":"Gothenburg",
+  "Prag":"Prague", "Lissabon":"Lisbon", "Athen":"Athens", "Krakau":"Kraków", "Karlsbad":"Karlovy Vary", "Hermannstadt":"Sibiu",
+  "Klausenburg":"Cluj-Napoca", "Kronstadt":"Brașov", "Hongkong":"Hong Kong", "Halle (Saale)":"Halle" };
+const RHYTHMUS_EN = {"jährlich":"annual","jährlich, letztes September-Wochenende":"annual, last weekend of September","jährlich, Pfingsten":"annual, at Pentecost","dreimal jährlich":"three times a year","jährlich, zwischen den Jahren":"annual, between Christmas and New Year","jährlich, Anfang Mai":"annual, early May","jährlich, Anstich am dritten September-Samstag":"annual, tapping on the third Saturday of September","zweimal jährlich":"twice a year","jährlich, an Ostern gekoppelt":"annual, tied to Easter","alle 2 Jahre, ungerade Jahre":"every 2 years, odd years","jährlich, Dienstag nach Pfingsten":"annual, Tuesday after Pentecost","jährlich, bis Heiligabend":"annual, until Christmas Eve","alle 2 Jahre, gerade Jahre":"every 2 years, even years","jährlich, erstes Septemberwochenende":"annual, first weekend of September","jährlich, feste Regeltermine":"annual, fixed dates","alle 5 Jahre":"every 5 years","jährlich, 8. August":"annual, 8 August","jährlich, zwei Wochenenden":"annual, two weekends","jährlich, zweites Oktoberwochenende":"annual, second weekend of October","jährlich, letzter Donnerstag im Fasching":"annual, last Thursday of carnival","jährlich, vierter Montag im November":"annual, fourth Monday of November","jährlich, Wochenende um den 12. Dezember":"annual, weekend around 12 December","jährlich, Montag nach Aschermittwoch":"annual, Monday after Ash Wednesday","jährlich, dritter Montag im April":"annual, third Monday of April","jährlich, um den 8. Dezember":"annual, around 8 December","jährlich, 21. Juni":"annual, 21 June","jährlich, bis 19. März":"annual, until 19 March","jährlich, Karwoche":"annual, Holy Week","jährlich, 23. Juni":"annual, 23 June","jährlich, 6. bis 14. Juli":"annual, 6 to 14 July","jährlich, letzter Mittwoch im August":"annual, last Wednesday of August","jährlich, um den 24. September":"annual, around 24 September","jährlich, an den Wochenenden":"annual, at weekends","jährlich, bis Faschingsdienstag":"annual, until Shrove Tuesday","zweimal jährlich, 2. Juli und 16. August":"twice a year, 2 July and 16 August","mehrmals jährlich":"several times a year","jährlich, 27. April":"annual, 27 April","jährlich, letztes Juliwochenende":"annual, last weekend of July","jährlich, erstes Februarwochenende":"annual, first weekend of February","jährlich, an zwei Wochenenden":"annual, on two weekends","jährlich, zum Jahreswechsel":"annual, at New Year","jährlich, bis 17. März":"annual, until 17 March","jährlich, 16. Juni":"annual, 16 June","jährlich, mit Ruhejahren":"annual, with occasional breaks","jährlich, letztes August-Wochenende":"annual, last weekend of August","jährlich, 10. Dezember":"annual, 10 December","jährlich, 30. April":"annual, 30 April","jährlich, Freitag zwischen 19. und 25. Juni":"annual, Friday between 19 and 25 June","jährlich, Eröffnung am 12. Mai":"annual, opening on 12 May","jährlich, um die Sonnenwende":"annual, around the solstice","jährlich, Nacht zum 24. Juni":"annual, night before 24 June","jährlich, meist letztes Augustwochenende":"annual, usually last weekend of August","jährlich, Ende Juni":"annual, late June","jährlich, erstes Augustwochenende":"annual, first weekend of August","jährlich, 13. November bis 3. Januar":"annual, 13 November to 3 January","jährlich, erstes Juliwochenende":"annual, first weekend of July","jährlich, letzte Oktoberwoche":"annual, last week of October","jährlich, fest am 5./6. Mai":"annual, always 5/6 May","jährlich, von Weihnachten bis Mitte Februar":"annual, from Christmas to mid-February","jährlich, 3 Nächte rund um das Mondfest":"annual, 3 nights around the Moon Festival","jährlich, immer 13.–15. April":"annual, always 13–15 April","jährlich, Anfang/Mitte Oktober":"annual, early/mid October","jährlich, letzte Juliwoche bis erste Augustwoche":"annual, last week of July to first week of August","jährlich, Ende September bis Anfang Oktober":"annual, late September to early October","jährlich, Mitte März":"annual, mid-March","jährlich, erster Samstag im Mai":"annual, first Saturday of May","jährlich, Faschingsdienstag":"annual, Shrove Tuesday","jährlich am 4. Juli":"annual, on 4 July","jährlich im April, im Piedmont Park":"annual in April, in Piedmont Park","jährlich, 17 Tage im späten Frühjahr":"annual, 17 days in late spring","jährlich Anfang März":"annual, early March","jährlich am Thomassonntag, eine Woche nach orthodoxem Ostern":"annual on St Thomas Sunday, one week after Orthodox Easter","jährlich im November, meist erster Sonntag":"annual in November, usually the first Sunday","jährlich im April":"annual in April","jährlich Ende Juli bis Anfang August":"annual, late July to early August","jährlich im Juli":"annual in July","jährlich Ende Oktober/Anfang November":"annual, late October/early November","jährlich im Frühling, Ende April bis Ende Mai":"annual in spring, late April to late May","jährlich im Frühling, je nach Blütezeit":"annual in spring, depending on the blossom","jährlich im Spätherbst/Winter":"annual in late autumn/winter","jährlich Mitte Juni":"annual, mid-June","jährlich Mitte Oktober bis Mitte November":"annual, mid-October to mid-November","jährlich, Ende Oktober":"annual, late October","jährlich, Ende Januar":"annual, late January","jährlich, zur Obstbaumblüte":"annual, during the fruit blossom","jährlich, 1. Mai":"annual, 1 May","jährlich, ab 1. Mai":"annual, from 1 May","jährlich, ab Donnerstag vor Pfingsten":"annual, from the Thursday before Pentecost","alle 10 Jahre":"every 10 years","jährlich, Juni bis September":"annual, June to September","alle 4 Jahre":"every 4 years","jährlich, Ende Juni bis Anfang September":"annual, late June to early September","jährlich, Anfang Juli":"annual, early July","jährlich, rund um Mariä Himmelfahrt":"annual, around Assumption Day (15 August)","jährlich, 2026 Pause":"annual, break in 2026","alle 2 Jahre":"every 2 years","jährlich, zweites Septemberwochenende":"annual, second weekend of September"};
+const englisch = () => LANGUAGE === "en";
+const landTxt   = name => englisch() && LAND_ANZEIGE_EN[name] || name;
+const regionTxt = name => englisch() && REGION_EN[name] || name;
+const stadtTxt  = name => englisch() && STADT_EN[name] || name;
+const rhythmusTxt = ev => englisch() && RHYTHMUS_EN[ev.r] || ev.r;
+const beschreibung = ev => (englisch() && ev.en) || ev.d || "";
+
 
 /* Normalisierter Vergleichsschlüssel für Region/Land-Namen: Groß-/Kleinschreibung sowie
    Bindestrich vs. Leerzeichen werden gleichgesetzt ("Baden-Württemberg" == "Baden Württemberg"),
@@ -1839,7 +1875,7 @@ function renderMerklisteListe(){
   $("merklisteCount").textContent = t("savedCount").replace("%n%", liste.length);
   if (liste.length){
     $("merklisteListe").innerHTML = '<div class="eigeneliste">' + liste.map(ev =>
-      '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(ev.c) + ' · ' + rangeTxt(ev) + '</span>' +
+      '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(stadtTxt(ev.c)) + ' · ' + rangeTxt(ev) + '</span>' +
       '<button class="del" data-entmerken="' + esc(evId(ev)) + '">' + t("remove") + '</button></div>').join("") + '</div>';
   } else {
     $("merklisteListe").innerHTML = '<div class="own-empty-state"><p class="own-empty-title">' + t("savedEmptyTitle") +
@@ -1967,8 +2003,8 @@ function baueLand(){
   const countryCount = w => ALLE.filter(e => landVon(e) === w).length;
   const countryCard = (w, all) =>
     '<button type="button" class="chip country-card' + (all ? ' all-countries' : '') + '" data-land="' +
-      (all ? '' : esc(w)) + '" data-country-name="' + esc(w) + '" aria-pressed="' + (all ? !F.land.size : F.land.has(w)) + '">' +
-      '<span class="country-check">' + countryCheck + '</span><span class="country-name">' + esc(w) +
+      (all ? '' : esc(w)) + '" data-country-name="' + esc(all ? w : w + " " + (LAND_ANZEIGE_EN[w] || "")) + '" aria-pressed="' + (all ? !F.land.size : F.land.has(w)) + '">' +
+      '<span class="country-check">' + countryCheck + '</span><span class="country-name">' + esc(all ? w : landTxt(w)) +
       '</span><span class="country-event-count">' + (all ? werte.length : countryCount(w)) + '</span></button>';
   $("pane-land").innerHTML =
     '<div class="country-topbar"><div class="country-searchbox">' +
@@ -2001,14 +2037,14 @@ function baueRegion(){
   const popular = [...werte].sort((a,b) => regionCount(b) - regionCount(a) || sortDe(a,b)).slice(0, 6);
   const regionChoice = (w, cls) =>
     '<button type="button" class="chip region-choice ' + cls + '" data-region="' + esc(w) + '" data-region-name="' +
-      esc(w) + '" data-region-letter="' + regionLetter(w) + '" aria-pressed="' + F.region.has(w) + '">' +
-      '<span class="region-circle">' + regionCheck + '</span><span class="region-name">' + esc(w) +
+      esc(w + " " + (REGION_EN[w] || "")) + '" data-region-letter="' + regionLetter(w) + '" aria-pressed="' + F.region.has(w) + '">' +
+      '<span class="region-circle">' + regionCheck + '</span><span class="region-name">' + esc(regionTxt(w)) +
       '</span><span class="region-event-count">' + regionCount(w) + '</span></button>';
   const mitte = Math.ceil(werte.length / 2);
   const rows = list => list.map(w =>
-    '<button type="button" class="chip region-row" data-region="' + esc(w) + '" data-region-name="' + esc(w) +
+    '<button type="button" class="chip region-row" data-region="' + esc(w) + '" data-region-name="' + esc(w + " " + (REGION_EN[w] || "")) +
       '" data-region-letter="' + regionLetter(w) + '" aria-pressed="' + F.region.has(w) + '">' +
-      '<span class="region-circle">' + regionCheck + '</span><span class="region-name">' + esc(w) +
+      '<span class="region-circle">' + regionCheck + '</span><span class="region-name">' + esc(regionTxt(w)) +
       '</span><span class="region-event-count">' + regionCount(w) + '</span></button>').join("");
   const index = ["#"].concat("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
   $("pane-region").innerHTML =
@@ -2032,22 +2068,26 @@ function baueRegion(){
   $("regionSearch").addEventListener("input", filterRegions);
 }
 function baueStadt(){
-  const werte = listeStaedte();
+  /* Suchtext in den Feldern über den Neuaufbau retten */
+  const altNeu = $("neueStadtInput") ? $("neueStadtInput").value : "";
+  const altSuche = $("allCitiesSearch") ? $("allCitiesSearch").value : "";
+  /* Nach dem angezeigten Namen sortieren, auf Englisch steht Cologne also unter C */
+  const werte = listeStaedte().sort((x, y) => stadtTxt(x).localeCompare(stadtTxt(y), LANGUAGE));
   const selected = werte.filter(w => F.stadt.has(w));
   const cityCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4 10-10"/></svg>';
   const searchIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>';
   const cityCount = w => ALLE.filter(e => e.c === w).length;
   const selectedHtml = selected.length
     ? '<div class="selected-city-grid">' + selected.map(w =>
-        '<button type="button" class="chip city-selected" data-stadt="' + esc(w) + '" data-city="' + esc(w) + '" aria-pressed="true">' +
-          '<span class="city-check">' + cityCheck + '</span><span class="city-name">' + esc(w) +
+        '<button type="button" class="chip city-selected" data-stadt="' + esc(w) + '" data-city="' + esc(w + " " + (STADT_EN[w] || "")) + '" aria-pressed="true">' +
+          '<span class="city-check">' + cityCheck + '</span><span class="city-name">' + esc(stadtTxt(w)) +
           '</span><span class="city-event-count">' + cityCount(w) + '</span><span class="city-remove" aria-hidden="true">×</span></button>').join("") + '</div>'
     : '<p class="city-empty">' + t("noSelectedCities") + '</p>';
   const mitte = Math.ceil(werte.length / 2);
   const cityRows = list => list.map(w =>
-    '<button type="button" class="chip city-row" data-stadt="' + esc(w) + '" data-city="' + esc(w) +
+    '<button type="button" class="chip city-row" data-stadt="' + esc(w) + '" data-city="' + esc(w + " " + (STADT_EN[w] || "")) +
     '" aria-pressed="' + F.stadt.has(w) + '"><span class="city-box">' + cityCheck + '</span><span class="city-name">' +
-    esc(w) + '</span><span class="city-event-count">' + cityCount(w) + '</span></button>').join("");
+    esc(stadtTxt(w)) + '</span><span class="city-event-count">' + cityCount(w) + '</span></button>').join("");
   $("pane-stadt").innerHTML =
     '<div class="city-topbar"><div class="city-searchbox">' + searchIcon +
       '<input id="neueStadtInput" type="search" maxlength="60" autocomplete="off" placeholder="' + t("citySearchPlaceholder") + '"></div>' +
@@ -2070,6 +2110,9 @@ function baueStadt(){
   };
   $("neueStadtInput").addEventListener("input", filterRows);
   $("allCitiesSearch").addEventListener("input", filterRows);
+  $("neueStadtInput").value = altNeu;
+  $("allCitiesSearch").value = altSuche;
+  if (altNeu || altSuche) filterRows();
 }
 
 /* Neue Stadt über das Stadt-Panel anlegen — legt automatisch einen Platzhalter-Termin
@@ -2167,7 +2210,7 @@ function renderEigeneListe(){
   let html = "";
   if (EIGENE.length){
     html += '<div class="eigeneliste">' + EIGENE.map(ev =>
-      '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(ev.c) + ' · ' + rangeTxt(ev) + '</span>' +
+      '<div class="zeile"><span>' + esc(ev.n) + ' · ' + esc(stadtTxt(ev.c)) + ' · ' + rangeTxt(ev) + '</span>' +
       '<span class="zeilebtns">' +
       '<button class="edit" data-bearbeiten="' + esc(evId(ev)) + '">' + t("edit") + '</button>' +
       '<button class="del" data-loeschen="' + esc(evId(ev)) + '">' + t("delete") + '</button>' +
@@ -2313,7 +2356,7 @@ const SUCHTEXT = new WeakMap();
 function suchText(ev){
   let t = SUCHTEXT.get(ev);
   if (t) return t;
-  const roh = [ev.n, ev.c, ev.l, landVon(ev), LAND_EN[landVon(ev)] || "",
+  const roh = [ev.n, ev.c, STADT_EN[ev.c] || "", ev.l, REGION_EN[ev.l] || "", landVon(ev), LAND_EN[landVon(ev)] || "", ev.en || "",
                CATS[ev.k] ? CATS[ev.k].label + " " + CATS[ev.k].en : "", ev.d || ""].join(" ");
   const extra = WEIHNACHT.test(ev.n + " " + (ev.d || "")) ? " weihnachtsmarkte christmas markets" : "";
   t = " " + suchNorm(roh) + " " + suchNormUmlaut(roh) + extra + " ";
@@ -2383,7 +2426,7 @@ function markiere(name, woerter){
   return out + (offen ? "</mark>" : "");
 }
 function trefferZeile(ev, woerter, mitLand){
-  const ort = esc(ev.c) + (mitLand ? " · " + esc(landVon(ev)) : "");
+  const ort = esc(stadtTxt(ev.c)) + (mitLand ? " · " + esc(landTxt(landVon(ev))) : "");
   return '<button class="qhit" type="button" data-ev-id="' + esc(evId(ev)) + '" style="--cat:var(' + CATS[ev.k].v + ')" aria-expanded="false">' +
     '<span class="punkt" aria-hidden="true"></span>' +
     '<span><span class="qn">' + markiere(ev.n, woerter) + (isLive(ev) ? '<span class="qlive">' + t("live") + '</span>' : '') + '</span>' +
@@ -2470,8 +2513,8 @@ function trefferOeffnen(hit){
   if (next && next.classList.contains("qdetail")) next.remove();
   hit.setAttribute("aria-expanded", String(!offen));
   if (!offen){
-    hit.insertAdjacentHTML("afterend", '<div class="qdetail"><p>' + esc(ev.d || "") + '</p>' +
-      '<div class="qfakt">' + esc(ev.c) + ', ' + esc(ev.l) + ', ' + esc(landVon(ev)) + ' · ' + esc(ev.r) + '</div></div>');
+    hit.insertAdjacentHTML("afterend", '<div class="qdetail"><p>' + esc(beschreibung(ev)) + '</p>' +
+      '<div class="qfakt">' + esc(stadtTxt(ev.c)) + ', ' + esc(regionTxt(ev.l)) + ', ' + esc(landTxt(landVon(ev))) + ' · ' + esc(rhythmusTxt(ev)) + '</div></div>');
   }
 }
 
@@ -2491,11 +2534,11 @@ function sorted(list){
 let NEXT = null;
 
 function wohin(){
-  if (F.stadt.size  === 1) return t("inCity").replace("%value%", [...F.stadt][0]);
+  if (F.stadt.size  === 1) return t("inCity").replace("%value%", stadtTxt([...F.stadt][0]));
   if (F.stadt.size  > 1)   return t("inCities").replace("%n%", F.stadt.size);
-  if (F.region.size === 1) return t("inRegion").replace("%value%", [...F.region][0]);
+  if (F.region.size === 1) return t("inRegion").replace("%value%", regionTxt([...F.region][0]));
   if (F.region.size > 1)   return t("inRegions").replace("%n%", F.region.size);
-  if (F.land.size   === 1) return t("inCountry").replace("%value%", [...F.land][0]);
+  if (F.land.size   === 1) return t("inCountry").replace("%value%", landTxt([...F.land][0]));
   if (F.land.size   > 1)   return t("inCountries").replace("%n%", F.land.size);
   return t("worldwide");
 }
@@ -2530,7 +2573,7 @@ function renderNext(list){
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3.7-5.5 3.7z"/></svg></button>' +
       '<button class="hero-details" type="button" data-hero-details="' + esc(id) + '">' + t("detail") + '<span aria-hidden="true">›</span></button></div></div>' +
     '<div class="hero-body"><div class="who"><h2>' + esc(ev.n) + '</h2>' +
-      '<div class="meta"><b>' + esc(ev.c) + '</b><span>' + esc(landVon(ev)) + '</span>' +
+      '<div class="meta"><b>' + esc(stadtTxt(ev.c)) + '</b><span>' + esc(landTxt(landVon(ev))) + '</span>' +
         '<span>' + rangeTxt(ev) + '</span><span>' + durTxt(days(ev)) + '</span>' +
         '<span>' + catLabel(ev.k) + '</span></div></div>' +
       '<div class="cdwrap"><span class="cdl">' + (live ? t("stillRunning") : t("startsIn")) + '</span>' +
@@ -2605,7 +2648,7 @@ function evHTML(ev){
         '<span class="m">' + MABK[LANGUAGE][a.getMonth()] + '</span>' +
         '<span class="y">' + a.getFullYear() + '</span></span>' +
       '<span><span class="tt">' + esc(ev.n) + badge + '</span>' +
-        '<span class="sub"><span class="place">' + esc(ev.c) + '</span><span>' + datum + '</span></span></span>' +
+        '<span class="sub"><span class="place">' + esc(stadtTxt(ev.c)) + '</span><span>' + datum + '</span></span></span>' +
       '<span class="right">' + (isLive(ev) ? '<span class="live">' + t("live") + '</span>' : '') +
         '<span class="tag">' + catLabel(ev.k) + '</span>' +
         '<span class="dur"><span class="v">' + durTxt(n) + '</span><span class="k">' + t("detailDuration") + '</span></span>' +
@@ -2614,13 +2657,13 @@ function evHTML(ev){
     '<button class="cardmark" type="button" data-merken="' + esc(id) + '" aria-pressed="' + saved +
       '" aria-label="' + esc(saved ? t("marked") : t("mark")) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3.7-5.5 3.7z"/></svg></button>' +
     '<span class="cardchevron" aria-hidden="true">›</span>' +
-    '<div class="detail" hidden><p>' + esc(ev.d || "") + '</p><div class="dl">' +
+    '<div class="detail" hidden><p>' + esc(beschreibung(ev)) + '</p><div class="dl">' +
       '<div><dt>' + t("detailDates") + '</dt><dd>' + rangeTxt(ev) + '</dd></div>' +
       '<div><dt>' + t("detailDuration") + '</dt><dd>' + durTxt(n) + '</dd></div>' +
       '<div><dt>' + t("detailStarts") + '</dt><dd>' + WTAG[LANGUAGE][a.getDay()] + '</dd></div>' +
-      '<div><dt>' + t("detailRhythm") + '</dt><dd>' + esc(ev.r) + '</dd></div>' +
-      '<div><dt>' + t("detailLocation") + '</dt><dd>' + esc(ev.c) + ', ' + esc(ev.l) + '</dd></div>' +
-      '<div><dt>' + t("detailCountry") + '</dt><dd>' + esc(landVon(ev)) + '</dd></div>' +
+      '<div><dt>' + t("detailRhythm") + '</dt><dd>' + esc(rhythmusTxt(ev)) + '</dd></div>' +
+      '<div><dt>' + t("detailLocation") + '</dt><dd>' + esc(stadtTxt(ev.c)) + ', ' + esc(regionTxt(ev.l)) + '</dd></div>' +
+      '<div><dt>' + t("detailCountry") + '</dt><dd>' + esc(landTxt(landVon(ev))) + '</dd></div>' +
     '</div>' +
     '<div class="rowactions">' +
       '<button class="linkbtn' + (MERKZETTEL.has(id) ? " aktiv" : "") + '" type="button" data-merken="' +
@@ -2757,7 +2800,16 @@ function chipKlick(container, set, attr, danach){
     else set.has(wert) ? set.delete(wert) : set.add(wert);
     container.querySelectorAll(".chip").forEach(ch =>
       ch.setAttribute("aria-pressed", ch.dataset[attr] ? set.has(ch.dataset[attr]) : set.size === 0));
+    /* Die angetippte Zeile soll nach dem Neuaufbau an derselben Stelle unter dem Finger bleiben */
+    const body = $("sheet").querySelector(".sheetbody");
+    const klasse = [...b.classList].find(c => c !== "chip") || "chip";
+    const vorher = b.getBoundingClientRect().top;
     if (danach) danach();
+    const neu = wert ? container.querySelector("." + klasse + '[data-' + attr + '="' + CSS.escape(wert) + '"]') : null;
+    if (neu && body){
+      body.scrollTop += neu.getBoundingClientRect().top - vorher;
+      neu.focus({ preventScroll: true });
+    }
     speichereAuswahl();
     render();
   });

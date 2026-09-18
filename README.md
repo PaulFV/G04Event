@@ -96,6 +96,11 @@ Alle Daten stehen als Liste `EVENTS` im `<script>`-Block von `index.html`. Eine 
 | `r`  | Rhythmus als Text, z. B. `"jährlich"`, `"alle 2 Jahre"` |
 | `x`  | `1` = fester Regeltermin, `0` = aus dem Rhythmus fortgeschrieben |
 | `d`  | ein Satz Beschreibung |
+| `en` | derselbe Satz auf Englisch — fehlt er, zeigt die englische Oberfläche den deutschen Text |
+
+Länder, Regionen, bekannte Städte (Köln → Cologne) und der Rhythmus werden auf Englisch über Tabellen
+im Code übersetzt (`LAND_ANZEIGE_EN`, `REGION_EN`, `STADT_EN`, `RHYTHMUS_EN`); ein neuer Rhythmus-Text braucht dort
+einen Eintrag. Filter und gespeicherte Auswahl arbeiten weiter mit den deutschen Namen.
 
 Dauer und Wochentag berechnet die App selbst aus `s` und `e` — nichts doppelt pflegen.
 
