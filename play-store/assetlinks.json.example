@@ -3,6 +3,18 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
+      "package_name": "de.g04eggx.app",
+      "sha256_cert_fingerprints": [
+        "9F:39:16:14:D4:12:FE:2A:6D:D6:11:53:F9:46:25:AB:E5:EC:17:17:71:20:BE:5B:C3:E2:AA:44:C4:71:09:50",
+        "F5:72:2F:2A:94:87:B0:0F:33:0B:F5:E6:DC:74:58:46:D1:F1:6B:6E:EB:78:55:E1:08:A0:12:9A:10:D9:1E:7A",
+        "4C:5A:B7:DB:E2:17:26:52:1C:C0:96:3B:84:EE:23:C0:C8:8D:80:1F:39:C9:E6:87:F9:BC:82:E0:CA:6B:2C:CD"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
       "package_name": "de.g04event.app",
       "sha256_cert_fingerprints": [
         "REPLACE_WITH_PLAY_APP_SIGNING_SHA256_FINGERPRINT"

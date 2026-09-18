@@ -48,10 +48,12 @@ Danach startet sie ohne Browserleiste, mit eigenem Icon.
 
 ## Google Play
 
-Die Website ist für eine Android-Verpackung als Trusted Web Activity vorbereitet. Die nächsten
-Schritte, die benötigte Privacy-Policy-URL und die Vorlage für Digital Asset Links stehen in
-[`play-store/README.md`](play-store/README.md). Vor der Veröffentlichung müssen dort und in
-[`privacy.html`](privacy.html) noch die echten Betreiber- und Kontaktdaten ergänzt werden.
+Der Ordner [`play-store/android-twa/`](play-store/android-twa/) enthält die Android-Hülle
+(Trusted Web Activity, Paket `de.g04event.app`). Der Workflow
+[`.github/workflows/android-build.yml`](.github/workflows/android-build.yml) baut daraus das
+App Bundle, signiert, sobald die Keystore-Secrets gesetzt sind. Anleitung, Checkliste und
+Domain-Verknüpfung stehen in [`play-store/README.md`](play-store/README.md), die Store-Texte
+auf Deutsch und Englisch in [`play-store/store-listing.md`](play-store/store-listing.md).
 
 ## Starten
 

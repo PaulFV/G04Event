@@ -155,6 +155,21 @@ android {
             minifyEnabled true
         }
     }
+
+    // Die Release-Signatur wird nur aktiviert, wenn die Umgebungsvariablen gesetzt sind
+    // (GitHub-Secrets im Workflow). Keystore-Dateien und Passwörter gehören nie ins Repository.
+    def releaseKeystoreFile = System.getenv("ANDROID_KEYSTORE_FILE")
+    if (releaseKeystoreFile && file(releaseKeystoreFile).exists()) {
+        signingConfigs {
+            release {
+                storeFile file(releaseKeystoreFile)
+                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+            }
+        }
+        buildTypes.release.signingConfig = signingConfigs.release
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

@@ -352,6 +352,14 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .searchbox input::placeholder{color:var(--faint)}
 .searchbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
+/* ---------- Notfall-Hinweis bei gescheitertem Start ---------- */
+.absturz{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:var(--bg)}
+.absturz[hidden]{display:none}
+.absturz-box{max-width:460px;padding:24px;border:1px solid var(--line-2);border-radius:16px;background:var(--surface)}
+.absturz-box h2{margin:0 0 10px;font-family:var(--disp);font-size:22px}
+.absturz-box p{margin:0 0 10px;color:var(--muted);font-size:14.5px}
+.absturz-knoepfe{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.absturz-knoepfe button{flex:1 1 180px;height:44px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface-2);color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
 /* Kurzes Einblenden nach Home, damit sichtbar ist, dass neu geladen wurde */
 @keyframes frisch{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
 .frisch{animation:frisch .35s ease-out}
@@ -890,6 +898,24 @@ try {
 </script>
 </head>
 <body>
+<div class="absturz" id="absturz" hidden role="alert">
+  <div class="absturz-box">
+    <h2>G04Event konnte nicht starten</h2>
+    <p>Beim Laden ist ein Fehler aufgetreten. Meist hilft Neuladen; sonst die gespeicherten Einstellungen zurücksetzen (Filter, Merkliste und eigene Termine werden dabei gelöscht).</p>
+    <p lang="en">G04Event could not start. Reload usually helps; otherwise reset the saved settings (filters, saved and own events will be removed).</p>
+    <div class="absturz-knoepfe">
+      <button type="button" onclick="location.reload()">Neu laden · Reload</button>
+      <button type="button" onclick="try{Object.keys(localStorage).filter(function(k){return k.indexOf('g04event.')===0}).forEach(function(k){localStorage.removeItem(k)})}catch(e){}location.reload()">Daten zurücksetzen · Reset data</button>
+    </div>
+  </div>
+</div>
+<script>
+/* Schlägt der Start fehl, statt einer leeren Seite den Notfall-Hinweis zeigen */
+window.addEventListener("error", function(){
+  if (window.__g04ok) return;
+  setTimeout(function(){ var b = document.getElementById("absturz"); if (b && !window.__g04ok) b.hidden = false; }, 0);
+});
+</script>
 
 <div class="shell">
   <header class="head">
@@ -1011,7 +1037,7 @@ try {
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.16</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.17</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1772,9 +1798,28 @@ let ALLE = [];
 /* Eindeutige Kennung — eigene Termine haben eine id, kuratierte werden aus Name+Stadt+Beginn gebildet */
 const evId = ev => ev.id || (ev.n + "␟" + ev.c + "␟" + ev.s);
 
+/* Nur vollständige eigene Termine übernehmen — beschädigte Einträge würden sonst den Start abbrechen */
+const ISO_DATUM = /^\d{4}-\d{2}-\d{2}$/;
+function bereinigeEigenen(ev){
+  if (!ev || typeof ev !== "object") return null;
+  const text = v => typeof v === "string" ? v.trim() : "";
+  const n = text(ev.n), c = text(ev.c), s = text(ev.s);
+  if (!n || !c || !ISO_DATUM.test(s) || isNaN(new Date(s).getTime())) return null;
+  const e = ISO_DATUM.test(text(ev.e)) && text(ev.e) >= s ? text(ev.e) : s;
+  return { ...ev, n, c, s, e,
+    l: text(ev.l) || c,
+    k: CATS[ev.k] ? ev.k : "sonstige",
+    r: text(ev.r) || "Einmalig",
+    d: text(ev.d),
+    x: 1, eigen: true,
+    id: text(ev.id) || ("eigen-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7)) };
+}
 function ladeEigene(){
-  try { EIGENE = JSON.parse(localStorage.getItem(EIGENE_KEY) || "[]"); } catch(e){ EIGENE = []; }
-  try { AUSGEBLENDET = new Set(JSON.parse(localStorage.getItem(AUSGEBLENDET_KEY) || "[]")); }
+  try {
+    const roh = JSON.parse(localStorage.getItem(EIGENE_KEY) || "[]");
+    EIGENE = Array.isArray(roh) ? roh.map(bereinigeEigenen).filter(Boolean) : [];
+  } catch(e){ EIGENE = []; }
+  try { const a = JSON.parse(localStorage.getItem(AUSGEBLENDET_KEY) || "[]"); AUSGEBLENDET = new Set(Array.isArray(a) ? a.filter(v => typeof v === "string") : []); }
   catch(e){ AUSGEBLENDET = new Set(); }
 }
 function speichereEigene(){
@@ -3263,6 +3308,7 @@ document.addEventListener("visibilitychange", () => {
 setInterval(() => { pruefeErinnerungen(); pruefeEigeneTermine(); }, 60 * 60 * 1000);
 
 render();
+window.__g04ok = true;           // Start erfolgreich — der Notfall-Hinweis bleibt aus
 </script>
 </body>
 </html>
