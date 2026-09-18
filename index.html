@@ -678,19 +678,27 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .reset svg{width:16px;height:16px}
   .gh h3{font-size:21px}
   .gh .gn{font-size:12px}
-  .ev{width:calc(100% - 8px);margin-left:4px;margin-right:4px;border-radius:12px}
-  .evmain{grid-template-columns:74px 45px minmax(0,1fr);gap:8px;padding:10px 68px 10px 10px;align-items:start}
-  .evvisual{width:74px;height:72px;border-radius:8px}
-  .tt{font-size:14px;margin-top:0}
-  .sub{font-size:11px;gap:2px 6px}
-  .right{grid-column:3;justify-content:flex-start;padding-top:5px;gap:7px;flex-wrap:wrap}
-  .dur{text-align:left}
-  .dur .v{font-size:13px}
-  .dur .k{font-size:8.5px}
-  .tag{font-size:10.5px;padding:2px 8px}
-  .cardmark{top:14px;right:36px;width:25px;height:25px}
-  .cardmark svg{width:22px;height:22px}
-  .cardchevron{right:10px;font-size:25px}
+  /* Kompakte Karten: Bild, Datum und Text in einer Zeile, Kategorie und Dauer direkt darunter */
+  .group{margin-bottom:18px}
+  .gh{padding:8px 2px 8px}
+  .ev{margin-bottom:7px;border-radius:11px;border-left-width:3px;box-shadow:none}
+  .evmain{grid-template-columns:58px 34px minmax(0,1fr);gap:9px;padding:8px 38px 8px 8px;align-items:center}
+  .evvisual{width:58px;height:58px;border-radius:8px;grid-row:span 2}
+  .dbox{text-align:center;grid-row:span 2}
+  .right{align-self:start}
+  .dbox .d{font-size:18px}
+  .dbox .m{font-size:9.5px;margin-top:1px}
+  .dbox .y{display:none}
+  .tt{font-size:14.5px;line-height:1.25;margin:0 0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sub{font-size:11.5px;gap:1px 6px}
+  .live{font-size:8.5px;padding:1px 5px}
+  .right{grid-column:3;justify-content:flex-start;align-items:center;margin-top:5px;gap:7px}
+  .tag{font-size:10px;padding:1px 7px}
+  .dur .v{font-size:12px;color:var(--ink-2)}
+  .dur .k{display:none}
+  .cardmark{top:28px;right:6px;width:30px;height:30px}
+  .cardmark svg{width:20px;height:20px}
+  .cardchevron{display:none}
   .detail{padding:0 14px 18px 12px}
   .dock{padding:6px 5px calc(7px + env(safe-area-inset-bottom))}
   .dockrow{gap:2px}
@@ -889,7 +897,7 @@ try {
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.6</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.7</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -2322,9 +2330,9 @@ function evHTML(ev){
         '<span class="m">' + MABK[LANGUAGE][a.getMonth()] + '</span>' +
         '<span class="y">' + a.getFullYear() + '</span></span>' +
       '<span><span class="tt">' + esc(ev.n) + badge + '</span>' +
-        '<span class="sub"><span class="place">' + esc(ev.c) + '</span><span>' + datum + '</span>' +
-        (isLive(ev) ? '<span class="live">' + t("live") + '</span>' : '') + '</span></span>' +
-      '<span class="right"><span class="tag">' + catLabel(ev.k) + '</span>' +
+        '<span class="sub"><span class="place">' + esc(ev.c) + '</span><span>' + datum + '</span></span></span>' +
+      '<span class="right">' + (isLive(ev) ? '<span class="live">' + t("live") + '</span>' : '') +
+        '<span class="tag">' + catLabel(ev.k) + '</span>' +
         '<span class="dur"><span class="v">' + durTxt(n) + '</span><span class="k">' + t("detailDuration") + '</span></span>' +
       '</span>' +
     '</button>' +
