@@ -15,7 +15,7 @@ für den App-Shell-Cache und speichert persönliche Einstellungen ausschließlic
 
 ## Funktionen
 
-- **Bedienleiste am unteren Rand**, immer sichtbar — Home, Land & Region, Stadt, Thema,
+- **Bedienleiste am unteren Rand**, immer sichtbar — Home, Ort (Land, Region und Stadt in einem Feld), Thema,
   Einstellungen, Suche. Ein Tipp öffnet die Auswahl als Feld darüber; Home springt zurück zur Hauptseite.
 - **Suche mit Sofort-Treffern** — Ergebnisse erscheinen beim Tippen, Treffer außerhalb der Auswahl
   stehen in einem eigenen Abschnitt. Umlaute und Schreibweisen sind egal („koeln“, „munchen“),
