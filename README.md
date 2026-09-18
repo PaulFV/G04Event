@@ -15,8 +15,12 @@ für den App-Shell-Cache und speichert persönliche Einstellungen ausschließlic
 
 ## Funktionen
 
-- **Bedienleiste am unteren Rand**, immer sichtbar — Home, Suche, Land & Region, Stadt, Thema,
-  Einstellungen. Ein Tipp öffnet die Auswahl als Feld darüber; Home springt zurück zur Hauptseite.
+- **Bedienleiste am unteren Rand**, immer sichtbar — Home, Land & Region, Stadt, Thema,
+  Einstellungen, Suche. Ein Tipp öffnet die Auswahl als Feld darüber; Home springt zurück zur Hauptseite.
+- **Suche mit Sofort-Treffern** — Ergebnisse erscheinen beim Tippen, Treffer außerhalb der Auswahl
+  stehen in einem eigenen Abschnitt. Umlaute und Schreibweisen sind egal („koeln“, „munchen“),
+  Monatsnamen wie „Juli“ finden alles in diesem Monat. Vorschläge: dieses Wochenende, nächste 30 Tage,
+  Weihnachtsmärkte, Kategorien und die letzten Suchbegriffe.
 - **Kaskadierende Auswahl** — das Land schränkt die Regionen ein, die Region die Städte.
   Was nicht mehr passt, fällt automatisch aus der Auswahl.
 - **Nächster Termin ganz oben**, hervorgehoben und mit Live-Countdown. Läuft gerade etwas,

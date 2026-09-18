@@ -354,6 +354,40 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .searchbox input::placeholder{color:var(--faint)}
 .searchbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
+/* ---------- Suche: Sofort-Treffer und Vorschläge ---------- */
+.sheet.search-open{height:calc(100vh - 78px);max-height:none;min-height:0}
+.sheet.search-open .sheetbody{flex:1;min-height:0;padding:12px 16px 22px}
+.suchpane{display:flex;flex-direction:column;gap:14px;max-width:760px;margin:0 auto}
+.suchpane .searchbox{position:sticky;top:-12px;z-index:1;padding-top:0;background:var(--surface)}
+.suchinhalt{display:flex;flex-direction:column;gap:16px}
+.such-abschnitt h4{margin:0 0 8px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.such-abschnitt h4 .n{font-family:var(--mono);letter-spacing:0;color:var(--faint);margin-left:6px}
+.such-chips{display:flex;flex-wrap:wrap;gap:7px}
+.such-chip{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:1px solid var(--line-2);border-radius:999px;
+  background:var(--surface);color:var(--ink-2);font:inherit;font-size:13.5px;cursor:pointer;white-space:nowrap}
+.such-chip:hover{background:var(--surface-2);color:var(--ink)}
+.such-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.such-chip .punkt{width:8px;height:8px;border-radius:50%;background:var(--cat);flex:none}
+.such-leeren{border:0;background:none;color:var(--muted);font:inherit;font-size:12.5px;text-decoration:underline;cursor:pointer;padding:0;margin-left:4px}
+.such-treffer{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.qhit{display:grid;grid-template-columns:10px minmax(0,1fr) auto;align-items:center;gap:11px;width:100%;padding:10px 12px;
+  border:0;border-top:1px solid var(--line);background:var(--surface);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.qhit:first-child{border-top:0}
+.qhit:hover{background:var(--surface-2)}
+.qhit .punkt{width:10px;height:10px;border-radius:50%;background:var(--cat)}
+.qhit .qn{display:block;font-weight:600;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qhit .qm{display:block;font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qhit .qk{font-size:11px;font-weight:600;color:var(--cat);border:1px solid var(--cat);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.qhit .qlive{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--surface);background:var(--c-sport);border-radius:3px;padding:1px 5px;margin-left:6px;vertical-align:1px}
+.qhit mark{background:none;color:var(--ink);text-decoration:underline;text-decoration-color:var(--c-food);text-decoration-thickness:2px;text-underline-offset:2px}
+.qdetail{padding:2px 12px 12px 33px;background:var(--surface);font-size:13.5px;color:var(--ink-2)}
+.qdetail p{margin:0 0 6px}
+.qdetail .qfakt{font-size:12px;color:var(--muted)}
+.such-mehr{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;padding:8px 2px 0;cursor:pointer;text-decoration:underline}
+.such-leer{padding:18px 4px;color:var(--muted);font-size:14px;text-align:center}
+.such-liste{align-self:stretch;height:44px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--bg);
+  font:inherit;font-size:14.5px;font-weight:600;cursor:pointer}
 .chips[hidden]{display:none}
 .chip{font:inherit;font-size:14px;background:var(--surface-2);color:var(--ink-2);
   border:1px solid var(--line-2);border-radius:999px;padding:8px 14px;cursor:pointer;
@@ -711,6 +745,11 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .sheet.own-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
   .sheet.own-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
   .sheet.theme-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.search-open{height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+  .sheet.search-open .sheetbody{padding:10px 12px calc(22px + env(safe-area-inset-bottom))}
+  .qhit{grid-template-columns:10px minmax(0,1fr);padding:9px 10px;gap:9px}
+  .qhit .qk{display:none}
+  .qdetail{padding:2px 10px 11px 29px}
   .sheet.theme-open .sheetbody{padding:10px 10px calc(22px + env(safe-area-inset-bottom))}
   .theme-intro{align-items:flex-start;flex-direction:column;gap:3px;margin-top:0}
   .theme-summary{text-align:left}
@@ -880,10 +919,13 @@ try {
       <button id="sheetClose" data-i18n="done">Done</button>
     </div>
     <div class="sheetbody">
-      <div class="searchbox" id="pane-q" hidden>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.3 10.3 14 14"/></svg>
-        <input id="q" type="search" placeholder="Name, city or keyword" aria-label="Search"
-          data-i18n-placeholder="searchPlaceholder" data-i18n-aria="search">
+      <div class="suchpane" id="pane-q" hidden>
+        <div class="searchbox">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.4"/><path d="M10.3 10.3 14 14"/></svg>
+          <input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="Name, city or keyword" aria-label="Search"
+            data-i18n-placeholder="searchPlaceholder" data-i18n-aria="search">
+        </div>
+        <div class="suchinhalt" id="suchInhalt" aria-live="polite"></div>
       </div>
       <div class="chips" id="pane-land" hidden></div>
       <div class="chips" id="pane-region" hidden></div>
@@ -897,7 +939,7 @@ try {
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.8</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.9</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -971,10 +1013,6 @@ try {
         <span class="dock-icon dock-icon-home" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 10.7 8.5-7 8.5 7"/><path d="M5.5 9.4v10.1h13V9.4M9.5 19.5v-6h5v6"/></svg></span>
         <span class="dl" data-i18n="dockHome">Home</span>
       </button>
-      <button class="dbtn" data-pane="q" aria-expanded="false">
-        <span class="dock-icon dock-icon-q" aria-hidden="true"></span>
-        <span class="dl" data-i18n="dockSearch">Search</span>
-      </button>
       <button class="dbtn" data-pane="location" aria-expanded="false">
         <span class="dock-icon dock-icon-land" aria-hidden="true"></span>
         <span class="dl" data-i18n="dockLocation">Country &amp; region</span>
@@ -990,6 +1028,10 @@ try {
       <button class="dbtn" data-pane="eigene" aria-expanded="false">
         <span class="dock-icon dock-icon-own" aria-hidden="true"></span>
         <span class="dl" data-i18n="dockSettings">Settings</span>
+      </button>
+      <button class="dbtn" data-pane="q" aria-expanded="false">
+        <span class="dock-icon dock-icon-q" aria-hidden="true"></span>
+        <span class="dl" data-i18n="dockSearch">Search</span>
       </button>
     </div>
   </nav>
@@ -1030,7 +1072,9 @@ const I18N = {
     upcomingOnly:"Upcoming only", sortBy:"Sort by", sortDate:"By date",
     sortDurationLong:"Duration — longest first", sortDurationShort:"Duration — shortest first",
     sortCity:"City A–Z", sortName:"Name A–Z", sortCategory:"Category", reset:"Reset",
-    selection:"Selection", versionLabel:"Version", designLabel:"Appearance", designSystem:"System", designLight:"Light", designDark:"Dark", done:"Done", search:"Search", searchActive:"Search:", clearSearch:"Clear search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", searchPlaceholder:"Name, city or keyword",
+    selection:"Selection", versionLabel:"Version", designLabel:"Appearance", designSystem:"System", designLight:"Light", designDark:"Dark", done:"Done", search:"Search", searchActive:"Search:", clearSearch:"Clear search", sugTime:"When", sugWeekend:"This weekend", sug30:"Next 30 days", sugXmas:"Christmas markets",
+    sugCats:"Categories", sugRecent:"Recent searches", sugClear:"Clear", hitsInside:"In your selection", hitsOutside:"Outside your selection",
+    hitsNone:"Nothing found — try another word or a month like “July”.", hitsMore:"Show %n% more", showAsList:"Show %n% results in the list", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", searchPlaceholder:"Name, city or keyword",
     noteTitle:"About the dates:",
     noteBody:"Dotted dates are projected from the annual rhythm and have not yet been confirmed — please check with the organizer before travelling. Fixed recurring dates (carnival, Oktoberfest opening, Christmas markets until Christmas Eve) are shown without a dot.",
     formName:"Name*", formCity:"City*", formRegion:"Region", formCountry:"Country", formCategory:"Category",
@@ -1078,7 +1122,9 @@ const I18N = {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
     sortDurationLong:"Dauer — lang zuerst", sortDurationShort:"Dauer — kurz zuerst",
     sortCity:"Stadt A–Z", sortName:"Name A–Z", sortCategory:"Kategorie", reset:"Zurücksetzen",
-    selection:"Auswahl", versionLabel:"Version", designLabel:"Darstellung", designSystem:"System", designLight:"Hell", designDark:"Dunkel", done:"Fertig", search:"Suchen", searchActive:"Suche:", clearSearch:"Suche löschen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", searchPlaceholder:"Name, Stadt oder Stichwort",
+    selection:"Auswahl", versionLabel:"Version", designLabel:"Darstellung", designSystem:"System", designLight:"Hell", designDark:"Dunkel", done:"Fertig", search:"Suchen", searchActive:"Suche:", clearSearch:"Suche löschen", sugTime:"Wann", sugWeekend:"Dieses Wochenende", sug30:"Nächste 30 Tage", sugXmas:"Weihnachtsmärkte",
+    sugCats:"Kategorien", sugRecent:"Zuletzt gesucht", sugClear:"Löschen", hitsInside:"In deiner Auswahl", hitsOutside:"Außerhalb deiner Auswahl",
+    hitsNone:"Nichts gefunden — probier ein anderes Wort oder einen Monat wie „Juli“.", hitsMore:"%n% weitere zeigen", showAsList:"%n% Treffer in der Liste zeigen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", searchPlaceholder:"Name, Stadt oder Stichwort",
     noteTitle:"Zu den Terminen:",
     noteBody:"Daten mit gepunkteter Linie sind aus dem jährlichen Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen. Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.",
     formName:"Name*", formCity:"Stadt*", formRegion:"Region", formCountry:"Land", formCategory:"Kategorie",
@@ -2209,6 +2255,7 @@ $("langToggle").addEventListener("click", () => {
   baueLand(); baueRegion(); baueStadt(); baueThema(); baueEigeneStadtOptionen();
   renderEigeneListe(); renderMerklisteListe(); renderErinnerungBox();
   if (offenesPane) $("sheetTitle").textContent = t(TITEL[offenesPane]);
+  if (offenesPane === "q") renderSuche();
   if (bearbeiteId) $("eigenSubmitBtn").textContent = t("saveChanges");
   render();
 });
@@ -2235,14 +2282,199 @@ function filtered(){
     if (!trefferLand(ev) || !trefferRegion(ev) || !trefferStadt(ev)) return false;
     if (F.thema.size && !F.thema.has(ev.k)) return false;
     if (F.upcoming && isPast(ev)) return false;
-    if (F.q){
-      const hay = (ev.n + " " + ev.c + " " + ev.l + " " + landVon(ev) + " " +
-                   catLabel(ev.k) + " " + ev.d).toLowerCase();
-      if (!F.q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
-    }
+    if (F.q && !passtZurSuche(ev, sucheZerlegen(F.q))) return false;
     return true;
   });
 }
+/* ---------------- Suche ---------------- */
+/* Schreibweise vereinheitlichen: klein, ohne Akzente, ß → ss, Satzzeichen weg.
+   Zusätzlich eine Fassung mit ä → ae usw., damit „koeln“ und „köln“ beide Köln finden. */
+const ohneAkzent = t => t.toLowerCase().replace(/ß/g, "ss").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const suchNorm = t => ohneAkzent(t).replace(/[^a-z0-9]+/g, " ").trim();
+const suchNormUmlaut = t => suchNorm(t.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue"));
+
+const LAND_EN = { "Deutschland":"Germany", "Österreich":"Austria", "Schweiz":"Switzerland", "Frankreich":"France",
+  "Spanien":"Spain", "Italien":"Italy", "Vereinigtes Königreich":"United Kingdom UK England Britain",
+  "Niederlande":"Netherlands Holland", "Belgien":"Belgium", "Tschechien":"Czechia Czech Republic",
+  "Schweden":"Sweden", "Rumänien":"Romania", "Polen":"Poland", "Irland":"Ireland", "Dänemark":"Denmark",
+  "Ungarn":"Hungary", "Finnland":"Finland", "Norwegen":"Norway", "Griechenland":"Greece", "Türkei":"Turkey Türkiye",
+  "Südkorea":"South Korea", "China":"China", "USA":"USA United States America", "Portugal":"Portugal" };
+const WEIHNACHT = /weihnacht|christkind|striezel|reiterles|advent|christmas/i;
+
+/* Ausgeschriebene Monatsnamen gelten zusätzlich als Zeitraum: „juli“ findet alles im Juli
+   und weiterhin alles, in dessen Text „juli“ vorkommt (so bleibt „may“ → Mayday erhalten). */
+const MONATE = {};
+[["januar","january"],["februar","february"],["marz","maerz","march"],["april"],
+ ["mai","may"],["juni","june"],["juli","july"],["august"],["september","sept"],
+ ["oktober","october"],["november"],["dezember","december"]]
+  .forEach((namen, i) => namen.forEach(n => MONATE[n] = i));
+
+const SUCHTEXT = new WeakMap();
+function suchText(ev){
+  let t = SUCHTEXT.get(ev);
+  if (t) return t;
+  const roh = [ev.n, ev.c, ev.l, landVon(ev), LAND_EN[landVon(ev)] || "",
+               CATS[ev.k] ? CATS[ev.k].label + " " + CATS[ev.k].en : "", ev.d || ""].join(" ");
+  const extra = WEIHNACHT.test(ev.n + " " + (ev.d || "")) ? " weihnachtsmarkte christmas markets" : "";
+  t = " " + suchNorm(roh) + " " + suchNormUmlaut(roh) + extra + " ";
+  SUCHTEXT.set(ev, t);
+  return t;
+}
+/* Zerlegt die Eingabe in Suchwörter */
+function sucheZerlegen(text){
+  return { woerter: suchNorm(text).split(" ").filter(Boolean) };
+}
+function inMonat(ev, m){
+  for (let d = parse(ev.s); d <= parse(ev.e); d = new Date(d.getFullYear(), d.getMonth() + 1, 1))
+    if (d.getMonth() === m) return true;
+  return false;
+}
+function passtZurSuche(ev, anfrage){
+  const t = suchText(ev);
+  return anfrage.woerter.every(w => t.includes(w) || (w in MONATE && inMonat(ev, MONATE[w])));
+}
+/* Zeiträume der Vorschlags-Chips */
+function zeitraum(art){
+  const heute = TODAY;
+  if (art === "30") return [heute, new Date(heute.getTime() + 30 * DAY)];
+  const tag = heute.getDay();                       // 0 = Sonntag
+  const start = tag === 0 || tag === 6 ? heute : new Date(heute.getTime() + (5 - tag) * DAY);
+  const ende = tag === 0 ? heute : new Date(start.getTime() + (tag === 6 ? 1 : 2) * DAY);
+  return [start, ende];
+}
+function passtZurZeit(ev){
+  if (!suchZeit) return true;
+  if (suchZeit === "xmas") return WEIHNACHT.test(ev.n + " " + (ev.d || ""));
+  const [a, b] = zeitraum(suchZeit);
+  return parse(ev.s) <= b && parse(ev.e) >= a;
+}
+const inAuswahl = ev => trefferLand(ev) && trefferRegion(ev) && trefferStadt(ev) &&
+  (!F.thema.size || F.thema.has(ev.k));
+
+let suchZeit = null;
+let suchMehr = {};
+const SUCHVERLAUF_KEY = "g04event.suchverlauf";
+let SUCHVERLAUF = [];
+try { SUCHVERLAUF = JSON.parse(localStorage.getItem(SUCHVERLAUF_KEY) || "[]").slice(0, 6); } catch(e) {}
+function speichereSuchverlauf(){
+  try { localStorage.setItem(SUCHVERLAUF_KEY, JSON.stringify(SUCHVERLAUF)); } catch(e) {}
+}
+function merkeSuche(text){
+  text = text.trim();
+  if (!text) return;
+  SUCHVERLAUF = [text, ...SUCHVERLAUF.filter(v => v.toLowerCase() !== text.toLowerCase())].slice(0, 6);
+  speichereSuchverlauf();
+}
+/* Markiert die Suchwörter im Namen, ohne das Escaping zu verlieren */
+function markiere(name, woerter){
+  if (!woerter.length) return esc(name);
+  const norm = ohneAkzent(name);
+  const treffer = new Array(name.length).fill(false);
+  woerter.forEach(w => {
+    let i = norm.indexOf(w);
+    while (i !== -1){ for (let k = i; k < i + w.length && k < name.length; k++) treffer[k] = true; i = norm.indexOf(w, i + 1); }
+  });
+  let out = "", offen = false;
+  for (let i = 0; i < name.length; i++){
+    if (treffer[i] && !offen){ out += "<mark>"; offen = true; }
+    if (!treffer[i] && offen){ out += "</mark>"; offen = false; }
+    out += esc(name[i]);
+  }
+  return out + (offen ? "</mark>" : "");
+}
+function trefferZeile(ev, woerter, mitLand){
+  const ort = esc(ev.c) + (mitLand ? " · " + esc(landVon(ev)) : "");
+  return '<button class="qhit" type="button" data-ev-id="' + esc(evId(ev)) + '" style="--cat:var(' + CATS[ev.k].v + ')" aria-expanded="false">' +
+    '<span class="punkt" aria-hidden="true"></span>' +
+    '<span><span class="qn">' + markiere(ev.n, woerter) + (isLive(ev) ? '<span class="qlive">' + t("live") + '</span>' : '') + '</span>' +
+    '<span class="qm">' + ort + ' · ' + rangeTxt(ev) + '</span></span>' +
+    '<span class="qk">' + catLabel(ev.k) + '</span></button>';
+}
+function trefferBlock(titel, liste, schluessel, woerter, mitLand){
+  if (!liste.length) return "";
+  const max = suchMehr[schluessel] ? liste.length : 20;
+  return '<section class="such-abschnitt"><h4>' + titel + '<span class="n">' + liste.length + '</span></h4>' +
+    '<div class="such-treffer">' + liste.slice(0, max).map(ev => trefferZeile(ev, woerter, mitLand)).join("") + '</div>' +
+    (liste.length > max ? '<button class="such-mehr" type="button" data-mehr="' + schluessel + '">' +
+      t("hitsMore").replace("%n%", liste.length - max) + '</button>' : '') + '</section>';
+}
+function zeitChip(art, label){
+  return '<button class="such-chip" type="button" data-zeit="' + art + '" aria-pressed="' + (suchZeit === art) + '">' + label + '</button>';
+}
+function renderSuche(){
+  const text = $("q").value;
+  const anfrage = sucheZerlegen(text);
+  const leer = !anfrage.woerter.length;
+  let html = '<section class="such-abschnitt"><h4>' + t("sugTime") + '</h4><div class="such-chips">' +
+    zeitChip("weekend", t("sugWeekend")) + zeitChip("30", t("sug30")) + zeitChip("xmas", t("sugXmas")) + '</div></section>';
+
+  if (leer && !suchZeit){
+    html += '<section class="such-abschnitt"><h4>' + t("sugCats") + '</h4><div class="such-chips">' +
+      Object.keys(CATS).filter(k => k !== "sonstige").map(k =>
+        '<button class="such-chip" type="button" data-begriff="' + esc(catLabel(k)) + '" style="--cat:var(' + CATS[k].v + ')">' +
+        '<span class="punkt" aria-hidden="true"></span>' + esc(catLabel(k)) + '</button>').join("") + '</div></section>';
+    if (SUCHVERLAUF.length){
+      html += '<section class="such-abschnitt"><h4>' + t("sugRecent") +
+        '<button class="such-leeren" type="button" data-verlauf-leeren>' + t("sugClear") + '</button></h4><div class="such-chips">' +
+        SUCHVERLAUF.map(v => '<button class="such-chip" type="button" data-begriff="' + esc(v) + '">' + esc(v) + '</button>').join("") +
+        '</div></section>';
+    }
+    $("suchInhalt").innerHTML = html;
+    return;
+  }
+
+  const treffer = ALLE.filter(ev => !isPast(ev) && passtZurSuche(ev, anfrage) && passtZurZeit(ev))
+    .sort((a, b) => parse(a.s) - parse(b.s));
+  const drin = treffer.filter(inAuswahl), draussen = treffer.filter(ev => !inAuswahl(ev));
+  if (!treffer.length){
+    html += '<p class="such-leer">' + t("hitsNone") + '</p>';
+  } else {
+    html += trefferBlock(t("hitsInside"), drin, "drin", anfrage.woerter, false);
+    html += trefferBlock(t("hitsOutside"), draussen, "draussen", anfrage.woerter, true);
+    if (!leer && !suchZeit && drin.length)
+      html += '<button class="such-liste" type="button" data-als-liste>' + t("showAsList").replace("%n%", drin.length) + '</button>';
+  }
+  $("suchInhalt").innerHTML = html;
+}
+/* Übernimmt den Suchtext als Filter für die Liste */
+function sucheAlsListe(){
+  const text = $("q").value.trim();
+  merkeSuche(text);
+  F.q = text;
+  homeActive = false;
+  schliesse();
+  render();
+  const out = $("out");
+  if (out) window.scrollTo({ top: out.getBoundingClientRect().top + window.scrollY - 140, behavior: "smooth" });
+}
+/* Treffer in der Auswahl: zur Karte springen und aufklappen. Außerhalb: Details direkt hier zeigen. */
+function trefferOeffnen(hit){
+  const id = hit.dataset.evId;
+  const ev = ALLE.find(e => evId(e) === id);
+  if (!ev) return;
+  merkeSuche($("q").value);
+  if (inAuswahl(ev)){
+    F.q = "";
+    if (F.upcoming && isPast(ev)) F.upcoming = false;
+    schliesse();
+    render();
+    const karte = document.querySelector('.ev[data-ev-id="' + CSS.escape(id) + '"]');
+    if (!karte) return;
+    const knopf = karte.querySelector(".evmain");
+    if (knopf.getAttribute("aria-expanded") !== "true") knopf.click();
+    karte.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  const offen = hit.getAttribute("aria-expanded") === "true";
+  const next = hit.nextElementSibling;
+  if (next && next.classList.contains("qdetail")) next.remove();
+  hit.setAttribute("aria-expanded", String(!offen));
+  if (!offen){
+    hit.insertAdjacentHTML("afterend", '<div class="qdetail"><p>' + esc(ev.d || "") + '</p>' +
+      '<div class="qfakt">' + esc(ev.c) + ', ' + esc(ev.l) + ', ' + esc(landVon(ev)) + ' · ' + esc(ev.r) + '</div></div>');
+  }
+}
+
 function sorted(list){
   const byDate = (a,b) => parse(a.s) - parse(b.s);
   return [...list].sort({
@@ -2407,7 +2639,6 @@ function render(){
 
   renderNext(list);
 
-  $("q").value = F.q;
   // Aktiven Suchbegriff über der Liste zeigen, damit klar ist, warum gefiltert wird
   $("qchip").hidden = !F.q;
   $("qchipTerm").textContent = LANGUAGE === "de" ? "„" + F.q + "“" : "“" + F.q + "”";
@@ -2480,6 +2711,7 @@ function oeffne(pane){
   $("sheetTitle").textContent = t(TITEL[pane]);
   $("sheet").classList.toggle("own-open", pane === "eigene");
   $("sheet").classList.toggle("theme-open", pane === "thema");
+  $("sheet").classList.toggle("search-open", pane === "q");
   $("sheet").classList.toggle("city-open", pane === "stadt");
   $("sheet").classList.toggle("region-open", pane === "region" || pane === "location");
   $("sheet").classList.toggle("country-open", pane === "land" || pane === "location");
@@ -2488,13 +2720,19 @@ function oeffne(pane){
   document.querySelectorAll(".dbtn").forEach(b =>
     b.setAttribute("aria-expanded", String(b.dataset.pane === pane)));
   $("sheet").querySelector(".sheetbody").scrollTop = 0;
-  if (pane === "q") setTimeout(() => $("q").focus(), 40);
+  if (pane === "q"){
+    $("q").value = F.q;
+    suchZeit = null;
+    renderSuche();
+    setTimeout(() => $("q").focus(), 40);
+  }
   if (pane === "eigene"){ renderEigeneListe(); renderMerklisteListe(); renderErinnerungBox(); }
 }
 function schliesse(){
   offenesPane = null;
   $("sheet").classList.remove("own-open");
   $("sheet").classList.remove("theme-open");
+  $("sheet").classList.remove("search-open");
   $("sheet").classList.remove("city-open");
   $("sheet").classList.remove("region-open");
   $("sheet").classList.remove("country-open");
@@ -2588,9 +2826,21 @@ $("pane-thema").addEventListener("click", e => {
   if (e.target.closest("#themeApply")) schliesse();
 });
 
-$("q").addEventListener("input", e => {
-  F.q = e.target.value.trim();
-  render();
+$("q").addEventListener("input", () => { suchMehr = {}; renderSuche(); });
+$("q").addEventListener("keydown", e => {
+  if (e.key === "Enter"){ e.preventDefault(); sucheAlsListe(); }
+});
+$("suchInhalt").addEventListener("click", e => {
+  const zeit = e.target.closest("[data-zeit]");
+  if (zeit){ suchZeit = suchZeit === zeit.dataset.zeit ? null : zeit.dataset.zeit; renderSuche(); return; }
+  const begriff = e.target.closest("[data-begriff]");
+  if (begriff){ $("q").value = begriff.dataset.begriff; renderSuche(); $("q").focus(); return; }
+  if (e.target.closest("[data-verlauf-leeren]")){ SUCHVERLAUF = []; speichereSuchverlauf(); renderSuche(); return; }
+  const mehr = e.target.closest("[data-mehr]");
+  if (mehr){ suchMehr[mehr.dataset.mehr] = true; renderSuche(); return; }
+  if (e.target.closest("[data-als-liste]")){ sucheAlsListe(); return; }
+  const hit = e.target.closest(".qhit");
+  if (hit) trefferOeffnen(hit);
 });
 $("qchipOpen").addEventListener("click", () => { if (offenesPane !== "q") oeffne("q"); });
 $("qchipClear").addEventListener("click", () => { F.q = ""; render(); });
