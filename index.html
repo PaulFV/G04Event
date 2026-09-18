@@ -27,6 +27,7 @@
   --c-sonstige:#565C66;
   --tint:rgba(20,23,28,.05);
   --ring:#14171C;
+  --clock:#B3261E;
   --sig-rot:#C0271B; --sig-gelb:#8A6300; --sig-gruen:#10702A;
   --hero-bg:#14171C; --hero-ink:#F2F4F7; --hero-muted:#A8B0BC; --hero-box:#232935;
   --dock-bg:rgba(252,252,253,.92);
@@ -45,6 +46,7 @@
     --c-sonstige:#A7ADB8;
     --tint:rgba(255,255,255,.06);
     --ring:#E8EBF0;
+  --clock:#FF7E7E;
     --sig-rot:#F58C80; --sig-gelb:#E5B84A; --sig-gruen:#5FC47C;
     --hero-bg:#242B37; --hero-ink:#F0F3F7; --hero-muted:#A9B3C1; --hero-box:#161B24;
     --dock-bg:rgba(18,22,28,.92);
@@ -60,6 +62,7 @@
   --c-sonstige:#A7ADB8;
   --tint:rgba(255,255,255,.06);
   --ring:#E8EBF0;
+  --clock:#FF7E7E;
   --sig-rot:#F58C80; --sig-gelb:#E5B84A; --sig-gruen:#5FC47C;
   --hero-bg:#242B37; --hero-ink:#F0F3F7; --hero-muted:#A9B3C1; --hero-box:#161B24;
   --dock-bg:rgba(18,22,28,.92);
@@ -82,11 +85,9 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15p
 .langbtn:hover{color:var(--ink);background:var(--surface-2)}
 h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);letter-spacing:-.045em;
   margin:0;line-height:.96}
-.brand-name{display:inline-block;background:linear-gradient(90deg,#89AAF6 0%,#4FC3AC 22%,#B490EE 44%,#D6AE4F 62%,#F179A6 80%,#5FC47C 100%);
+.brand-name{display:inline-block;background:linear-gradient(90deg,var(--c-tech) 0%,var(--c-art) 22%,var(--c-play) 44%,var(--c-food) 62%,var(--c-music) 80%,var(--c-sport) 100%);
   background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.appver{font-family:var(--mono);font-size:clamp(12px,2vw,16px);font-weight:500;letter-spacing:.02em;
-  color:var(--muted);vertical-align:middle;margin-left:8px}
-.head-datetime{color:#FF7E7E;font:700 14px/1.2 var(--mono);letter-spacing:.02em;text-shadow:0 0 10px rgba(255,126,126,.2)}
+.head-datetime{color:var(--clock);font:700 14px/1.2 var(--mono);letter-spacing:.02em;text-shadow:0 0 10px rgba(255,126,126,.2)}
 .lede{margin:8px 0 0;max-width:52ch;color:var(--muted);font-size:14.5px}
 
 /* ---------- Nächster Termin ---------- */
@@ -280,7 +281,6 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .dock-icon-home svg{width:58px;height:58px;display:block;stroke:currentColor;filter:drop-shadow(0 0 6px rgba(122,197,255,.34))}
 .dock-icon-q{background-position:0% 0%}
 .dock-icon-land{background-position:50% 0%}
-.dock-icon-region{background-position:100% 0%}
 .dock-icon-city{background-position:0% 100%}
 .dock-icon-theme{background-position:50% 100%}
 .dock-icon-own{background-position:100% 100%}
@@ -614,7 +614,6 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .headbar{align-items:flex-start}
   h1{font-size:clamp(22px,5.5vw,26px)}
   .brand{gap:6px}
-  .appver{font-size:9px;margin-left:2px}
   .head-datetime{font-size:13px}
   .langbtn{padding:8px 13px;font-size:12px}
   .hero{min-height:0;padding:18px 16px 19px;border-radius:14px;gap:18px}
@@ -819,7 +818,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
       <div class="chips" id="pane-stadt" hidden></div>
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.0</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.2</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -952,7 +951,7 @@ const I18N = {
     upcomingOnly:"Upcoming only", sortBy:"Sort by", sortDate:"By date",
     sortDurationLong:"Duration — longest first", sortDurationShort:"Duration — shortest first",
     sortCity:"City A–Z", sortName:"Name A–Z", sortCategory:"Category", reset:"Reset",
-    selection:"Selection", versionLabel:"Version", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", ownEvents:"Own events", searchPlaceholder:"Name, city or keyword",
+    selection:"Selection", versionLabel:"Version", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", searchPlaceholder:"Name, city or keyword",
     noteTitle:"About the dates:",
     noteBody:"Dotted dates are projected from the annual rhythm and have not yet been confirmed — please check with the organizer before travelling. Fixed recurring dates (carnival, Oktoberfest opening, Christmas markets until Christmas Eve) are shown without a dot.",
     formName:"Name*", formCity:"City*", formRegion:"Region", formCountry:"Country", formCategory:"Category",
@@ -963,8 +962,8 @@ const I18N = {
     countryPlaceholder:"blank = Germany", editing:"Editing", cancel:"cancel", addEvent:"Add event", saveChanges:"Save changes",
     clear:"Clear", storedLocally:"Stored locally in this browser.", addYourOwnEvent:"Add your own event",
     savedEvents:"Saved events", savedCount:"%n% saved", savedEmptyTitle:"No events saved yet.",
-    savedEmptyHint:"Open an event and tap ☆ Save.", myEvents:"My events", dockHome:"Home", dockSearch:"Search", dockCountry:"Country",
-    dockLocation:"Country & region", dockRegion:"Region", dockCity:"City", dockTheme:"Theme", dockSettings:"Settings", all:"all", add:"add",
+    savedEmptyHint:"Open an event and tap ☆ Save.", myEvents:"My events", dockHome:"Home", dockSearch:"Search",
+    dockLocation:"Country & region", dockCity:"City", dockTheme:"Theme", dockSettings:"Settings", all:"all", add:"add",
     themePrompt:"Choose one or more themes", themeSummary:"All themes · %n% categories", applyThemes:"Apply themes",
     allCountries:"All countries", allRegions:"All regions", allCities:"All cities", allThemes:"All themes",
     selected:"selected", of:"of", cities:"cities", citiesAfterOf:"cities", selectedCities:"Selected cities", citySearchPlaceholder:"Search or add a city…",
@@ -978,7 +977,7 @@ const I18N = {
     runningNow:"Running now", next:"Next", detail:"Details", stillRunning:"still running", startsIn:"starts in",
     countdownDays:"Days", countdownHours:"Hrs", countdownMinutes:"Min", countdownSeconds:"Sec",
     oneDay:"1 day", manyDays:"%n% days", eventOne:"%n% of %total% event", eventMany:"%n% of %total% events",
-    termOne:"event", termMany:"events", chosen:"%n% selected",
+    termOne:"event", termMany:"events",
     today:"today", tomorrow:"tomorrow", inDays:"in %n% days",
     inCity:"in %value%", inCities:"in %n% cities", inRegion:"in %value%", inRegions:"in %n% regions",
     inCountry:"in %value%", inCountries:"in %n% countries", worldwide:"worldwide",
@@ -1000,7 +999,7 @@ const I18N = {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
     sortDurationLong:"Dauer — lang zuerst", sortDurationShort:"Dauer — kurz zuerst",
     sortCity:"Stadt A–Z", sortName:"Name A–Z", sortCategory:"Kategorie", reset:"Zurücksetzen",
-    selection:"Auswahl", versionLabel:"Version", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", ownEvents:"Eigene Termine", searchPlaceholder:"Name, Stadt oder Stichwort",
+    selection:"Auswahl", versionLabel:"Version", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", searchPlaceholder:"Name, Stadt oder Stichwort",
     noteTitle:"Zu den Terminen:",
     noteBody:"Daten mit gepunkteter Linie sind aus dem jährlichen Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen. Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.",
     formName:"Name*", formCity:"Stadt*", formRegion:"Region", formCountry:"Land", formCategory:"Kategorie",
@@ -1011,8 +1010,8 @@ const I18N = {
     countryPlaceholder:"leer = Deutschland", editing:"Du bearbeitest", cancel:"abbrechen", addEvent:"Termin hinzufügen", saveChanges:"Änderungen speichern",
     clear:"Leeren", storedLocally:"Lokal in diesem Browser gespeichert.", addYourOwnEvent:"Eigenen Termin hinzufügen",
     savedEvents:"Gemerkte Termine", savedCount:"%n% gespeichert", savedEmptyTitle:"Noch keine Termine gemerkt.",
-    savedEmptyHint:"Öffne einen Termin und tippe auf ☆ Merken.", myEvents:"Meine Termine", dockHome:"Home", dockSearch:"Suche", dockCountry:"Land",
-    dockLocation:"Land & Region", dockRegion:"Region", dockCity:"Stadt", dockTheme:"Thema", dockSettings:"Einstellungen", all:"alle", add:"hinzufügen",
+    savedEmptyHint:"Öffne einen Termin und tippe auf ☆ Merken.", myEvents:"Meine Termine", dockHome:"Home", dockSearch:"Suche",
+    dockLocation:"Land & Region", dockCity:"Stadt", dockTheme:"Thema", dockSettings:"Einstellungen", all:"alle", add:"hinzufügen",
     themePrompt:"Wähle ein oder mehrere Themen", themeSummary:"Alle Themen · %n% Kategorien", applyThemes:"Themen anwenden",
     allCountries:"Alle Länder", allRegions:"Alle Regionen", allCities:"Alle Städte", allThemes:"Alle Themen",
     selected:"ausgewählt", of:"von", cities:"Städte", citiesAfterOf:"Städten", selectedCities:"Ausgewählte Städte", citySearchPlaceholder:"Stadt suchen oder hinzufügen…",
@@ -1026,7 +1025,7 @@ const I18N = {
     runningNow:"Läuft gerade", next:"Als Nächstes", detail:"Details", stillRunning:"läuft noch", startsIn:"beginnt in",
     countdownDays:"Tage", countdownHours:"Std", countdownMinutes:"Min", countdownSeconds:"Sek",
     oneDay:"1 Tag", manyDays:"%n% Tage", eventOne:"%n% von %total% Termin", eventMany:"%n% von %total% Terminen",
-    termOne:"Termin", termMany:"Termine", chosen:"%n% gewählt",
+    termOne:"Termin", termMany:"Termine",
     today:"heute", tomorrow:"morgen", inDays:"in %n% Tagen",
     inCity:"in %value%", inCities:"in %n% Städten", inRegion:"in %value%", inRegions:"in %n% Regionen",
     inCountry:"in %value%", inCountries:"in %n% Ländern", worldwide:"weltweit",
@@ -1406,14 +1405,19 @@ function applyLanguage(){
   $("langToggle").setAttribute("aria-label", t("switchLanguage"));
   aktualisiereKopfzeit();
 }
+const KOPFZEIT_FORMATE = {};
 function aktualisiereKopfzeit(){
   const feld = $("headDateTime");
   if (!feld) return;
   const jetzt = new Date();
   const locale = LANGUAGE === "de" ? "de-DE" : "en-GB";
-  const datum = new Intl.DateTimeFormat(locale, {day:"2-digit", month:"2-digit", year:"numeric"}).format(jetzt);
-  const uhr = new Intl.DateTimeFormat(locale, {hour:"2-digit", minute:"2-digit", hour12:false}).format(jetzt);
-  feld.textContent = datum + " · " + uhr;
+  const f = KOPFZEIT_FORMATE[locale] || (KOPFZEIT_FORMATE[locale] = {
+    datum: new Intl.DateTimeFormat(locale, {day:"2-digit", month:"2-digit", year:"numeric"}),
+    uhr: new Intl.DateTimeFormat(locale, {hour:"2-digit", minute:"2-digit", hour12:false})
+  });
+  const text = f.datum.format(jetzt) + " · " + f.uhr.format(jetzt);
+  if (feld.textContent === text) return;  // Anzeige ändert sich nur einmal pro Minute
+  feld.textContent = text;
   feld.dateTime = jetzt.toISOString();
 }
 function rechtstext(kind){
@@ -1742,9 +1746,11 @@ const STARTER_STADT = ["Berlin", "Hamburg", "München", "Köln", "Nürnberg",
   "Frankfurt am Main", "Stuttgart", "Dresden", "Leipzig", "Hannover"];
 
 function ladeAuswahl(){
-  const ersterBesuch = localStorage.getItem(STORE) === null;
+  let ersterBesuch = false;
   try {
-    const g = JSON.parse(localStorage.getItem(STORE) || "{}");
+    const roh = localStorage.getItem(STORE);
+    ersterBesuch = roh === null;
+    const g = JSON.parse(roh || "{}");
     (g.land   || []).forEach(v => F.land.add(v));
     (g.region || []).forEach(v => F.region.add(v));
     (g.stadt  || []).forEach(v => F.stadt.add(v));
@@ -2276,7 +2282,7 @@ function render(){
 
 /* ---------------- Leiste und Auswahlfeld ---------------- */
 const TITEL = { q:"search", location:"chooseLocation", land:"chooseCountry", region:"chooseRegion",
-                stadt:"chooseCity", thema:"chooseTheme", eigene:"ownEvents" };
+                stadt:"chooseCity", thema:"chooseTheme", eigene:"dockSettings" };
 const PANES = ["q","land","region","stadt","thema","eigene"];
 const PANE_GRUPPEN = { location:["land","region"] };
 let offenesPane = null;
