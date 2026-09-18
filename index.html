@@ -352,6 +352,10 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .searchbox input::placeholder{color:var(--faint)}
 .searchbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--faint)}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
+/* Kurzes Einblenden nach Home, damit sichtbar ist, dass neu geladen wurde */
+@keyframes frisch{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
+.frisch{animation:frisch .35s ease-out}
+@media (prefers-reduced-motion:reduce){.frisch{animation:none}}
 /* ---------- Ort: Land, Region und Stadt als aufklappbare Bereiche ---------- */
 .ortteil{--akz:var(--c-art);border:1px solid var(--line-2);border-radius:16px;background:var(--surface);margin:0 0 10px;overflow:clip}
 .ortteil[data-teil="region"]{--akz:var(--c-play)}
@@ -1007,7 +1011,7 @@ try {
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.13</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.14</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -2299,7 +2303,20 @@ renderEigeneListe();
 renderMerklisteListe();
 renderErinnerungBox();
 if ("serviceWorker" in navigator){
-  navigator.serviceWorker.register("sw.js").catch(() => {});
+  navigator.serviceWorker.register("sw.js").then(reg => {
+    /* Beim Zurückkehren in die App nach einer neuen Version fragen */
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") reg.update().catch(() => {});
+    });
+  }).catch(() => {});
+  /* Übernimmt eine neue Version die Kontrolle, einmal neu laden — nur wenn schon eine alte lief */
+  let neuGeladen = false;
+  const hatteAlteVersion = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hatteAlteVersion || neuGeladen) return;
+    neuGeladen = true;
+    window.location.reload();
+  });
 }
 
 /* ---------------- Hell / Dunkel ---------------- */
@@ -2866,8 +2883,18 @@ function oeffne(pane){
     homeActive = true;
     if (homeBtn) homeBtn.classList.add("home-active");
     schliesse();
+    /* Alles frisch aufbauen, damit Countdown, Liste und Auswahlfenster zur neuen Auswahl passen */
+    bereinige();
+    baueLand(); baueRegion(); baueStadt(); baueThema();
     render();
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    ["next", "out"].forEach(id => {
+      const el = $(id);
+      if (!el) return;
+      el.classList.remove("frisch");
+      void el.offsetWidth;          // Animation neu starten
+      el.classList.add("frisch");
+    });
     return;
   }
   if (offenesPane === pane){ schliesse(); return; }
