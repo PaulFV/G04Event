@@ -104,11 +104,12 @@ für den Kopfbereich) und eine Farbvariable `--c-name` in beiden Farbschemata.
 
 ## Icon
 
-Das Logo ist ein Neon-Klecks auf Schwarz mit einer leuchtenden türkisen Kugel ohne Schrift. `icon-512.png`
+Das Logo ist eine leuchtende Standort-Nadel mit Kalender und Stern, darunter der Schriftzug
+„G04 Event“, auf dunkelblauem Grund. Die Vorlage in voller Größe liegt in `assets/icon-master.png`. `icon-512.png`
 ist die größte Fassung, alle anderen Größen sind daraus verkleinert: `favicon-32.png`,
 `icon-180.png` (Apple Touch), `icon-192.png` und `icon-512-maskable.png`. Die maskable Fassung
 sitzt auf 78 % Fläche vor schwarzem Grund, damit Android beliebig zuschneiden kann, ohne den
-Rand anzuschneiden. Ein SVG gibt es nicht mehr — die Verläufe und das Leuchten lassen sich
+Schriftzug anzuschneiden. Ein SVG gibt es nicht mehr — die Verläufe und das Leuchten lassen sich
 als Vektor nicht sauber nachbauen.
 
 ## Zu den Terminen
