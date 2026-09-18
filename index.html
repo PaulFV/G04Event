@@ -149,11 +149,11 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);lett
 .cd[data-stufe="gruen"] .cdu .v{color:#6BD189}
 
 /* ---------- Ergebniskopf ---------- */
-.rhead{display:flex;flex-direction:column;gap:18px;padding:27px 0 20px}
-.count{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:16px;color:var(--muted);font-variant-numeric:tabular-nums}
-.count b{color:var(--ink);font-size:22px;font-weight:600}
-.count-icon{display:grid;place-items:center;width:29px;height:29px;color:var(--ink-2)}
-.count-icon svg{width:28px;height:28px}
+.rhead{display:flex;flex-direction:column;gap:10px;padding:18px 0 12px}
+.count{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.count b{color:var(--ink);font-size:17px;font-weight:600}
+.count-icon{display:grid;place-items:center;flex:none;width:20px;height:20px;color:var(--ink-2)}
+.count-icon svg{width:19px;height:19px}
 .qchip{display:inline-flex;align-self:flex-start;align-items:stretch;max-width:100%;border:1px solid var(--line-2);border-radius:999px;
   background:var(--surface);overflow:hidden}
 .qchip button{border:0;background:none;font:inherit;color:var(--ink-2);cursor:pointer}
@@ -163,20 +163,28 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);lett
 .qchip-label{color:var(--muted)}
 .qchip-term{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:var(--ink)}
 .qchip-x{display:grid;place-items:center;width:36px;flex:none;font-size:18px;line-height:1}
-.rtools{width:100%;display:grid;grid-template-columns:auto minmax(175px,265px) auto;align-items:center;gap:14px}
-.tg{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:16px;color:var(--ink-2);white-space:nowrap}
-.tg input{appearance:none;width:28px;height:28px;border:1px solid var(--line-2);border-radius:5px;background:var(--surface);margin:0;flex:none;cursor:pointer}
+/* Filterleiste: kleine Pillen in einer Reihe statt großer Felder */
+.rtools{width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.tg{display:flex;align-items:center;gap:7px;height:36px;padding:0 13px 0 9px;border:1px solid var(--line-2);border-radius:999px;
+  background:var(--surface);cursor:pointer;font-size:14px;color:var(--ink-2);white-space:nowrap}
+.tg:hover{background:var(--surface-2);color:var(--ink)}
+.tg input{appearance:none;width:18px;height:18px;border:1px solid var(--line-2);border-radius:50%;background:var(--surface);margin:0;flex:none;cursor:pointer}
 .tg input:checked{background:var(--ink);border-color:var(--ink)}
-.tg input:checked::after{content:"✓";display:block;color:var(--bg);font:700 23px/26px var(--sans);text-align:center}
+.tg input:checked::after{content:"✓";display:block;color:var(--bg);font:700 12px/17px var(--sans);text-align:center}
+.tg:has(input:checked){color:var(--ink)}
+.rtools select{width:auto;max-width:100%;height:36px;border-radius:999px;font-size:14px;padding:0 32px 0 14px;
+  background-position:calc(100% - 17px) 52%,calc(100% - 12px) 52%;background-size:5px 5px,5px 5px}
+.rtools select:hover{background-color:var(--surface-2)}
 select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);appearance:none;
   border:1px solid var(--line-2);border-radius:11px;padding:7px 38px 7px 16px;cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
   background-position:calc(100% - 20px) 53%,calc(100% - 14px) 53%;background-size:6px 6px,6px 6px;
   background-repeat:no-repeat}
-.reset{background:none;border:0;padding:0;font:inherit;font-size:16px;color:var(--muted);
+.reset{flex:none;margin-left:auto;display:flex;align-items:center;gap:6px;background:none;border:0;padding:6px 2px;font:inherit;font-size:14px;color:var(--muted);
   text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .reset:hover{color:var(--ink)}
 .reset[hidden]{display:none}
+.reset svg{width:15px;height:15px;flex:none}
 
 /* ---------- Liste ---------- */
 .group{margin-bottom:28px}
@@ -656,13 +664,18 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .cdu .v{font-size:30px}
   .hero .cdwrap{width:100%}
   .cd{width:100%}
-  .rhead{gap:14px;padding:21px 0 17px}
-  .count{font-size:13px}
-  .count b{font-size:19px}
-  .rtools{grid-template-columns:1fr 1fr;gap:10px}
-  .tg{grid-column:1/-1;font-size:14px}
-  .rtools select{grid-column:1}
-  .reset{justify-self:end;grid-column:2}
+  .rhead{gap:9px;padding:14px 0 8px}
+  .count{font-size:12.5px;gap:7px}
+  .count b{font-size:15px}
+  .rtools{gap:6px}
+  .tg,.rtools select{height:34px;font-size:13px}
+  .tg{padding:0 11px 0 7px;gap:6px}
+  .rtools select{padding:0 26px 0 11px;background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%}
+  /* Auf dem Handy nur als runder Knopf mit Symbol */
+  .reset{width:34px;height:34px;padding:0;justify-content:center;border:1px solid var(--line-2);border-radius:50%;
+    background:var(--surface);text-decoration:none}
+  .reset span{display:none}
+  .reset svg{width:16px;height:16px}
   .gh h3{font-size:21px}
   .gh .gn{font-size:12px}
   .ev{width:calc(100% - 8px);margin-left:4px;margin-right:4px;border-radius:12px}
@@ -821,7 +834,10 @@ try {
         <option value="name" data-i18n="sortName">Name A–Z</option>
         <option value="cat" data-i18n="sortCategory">Category</option>
       </select>
-      <button class="reset" id="reset" hidden data-i18n="reset">Reset</button>
+      <button class="reset" id="reset" type="button" hidden aria-label="Reset" data-i18n-aria="reset">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/></svg>
+        <span data-i18n="reset">Reset</span>
+      </button>
     </div>
   </div>
 
@@ -873,7 +889,7 @@ try {
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.5</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.6</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -2344,8 +2360,8 @@ function render(){
   // Aktiven Suchbegriff über der Liste zeigen, damit klar ist, warum gefiltert wird
   $("qchip").hidden = !F.q;
   $("qchipTerm").textContent = LANGUAGE === "de" ? "„" + F.q + "“" : "“" + F.q + "”";
-  $("count").innerHTML = '<span class="count-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="1.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg></span><span><b>' + list.length + '</b> ' +
-    t(list.length === 1 ? "eventOne" : "eventMany").replace("%n%", list.length).replace("%total%", ALLE.length) +
+  $("count").innerHTML = '<span class="count-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="1.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg></span><span>' +
+    t(list.length === 1 ? "eventOne" : "eventMany").replace("%n%", "<b>" + list.length + "</b>").replace("%total%", ALLE.length) +
     " · " + wohin() + '</span>';
   $("reset").hidden = !aktiv;
 
