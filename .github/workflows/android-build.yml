@@ -20,19 +20,20 @@ jobs:
         working-directory: play-store/android-twa
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: Android SDK
-        uses: android-actions/setup-android@v3
-
+      # Das Android SDK ist auf den GitHub-Ubuntu-Rechnern vorinstalliert (ANDROID_HOME)
       - name: Install Android SDK 36
-        run: sdkmanager "platforms;android-36" "build-tools;35.0.0"
+        run: |
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" "platforms;android-36" "build-tools;35.0.0"
 
       - name: Prepare optional signing key
         if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
