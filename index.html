@@ -86,6 +86,14 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15p
 .langbtn{border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink-2);
   padding:9px 18px;font:500 14px var(--sans);cursor:pointer;white-space:nowrap}
 .langbtn:hover{color:var(--ink);background:var(--surface-2)}
+.headactions{display:flex;align-items:center;gap:8px;flex:none}
+.themebtn{display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid var(--line-2);border-radius:999px;
+  background:var(--surface);color:var(--ink-2);cursor:pointer}
+.themebtn:hover{color:var(--ink);background:var(--surface-2)}
+.themebtn svg{width:20px;height:20px;display:block}
+.themebtn .ico-sun{display:none}
+.themebtn.ist-dunkel .ico-sun{display:block}
+.themebtn.ist-dunkel .ico-moon{display:none}
 h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);letter-spacing:-.045em;
   margin:0;line-height:.96}
 .brand-name{display:inline-block;background:linear-gradient(90deg,var(--c-tech) 0%,var(--c-art) 22%,var(--c-play) 44%,var(--c-food) 62%,var(--c-music) 80%,var(--c-sport) 100%);
@@ -621,9 +629,12 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   .head{padding-top:max(52px,calc(22px + env(safe-area-inset-top)))}
   .headbar{align-items:flex-start}
   h1{font-size:clamp(22px,5.5vw,26px)}
-  .brand{gap:6px}
+  .brand{flex-direction:column;align-items:flex-start;gap:3px}
   .head-datetime{font-size:13px}
   .langbtn{padding:8px 13px;font-size:12px}
+  .headactions{gap:6px}
+  .themebtn{width:34px;height:34px}
+  .themebtn svg{width:17px;height:17px}
   .hero{min-height:0;padding:18px 16px 19px;border-radius:14px;gap:18px}
   .hero::before{right:-28%;width:82%;opacity:.68}
   .hero-top{align-items:flex-start}
@@ -770,7 +781,13 @@ try {
         <h1><span class="brand-name">G04Event</span></h1>
         <time class="head-datetime" id="headDateTime" datetime=""></time>
       </div>
-      <button class="langbtn" id="langToggle" type="button" aria-label="Auf Deutsch wechseln">Deutsch</button>
+      <div class="headactions">
+        <button class="themebtn" id="themeToggle" type="button" aria-label="Switch to dark mode">
+          <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+          <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+        </button>
+        <button class="langbtn" id="langToggle" type="button" aria-label="Auf Deutsch wechseln">Deutsch</button>
+      </div>
     </div>
   </header>
 
@@ -840,7 +857,7 @@ try {
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.3</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.4</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1015,7 +1032,7 @@ const I18N = {
     browserSettings:"Browser settings", browserSettingsHint:"Open this site's notification settings in your browser and allow notifications, then try again.",
     sameDay:"On the same day", daysBefore:"%n% days before", reminderHint:"Reminders appear when this page is open and are stored locally.",
     privacyLink:"Privacy", copyrightLink:"Copyright", privacyTitle:"Privacy policy", copyrightTitle:"Copyright and licence",
-    switchLanguage:"Switch to German", languageButton:"Deutsch"
+    switchLanguage:"Switch to German", toLight:"Switch to light mode", toDark:"Switch to dark mode", languageButton:"Deutsch"
   },
   de: {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
@@ -1063,7 +1080,7 @@ const I18N = {
     browserSettings:"Browser-Einstellungen", browserSettingsHint:"Öffne die Benachrichtigungseinstellungen für diese Seite im Browser und erlaube Benachrichtigungen. Versuche es danach erneut.",
     sameDay:"Am gleichen Tag", daysBefore:"%n% Tage vorher", reminderHint:"Erinnerungen erscheinen, wenn diese Seite geöffnet ist, und werden lokal gespeichert.",
     privacyLink:"Datenschutz", copyrightLink:"Copyright", privacyTitle:"Datenschutz", copyrightTitle:"Copyright und Lizenz",
-    switchLanguage:"Auf Englisch wechseln", languageButton:"English"
+    switchLanguage:"Auf Englisch wechseln", toLight:"Zum hellen Modus wechseln", toDark:"Zum dunklen Modus wechseln", languageButton:"English"
   }
 };
 
@@ -1425,6 +1442,7 @@ function applyLanguage(){
   });
   $("langToggle").textContent = t("languageButton");
   $("langToggle").setAttribute("aria-label", t("switchLanguage"));
+  aktualisiereDesignKnopf();
   aktualisiereKopfzeit();
 }
 const KOPFZEIT_FORMATE = {};
@@ -2075,7 +2093,26 @@ function setzeDesign(design){
   });
   document.querySelectorAll("#designSeg button").forEach(b =>
     b.setAttribute("aria-pressed", b.dataset.design === design ? "true" : "false"));
+  aktualisiereDesignKnopf();
 }
+/* Tatsächlich sichtbarer Modus — bei „System“ entscheidet das Gerät */
+function istDunkel(){
+  const d = document.documentElement.dataset.theme;
+  if (d === "light" || d === "dark") return d === "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+/* Kopf-Knopf zeigt das Ziel: Sonne im dunklen Modus, Mond im hellen */
+function aktualisiereDesignKnopf(){
+  const knopf = $("themeToggle");
+  if (!knopf) return;
+  const dunkel = istDunkel();
+  knopf.classList.toggle("ist-dunkel", dunkel);
+  const text = t(dunkel ? "toLight" : "toDark");
+  knopf.setAttribute("aria-label", text);
+  knopf.title = text;
+}
+$("themeToggle").addEventListener("click", () => setzeDesign(istDunkel() ? "light" : "dark"));
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", aktualisiereDesignKnopf);
 setzeDesign(aktuellesDesign());
 $("designSeg").addEventListener("click", e => {
   const b = e.target.closest("button[data-design]");
