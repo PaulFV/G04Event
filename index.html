@@ -897,7 +897,7 @@ try {
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.7</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.8</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1129,7 +1129,7 @@ const catLabel = key => CATS[key] ? (LANGUAGE === "en" ? CATS[key].en : CATS[key
 
 const EVENTS = [
 /* Berlin */
-{n:"IFA",c:"Berlin",l:"Berlin",k:"tech",s:"2026-09-04",e:"2026-09-08",r:"jährlich",x:0,d:"Europas größte Messe für Unterhaltungselektronik und Hausgeräte, auf dem Messegelände unter dem Funkturm."},
+{n:"IFA",c:"Berlin",l:"Berlin",k:"tech",s:"2027-09-03",e:"2027-09-07",r:"jährlich",x:1,d:"Europas größte Messe für Unterhaltungselektronik und Hausgeräte, auf dem Messegelände unter dem Funkturm."},
 {n:"Berlin-Marathon",c:"Berlin",l:"Berlin",k:"sport",s:"2026-09-27",e:"2026-09-27",r:"jährlich, letztes September-Wochenende",x:1,d:"Weltrekordstrecke durch die Innenstadt, Ziel am Brandenburger Tor. Samstags zusätzlich das Inline-Skating-Rennen."},
 {n:"Festival of Lights",c:"Berlin",l:"Berlin",k:"art",s:"2026-10-09",e:"2026-10-18",r:"jährlich",x:0,d:"Zehn Abende lang werden Wahrzeichen und Fassaden mit Projektionen bespielt, Eintritt frei."},
 {n:"Jazzfest Berlin",c:"Berlin",l:"Berlin",k:"music",s:"2026-11-05",e:"2026-11-08",r:"jährlich",x:0,d:"Eines der ältesten Jazzfestivals Europas, Schwerpunkt zeitgenössische Improvisation."},
@@ -1241,7 +1241,7 @@ const EVENTS = [
 {n:"Ruhrtriennale",c:"Bochum",l:"Nordrhein-Westfalen",k:"art",s:"2027-08-13",e:"2027-09-26",r:"jährlich",x:0,d:"Festival in Industriedenkmälern des Ruhrgebiets: Musiktheater, Tanz und Installationen."},
 
 /* Bremen */
-{n:"Musikfest Bremen",c:"Bremen",l:"Bremen",k:"music",s:"2026-08-22",e:"2026-09-12",r:"jährlich",x:0,d:"Alte Musik und Kammerkonzerte an historischen Spielstätten in Bremen und im Umland."},
+{n:"Musikfest Bremen",c:"Bremen",l:"Bremen",k:"music",s:"2027-08-21",e:"2027-09-11",r:"jährlich",x:1,d:"Alte Musik und Kammerkonzerte an historischen Spielstätten in Bremen und im Umland."},
 {n:"Bremer Freimarkt",c:"Bremen",l:"Bremen",k:"trad",s:"2026-10-16",e:"2026-11-01",r:"jährlich",x:0,d:"Eines der ältesten Volksfeste Deutschlands, seit 1035, mit Freimarktsumzug am Samstag."},
 {n:"Bremer Sechstagerennen",c:"Bremen",l:"Bremen",k:"sport",s:"2027-01-07",e:"2027-01-12",r:"jährlich",x:0,d:"Bahnradsport in der ÖVB-Arena, sechs Nächte Madison und Sprintwertungen."},
 {n:"Breminale",c:"Bremen",l:"Bremen",k:"music",s:"2027-07-07",e:"2027-07-11",r:"jährlich",x:0,d:"Kulturfestival am Osterdeich mit freiem Eintritt, Bühnen direkt an der Weser."},
@@ -1458,7 +1458,46 @@ const EVENTS = [
 {n:"Taihu-Yuantouzhu-Kirschblütenfest",c:"Wuxi",l:"Jiangsu",p:"China",k:"trad",s:"2027-03-01",e:"2027-04-15",r:"jährlich im Frühling, je nach Blütezeit",x:0,d:"Kirschblütenfest am Taihu-See auf der Halbinsel Yuantouzhu mit tausenden Bäumen und abendlicher Illumination."},
 {n:"Shuangfeng-Lammfleisch-Food- und Kulturfestival",c:"Taicang",l:"Jiangsu",p:"China",k:"food",s:"2026-12-05",e:"2027-02-05",r:"jährlich im Spätherbst/Winter",x:0,d:"Food- und Kulturfestival rund um die regionale Spezialität Lammfleisch im Ort Shuangfeng bei Taicang."},
 {n:"Shanghai International Film Festival",c:"Shanghai",l:"Shanghai",p:"China",k:"film",s:"2027-06-11",e:"2027-06-20",r:"jährlich Mitte Juni",x:0,d:"Chinas größtes internationales Filmfestival mit Wettbewerb, Filmvorführungen und Filmmarkt."},
-{n:"China Shanghai International Arts Festival",c:"Shanghai",l:"Shanghai",p:"China",k:"art",s:"2026-10-17",e:"2026-11-15",r:"jährlich Mitte Oktober bis Mitte November",x:1,d:"Chinas größtes staatliches Kunstfestival mit Theater, Oper, Tanz und Musik an zahlreichen Spielorten."}
+{n:"China Shanghai International Arts Festival",c:"Shanghai",l:"Shanghai",p:"China",k:"art",s:"2026-10-17",e:"2026-11-15",r:"jährlich Mitte Oktober bis Mitte November",x:1,d:"Chinas größtes staatliches Kunstfestival mit Theater, Oper, Tanz und Musik an zahlreichen Spielorten."},
+/* ---- Ergänzt September 2026: weitere große Termine in Deutschland ---- */
+{n:"Beethovenfest Bonn",c:"Bonn",l:"Nordrhein-Westfalen",k:"music",s:"2026-09-03",e:"2026-10-03",r:"jährlich",x:1,d:"Klassikfestival in Beethovens Geburtsstadt mit Orchestern aus aller Welt, 2027 zum 200. Todestag als Jubiläumsausgabe."},
+{n:"Internationale Hofer Filmtage",c:"Hof",l:"Bayern",k:"film",s:"2026-10-20",e:"2026-10-25",r:"jährlich, Ende Oktober",x:1,d:"Traditionsreiches Festival für den jungen deutschen Film, 2026 zum 60. Mal."},
+{n:"Weihnachtsmarkt am Kölner Dom",c:"Köln",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-16",e:"2026-12-23",r:"jährlich",x:1,d:"Rund 140 Buden unter einem der höchsten Christbäume NRWs auf dem Roncalliplatz direkt vor dem Dom."},
+{n:"Alt-Rothenburger Reiterlesmarkt",c:"Rothenburg ob der Tauber",l:"Bayern",k:"trad",s:"2026-11-20",e:"2026-12-23",r:"jährlich",x:1,d:"Einer der ältesten Weihnachtsmärkte Deutschlands zwischen den Fachwerkhäusern der ummauerten Altstadt."},
+{n:"Aachener Weihnachtsmarkt",c:"Aachen",l:"Nordrhein-Westfalen",k:"trad",s:"2026-11-20",e:"2026-12-23",r:"jährlich",x:1,d:"Markt rund um Dom und Rathaus, bekannt für Aachener Printen und Glühwein in der Altstadt."},
+{n:"Frankfurter Weihnachtsmarkt",c:"Frankfurt am Main",l:"Hessen",k:"trad",s:"2026-11-23",e:"2026-12-22",r:"jährlich",x:1,d:"Über 200 Stände auf Römerberg, Paulsplatz und Mainkai, mit Turmbläsern und 26 Meter hohem Baum."},
+{n:"Erfurter Weihnachtsmarkt",c:"Erfurt",l:"Thüringen",k:"trad",s:"2026-11-24",e:"2026-12-22",r:"jährlich",x:1,d:"Markt auf dem Domplatz vor der Kulisse von Dom und Severikirche, mit großer Pyramide und Riesenrad."},
+{n:"Stuttgarter Weihnachtsmarkt",c:"Stuttgart",l:"Baden-Württemberg",k:"trad",s:"2026-11-25",e:"2026-12-23",r:"jährlich",x:1,d:"Einer der größten Weihnachtsmärkte Europas, bekannt für die liebevoll geschmückten Budendächer."},
+{n:"Filmfestival Max Ophüls Preis",c:"Saarbrücken",l:"Saarland",k:"film",s:"2027-01-25",e:"2027-01-31",r:"jährlich, Ende Januar",x:1,d:"Wichtigstes Festival für den jungen Film aus Deutschland, Österreich und der Schweiz."},
+{n:"ITB Berlin",c:"Berlin",l:"Berlin",k:"sport",s:"2027-03-16",e:"2027-03-18",r:"jährlich",x:1,d:"Weltgrößte Reisemesse auf dem Messegelände unter dem Funkturm, 2027 ausnahmsweise Mitte März."},
+{n:"Baumblütenfest",c:"Werder (Havel)",l:"Brandenburg",k:"trad",s:"2027-04-24",e:"2027-05-02",r:"jährlich, zur Obstbaumblüte",x:0,d:"Ältestes Volksfest Brandenburgs zwischen blühenden Obstplantagen, mit Obstweinen aus der Region."},
+{n:"Internationale Kurzfilmtage Oberhausen",c:"Oberhausen",l:"Nordrhein-Westfalen",k:"film",s:"2027-04-27",e:"2027-05-02",r:"jährlich",x:1,d:"Eines der ältesten Kurzfilmfestivals der Welt, seit 1954 in Oberhausen."},
+{n:"Mayday",c:"Dortmund",l:"Nordrhein-Westfalen",k:"music",s:"2027-04-30",e:"2027-04-30",r:"jährlich, 30. April",x:1,d:"Techno-Rave in den Westfalenhallen, zwölf Stunden auf vier Floors in den Mai hinein."},
+{n:"Eschborn–Frankfurt",c:"Frankfurt am Main",l:"Hessen",k:"sport",s:"2027-05-01",e:"2027-05-01",r:"jährlich, 1. Mai",x:1,d:"Radklassiker der World Tour von Eschborn über den Taunus bis ins Frankfurter Bankenviertel."},
+{n:"Ruhrfestspiele",c:"Recklinghausen",l:"Nordrhein-Westfalen",k:"art",s:"2027-05-01",e:"2027-06-13",r:"jährlich, ab 1. Mai",x:0,d:"Eines der ältesten Theaterfestivals Europas, entstanden aus einem Tausch von Kohle gegen Kunst."},
+{n:"Erlanger Bergkirchweih",c:"Erlangen",l:"Bayern",k:"trad",s:"2027-05-13",e:"2027-05-24",r:"jährlich, ab Donnerstag vor Pfingsten",x:1,d:"Bierfest unter alten Bäumen auf den Felsenkellern am Burgberg, seit 1755."},
+{n:"Rock am Ring",c:"Nürburg",l:"Rheinland-Pfalz",k:"music",s:"2027-06-04",e:"2027-06-06",r:"jährlich",x:1,d:"Großes Rockfestival am Nürburgring, Schwesterfestival von Rock im Park."},
+{n:"Skulptur Projekte Münster",c:"Münster",l:"Nordrhein-Westfalen",k:"art",s:"2027-06-13",e:"2027-10-03",r:"alle 10 Jahre",x:1,d:"Internationale Kunst im öffentlichen Raum, nur alle zehn Jahre, 2027 zum 50. Jubiläum."},
+{n:"Hurricane Festival",c:"Scheeßel",l:"Niedersachsen",k:"music",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:1,d:"Rock- und Popfestival auf dem Eichenring, mit fast identischem Programm wie das Southside."},
+{n:"Southside Festival",c:"Neuhausen ob Eck",l:"Baden-Württemberg",k:"music",s:"2027-06-18",e:"2027-06-20",r:"jährlich",x:1,d:"Süddeutsches Schwesterfestival des Hurricane auf einem ehemaligen Flugplatz."},
+{n:"Störtebeker Festspiele",c:"Ralswiek",l:"Mecklenburg-Vorpommern",k:"art",s:"2027-06-19",e:"2027-09-04",r:"jährlich, Juni bis September",x:1,d:"Piratenspektakel auf der Naturbühne auf Rügen, mit Schiffen, Pferden und Feuerwerk über dem Bodden."},
+{n:"CHIO Aachen",c:"Aachen",l:"Nordrhein-Westfalen",k:"sport",s:"2027-06-25",e:"2027-07-04",r:"jährlich",x:1,d:"Weltfest des Pferdesports in der Soers: Springen, Dressur, Vielseitigkeit, Fahren und Voltigieren."},
+{n:"Landshuter Hochzeit 1475",c:"Landshut",l:"Bayern",k:"trad",s:"2027-06-25",e:"2027-07-18",r:"alle 4 Jahre",x:1,d:"Mittelalterfest mit rund 2.500 Mitwirkenden, das die Fürstenhochzeit von 1475 nachstellt."},
+{n:"Karl-May-Spiele",c:"Bad Segeberg",l:"Schleswig-Holstein",k:"art",s:"2027-06-26",e:"2027-09-05",r:"jährlich, Ende Juni bis Anfang September",x:1,d:"Winnetou-Abenteuer auf der Freilichtbühne am Kalkberg, seit 1952."},
+{n:"Rudolstadt-Festival",c:"Rudolstadt",l:"Thüringen",k:"music",s:"2027-07-01",e:"2027-07-04",r:"jährlich, erstes Juliwochenende",x:1,d:"Größtes Folk-, Roots- und Weltmusikfestival Deutschlands, verteilt über die ganze Stadt."},
+{n:"Challenge Roth",c:"Roth",l:"Bayern",k:"sport",s:"2027-07-04",e:"2027-07-04",r:"jährlich, erstes Juliwochenende",x:1,d:"Größter Langdistanz-Triathlon der Welt, mit der berühmten Stimmung am Solarer Berg."},
+{n:"splash! Festival",c:"Gräfenhainichen",l:"Sachsen-Anhalt",k:"music",s:"2027-07-08",e:"2027-07-10",r:"jährlich",x:1,d:"Größtes Hip-Hop-Festival Europas zwischen den Tagebau-Baggern von Ferropolis."},
+{n:"Saarbrücker Altstadtfest",c:"Saarbrücken",l:"Saarland",k:"art",s:"2027-07-09",e:"2027-07-11",r:"jährlich, Anfang Juli",x:0,d:"Stadtfest mit Bühnen und Ständen in der Altstadt rund um den St. Johanner Markt."},
+{n:"Deichbrand Festival",c:"Cuxhaven",l:"Niedersachsen",k:"music",s:"2027-07-15",e:"2027-07-18",r:"jährlich",x:1,d:"Rockfestival am Meer auf dem Seeflughafen Cuxhaven/Nordholz."},
+{n:"Parookaville",c:"Weeze",l:"Nordrhein-Westfalen",k:"music",s:"2027-07-16",e:"2027-07-18",r:"jährlich",x:1,d:"Elektronikfestival als eigene Festivalstadt auf dem Flughafen Weeze."},
+{n:"Bayreuther Festspiele",c:"Bayreuth",l:"Bayern",k:"music",s:"2027-07-24",e:"2027-08-24",r:"jährlich",x:1,d:"Wagner-Opern im Festspielhaus auf dem Grünen Hügel, Karten oft erst nach Jahren Wartezeit."},
+{n:"Nature One",c:"Kastellaun",l:"Rheinland-Pfalz",k:"music",s:"2027-07-29",e:"2027-08-01",r:"jährlich",x:1,d:"Techno-Festival auf einer früheren Raketenbasis im Hunsrück, 2027 zum 30. Mal."},
+{n:"Gäubodenvolksfest",c:"Straubing",l:"Bayern",k:"trad",s:"2027-08-13",e:"2027-08-23",r:"jährlich, rund um Mariä Himmelfahrt",x:1,d:"Zweitgrößtes Volksfest Bayerns mit sieben Festzelten und über einer Million Besuchern."},
+{n:"Rheingauer Weinwoche",c:"Wiesbaden",l:"Hessen",k:"food",s:"2027-08-13",e:"2027-08-22",r:"jährlich",x:1,d:"Über 100 Stände mit Rheingauer Weinen und Sekten rund um Marktkirche und Schlossplatz."},
+{n:"Summer Breeze Open Air",c:"Dinkelsbühl",l:"Bayern",k:"music",s:"2027-08-18",e:"2027-08-21",r:"jährlich",x:1,d:"Eines der größten Metalfestivals Deutschlands, 2027 zum 30. Jubiläum."},
+{n:"Potsdamer Schlössernacht",c:"Potsdam",l:"Brandenburg",k:"art",s:"2027-08-20",e:"2027-08-22",r:"jährlich, 2026 Pause",x:1,d:"Park Sanssouci bei Nacht mit Lichtkunst, Musik und Theater zwischen den Schlössern."},
+{n:"IAA Mobility",c:"München",l:"Bayern",k:"tech",s:"2027-09-07",e:"2027-09-12",r:"alle 2 Jahre",x:1,d:"Messe für Auto und Mobilität, mit Fachkongress auf dem Messegelände und Open Space in der Innenstadt."},
+{n:"Pützchens Markt",c:"Bonn",l:"Nordrhein-Westfalen",k:"trad",s:"2027-09-10",e:"2027-09-14",r:"jährlich, zweites Septemberwochenende",x:0,d:"Traditionsreiches Volksfest in Beuel mit rund 500 Schaustellern und Feuerwerk am letzten Abend."},
 ];
 /* ---------------- Helfer ---------------- */
 const MON  = { de:["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],
@@ -1820,10 +1859,13 @@ const listeStaedte  = () => uniq(ALLE.filter(e => trefferLand(e) && trefferRegio
 /* Auswahl merken — nur im Browser des Betrachters */
 const STORE = "g04event.auswahl";
 
-/* Beim allerersten Start wird nur Deutschland ausgewählt. Weitere Länder und Städte
-   können danach jederzeit über die Auswahl ergänzt werden. */
-const STARTER_STADT = ["Berlin", "Hamburg", "München", "Köln", "Nürnberg",
+/* Beim allerersten Start wird nur Deutschland ausgewählt, ohne Städte — so erscheinen alle
+   deutschen Termine. Weitere Länder und Städte können danach über die Auswahl ergänzt werden. */
+/* Bis V2.4.7 wurden diese zehn Städte automatisch vorgewählt. Wer sie nie verändert hat,
+   bekommt sie einmalig entfernt, damit auch dort alle deutschen Termine sichtbar werden. */
+const ALTE_STARTER_STADT = ["Berlin", "Hamburg", "München", "Köln", "Nürnberg",
   "Frankfurt am Main", "Stuttgart", "Dresden", "Leipzig", "Hannover"];
+const STARTER_UMSTELLUNG_KEY = "g04event.starterOhneStaedte";
 
 function ladeAuswahl(){
   let ersterBesuch = false;
@@ -1837,13 +1879,14 @@ function ladeAuswahl(){
     (g.thema  || []).filter(k => k in CATS).forEach(k => F.thema.add(k));
   } catch(e) {}
   if (ersterBesuch && !F.land.size && !F.stadt.size){
-    const vorhandeneLaender = new Set(listeLaender());
-    const vorhandeneStaedte = new Set(ALLE.map(e => e.c));
-    if (vorhandeneLaender.has("Deutschland")) F.land.add("Deutschland");
-    STARTER_STADT.forEach(c => {
-      if (vorhandeneStaedte.has(c)) F.stadt.add(c);
-    });
+    if (listeLaender().includes("Deutschland")) F.land.add("Deutschland");
   }
+  try {
+    if (localStorage.getItem(STARTER_UMSTELLUNG_KEY) === null){
+      if (F.stadt.size === ALTE_STARTER_STADT.length && ALTE_STARTER_STADT.every(c => F.stadt.has(c))) F.stadt.clear();
+      localStorage.setItem(STARTER_UMSTELLUNG_KEY, "1");
+    }
+  } catch(e) {}
   bereinige();
   speichereAuswahl();
 }

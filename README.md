@@ -3,7 +3,7 @@
 Ein Überblick über **jährlich wiederkehrende Veranstaltungen in europäischen Städten** — mit Datum,
 Dauer, Rhythmus und Kategorie. Unten auswählen, oben den Countdown ablesen.
 
-**262 Termine · 24 Länder · 8 Kategorien**, Saison 2026/27.
+**300 Termine · 24 Länder · 8 Kategorien**, Saison 2026/27.
 
 Die Bedienoberfläche startet beim ersten Öffnen auf **Englisch**. Über den Schalter oben rechts
 kann jederzeit auf Deutsch gewechselt werden; die Sprache bleibt lokal im Browser gespeichert.
