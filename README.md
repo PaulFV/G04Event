@@ -27,7 +27,8 @@ für den App-Shell-Cache und speichert persönliche Einstellungen ausschließlic
   Browser gesetzt (`localStorage`)
 - **Englisch und Deutsch** — Englisch als Standard beim ersten Öffnen, Sprache lokal umschaltbar
 - **Details** — Tipp auf eine Zeile öffnet Beschreibung, Wochentag, Rhythmus, Region und Land
-- Helles und dunkles Design, folgt der Systemeinstellung
+- **Hell, Dunkel oder System** — in den Einstellungen wählbar, lokal gespeichert; „System“ folgt der
+  Einstellung des Geräts
 - Datenschutz und Copyright/Lizenz sind direkt in der App sowie unter `privacy.html` erreichbar
 
 ## Auf dem Handy installieren

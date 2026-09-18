@@ -35,7 +35,10 @@
   --sans:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --disp:"Bricolage Grotesque","Public Sans",-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  color-scheme:light dark;
 }
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#0E1115; --surface:#161A20; --surface-2:#1C222A; --surface-3:#232936;
@@ -290,7 +293,7 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .dbtn[data-pane="location"].gesetzt::before{content:"";position:absolute;left:26%;right:26%;top:-12px;height:7px;border-radius:999px;background:#50E8CC;box-shadow:0 0 13px rgba(80,232,204,.72)}
 .dbtn[aria-expanded="true"]{background:rgba(255,255,255,.08);border-color:rgba(170,190,215,.25);color:#F1F4F8}
 .dbtn[data-pane="home"].home-active{background:rgba(255,255,255,.08);border-color:rgba(170,190,215,.25);color:#F1F4F8}
-.dbtn[data-pane="home"].home-active .dl{color:var(--ink)}
+.dbtn[data-pane="home"].home-active .dl{color:#F1F4F8}
 
 /* Farbige, leuchtende Icons wie in der Referenzleiste */
 .dbtn:hover .dock-icon{filter:drop-shadow(0 0 12px rgba(126,220,255,.62)) drop-shadow(0 2px 3px rgba(0,0,0,.6))}
@@ -509,6 +512,11 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .eigenepane{display:flex;flex-direction:column;gap:20px;max-width:1000px;margin:0 auto}
 .settings-version{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--surface-2);color:var(--muted);font-size:14px}
 .settings-version strong{font:600 14px var(--mono);color:var(--ink)}
+.design-seg{display:flex;gap:3px;padding:3px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface)}
+.design-seg button{border:0;border-radius:999px;background:transparent;color:var(--muted);font:500 13px var(--sans);
+  padding:6px 13px;cursor:pointer;white-space:nowrap}
+.design-seg button:hover{color:var(--ink)}
+.design-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 .own-card{display:flex;flex-direction:column;gap:16px;padding:22px 24px;background:var(--surface);
   border:1px solid var(--line-2);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
 .own-cardhead{display:flex;align-items:center;gap:14px;min-height:38px;padding-bottom:15px;
@@ -745,6 +753,13 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+<script>
+/* Gewähltes Design vor dem ersten Zeichnen setzen, damit nichts aufblitzt */
+try {
+  const d = localStorage.getItem("g04event.design");
+  if (d === "light" || d === "dark") document.documentElement.dataset.theme = d;
+} catch(e) {}
+</script>
 </head>
 <body>
 
@@ -818,7 +833,14 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
       <div class="chips" id="pane-stadt" hidden></div>
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.2</strong></div>
+        <div class="settings-version"><span data-i18n="designLabel">Appearance</span>
+          <div class="design-seg" id="designSeg" role="group" aria-label="Appearance" data-i18n-aria="designLabel">
+            <button type="button" data-design="system" data-i18n="designSystem">System</button>
+            <button type="button" data-design="light" data-i18n="designLight">Light</button>
+            <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
+          </div>
+        </div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.3</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -951,7 +973,7 @@ const I18N = {
     upcomingOnly:"Upcoming only", sortBy:"Sort by", sortDate:"By date",
     sortDurationLong:"Duration — longest first", sortDurationShort:"Duration — shortest first",
     sortCity:"City A–Z", sortName:"Name A–Z", sortCategory:"Category", reset:"Reset",
-    selection:"Selection", versionLabel:"Version", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", searchPlaceholder:"Name, city or keyword",
+    selection:"Selection", versionLabel:"Version", designLabel:"Appearance", designSystem:"System", designLight:"Light", designDark:"Dark", done:"Done", search:"Search", mainSearch:"Search events", mainSearchPlaceholder:"Search events…", chooseCountry:"Choose country", chooseRegion:"Choose region", chooseLocation:"Choose country and region", chooseCity:"Choose city", chooseTheme:"Choose theme", searchPlaceholder:"Name, city or keyword",
     noteTitle:"About the dates:",
     noteBody:"Dotted dates are projected from the annual rhythm and have not yet been confirmed — please check with the organizer before travelling. Fixed recurring dates (carnival, Oktoberfest opening, Christmas markets until Christmas Eve) are shown without a dot.",
     formName:"Name*", formCity:"City*", formRegion:"Region", formCountry:"Country", formCategory:"Category",
@@ -999,7 +1021,7 @@ const I18N = {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
     sortDurationLong:"Dauer — lang zuerst", sortDurationShort:"Dauer — kurz zuerst",
     sortCity:"Stadt A–Z", sortName:"Name A–Z", sortCategory:"Kategorie", reset:"Zurücksetzen",
-    selection:"Auswahl", versionLabel:"Version", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", searchPlaceholder:"Name, Stadt oder Stichwort",
+    selection:"Auswahl", versionLabel:"Version", designLabel:"Darstellung", designSystem:"System", designLight:"Hell", designDark:"Dunkel", done:"Fertig", search:"Suchen", mainSearch:"Veranstaltungen suchen", mainSearchPlaceholder:"Veranstaltungen suchen…", chooseCountry:"Land wählen", chooseRegion:"Region wählen", chooseLocation:"Land und Region wählen", chooseCity:"Stadt wählen", chooseTheme:"Thema wählen", searchPlaceholder:"Name, Stadt oder Stichwort",
     noteTitle:"Zu den Terminen:",
     noteBody:"Daten mit gepunkteter Linie sind aus dem jährlichen Rhythmus fortgeschrieben und noch nicht bestätigt — vor der Anreise beim Veranstalter prüfen. Feste Regeltermine (Karneval, Oktoberfest-Anstich, Weihnachtsmärkte bis Heiligabend) stehen ohne Linie.",
     formName:"Name*", formCity:"Stadt*", formRegion:"Region", formCountry:"Land", formCategory:"Kategorie",
@@ -2031,6 +2053,34 @@ renderErinnerungBox();
 if ("serviceWorker" in navigator){
   navigator.serviceWorker.register("sw.js").catch(() => {});
 }
+
+/* ---------------- Hell / Dunkel ---------------- */
+const DESIGN_KEY = "g04event.design";
+const DESIGN_FARBE = { light:"#E9EAEC", dark:"#0E1115" };
+function aktuellesDesign(){
+  const d = document.documentElement.dataset.theme;
+  return d === "light" || d === "dark" ? d : "system";
+}
+function setzeDesign(design){
+  if (design === "light" || design === "dark") document.documentElement.dataset.theme = design;
+  else { delete document.documentElement.dataset.theme; design = "system"; }
+  try {
+    if (design === "system") localStorage.removeItem(DESIGN_KEY);
+    else localStorage.setItem(DESIGN_KEY, design);
+  } catch(e) {}
+  // Statusleiste am Handy passend einfärben
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => {
+    const eigen = m.media.includes("dark") ? DESIGN_FARBE.dark : DESIGN_FARBE.light;
+    m.content = design === "system" ? eigen : DESIGN_FARBE[design];
+  });
+  document.querySelectorAll("#designSeg button").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.design === design ? "true" : "false"));
+}
+setzeDesign(aktuellesDesign());
+$("designSeg").addEventListener("click", e => {
+  const b = e.target.closest("button[data-design]");
+  if (b) setzeDesign(b.dataset.design);
+});
 
 $("langToggle").addEventListener("click", () => {
   LANGUAGE = LANGUAGE === "en" ? "de" : "en";
