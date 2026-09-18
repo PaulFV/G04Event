@@ -110,7 +110,7 @@ für den Kopfbereich) und eine Farbvariable `--c-name` in beiden Farbschemata.
 ## Icon
 
 Das Logo ist eine leuchtende Standort-Nadel mit Kalender und Stern, darunter der Schriftzug
-„G04 Event“, auf dunkelblauem Grund. Die Vorlage in voller Größe liegt in `assets/icon-master.png`. `icon-512.png`
+„G04E“, auf dunkelblauem Grund. Die Vorlage in voller Größe liegt in `assets/icon-master.png`. `icon-512.png`
 ist die größte Fassung, alle anderen Größen sind daraus verkleinert: `favicon-32.png`,
 `icon-180.png` (Apple Touch), `icon-192.png` und `icon-512-maskable.png`. Die maskable Fassung
 sitzt auf 78 % Fläche vor schwarzem Grund, damit Android beliebig zuschneiden kann, ohne den
