@@ -71,7 +71,7 @@ bestätigt. Die Datei muss an der **Wurzel der Domain** liegen:
 
 Diese Datei gibt es bereits (Repository `paulfv.github.io`), sie enthält aber **nur G04EggX**.
 Für G04Event muss ein zweiter Eintrag dazu — die Vorlage mit beiden Apps steht in
-[`assetlinks.json.example`](assetlinks.json.example). Den Platzhalter durch den SHA-256-
+[`assetlinks.json`](assetlinks.json). Den Platzhalter durch den SHA-256-
 Fingerprint aus der Play Console (**Test und Release → App-Integrität → App-Signatur**)
 ersetzen; bei Play App Signing zählt dieser Schlüssel, nicht nur der lokale Upload-Schlüssel.
 Den Fingerprint des Upload-Schlüssels zusätzlich einzutragen schadet nicht.
