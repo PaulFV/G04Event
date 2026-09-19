@@ -17,6 +17,7 @@ jobs:
       ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
     defaults:
       run:
+        shell: bash
         working-directory: play-store/android-twa
     steps:
       - name: Checkout
@@ -37,10 +38,38 @@ jobs:
 
       - name: Prepare optional signing key
         if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
-        shell: bash
         env:
           KEYSTORE_BASE64: ${{ env.ANDROID_KEYSTORE_BASE64 }}
-        run: echo "$KEYSTORE_BASE64" | base64 --decode > "$GITHUB_WORKSPACE/play-store/android-twa/upload-keystore.jks"
+        run: |
+          # Leerzeichen und Zeilenumbrüche aus dem Secret entfernen, dann dekodieren
+          KS="$GITHUB_WORKSPACE/play-store/android-twa/upload-keystore.jks"
+          printf '%s' "$KEYSTORE_BASE64" | tr -d ' \r\n\t' | base64 --decode > "$KS"
+          echo "::notice::Keystore-Datei: $(stat -c %s "$KS") Bytes"
+
+      # Schlüssel prüfen und das Ergebnis als öffentliche Meldung ausgeben (ohne Passwörter)
+      - name: Check signing key
+        if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          KS="$GITHUB_WORKSPACE/play-store/android-twa/upload-keystore.jks"
+          if ! keytool -list -keystore "$KS" -storepass:env ANDROID_KEYSTORE_PASSWORD > /tmp/ks.txt 2>&1; then
+            echo "::error::Keystore lässt sich mit ANDROID_KEYSTORE_PASSWORD nicht öffnen: $(head -c 300 /tmp/ks.txt | tr '\r\n' '  ')"
+            exit 1
+          fi
+          ALIASE=$(grep -i 'PrivateKeyEntry' /tmp/ks.txt | cut -d, -f1 | tr '\r\n' '  ')
+          echo "::notice::Keystore geöffnet. Enthaltene Aliase: $ALIASE"
+          if ! keytool -list -v -keystore "$KS" -storepass:env ANDROID_KEYSTORE_PASSWORD -alias "$ANDROID_KEY_ALIAS" > /tmp/key.txt 2>&1; then
+            echo "::error::Alias aus ANDROID_KEY_ALIAS nicht gefunden (vorhanden: $ALIASE)"
+            exit 1
+          fi
+          if [ "$ANDROID_KEYSTORE_PASSWORD" != "$ANDROID_KEY_PASSWORD" ]; then
+            echo "::warning::ANDROID_KEY_PASSWORD unterscheidet sich von ANDROID_KEYSTORE_PASSWORD – bei einem mit keytool erzeugten PKCS12-Schlüssel müssen beide gleich sein"
+          fi
+          FP=$(grep -m1 'SHA256:' /tmp/key.txt | sed 's/.*SHA256: //')
+          echo "::notice::Upload-Schlüssel SHA-256: $FP"
 
       - name: Build release bundle
         env:
@@ -50,7 +79,12 @@ jobs:
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           chmod +x gradlew
-          ./gradlew bundleRelease --no-daemon
+          set -o pipefail
+          if ! ./gradlew bundleRelease --no-daemon 2>&1 | tee /tmp/build.log; then
+            # Die Fehlerursache als öffentliche Meldung ausgeben
+            echo "::error::$(grep -A5 'What went wrong' /tmp/build.log | head -7 | tr '\r\n' '  ')"
+            exit 1
+          fi
 
       - name: Upload AAB
         uses: actions/upload-artifact@v4
