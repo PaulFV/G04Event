@@ -1,5 +1,5 @@
 /* G04Event – App-Shell-Cache für zuverlässige PWA-/TWA-Nutzung und lokale Erinnerungen. */
-const CACHE = "g04event-v2.4.21";
+const CACHE = "g04event-v2.4.22";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -31,7 +31,8 @@ self.addEventListener("fetch", event => {
 
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
+      // Immer frisch laden: sonst liefert der HTTP-Zwischenspeicher bis zu 10 Minuten die alte Seite
+      fetch(new Request(request, { cache: "reload" }))
         .then(response => {
           const copy = response.clone();
           caches.open(CACHE).then(cache => cache.put(request, copy));
