@@ -1,5 +1,8 @@
 name: Android App Bundle
 
+# Secrets: ANDROID_KEYSTORE_BASE64 (Schlüsseldatei als Base64), ANDROID_KEYSTORE_PASSWORD,
+# ANDROID_KEY_ALIAS ("android"), ANDROID_KEY_PASSWORD (bei PKCS12 gleich dem Keystore-Passwort)
+
 on:
   workflow_dispatch:
   push:
