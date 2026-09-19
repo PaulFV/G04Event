@@ -34,11 +34,11 @@ diese Secrets anlegen:
 - `ANDROID_KEY_PASSWORD`
 
 Ohne diese Secrets entsteht ein unsigniertes Prüf-Bundle — gut zum Testen, aber nicht
-hochladbar. Den vorhandenen Bubblewrap-Schlüssel `play-store/android-twa/android.keystore`
-(nicht im Repository, siehe `.gitignore`) als Base64 erzeugen:
+hochladbar. Der Upload-Schlüssel ist `play-store/android-twa/g04event-upload.keystore` (Alias `android`,
+angelegt am 19.09.2026; nicht im Repository, siehe `.gitignore`). Als Base64 erzeugen:
 
 ```text
-certutil -encode android.keystore keystore.b64
+certutil -encode g04event-upload.keystore keystore.b64
 ```
 
 Aus `keystore.b64` die Kopf- und Fußzeile (`-----BEGIN/END CERTIFICATE-----`) entfernen und den
