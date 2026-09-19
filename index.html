@@ -110,13 +110,13 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);lett
   color:var(--hero-ink);border:1px solid var(--line-2);border-radius:18px;padding:24px 28px 28px;
   display:flex;flex-direction:column;gap:20px;justify-content:space-between}
 .hero[hidden]{display:none}
-.hero::before{content:"";position:absolute;z-index:-1;inset:0 0 0 34%;
+.hero::before{content:"";position:absolute;z-index:-1;inset:0;
   background-image:linear-gradient(90deg,rgba(10,14,20,.02),rgba(10,14,20,.08) 55%,rgba(10,14,20,.2)),var(--hero-image,url("assets/event-hero-sprite.png"));
   background-size:100% 100%,var(--hero-image-size,auto 400%);
   background-position:0 0,var(--hero-image-position,var(--cover-position,0% 0%));background-repeat:no-repeat;
   opacity:.9;filter:saturate(.92)}
 .hero::after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgba(7,12,18,.98) 0%,rgba(9,14,21,.82) 28%,rgba(9,14,21,.12) 65%,rgba(9,14,21,.2) 100%)}
+  background:linear-gradient(90deg,rgba(7,12,18,.99) 0%,rgba(8,13,20,.92) 34%,rgba(9,14,21,.45) 62%,rgba(9,14,21,.3) 100%)}
 .hero-top,.hero-body{position:relative;z-index:1}
 .hero-top{display:flex;align-items:center;justify-content:space-between;gap:14px}
 .hero-status{display:flex;align-items:center;gap:12px}
@@ -306,14 +306,14 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .dockrow{display:flex;gap:8px;max-width:1120px;margin:0 auto}
 .dbtn{flex:1 1 0;min-width:0;background:transparent;border:1px solid transparent;border-radius:19px;padding:7px 5px 6px;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;cursor:pointer;position:relative;
-  color:#AEBBD0;font:inherit;min-height:clamp(62px,6vw,96px);-webkit-tap-highlight-color:transparent}
-.dock-icon{display:block;width:clamp(34px,3.2vw,58px);height:clamp(34px,3.2vw,58px);flex:none;background-image:url("assets/dock-icons-sprite.png");background-repeat:no-repeat;background-size:300% 200%;background-color:#0B1016;filter:drop-shadow(0 0 6px rgba(122,197,255,.34)) drop-shadow(0 2px 3px rgba(0,0,0,.6));transition:filter .15s ease}
+  color:#AEBBD0;font:inherit;min-height:clamp(56px,4.2vw,78px);-webkit-tap-highlight-color:transparent}
+.dock-icon{display:block;width:clamp(32px,2.2vw,46px);height:clamp(32px,2.2vw,46px);flex:none;background-image:url("assets/dock-icons-sprite.png");background-repeat:no-repeat;background-size:300% 200%;background-color:#0B1016;filter:drop-shadow(0 0 6px rgba(122,197,255,.34)) drop-shadow(0 2px 3px rgba(0,0,0,.6));transition:filter .15s ease}
 .dock-icon-q{background-position:0% 0%}
 .dock-icon-land{background-position:50% 0%}
 .dock-icon-city{background-position:0% 100%}
 .dock-icon-theme{background-position:50% 100%}
 .dock-icon-own{background-position:100% 100%}
-.dbtn .dl{font-size:clamp(12px,1.15vw,17px);font-weight:600;letter-spacing:-.02em;line-height:1.05;color:#E6EBF3}
+.dbtn .dl{font-size:clamp(11.5px,0.85vw,15px);font-weight:600;letter-spacing:-.02em;line-height:1.05;color:#E6EBF3}
 .dbtn:hover{color:#D7E0ED}
 /* Aktiver Filter: nur ein kleiner Strich über dem Knopf, und nur solange kein anderes Feld offen ist */
 .dbtn[data-pane="location"].gesetzt::before{content:"";position:absolute;left:36%;right:36%;top:-9px;height:4px;border-radius:999px;background:#50E8CC;box-shadow:0 0 9px rgba(80,232,204,.6)}
@@ -1040,7 +1040,7 @@ window.addEventListener("error", function(){
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.20</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.21</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
