@@ -1,5 +1,5 @@
 /* G04Event – App-Shell-Cache für zuverlässige PWA-/TWA-Nutzung und lokale Erinnerungen. */
-const CACHE = "g04event-v2.4.22";
+const CACHE = "g04event-v2.4.23";
 const APP_SHELL = [
   "./",
   "./index.html",
