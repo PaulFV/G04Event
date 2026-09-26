@@ -367,6 +367,22 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 @keyframes frisch{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
 .frisch{animation:frisch .35s ease-out}
 @media (prefers-reduced-motion:reduce){.frisch{animation:none}}
+/* Mehrere Feste gleichzeitig: wischbare Hauptkachel mit blinkendem Hinweis */
+.hero.hero-mehrere{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.hero-mehr{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:-4px}
+.hero-dots{display:flex;align-items:center;gap:2px}
+.hero-dot{width:22px;height:22px;padding:0;border:0;background:transparent;cursor:pointer;display:grid;place-items:center}
+.hero-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:rgba(242,244,247,.35);transition:width .2s ease,background .2s ease}
+.hero-dot[aria-current="true"]::before{width:20px;border-radius:999px;background:var(--hcat)}
+.hero-hinweis{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--hcat);animation:hero-blink 1.6s ease-in-out infinite}
+.hero-pfeil{width:32px;height:32px;border-radius:50%;border:1px solid rgba(203,216,234,.34);background:rgba(11,18,27,.68);color:var(--hero-ink);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0 0 2px}
+.hero-pfeil:hover{background:rgba(255,255,255,.13)}
+@keyframes hero-blink{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes wisch-l{from{opacity:.2;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes wisch-r{from{opacity:.2;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.hero.wisch-l .hero-top,.hero.wisch-l .hero-body{animation:wisch-l .28s ease-out}
+.hero.wisch-r .hero-top,.hero.wisch-r .hero-body{animation:wisch-r .28s ease-out}
+@media (prefers-reduced-motion:reduce){.hero-hinweis,.hero.wisch-l .hero-top,.hero.wisch-l .hero-body,.hero.wisch-r .hero-top,.hero.wisch-r .hero-body{animation:none}}
 /* ---------- Ort: Land, Region und Stadt als aufklappbare Bereiche ---------- */
 .ortteil{--akz:var(--c-art);border:1px solid var(--line-2);border-radius:16px;background:var(--surface);margin:0 0 10px;overflow:clip}
 .ortteil[data-teil="region"]{--akz:var(--c-play)}
@@ -1040,7 +1056,7 @@ window.addEventListener("error", function(){
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.23</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.24</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1194,7 +1210,7 @@ const I18N = {
     catTech:"Technology", catFood:"Food", catPlay:"Games", catMusic:"Music", catArt:"Culture",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catOther:"Other",
     rhythmOnce:"Once", rhythmYearly:"Yearly", rhythmWeekly:"Weekly", rhythmMonthly:"Monthly", rhythmQuarterly:"Quarterly",
-    runningNow:"Running now", next:"Next", detail:"Details", stillRunning:"still running", startsIn:"starts in",
+    runningNow:"Running now", heroMore:"%n% running · swipe", heroPrev:"Previous event", heroNext:"Next event", next:"Next", detail:"Details", stillRunning:"still running", startsIn:"starts in",
     countdownDays:"Days", countdownHours:"Hrs", countdownMinutes:"Min", countdownSeconds:"Sec",
     oneDay:"1 day", manyDays:"%n% days", eventOne:"%n% of %total% event", eventMany:"%n% of %total% events",
     termOne:"event", termMany:"events",
@@ -1244,7 +1260,7 @@ const I18N = {
     catTech:"Technik", catFood:"Essen", catPlay:"Spiel", catMusic:"Musik", catArt:"Kultur",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catOther:"Sonstige",
     rhythmOnce:"Einmalig", rhythmYearly:"Jährlich", rhythmWeekly:"Wöchentlich", rhythmMonthly:"Monatlich", rhythmQuarterly:"Quartalsweise",
-    runningNow:"Läuft gerade", next:"Als Nächstes", detail:"Details", stillRunning:"läuft noch", startsIn:"beginnt in",
+    runningNow:"Läuft gerade", heroMore:"%n% laufen · wischen", heroPrev:"Vorheriges Fest", heroNext:"Nächstes Fest", next:"Als Nächstes", detail:"Details", stillRunning:"läuft noch", startsIn:"beginnt in",
     countdownDays:"Tage", countdownHours:"Std", countdownMinutes:"Min", countdownSeconds:"Sek",
     oneDay:"1 Tag", manyDays:"%n% Tage", eventOne:"%n% von %total% Termin", eventMany:"%n% von %total% Terminen",
     termOne:"Termin", termMany:"Termine",
@@ -2688,6 +2704,7 @@ function sorted(list){
 
 /* ---------------- Nächster Termin mit Countdown ---------------- */
 let NEXT = null;
+const HERO = { liste: [], i: 0 };
 
 function wohin(){
   if (F.stadt.size  === 1) return t("inCity").replace("%value%", stadtTxt([...F.stadt][0]));
@@ -2704,10 +2721,19 @@ function renderNext(list){
   const offen  = list.filter(ev => !isPast(ev));
   const laeuft = offen.filter(isLive).sort((a,b) => parse(a.e) - parse(b.e));
   const kommt  = offen.filter(ev => !isLive(ev)).sort((a,b) => parse(a.s) - parse(b.s));
-  const ev = laeuft[0] || kommt[0];
+  if (!laeuft.length && !kommt.length){ NEXT = null; HERO.liste = []; box.hidden = true; return; }
 
-  if (!ev){ NEXT = null; box.hidden = true; return; }
+  // Laufen mehrere Feste gleichzeitig, kann man in der Hauptkachel zwischen ihnen wischen
+  const altId = HERO.liste[HERO.i] ? evId(HERO.liste[HERO.i]) : null;
+  HERO.liste = laeuft.length ? laeuft : [kommt[0]];
+  HERO.i = Math.max(0, HERO.liste.findIndex(ev => evId(ev) === altId));
+  zeigeHero();
+}
 
+function zeigeHero(richtung){
+  const box = $("next");
+  const ev = HERO.liste[HERO.i];
+  const anzahl = HERO.liste.length;
   const live = isLive(ev);
   const id = evId(ev);
   const cover = coverTile(ev);
@@ -2736,8 +2762,29 @@ function renderNext(list){
         '<div class="cd" id="cd">' +
           [t("countdownDays"),t("countdownHours"),t("countdownMinutes"),t("countdownSeconds")].map(k =>
             '<div class="cdu"><span class="v">–</span><span class="k">' + k + '</span></div>').join("") +
-        '</div></div></div>';
+        '</div></div></div>' +
+    (anzahl > 1
+      ? '<div class="hero-mehr"><button class="hero-pfeil" type="button" data-hero-schritt="-1" aria-label="' + esc(t("heroPrev")) + '">‹</button>' +
+          '<div class="hero-dots">' + HERO.liste.map((x,i) =>
+            '<button type="button" class="hero-dot" data-hero-punkt="' + i + '"' + (i === HERO.i ? ' aria-current="true"' : '') +
+            ' aria-label="' + esc(x.n) + '"></button>').join("") + '</div>' +
+          '<span class="hero-hinweis">' + esc(t("heroMore").replace("%n%", anzahl)) + '</span>' +
+          '<button class="hero-pfeil" type="button" data-hero-schritt="1" aria-label="' + esc(t("heroNext")) + '">›</button></div>'
+      : '');
+  box.classList.toggle("hero-mehrere", anzahl > 1);
+  if (richtung){
+    box.classList.remove("wisch-l", "wisch-r");
+    void box.offsetWidth;           // Animation neu starten
+    box.classList.add(richtung > 0 ? "wisch-l" : "wisch-r");
+  }
   tick();
+}
+
+function heroSchritt(richtung){
+  const anzahl = HERO.liste.length;
+  if (anzahl < 2) return;
+  HERO.i = (HERO.i + richtung + anzahl) % anzahl;
+  zeigeHero(richtung);
 }
 
 function tick(){
@@ -3102,7 +3149,32 @@ $("qchipClear").addEventListener("click", () => { F.q = ""; render(); });
 $("sort").addEventListener("change", e => { F.sort = e.target.value; render(); });
 $("upcoming").addEventListener("change", e => { F.upcoming = e.target.checked; render(); });
 
+/* Wischen in der Hauptkachel, wenn mehrere Feste gleichzeitig laufen */
+let wischStart = null, geradeGewischt = false;
+$("next").addEventListener("pointerdown", e => {
+  wischStart = HERO.liste.length > 1 ? { x: e.clientX, y: e.clientY } : null;
+});
+$("next").addEventListener("pointerup", e => {
+  if (!wischStart) return;
+  const dx = e.clientX - wischStart.x, dy = e.clientY - wischStart.y;
+  wischStart = null;
+  if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+  geradeGewischt = true;
+  setTimeout(() => { geradeGewischt = false; }, 0);
+  heroSchritt(dx < 0 ? 1 : -1);
+});
+$("next").addEventListener("pointercancel", () => { wischStart = null; });
+
 $("next").addEventListener("click", e => {
+  if (geradeGewischt) return;
+  const schritt = e.target.closest("[data-hero-schritt]");
+  if (schritt){ heroSchritt(Number(schritt.dataset.heroSchritt)); return; }
+  const punkt = e.target.closest("[data-hero-punkt]");
+  if (punkt){
+    const ziel = Number(punkt.dataset.heroPunkt);
+    if (ziel !== HERO.i){ const r = ziel > HERO.i ? 1 : -1; HERO.i = ziel; zeigeHero(r); }
+    return;
+  }
   const merken = e.target.closest("[data-merken]");
   if (merken){
     const id = merken.dataset.merken;
