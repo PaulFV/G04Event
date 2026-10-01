@@ -107,8 +107,11 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.3vw,30px);lett
 /* ---------- Nächster Termin ---------- */
 .hero{position:relative;isolation:isolate;overflow:hidden;min-height:314px;background:
   linear-gradient(90deg,rgba(10,14,20,.98) 0%,rgba(14,19,26,.95) 43%,rgba(24,31,39,.78) 100%),var(--hero-bg);
-  color:var(--hero-ink);border:1px solid var(--line-2);border-radius:18px;padding:24px 28px 28px;
-  display:flex;flex-direction:column;gap:20px;justify-content:space-between}
+  color:var(--hero-ink);border:1px solid color-mix(in srgb, var(--hcat) 55%, var(--line-2));border-radius:18px;padding:24px 28px 28px;
+  display:flex;flex-direction:column;gap:20px;justify-content:space-between;
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--hcat) 35%, transparent),
+             0 0 46px -6px color-mix(in srgb, var(--hcat) 65%, transparent),
+             0 22px 50px -18px rgba(0,0,0,.55)}
 .hero[hidden]{display:none}
 .hero::before{content:"";position:absolute;z-index:-1;inset:0;
   background-image:linear-gradient(90deg,rgba(10,14,20,.02),rgba(10,14,20,.08) 55%,rgba(10,14,20,.2)),var(--hero-image,url("assets/event-hero-sprite.png"));
@@ -733,6 +736,11 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   font:inherit;font-size:16px;font-weight:600;padding:12px 30px;cursor:pointer;min-width:150px}
 .clearbtn:hover{background:var(--surface-2)}
 .own-storage-hint{margin:0 0 0 auto;color:var(--faint);font-size:14px;text-align:right}
+.feedback-hint{margin:0;color:var(--muted);font-size:14.5px;line-height:1.5}
+.feedback-honey{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+.feedback-status{margin:0;font-size:14px;color:var(--faint)}
+.feedback-status.ok{color:var(--c-sport);font-weight:600}
+.feedback-status.err{color:var(--sig-rot);font-weight:600}
 .own-subsection{display:flex;flex-direction:column;gap:12px;margin-top:4px;padding-top:20px;border-top:1px solid var(--line)}
 .own-subhead{display:flex;align-items:center;gap:10px}
 .own-subhead h4{font-family:var(--disp);font-size:20px;margin:0;color:var(--ink)}
@@ -1097,7 +1105,7 @@ window.addEventListener("error", function(){
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.5.0</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.6.0</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1160,6 +1168,26 @@ window.addEventListener("error", function(){
             </div>
             <div id="eigeneListe"></div>
           </div>
+        </section>
+        <section class="own-card feedback-card">
+          <div class="own-cardhead">
+            <span class="own-icon amber" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M5.5 7.5h21v15h-12l-5 4.5v-4.5h-4z"/></svg></span>
+            <h3 data-i18n="feedbackTitle">Feedback &amp; ideas</h3>
+          </div>
+          <p class="feedback-hint" data-i18n="feedbackHint">Found a bug, a missing event or have an idea? Send it straight to me — no account needed.</p>
+          <form id="feedbackForm" class="eigenform">
+            <div class="ff"><label><span data-i18n="feedbackMessage">Your message*</span>
+              <textarea name="message" rows="4" maxlength="2000" required placeholder="…" data-i18n-placeholder="feedbackPlaceholder"></textarea>
+            </label></div>
+            <div class="ff"><label><span data-i18n="feedbackEmailOptional">Your email (optional, so I can reply)</span>
+              <input name="_replyto" type="email" maxlength="120" placeholder="you@example.com">
+            </label></div>
+            <input type="text" name="_honey" class="feedback-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="own-form-actions">
+              <button type="submit" class="addbtn" id="feedbackSubmitBtn" data-i18n="feedbackSend">Send</button>
+              <p class="feedback-status" id="feedbackStatus" aria-live="polite"></p>
+            </div>
+          </form>
         </section>
       </div>
     </div>
@@ -1277,7 +1305,11 @@ const I18N = {
     onb3Title:"Narrow down by location", onb3Body:"Use “Location” to pick countries, regions and cities — only matching events stay in the list.",
     onb4Title:"Filter by theme", onb4Body:"Use “Theme” to filter by categories like music, food, culture or tradition.",
     onb5Title:"Your own events & settings", onb5Body:"Under “Settings” you can add your own events, save others with the star, set up reminders, and switch appearance or language.",
-    onb6Title:"Search", onb6Body:"The magnifying glass searches all events by name, city or keyword."
+    onb6Title:"Search", onb6Body:"The magnifying glass searches all events by name, city or keyword.",
+    feedbackTitle:"Feedback & ideas", feedbackHint:"Found a bug, a missing event or have an idea? Send it straight to me — no account needed.",
+    feedbackMessage:"Your message*", feedbackPlaceholder:"What's on your mind…", feedbackEmailOptional:"Your email (optional, so I can reply)",
+    feedbackSend:"Send", feedbackSending:"Sending…", feedbackSent:"Thanks! Your message is on its way.",
+    feedbackError:"Couldn't send that — please try again, or write to fodorpaul@web.de directly."
   },
   de: {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
@@ -1334,7 +1366,11 @@ const I18N = {
     onb3Title:"Nach Ort eingrenzen", onb3Body:"Über „Ort“ wählst du Länder, Regionen und Städte aus — nur passende Termine bleiben übrig.",
     onb4Title:"Nach Thema filtern", onb4Body:"Über „Thema“ filterst du nach Kategorien wie Musik, Essen, Kultur oder Tradition.",
     onb5Title:"Eigene Termine & Einstellungen", onb5Body:"Unter „Einstellungen“ legst du eigene Termine an, merkst dir andere mit dem Stern, richtest Erinnerungen ein und änderst Darstellung oder Sprache.",
-    onb6Title:"Suche", onb6Body:"Über die Lupe durchsuchst du alle Events nach Namen, Ort oder Stichwort."
+    onb6Title:"Suche", onb6Body:"Über die Lupe durchsuchst du alle Events nach Namen, Ort oder Stichwort.",
+    feedbackTitle:"Feedback & Ideen", feedbackHint:"Bug gefunden, ein Termin fehlt oder du hast eine Idee? Schick sie direkt an mich — ganz ohne Konto.",
+    feedbackMessage:"Deine Nachricht*", feedbackPlaceholder:"Was möchtest du loswerden…", feedbackEmailOptional:"Deine E-Mail (optional, für eine Antwort)",
+    feedbackSend:"Senden", feedbackSending:"Wird gesendet…", feedbackSent:"Danke! Deine Nachricht ist unterwegs.",
+    feedbackError:"Senden hat nicht geklappt — bitte nochmal versuchen oder direkt an fodorpaul@web.de schreiben."
   }
 };
 
@@ -1768,9 +1804,11 @@ function rechtstext(kind){
     <p>Notifications are optional and use the browser's Notification API. They are shown only after you grant permission. The app checks reminders locally when the page is open or becomes visible again.</p>
     <h3>External services</h3>
     <p>The app loads fonts from Google Fonts. This causes the browser to connect to Google when the fonts are requested. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>. The site itself uses no analytics or advertising service.</p>
+    <h3>Feedback form</h3>
+    <p>The feedback form under Settings is optional and only active when you type a message and press Send. In that case, the text you entered (and your email address, if you provide one) is sent directly from your browser to <a href="https://formsubmit.co/" target="_blank" rel="noopener">formsubmit.co</a>, a third-party service that forwards it by email to the app's developer. No other part of the app sends data anywhere. See <a href="https://formsubmit.co/privacy-policy" target="_blank" rel="noopener">formsubmit.co's privacy policy</a>.</p>
     <h3>Contact</h3>
     <p><a href="mailto:fodorpaul@web.de">fodorpaul@web.de</a></p>
-    <p>Last updated: 13 September 2026.</p>` : `
+    <p>Last updated: 1 October 2026.</p>` : `
     <h3>Geltungsbereich</h3>
     <p>G04Event ist eine statische Web-App zum Nachschlagen wiederkehrender Veranstaltungen. Es gibt kein Konto, keinen Login, keine Analyse, keine Werbung und kein Nutzerprofil.</p>
     <h3>Betreiber</h3>
@@ -1781,9 +1819,11 @@ function rechtstext(kind){
     <p>Benachrichtigungen sind optional und verwenden die Notification API des Browsers. Sie werden erst nach deiner Erlaubnis angezeigt. Die App prüft Erinnerungen lokal, wenn die Seite geöffnet oder wieder sichtbar wird.</p>
     <h3>Externe Dienste</h3>
     <p>Die App lädt Schriftarten von Google Fonts. Dafür verbindet sich der Browser beim Abruf der Schriften mit Google. Siehe die <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>. Die Seite selbst verwendet keine Analyse- oder Werbedienste.</p>
+    <h3>Feedback-Formular</h3>
+    <p>Das Feedback-Formular unter Einstellungen ist optional und wird nur aktiv, wenn du eine Nachricht einträgst und auf Senden tippst. In diesem Fall wird der eingegebene Text (sowie deine E-Mail-Adresse, falls angegeben) direkt aus deinem Browser an <a href="https://formsubmit.co/" target="_blank" rel="noopener">formsubmit.co</a> gesendet, einen externen Dienst, der die Nachricht per E-Mail an den Entwickler der App weiterleitet. Kein anderer Teil der App sendet Daten irgendwohin. Siehe die <a href="https://formsubmit.co/privacy-policy" target="_blank" rel="noopener">Datenschutzerklärung von formsubmit.co</a>.</p>
     <h3>Kontakt</h3>
     <p><a href="mailto:fodorpaul@web.de">fodorpaul@web.de</a></p>
-    <p>Stand: 13. September 2026.</p>`;
+    <p>Stand: 1. Oktober 2026.</p>`;
   return LANGUAGE === "en" ? `
     <h3>Software licence</h3>
     <p>Copyright © 2026 G04Event. The source code of this project is released under the <a href="LICENSE">MIT License</a>.</p>
@@ -3360,6 +3400,50 @@ $("eigenForm").addEventListener("submit", e => {
 
 $("editAbbrechen").addEventListener("click", eigeneBearbeitenAbbrechen);
 $("eigenClearBtn").addEventListener("click", eigeneBearbeitenAbbrechen);
+
+/* ---------------- Feedback-Formular ----------------
+   Rein statische App ohne eigenen Server: der Text wird per AJAX direkt vom Browser
+   aus an formsubmit.co geschickt, die ihn als E-Mail an fodorpaul@web.de weiterleiten.
+   Beim allerersten jemals eingehenden Absenden schickt formsubmit.co einmalig eine
+   Bestätigungs-Mail an diese Adresse, die bestätigt werden muss, bevor spätere
+   Nachrichten ankommen — siehe Projektnotiz. Das versteckte "_honey"-Feld ist eine
+   einfache Spam-Falle: echte Nutzer sehen und füllen es nie, Bots oft schon. */
+const FEEDBACK_ZIEL = "https://formsubmit.co/ajax/fodorpaul@web.de";
+$("feedbackForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.target;
+  if (form._honey.value) return;              // Bot-Falle ausgelöst — stillschweigend nichts tun
+  const nachricht = form.message.value.trim();
+  if (!nachricht) return;
+  const btn = $("feedbackSubmitBtn");
+  const status = $("feedbackStatus");
+  btn.disabled = true;
+  status.className = "feedback-status";
+  status.textContent = t("feedbackSending");
+  try {
+    const res = await fetch(FEEDBACK_ZIEL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        message: nachricht,
+        _replyto: form._replyto.value.trim(),
+        _subject: "G04Event — Feedback",
+        _template: "table",
+        App: "G04Event " + (document.querySelector(".settings-version strong")?.textContent || ""),
+        Sprache: LANGUAGE
+      })
+    });
+    if (!res.ok) throw new Error("status " + res.status);
+    status.textContent = t("feedbackSent");
+    status.className = "feedback-status ok";
+    form.reset();
+  } catch(err) {
+    status.textContent = t("feedbackError");
+    status.className = "feedback-status err";
+  } finally {
+    btn.disabled = false;
+  }
+});
 
 $("eigeneListe").addEventListener("click", e => {
   const bearb = e.target.closest("[data-bearbeiten]");
