@@ -76,7 +76,13 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
+/* Verhindert, dass ein seitliches Wischen (z. B. beim Hoch-/Runterscrollen in den
+   Einstellungen nahe am Bildschirmrand) von iOS Safari als "zurück"-Geste gedeutet
+   wird und die Ansicht sichtbar hin- und herspringt. Die Hauptkachel liest ihr eigenes
+   Wischen über Pointer-Events aus (siehe weiter unten im Skript) und bleibt davon
+   unberührt, da touch-action nur die native Browser-Geste abschaltet. */
+html{overscroll-behavior-x:none}
+body{overscroll-behavior-x:none;touch-action:pan-y;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
   -webkit-font-smoothing:antialiased;margin:0;
   padding-bottom:calc(184px + env(safe-area-inset-bottom))}
 :focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:4px}
@@ -1105,7 +1111,7 @@ window.addEventListener("error", function(){
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.6.0</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.6.1</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1664,6 +1670,20 @@ const EVENTS = [
 
 /* Markgröninger Schäferlauf — auf Wunsch recherchiert (lift-online.de), nahe Ludwigsburg */
 {n:"Markgröninger Schäferlauf",c:"Markgröningen",l:"Baden-Württemberg",k:"trad",s:"2027-08-27",e:"2027-08-30",r:"jährlich, meist letztes Augustwochenende",x:0,d:"Traditionsreiches Schäferfest mit historischem Festzug und dem legendären Wettlauf der Schäferinnen und Schäfer.",en:"Traditional shepherds' festival with a historic parade and the legendary barefoot race of the shepherds."},
+
+/* Göppingen — auf Wunsch ergänzt */
+{n:"Göppinger Maientag",c:"Göppingen",l:"Baden-Württemberg",k:"trad",s:"2027-06-11",e:"2027-06-14",r:"jährlich, Termin wird jedes Jahr vom Gemeinderat festgelegt",x:0,d:"Traditionsreiches Volksfest an der EWS-Arena mit Festzug, Festzelten und Rummel.",en:"Long-standing folk festival at the EWS-Arena with a parade, beer tents and funfair rides."},
+{n:"Göppinger Stadtfest",c:"Göppingen",l:"Baden-Württemberg",k:"music",s:"2026-09-11",e:"2026-09-13",r:"jährlich",x:0,d:"Fünf Bühnen in der Innenstadt rund um den Marktplatz, freier Eintritt.",en:"Five stages in the city centre around the market square, free admission."},
+{n:"Göppinger Weinfest",c:"Göppingen",l:"Baden-Württemberg",k:"food",s:"2026-09-30",e:"2026-10-04",r:"jährlich",x:0,d:"Weinstände auf dem Marktplatz, mit verkaufsoffenem Sonntag zum Abschluss.",en:"Wine stands on the market square, with a Sunday shopping finale to close out the week."},
+
+/* Eisenach — auf Wunsch ergänzt */
+{n:"Eisenacher Sommergewinn",c:"Eisenach",l:"Thüringen",k:"trad",s:"2027-03-06",e:"2027-03-06",r:"jährlich, meist Anfang März",x:0,d:"Deutschlands größtes Frühlingsfest und UNESCO-Kulturerbe seit 2016: Fackelumzug und großer Festumzug, der den Winter symbolisch vertreibt.",en:"Germany's largest spring festival and UNESCO heritage since 2016: a torchlight procession and grand parade that symbolically drives out winter."},
+{n:"Eisenacher Weihnachtsmarkt",c:"Eisenach",l:"Thüringen",k:"trad",s:"2026-11-24",e:"2026-12-22",r:"jährlich",x:0,d:"Weihnachtsmarkt rund um Markt und Rathaus, zu Füßen der Wartburg.",en:"Christmas market around the market square and town hall, at the foot of Wartburg castle."},
+
+/* Veszprém (Ungarn) — auf Wunsch ergänzt */
+{n:"Gizella Napok",c:"Veszprém",l:"Veszprém",p:"Ungarn",k:"art",s:"2026-05-04",e:"2026-05-10",r:"jährlich",x:0,d:"Größtes Kunst- und Kulturfestival der „Stadt der Königinnen“ mit freiem Eintritt zu Musik, bildender Kunst, Theater und Familienprogramm.",en:"The “City of Queens'” biggest arts festival, with free admission to music, visual art, theatre and family programmes."},
+{n:"VeszprémFest",c:"Veszprém",l:"Veszprém",p:"Ungarn",k:"music",s:"2026-07-15",e:"2026-07-18",r:"jährlich",x:0,d:"Viertägiges Musikfestival mit internationalen Headlinern in der historischen Burgstadt.",en:"Four-day music festival with international headliners in the historic castle town."},
+{n:"Veszprémi Utcazene Fesztivál",c:"Veszprém",l:"Veszprém",p:"Ungarn",k:"music",s:"2026-07-23",e:"2026-07-25",r:"jährlich",x:0,d:"Drei Tage Straßenmusik in der Altstadt, mit in- und ausländischen Musikern sowie einem Nachwuchswettbewerb.",en:"Three days of street music in the old town, with domestic and international musicians plus a newcomer competition."},
 
 /* Rumänien */
 {n:"Sibiu International Theatre Festival",c:"Hermannstadt",l:"Kreis Hermannstadt",p:"Rumänien",k:"art",s:"2027-06-18",e:"2027-06-27",r:"jährlich, Ende Juni",x:1,d:"Eines der größten Theaterfestivals Europas: hunderte Vorstellungen, Straßenkunst und internationale Compagnien in der Altstadt.",en:"One of Europe's largest theatre festivals: hundreds of performances, street art and international companies in the old town."},
