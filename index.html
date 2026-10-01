@@ -349,6 +349,34 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   border:3.5px solid var(--surface)}
 .scrim{position:fixed;inset:0;z-index:39;background:rgba(10,12,16,.4)}
 .scrim[hidden]{display:none}
+
+/* ---------- Einführungstour für neue Nutzer ---------- */
+.onb-scrim{position:fixed;inset:0;z-index:80;background:rgba(10,12,16,.56)}
+.onb-scrim[hidden]{display:none}
+.onb-modal{position:fixed;z-index:81;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(380px,calc(100% - 32px));max-height:min(86vh,560px);overflow:auto;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line-2);
+  border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.32);
+  padding:30px 24px 24px;text-align:center}
+.onb-modal[hidden]{display:none}
+.onb-skip{position:absolute;top:14px;right:16px;background:none;border:0;font:inherit;
+  font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;padding:6px 4px}
+.onb-icon{width:72px;height:72px;margin:4px auto 18px;border-radius:20px;background:#0B1016;
+  display:flex;align-items:center;justify-content:center}
+.onb-icon:empty{visibility:hidden}
+.onb-icon .dock-icon{width:40px;height:40px}
+.onb-title{font-family:var(--disp);font-size:21px;margin:0 0 10px;color:var(--ink)}
+.onb-body{font-size:14.5px;line-height:1.55;color:var(--ink-2);margin:0 0 22px}
+.onb-dots{display:flex;justify-content:center;gap:7px;margin-bottom:22px}
+.onb-dot{width:7px;height:7px;border-radius:999px;background:var(--line-2);transition:width .18s ease,background .18s ease}
+.onb-dot.ist-aktiv{width:18px;background:var(--ink)}
+.onb-actions{display:flex;align-items:center;gap:12px}
+.onb-back{background:none;border:0;font:inherit;font-size:14px;font-weight:600;
+  color:var(--muted);cursor:pointer;padding:12px 10px;margin-right:auto}
+.onb-next{background:var(--ink);color:var(--bg);border:0;border-radius:999px;
+  font:inherit;font-weight:700;font-size:15px;padding:12px 28px;cursor:pointer;min-width:132px}
+.onb-next:hover{filter:brightness(1.08)}
+
 .searchbox{position:relative}
 .searchbox input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface-2);
   border:1px solid var(--line-2);border-radius:10px;padding:12px 14px 12px 40px}
@@ -1005,6 +1033,19 @@ window.addEventListener("error", function(){
 
 <div class="scrim" id="scrim" hidden></div>
 
+<div class="onb-scrim" id="onbScrim" hidden></div>
+<aside class="onb-modal" id="onbModal" hidden role="dialog" aria-modal="true" aria-labelledby="onbTitle">
+  <button class="onb-skip" id="onbSkip" type="button" data-i18n="onbSkip">Skip</button>
+  <div class="onb-icon" id="onbIcon" aria-hidden="true"></div>
+  <h2 class="onb-title" id="onbTitle"></h2>
+  <p class="onb-body" id="onbBody"></p>
+  <div class="onb-dots" id="onbDots"></div>
+  <div class="onb-actions">
+    <button class="onb-back" id="onbBack" type="button" data-i18n="onbBack">Back</button>
+    <button class="onb-next" id="onbNext" type="button"></button>
+  </div>
+</aside>
+
 <div class="dockwrap">
   <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
     <div class="sheetbar">
@@ -1056,7 +1097,7 @@ window.addEventListener("error", function(){
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.4.24</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.5.0</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1229,7 +1270,14 @@ const I18N = {
     browserSettings:"Browser settings", browserSettingsHint:"Open this site's notification settings in your browser and allow notifications, then try again.",
     sameDay:"On the same day", daysBefore:"%n% days before", reminderHint:"Reminders appear when this page is open and are stored locally.",
     privacyLink:"Privacy", copyrightLink:"Copyright", privacyTitle:"Privacy policy", copyrightTitle:"Copyright and licence",
-    switchLanguage:"Switch to German", toLight:"Switch to light mode", toDark:"Switch to dark mode", languageButton:"Deutsch"
+    switchLanguage:"Switch to German", toLight:"Switch to light mode", toDark:"Switch to dark mode", languageButton:"Deutsch",
+    onbSkip:"Skip", onbNext:"Next", onbBack:"Back", onbDone:"Let's go",
+    onb1Title:"Welcome to G04Event", onb1Body:"Recurring festivals, markets and fairs around the world, with a live countdown. A quick look at the essentials.",
+    onb2Title:"Your next event", onb2Body:"At the top you always see the next upcoming event with its countdown; everything else follows as a list below.",
+    onb3Title:"Narrow down by location", onb3Body:"Use “Location” to pick countries, regions and cities — only matching events stay in the list.",
+    onb4Title:"Filter by theme", onb4Body:"Use “Theme” to filter by categories like music, food, culture or tradition.",
+    onb5Title:"Your own events & settings", onb5Body:"Under “Settings” you can add your own events, save others with the star, set up reminders, and switch appearance or language.",
+    onb6Title:"Search", onb6Body:"The magnifying glass searches all events by name, city or keyword."
   },
   de: {
     upcomingOnly:"Nur kommende", sortBy:"Sortieren nach", sortDate:"Nach Datum",
@@ -1279,7 +1327,14 @@ const I18N = {
     browserSettings:"Browser-Einstellungen", browserSettingsHint:"Öffne die Benachrichtigungseinstellungen für diese Seite im Browser und erlaube Benachrichtigungen. Versuche es danach erneut.",
     sameDay:"Am gleichen Tag", daysBefore:"%n% Tage vorher", reminderHint:"Erinnerungen erscheinen, wenn diese Seite geöffnet ist, und werden lokal gespeichert.",
     privacyLink:"Datenschutz", copyrightLink:"Copyright", privacyTitle:"Datenschutz", copyrightTitle:"Copyright und Lizenz",
-    switchLanguage:"Auf Englisch wechseln", toLight:"Zum hellen Modus wechseln", toDark:"Zum dunklen Modus wechseln", languageButton:"English"
+    switchLanguage:"Auf Englisch wechseln", toLight:"Zum hellen Modus wechseln", toDark:"Zum dunklen Modus wechseln", languageButton:"English",
+    onbSkip:"Überspringen", onbNext:"Weiter", onbBack:"Zurück", onbDone:"Los geht's",
+    onb1Title:"Willkommen bei G04Event", onb1Body:"Wiederkehrende Feste, Märkte und Messen weltweit — mit Live-Countdown. Ein kurzer Überblick über das Wichtigste.",
+    onb2Title:"Dein nächstes Event", onb2Body:"Oben siehst du immer das nächste anstehende Event mit Countdown, darunter alle weiteren Termine als Liste.",
+    onb3Title:"Nach Ort eingrenzen", onb3Body:"Über „Ort“ wählst du Länder, Regionen und Städte aus — nur passende Termine bleiben übrig.",
+    onb4Title:"Nach Thema filtern", onb4Body:"Über „Thema“ filterst du nach Kategorien wie Musik, Essen, Kultur oder Tradition.",
+    onb5Title:"Eigene Termine & Einstellungen", onb5Body:"Unter „Einstellungen“ legst du eigene Termine an, merkst dir andere mit dem Stern, richtest Erinnerungen ein und änderst Darstellung oder Sprache.",
+    onb6Title:"Suche", onb6Body:"Über die Lupe durchsuchst du alle Events nach Namen, Ort oder Stichwort."
   }
 };
 
@@ -2078,6 +2133,10 @@ const ALTE_STARTER_STADT = ["Berlin", "Hamburg", "München", "Köln", "Nürnberg
   "Frankfurt am Main", "Stuttgart", "Dresden", "Leipzig", "Hannover"];
 const STARTER_UMSTELLUNG_KEY = "g04event.starterOhneStaedte";
 
+/* Wird beim allerersten Start (noch keine gespeicherte Auswahl) auf true gesetzt —
+   steuert, ob danach einmalig die Einführungstour gezeigt wird. */
+let ERSTER_BESUCH = false;
+
 function ladeAuswahl(){
   let ersterBesuch = false;
   try {
@@ -2100,6 +2159,7 @@ function ladeAuswahl(){
   } catch(e) {}
   bereinige();
   speichereAuswahl();
+  ERSTER_BESUCH = ersterBesuch;
 }
 function speichereAuswahl(){
   try {
@@ -2450,6 +2510,7 @@ $("langToggle").addEventListener("click", () => {
   if (offenesPane) $("sheetTitle").textContent = t(TITEL[offenesPane]);
   if (offenesPane === "q") renderSuche();
   if (bearbeiteId) $("eigenSubmitBtn").textContent = t("saveChanges");
+  if (!$("onbModal").hidden) renderOnboarding();
   render();
 });
 
@@ -3384,6 +3445,54 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible"){ pruefeErinnerungen(); pruefeEigeneTermine(); }
 });
 setInterval(() => { pruefeErinnerungen(); pruefeEigeneTermine(); }, 60 * 60 * 1000);
+
+/* ---------------- Einführungstour für neue Nutzer ---------------- */
+/* Reine Info-Tour ohne Bezug zu echten Terminen — zeigt kurz, wo Ort-, Thema-, Eigene-
+   und Such-Funktionen liegen. Läuft nur beim allerersten Start (siehe ERSTER_BESUCH
+   oben bei ladeAuswahl) und merkt sich nichts Eigenes: schon das Anlegen der
+   gespeicherten Auswahl in ladeAuswahl() sorgt dafür, dass sie danach nie wieder
+   automatisch erscheint. */
+const ONB_SCHRITTE = [
+  { icon:null,            titleKey:"onb1Title", bodyKey:"onb1Body" },
+  { icon:"dock-icon-city",  titleKey:"onb2Title", bodyKey:"onb2Body" },
+  { icon:"dock-icon-land",  titleKey:"onb3Title", bodyKey:"onb3Body" },
+  { icon:"dock-icon-theme", titleKey:"onb4Title", bodyKey:"onb4Body" },
+  { icon:"dock-icon-own",   titleKey:"onb5Title", bodyKey:"onb5Body" },
+  { icon:"dock-icon-q",     titleKey:"onb6Title", bodyKey:"onb6Body" }
+];
+let onbSchrittIndex = 0;
+
+function renderOnboarding(){
+  const schritt = ONB_SCHRITTE[onbSchrittIndex];
+  $("onbIcon").innerHTML = schritt.icon
+    ? '<span class="dock-icon ' + schritt.icon + '" aria-hidden="true"></span>' : "";
+  $("onbTitle").textContent = t(schritt.titleKey);
+  $("onbBody").textContent = t(schritt.bodyKey);
+  $("onbDots").innerHTML = ONB_SCHRITTE.map((_, i) =>
+    '<span class="onb-dot' + (i === onbSchrittIndex ? ' ist-aktiv' : '') + '"></span>').join("");
+  $("onbBack").style.visibility = onbSchrittIndex === 0 ? "hidden" : "visible";
+  $("onbNext").textContent = t(onbSchrittIndex === ONB_SCHRITTE.length - 1 ? "onbDone" : "onbNext");
+}
+function schliesseOnboarding(){
+  $("onbModal").hidden = true;
+  $("onbScrim").hidden = true;
+}
+$("onbSkip").addEventListener("click", schliesseOnboarding);
+$("onbScrim").addEventListener("click", schliesseOnboarding);
+$("onbNext").addEventListener("click", () => {
+  if (onbSchrittIndex < ONB_SCHRITTE.length - 1){ onbSchrittIndex++; renderOnboarding(); }
+  else schliesseOnboarding();
+});
+$("onbBack").addEventListener("click", () => {
+  if (onbSchrittIndex > 0){ onbSchrittIndex--; renderOnboarding(); }
+});
+if (ERSTER_BESUCH){
+  onbSchrittIndex = 0;
+  renderOnboarding();
+  $("onbModal").hidden = false;
+  $("onbScrim").hidden = false;
+  $("onbNext").focus();
+}
 
 render();
 window.__g04ok = true;           // Start erfolgreich — der Notfall-Hinweis bleibt aus
