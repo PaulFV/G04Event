@@ -28,6 +28,7 @@
   --c-tech:#2F62D8; --c-food:#8A6608; --c-play:#6E36C6; --c-music:#BE1D5C;
   --c-art:#0E7A6B; --c-film:#3D4A5C; --c-sport:#12762D; --c-trad:#B03A3A;
   --c-sonstige:#565C66;
+  --c-birthday:#B5561C;
   --tint:rgba(20,23,28,.05);
   --ring:#14171C;
   --clock:#B3261E;
@@ -50,6 +51,7 @@
     --c-tech:#89AAF6; --c-food:#D6AE4F; --c-play:#B490EE; --c-music:#F179A6;
     --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
     --c-sonstige:#A7ADB8;
+    --c-birthday:#F0A070;
     --tint:rgba(255,255,255,.06);
     --ring:#E8EBF0;
   --clock:#FF7E7E;
@@ -66,6 +68,7 @@
   --c-tech:#89AAF6; --c-food:#D6AE4F; --c-play:#B490EE; --c-music:#F179A6;
   --c-art:#4FC3AC; --c-film:#9EABBE; --c-sport:#5FC47C; --c-trad:#EA8383;
   --c-sonstige:#A7ADB8;
+  --c-birthday:#F0A070;
   --tint:rgba(255,255,255,.06);
   --ring:#E8EBF0;
   --clock:#FF7E7E;
@@ -1139,7 +1142,7 @@ window.addEventListener("error", function(){
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </div>
-        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.6.4</strong></div>
+        <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.6.5</strong></div>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1179,13 +1182,22 @@ window.addEventListener("error", function(){
                 <option value="film" data-i18n="catFilm">Film</option>
                 <option value="sport" data-i18n="catSport">Sport</option>
                 <option value="trad" selected data-i18n="catTrad">Tradition</option>
+                <option value="birthday" data-i18n="catBirthday">Birthday</option>
                 <option value="sonstige" data-i18n="catOther">Other</option>
               </select>
             </label></div>
             <div class="ff"><label><span data-i18n="formNotes">Notes</span><textarea name="d" rows="3" maxlength="240" placeholder="Optional details" data-i18n-placeholder="notesPlaceholder"></textarea></label></div>
             <input type="hidden" name="l">
             <input type="hidden" name="p">
-            <input type="hidden" name="r" value="Einmalig">
+            <div class="ff"><label><span data-i18n="formRhythm">Recurrence</span>
+              <select name="r">
+                <option value="Einmalig" selected data-i18n="rhythmOnce">Once</option>
+                <option value="Jährlich" data-i18n="rhythmYearly">Yearly</option>
+                <option value="Monatlich" data-i18n="rhythmMonthly">Monthly</option>
+                <option value="Wöchentlich" data-i18n="rhythmWeekly">Weekly</option>
+                <option value="Quartalsweise" data-i18n="rhythmQuarterly">Quarterly</option>
+              </select>
+            </label></div>
           <p class="eigene-hinweis" id="editHinweis" hidden><span data-i18n="editing">Editing</span> „<span id="editName"></span>“ —
             <button type="button" id="editAbbrechen" data-i18n="cancel" style="all:unset;cursor:pointer;text-decoration:underline">cancel</button></p>
             <div class="own-form-actions">
@@ -1271,6 +1283,7 @@ const CATS = {
   film:  {label:"Film",      en:"Film",       v:"--c-film",  h:"#9EABBE"},
   sport: {label:"Sport",     en:"Sport",      v:"--c-sport", h:"#5FC47C"},
   trad:  {label:"Tradition", en:"Tradition",  v:"--c-trad",  h:"#EA8383"},
+  birthday: {label:"Geburtstag", en:"Birthday", v:"--c-birthday", h:"#F0A070"},
   sonstige: {label:"Sonstige", en:"Other",     v:"--c-sonstige", h:"#A7ADB8"}
 };
 
@@ -1311,7 +1324,7 @@ const I18N = {
     cityListSearchPlaceholder:"Search cities…", clearSelection:"Clear selection", noSelectedCities:"No cities selected yet.",
     newCountryPlaceholder:"Add a new country …", newCityPlaceholder:"Add a new city …", addButton:"Add",
     catTech:"Technology", catFood:"Food", catPlay:"Games", catMusic:"Music", catArt:"Culture",
-    catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catOther:"Other",
+    catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catBirthday:"Birthday", catOther:"Other",
     rhythmOnce:"Once", rhythmYearly:"Yearly", rhythmWeekly:"Weekly", rhythmMonthly:"Monthly", rhythmQuarterly:"Quarterly",
     runningNow:"Running now", heroMore:"%n% running · swipe", heroPrev:"Previous event", heroNext:"Next event", next:"Next", detail:"Details", stillRunning:"still running", startsIn:"starts in",
     countdownDays:"Days", countdownHours:"Hrs", countdownMinutes:"Min", countdownSeconds:"Sec",
@@ -1374,7 +1387,7 @@ const I18N = {
     cityListSearchPlaceholder:"Städte durchsuchen…", clearSelection:"Auswahl löschen", noSelectedCities:"Noch keine Städte ausgewählt.",
     newCountryPlaceholder:"Neues Land eintragen …", newCityPlaceholder:"Neue Stadt eintragen …", addButton:"Hinzufügen",
     catTech:"Technik", catFood:"Essen", catPlay:"Spiel", catMusic:"Musik", catArt:"Kultur",
-    catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catOther:"Sonstige",
+    catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catBirthday:"Geburtstag", catOther:"Sonstige",
     rhythmOnce:"Einmalig", rhythmYearly:"Jährlich", rhythmWeekly:"Wöchentlich", rhythmMonthly:"Monatlich", rhythmQuarterly:"Quartalsweise",
     runningNow:"Läuft gerade", heroMore:"%n% laufen · wischen", heroPrev:"Vorheriges Fest", heroNext:"Nächstes Fest", next:"Als Nächstes", detail:"Details", stillRunning:"läuft noch", startsIn:"beginnt in",
     countdownDays:"Tage", countdownHours:"Std", countdownMinutes:"Min", countdownSeconds:"Sek",
@@ -1950,7 +1963,7 @@ const STADT_EN = { "München":"Munich", "Köln":"Cologne", "Frankfurt am Main":"
   "Venedig":"Venice", "Mailand":"Milan", "Brüssel":"Brussels", "Gent":"Ghent", "Kopenhagen":"Copenhagen", "Göteborg":"Gothenburg",
   "Prag":"Prague", "Lissabon":"Lisbon", "Athen":"Athens", "Krakau":"Kraków", "Karlsbad":"Karlovy Vary", "Hermannstadt":"Sibiu",
   "Klausenburg":"Cluj-Napoca", "Kronstadt":"Brașov", "Hongkong":"Hong Kong", "Halle (Saale)":"Halle" };
-const RHYTHMUS_EN = {"jährlich":"annual","jährlich, letztes September-Wochenende":"annual, last weekend of September","jährlich, Pfingsten":"annual, at Pentecost","dreimal jährlich":"three times a year","jährlich, zwischen den Jahren":"annual, between Christmas and New Year","jährlich, Anfang Mai":"annual, early May","jährlich, Anstich am dritten September-Samstag":"annual, tapping on the third Saturday of September","zweimal jährlich":"twice a year","jährlich, an Ostern gekoppelt":"annual, tied to Easter","alle 2 Jahre, ungerade Jahre":"every 2 years, odd years","jährlich, Dienstag nach Pfingsten":"annual, Tuesday after Pentecost","jährlich, bis Heiligabend":"annual, until Christmas Eve","alle 2 Jahre, gerade Jahre":"every 2 years, even years","jährlich, erstes Septemberwochenende":"annual, first weekend of September","jährlich, feste Regeltermine":"annual, fixed dates","alle 5 Jahre":"every 5 years","jährlich, 8. August":"annual, 8 August","jährlich, zwei Wochenenden":"annual, two weekends","jährlich, zweites Oktoberwochenende":"annual, second weekend of October","jährlich, letzter Donnerstag im Fasching":"annual, last Thursday of carnival","jährlich, vierter Montag im November":"annual, fourth Monday of November","jährlich, Wochenende um den 12. Dezember":"annual, weekend around 12 December","jährlich, Montag nach Aschermittwoch":"annual, Monday after Ash Wednesday","jährlich, dritter Montag im April":"annual, third Monday of April","jährlich, um den 8. Dezember":"annual, around 8 December","jährlich, 21. Juni":"annual, 21 June","jährlich, bis 19. März":"annual, until 19 March","jährlich, Karwoche":"annual, Holy Week","jährlich, 23. Juni":"annual, 23 June","jährlich, 6. bis 14. Juli":"annual, 6 to 14 July","jährlich, letzter Mittwoch im August":"annual, last Wednesday of August","jährlich, um den 24. September":"annual, around 24 September","jährlich, an den Wochenenden":"annual, at weekends","jährlich, bis Faschingsdienstag":"annual, until Shrove Tuesday","zweimal jährlich, 2. Juli und 16. August":"twice a year, 2 July and 16 August","mehrmals jährlich":"several times a year","jährlich, 27. April":"annual, 27 April","jährlich, letztes Juliwochenende":"annual, last weekend of July","jährlich, erstes Februarwochenende":"annual, first weekend of February","jährlich, an zwei Wochenenden":"annual, on two weekends","jährlich, zum Jahreswechsel":"annual, at New Year","jährlich, bis 17. März":"annual, until 17 March","jährlich, 16. Juni":"annual, 16 June","jährlich, mit Ruhejahren":"annual, with occasional breaks","jährlich, letztes August-Wochenende":"annual, last weekend of August","jährlich, 10. Dezember":"annual, 10 December","jährlich, 30. April":"annual, 30 April","jährlich, Freitag zwischen 19. und 25. Juni":"annual, Friday between 19 and 25 June","jährlich, Eröffnung am 12. Mai":"annual, opening on 12 May","jährlich, um die Sonnenwende":"annual, around the solstice","jährlich, Nacht zum 24. Juni":"annual, night before 24 June","jährlich, meist letztes Augustwochenende":"annual, usually last weekend of August","jährlich, Ende Juni":"annual, late June","jährlich, erstes Augustwochenende":"annual, first weekend of August","jährlich, 13. November bis 3. Januar":"annual, 13 November to 3 January","jährlich, erstes Juliwochenende":"annual, first weekend of July","jährlich, letzte Oktoberwoche":"annual, last week of October","jährlich, fest am 5./6. Mai":"annual, always 5/6 May","jährlich, von Weihnachten bis Mitte Februar":"annual, from Christmas to mid-February","jährlich, 3 Nächte rund um das Mondfest":"annual, 3 nights around the Moon Festival","jährlich, immer 13.–15. April":"annual, always 13–15 April","jährlich, Anfang/Mitte Oktober":"annual, early/mid October","jährlich, letzte Juliwoche bis erste Augustwoche":"annual, last week of July to first week of August","jährlich, Ende September bis Anfang Oktober":"annual, late September to early October","jährlich, Mitte März":"annual, mid-March","jährlich, erster Samstag im Mai":"annual, first Saturday of May","jährlich, Faschingsdienstag":"annual, Shrove Tuesday","jährlich am 4. Juli":"annual, on 4 July","jährlich im April, im Piedmont Park":"annual in April, in Piedmont Park","jährlich, 17 Tage im späten Frühjahr":"annual, 17 days in late spring","jährlich Anfang März":"annual, early March","jährlich am Thomassonntag, eine Woche nach orthodoxem Ostern":"annual on St Thomas Sunday, one week after Orthodox Easter","jährlich im November, meist erster Sonntag":"annual in November, usually the first Sunday","jährlich im April":"annual in April","jährlich Ende Juli bis Anfang August":"annual, late July to early August","jährlich im Juli":"annual in July","jährlich Ende Oktober/Anfang November":"annual, late October/early November","jährlich im Frühling, Ende April bis Ende Mai":"annual in spring, late April to late May","jährlich im Frühling, je nach Blütezeit":"annual in spring, depending on the blossom","jährlich im Spätherbst/Winter":"annual in late autumn/winter","jährlich Mitte Juni":"annual, mid-June","jährlich Mitte Oktober bis Mitte November":"annual, mid-October to mid-November","jährlich, Ende Oktober":"annual, late October","jährlich, Ende Januar":"annual, late January","jährlich, zur Obstbaumblüte":"annual, during the fruit blossom","jährlich, 1. Mai":"annual, 1 May","jährlich, ab 1. Mai":"annual, from 1 May","jährlich, ab Donnerstag vor Pfingsten":"annual, from the Thursday before Pentecost","alle 10 Jahre":"every 10 years","jährlich, Juni bis September":"annual, June to September","alle 4 Jahre":"every 4 years","jährlich, Ende Juni bis Anfang September":"annual, late June to early September","jährlich, Anfang Juli":"annual, early July","jährlich, rund um Mariä Himmelfahrt":"annual, around Assumption Day (15 August)","jährlich, 2026 Pause":"annual, break in 2026","alle 2 Jahre":"every 2 years","jährlich, zweites Septemberwochenende":"annual, second weekend of September"};
+const RHYTHMUS_EN = {"Einmalig":"once","Jährlich":"yearly","Monatlich":"monthly","Wöchentlich":"weekly","Quartalsweise":"quarterly","jährlich":"annual","jährlich, letztes September-Wochenende":"annual, last weekend of September","jährlich, Pfingsten":"annual, at Pentecost","dreimal jährlich":"three times a year","jährlich, zwischen den Jahren":"annual, between Christmas and New Year","jährlich, Anfang Mai":"annual, early May","jährlich, Anstich am dritten September-Samstag":"annual, tapping on the third Saturday of September","zweimal jährlich":"twice a year","jährlich, an Ostern gekoppelt":"annual, tied to Easter","alle 2 Jahre, ungerade Jahre":"every 2 years, odd years","jährlich, Dienstag nach Pfingsten":"annual, Tuesday after Pentecost","jährlich, bis Heiligabend":"annual, until Christmas Eve","alle 2 Jahre, gerade Jahre":"every 2 years, even years","jährlich, erstes Septemberwochenende":"annual, first weekend of September","jährlich, feste Regeltermine":"annual, fixed dates","alle 5 Jahre":"every 5 years","jährlich, 8. August":"annual, 8 August","jährlich, zwei Wochenenden":"annual, two weekends","jährlich, zweites Oktoberwochenende":"annual, second weekend of October","jährlich, letzter Donnerstag im Fasching":"annual, last Thursday of carnival","jährlich, vierter Montag im November":"annual, fourth Monday of November","jährlich, Wochenende um den 12. Dezember":"annual, weekend around 12 December","jährlich, Montag nach Aschermittwoch":"annual, Monday after Ash Wednesday","jährlich, dritter Montag im April":"annual, third Monday of April","jährlich, um den 8. Dezember":"annual, around 8 December","jährlich, 21. Juni":"annual, 21 June","jährlich, bis 19. März":"annual, until 19 March","jährlich, Karwoche":"annual, Holy Week","jährlich, 23. Juni":"annual, 23 June","jährlich, 6. bis 14. Juli":"annual, 6 to 14 July","jährlich, letzter Mittwoch im August":"annual, last Wednesday of August","jährlich, um den 24. September":"annual, around 24 September","jährlich, an den Wochenenden":"annual, at weekends","jährlich, bis Faschingsdienstag":"annual, until Shrove Tuesday","zweimal jährlich, 2. Juli und 16. August":"twice a year, 2 July and 16 August","mehrmals jährlich":"several times a year","jährlich, 27. April":"annual, 27 April","jährlich, letztes Juliwochenende":"annual, last weekend of July","jährlich, erstes Februarwochenende":"annual, first weekend of February","jährlich, an zwei Wochenenden":"annual, on two weekends","jährlich, zum Jahreswechsel":"annual, at New Year","jährlich, bis 17. März":"annual, until 17 March","jährlich, 16. Juni":"annual, 16 June","jährlich, mit Ruhejahren":"annual, with occasional breaks","jährlich, letztes August-Wochenende":"annual, last weekend of August","jährlich, 10. Dezember":"annual, 10 December","jährlich, 30. April":"annual, 30 April","jährlich, Freitag zwischen 19. und 25. Juni":"annual, Friday between 19 and 25 June","jährlich, Eröffnung am 12. Mai":"annual, opening on 12 May","jährlich, um die Sonnenwende":"annual, around the solstice","jährlich, Nacht zum 24. Juni":"annual, night before 24 June","jährlich, meist letztes Augustwochenende":"annual, usually last weekend of August","jährlich, Ende Juni":"annual, late June","jährlich, erstes Augustwochenende":"annual, first weekend of August","jährlich, 13. November bis 3. Januar":"annual, 13 November to 3 January","jährlich, erstes Juliwochenende":"annual, first weekend of July","jährlich, letzte Oktoberwoche":"annual, last week of October","jährlich, fest am 5./6. Mai":"annual, always 5/6 May","jährlich, von Weihnachten bis Mitte Februar":"annual, from Christmas to mid-February","jährlich, 3 Nächte rund um das Mondfest":"annual, 3 nights around the Moon Festival","jährlich, immer 13.–15. April":"annual, always 13–15 April","jährlich, Anfang/Mitte Oktober":"annual, early/mid October","jährlich, letzte Juliwoche bis erste Augustwoche":"annual, last week of July to first week of August","jährlich, Ende September bis Anfang Oktober":"annual, late September to early October","jährlich, Mitte März":"annual, mid-March","jährlich, erster Samstag im Mai":"annual, first Saturday of May","jährlich, Faschingsdienstag":"annual, Shrove Tuesday","jährlich am 4. Juli":"annual, on 4 July","jährlich im April, im Piedmont Park":"annual in April, in Piedmont Park","jährlich, 17 Tage im späten Frühjahr":"annual, 17 days in late spring","jährlich Anfang März":"annual, early March","jährlich am Thomassonntag, eine Woche nach orthodoxem Ostern":"annual on St Thomas Sunday, one week after Orthodox Easter","jährlich im November, meist erster Sonntag":"annual in November, usually the first Sunday","jährlich im April":"annual in April","jährlich Ende Juli bis Anfang August":"annual, late July to early August","jährlich im Juli":"annual in July","jährlich Ende Oktober/Anfang November":"annual, late October/early November","jährlich im Frühling, Ende April bis Ende Mai":"annual in spring, late April to late May","jährlich im Frühling, je nach Blütezeit":"annual in spring, depending on the blossom","jährlich im Spätherbst/Winter":"annual in late autumn/winter","jährlich Mitte Juni":"annual, mid-June","jährlich Mitte Oktober bis Mitte November":"annual, mid-October to mid-November","jährlich, Ende Oktober":"annual, late October","jährlich, Ende Januar":"annual, late January","jährlich, zur Obstbaumblüte":"annual, during the fruit blossom","jährlich, 1. Mai":"annual, 1 May","jährlich, ab 1. Mai":"annual, from 1 May","jährlich, ab Donnerstag vor Pfingsten":"annual, from the Thursday before Pentecost","alle 10 Jahre":"every 10 years","jährlich, Juni bis September":"annual, June to September","alle 4 Jahre":"every 4 years","jährlich, Ende Juni bis Anfang September":"annual, late June to early September","jährlich, Anfang Juli":"annual, early July","jährlich, rund um Mariä Himmelfahrt":"annual, around Assumption Day (15 August)","jährlich, 2026 Pause":"annual, break in 2026","alle 2 Jahre":"every 2 years","jährlich, zweites Septemberwochenende":"annual, second weekend of September"};
 const englisch = () => LANGUAGE === "en";
 const landTxt   = name => englisch() && LAND_ANZEIGE_EN[name] || name;
 const regionTxt = name => englisch() && REGION_EN[name] || name;
@@ -2032,6 +2045,7 @@ function addMonateGeklemmt(datum, deltaMonate){
 const RHYTHMUS_SCHRITT = {
   "Wöchentlich":   d => new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7),
   "Monatlich":     d => addMonateGeklemmt(d, 1),
+  "Jährlich":      d => addMonateGeklemmt(d, 12),
   "Quartalsweise": d => addMonateGeklemmt(d, 3)
 };
 
@@ -2473,6 +2487,7 @@ const THEME_ICONS = {
   film:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 16h32v24H8zM8 16l3-7h32l-3 7zM15 9l4 7M24 9l4 7M33 9l4 7M14 26h.1M21 26h.1M28 26h.1M35 26h.1"/></svg>',
   sport:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="9" r="3"/><path d="M26 17l7 4-4 7 7 5M27 22l-8 7-5 9M29 27l-8 1-5-6M35 33l7 6M18 36l-6 5"/></svg>',
   trad:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 39h34M10 35h28M13 35V20M21 35V20M29 35V20M37 35V20M8 20h32L24 8zM6 39h36"/></svg>',
+  birthday:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 42h32M10 42V28h28v14M10 35c3 2 5 2 7 0s4-2 7 0 4 2 7 0 4-2 7 0"/><path d="M24 28v-7M24 17c-1-2 0-4 0-6M24 11h.1"/></svg>',
   sonstige:'<svg viewBox="0 0 48 48" fill="currentColor"><circle cx="13" cy="24" r="3.5"/><circle cx="24" cy="24" r="3.5"/><circle cx="35" cy="24" r="3.5"/></svg>'
 };
 const THEME_CHECK = '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m7 16 6 6 12-13"/></svg>';
