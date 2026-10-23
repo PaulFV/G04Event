@@ -702,8 +702,8 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
   border:1px solid var(--line-2);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
 .own-cardhead{display:flex;align-items:center;gap:14px;min-height:38px;padding-bottom:15px;
   border-bottom:1px solid var(--line)}
-#pane-eigene .own-card>.own-cardhead{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
-#pane-eigene .own-card>.own-cardhead::after{content:"";margin-left:auto;flex:none;width:9px;height:9px;margin-right:4px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s}
+#pane-eigene .own-card:not(.fixed-card)>.own-cardhead{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+#pane-eigene .own-card:not(.fixed-card)>.own-cardhead::after{content:"";margin-left:auto;flex:none;width:9px;height:9px;margin-right:4px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s}
 #pane-eigene .own-card.collapsed>.own-cardhead::after{transform:rotate(-45deg)}
 #pane-eigene .own-card.collapsed>:not(.own-cardhead){display:none}
 .own-cardhead h3{font-family:var(--disp);font-size:clamp(21px,3vw,28px);font-weight:700;letter-spacing:-.025em;
@@ -1139,7 +1139,7 @@ window.addEventListener("error", function(){
       </section>
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
-        <section class="own-card">
+        <section class="own-card fixed-card">
           <div class="own-cardhead"><span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M16 6v20"/></svg></span><h3 data-i18n="designLabel">Appearance</h3></div>
           <div class="design-seg" id="designSeg" role="group" aria-label="Appearance" data-i18n-aria="designLabel">
             <button type="button" data-design="system" data-i18n="designSystem">System</button>
@@ -2690,7 +2690,7 @@ $("installBtn").addEventListener("click", () => {
 });
 $("pane-eigene").addEventListener("click", e => {
   const kopf = e.target.closest(".own-cardhead");
-  if (kopf) kopf.parentElement.classList.toggle("collapsed");
+  if (kopf && !kopf.parentElement.classList.contains("fixed-card")) kopf.parentElement.classList.toggle("collapsed");
 });
 $("legalClose").addEventListener("click", schliesseRechtliches);
 $("legalScrim").addEventListener("click", schliesseRechtliches);
