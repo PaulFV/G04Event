@@ -693,6 +693,9 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .eigenepane{display:flex;flex-direction:column;gap:20px;max-width:1000px;margin:0 auto}
 .settings-version{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--surface-2);color:var(--muted);font-size:14px}
 .settings-version strong{font:600 14px var(--mono);color:var(--ink)}
+.prefs{display:grid;gap:14px}
+.pref{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pref-label{font-size:14px;color:var(--muted)}
 .design-seg{display:flex;gap:3px;padding:3px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface)}
 .design-seg button{border:0;border-radius:999px;background:transparent;color:var(--muted);font:500 13px var(--sans);
   padding:6px 13px;cursor:pointer;white-space:nowrap}
@@ -1146,18 +1149,23 @@ window.addEventListener("error", function(){
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
         <section class="own-card fixed-card">
-          <div class="own-cardhead"><span class="own-icon purple" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M16 6v20"/></svg></span><h3 data-i18n="designLabel">Appearance</h3></div>
-          <div class="design-seg" id="designSeg" role="group" aria-label="Appearance" data-i18n-aria="designLabel">
-            <button type="button" data-design="system" data-i18n="designSystem">System</button>
-            <button type="button" data-design="light" data-i18n="designLight">Light</button>
-            <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
-          </div>
-        </section>
-        <section class="own-card fixed-card">
-          <div class="own-cardhead"><span class="own-icon blue" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M6 16h20M16 6c-4 4-4 16 0 20M16 6c4 4 4 16 0 20"/></svg></span><h3 data-i18n="languageLabel">Language</h3></div>
-          <div class="design-seg" id="langSeg" role="group" aria-label="Language" data-i18n-aria="languageLabel">
-            <button type="button" data-lang="en">English</button>
-            <button type="button" data-lang="de">Deutsch</button>
+          <div class="own-cardhead"><span class="own-icon purple" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M16 6v20"/></svg></span><h3 data-i18n="displayLanguageTitle">Appearance &amp; language</h3></div>
+          <div class="prefs">
+            <div class="pref">
+              <span class="pref-label" data-i18n="designLabel">Appearance</span>
+              <div class="design-seg" id="designSeg" role="group" aria-label="Appearance" data-i18n-aria="designLabel">
+                <button type="button" data-design="system" data-i18n="designSystem">System</button>
+                <button type="button" data-design="light" data-i18n="designLight">Light</button>
+                <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
+              </div>
+            </div>
+            <div class="pref">
+              <span class="pref-label" data-i18n="languageLabel">Language</span>
+              <div class="design-seg" id="langSeg" role="group" aria-label="Language" data-i18n-aria="languageLabel">
+                <button type="button" data-lang="en">English</button>
+                <button type="button" data-lang="de">Deutsch</button>
+              </div>
+            </div>
           </div>
         </section>
         <section class="own-card" id="erinnerungBox"></section>
@@ -1366,7 +1374,7 @@ const I18N = {
     newCountryPlaceholder:"Add a new country …", newCityPlaceholder:"Add a new city …", addButton:"Add",
     catTech:"Technology", catFood:"Food", catPlay:"Games", catMusic:"Music", catArt:"Culture",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catBirthday:"Birthday", catOther:"Other",
-    installTitle:"Install as app", installText:"iPhone/iPad: open Safari → Share → Add to Home Screen. Android: open Chrome → menu ⋮ → Install app.", installNow:"Install now", legalCardTitle:"Legal", languageLabel:"Language",
+    installTitle:"Install as app", installText:"iPhone/iPad: open Safari → Share → Add to Home Screen. Android: open Chrome → menu ⋮ → Install app.", installNow:"Install now", legalCardTitle:"Legal", languageLabel:"Language", displayLanguageTitle:"Appearance & language",
     rhythmOnce:"Once", rhythmYearly:"Yearly", rhythmWeekly:"Weekly", rhythmMonthly:"Monthly", rhythmQuarterly:"Quarterly",
     runningNow:"Running now", heroMore:"%n% running · swipe", heroPrev:"Previous event", heroNext:"Next event", next:"Next", detail:"Details", stillRunning:"still running", startsIn:"starts in",
     countdownDays:"Days", countdownHours:"Hrs", countdownMinutes:"Min", countdownSeconds:"Sec",
@@ -1430,7 +1438,7 @@ const I18N = {
     newCountryPlaceholder:"Neues Land eintragen …", newCityPlaceholder:"Neue Stadt eintragen …", addButton:"Hinzufügen",
     catTech:"Technik", catFood:"Essen", catPlay:"Spiel", catMusic:"Musik", catArt:"Kultur",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catBirthday:"Geburtstag", catOther:"Sonstige",
-    installTitle:"Als App installieren", installText:"iPhone/iPad: Safari öffnen → Teilen → Zum Home-Bildschirm. Android: Chrome öffnen → Menü ⋮ → App installieren.", installNow:"Jetzt installieren", legalCardTitle:"Rechtliches", languageLabel:"Sprache",
+    installTitle:"Als App installieren", installText:"iPhone/iPad: Safari öffnen → Teilen → Zum Home-Bildschirm. Android: Chrome öffnen → Menü ⋮ → App installieren.", installNow:"Jetzt installieren", legalCardTitle:"Rechtliches", languageLabel:"Sprache", displayLanguageTitle:"Darstellung & Sprache",
     rhythmOnce:"Einmalig", rhythmYearly:"Jährlich", rhythmWeekly:"Wöchentlich", rhythmMonthly:"Monatlich", rhythmQuarterly:"Quartalsweise",
     runningNow:"Läuft gerade", heroMore:"%n% laufen · wischen", heroPrev:"Vorheriges Fest", heroNext:"Nächstes Fest", next:"Als Nächstes", detail:"Details", stillRunning:"läuft noch", startsIn:"beginnt in",
     countdownDays:"Tage", countdownHours:"Std", countdownMinutes:"Min", countdownSeconds:"Sek",
