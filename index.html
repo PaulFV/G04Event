@@ -712,6 +712,12 @@ select{width:100%;height:56px;font:inherit;font-size:16px;color:var(--ink);backg
 .own-icon svg{width:31px;height:31px;display:block;filter:drop-shadow(0 0 4px currentColor)}
 .own-icon.amber{color:#F2BD4C}
 .own-icon.green{color:var(--c-sport)}
+.own-icon.blue{color:var(--c-tech)}
+.own-icon.purple{color:var(--c-play)}
+.own-icon.teal{color:var(--c-art)}
+.own-icon.red{color:var(--c-trad)}
+.own-icon.pink{color:var(--c-music)}
+.own-icon.slate{color:var(--c-film)}
 .own-count{margin-left:auto;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink-2);
   border:1px solid var(--line-2);border-radius:999px;padding:8px 16px;white-space:nowrap}
 .sheet.own-open{height:calc(100vh - var(--dockh, 150px) - 8px);max-height:none;min-height:0}
@@ -1140,7 +1146,7 @@ window.addEventListener("error", function(){
       <div class="chips" id="pane-thema" hidden></div>
       <div class="eigenepane" id="pane-eigene" hidden>
         <section class="own-card fixed-card">
-          <div class="own-cardhead"><span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M16 6v20"/></svg></span><h3 data-i18n="designLabel">Appearance</h3></div>
+          <div class="own-cardhead"><span class="own-icon purple" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M16 6v20"/></svg></span><h3 data-i18n="designLabel">Appearance</h3></div>
           <div class="design-seg" id="designSeg" role="group" aria-label="Appearance" data-i18n-aria="designLabel">
             <button type="button" data-design="system" data-i18n="designSystem">System</button>
             <button type="button" data-design="light" data-i18n="designLight">Light</button>
@@ -1148,26 +1154,16 @@ window.addEventListener("error", function(){
           </div>
         </section>
         <section class="own-card fixed-card">
-          <div class="own-cardhead"><span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M6 16h20M16 6c-4 4-4 16 0 20M16 6c4 4 4 16 0 20"/></svg></span><h3 data-i18n="languageLabel">Language</h3></div>
+          <div class="own-cardhead"><span class="own-icon blue" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M6 16h20M16 6c-4 4-4 16 0 20M16 6c4 4 4 16 0 20"/></svg></span><h3 data-i18n="languageLabel">Language</h3></div>
           <div class="design-seg" id="langSeg" role="group" aria-label="Language" data-i18n-aria="languageLabel">
             <button type="button" data-lang="en">English</button>
             <button type="button" data-lang="de">Deutsch</button>
           </div>
         </section>
-        <section class="own-card install-card">
-          <div class="own-cardhead">
-            <span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5v15M10 14l6 6 6-6M6 25h20"/></svg></span>
-            <h3 data-i18n="installTitle">Install as app</h3>
-          </div>
-          <p class="feedback-hint" data-i18n="installText">iPhone/iPad: open Safari → Share → Add to Home Screen. Android: open Chrome → menu ⋮ → Install app.</p>
-          <div class="own-form-actions">
-            <button type="button" class="addbtn" id="installBtn" hidden data-i18n="installNow">Install now</button>
-          </div>
-        </section>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
-            <span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 5.5h14v21l-7-4.8-7 4.8z"/></svg></span>
+            <span class="own-icon red" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 5.5h14v21l-7-4.8-7 4.8z"/></svg></span>
             <h3 data-i18n="savedEvents">Saved events</h3>
             <span class="own-count" id="merklisteCount">0 saved</span>
           </div>
@@ -1238,7 +1234,7 @@ window.addEventListener("error", function(){
         </section>
         <section class="own-card feedback-card">
           <div class="own-cardhead">
-            <span class="own-icon amber" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M5.5 7.5h21v15h-12l-5 4.5v-4.5h-4z"/></svg></span>
+            <span class="own-icon pink" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M5.5 7.5h21v15h-12l-5 4.5v-4.5h-4z"/></svg></span>
             <h3 data-i18n="feedbackTitle">Feedback &amp; ideas</h3>
           </div>
           <p class="feedback-hint" data-i18n="feedbackHint">Found a bug, a missing event or have an idea? Send it straight to me — no account needed.</p>
@@ -1256,9 +1252,19 @@ window.addEventListener("error", function(){
             </div>
           </form>
         </section>
+        <section class="own-card install-card">
+          <div class="own-cardhead">
+            <span class="own-icon teal" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5v15M10 14l6 6 6-6M6 25h20"/></svg></span>
+            <h3 data-i18n="installTitle">Install as app</h3>
+          </div>
+          <p class="feedback-hint" data-i18n="installText">iPhone/iPad: open Safari → Share → Add to Home Screen. Android: open Chrome → menu ⋮ → Install app.</p>
+          <div class="own-form-actions">
+            <button type="button" class="addbtn" id="installBtn" hidden data-i18n="installNow">Install now</button>
+          </div>
+        </section>
         <section class="own-card">
           <div class="own-cardhead">
-            <span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M16 4.5l9 3.5v7c0 5.5-3.8 9.8-9 11.5-5.2-1.7-9-6-9-11.5V8z"/></svg></span>
+            <span class="own-icon slate" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M16 4.5l9 3.5v7c0 5.5-3.8 9.8-9 11.5-5.2-1.7-9-6-9-11.5V8z"/></svg></span>
             <h3 data-i18n="legalCardTitle">Legal</h3>
           </div>
           <div class="own-form-actions">
