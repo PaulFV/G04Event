@@ -1147,9 +1147,12 @@ window.addEventListener("error", function(){
             <button type="button" data-design="dark" data-i18n="designDark">Dark</button>
           </div>
         </section>
-        <section class="own-card">
-          <div class="own-cardhead"><span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="16" cy="16" r="10.5"/><path d="M16 14v7M16 10.5h.1"/></svg></span><h3 data-i18n="versionLabel">Version</h3></div>
-          <div class="settings-version"><span>G04Event</span><strong>V2.6.5</strong></div>
+        <section class="own-card fixed-card">
+          <div class="own-cardhead"><span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="16" cy="16" r="10"/><path d="M6 16h20M16 6c-4 4-4 16 0 20M16 6c4 4 4 16 0 20"/></svg></span><h3 data-i18n="languageLabel">Language</h3></div>
+          <div class="design-seg" id="langSeg" role="group" aria-label="Language" data-i18n-aria="languageLabel">
+            <button type="button" data-lang="en">English</button>
+            <button type="button" data-lang="de">Deutsch</button>
+          </div>
         </section>
         <section class="own-card install-card">
           <div class="own-cardhead">
@@ -1263,6 +1266,10 @@ window.addEventListener("error", function(){
             <button type="button" class="clearbtn" data-legal="copyright" data-i18n="copyrightLink">Copyright</button>
           </div>
         </section>
+        <section class="own-card">
+          <div class="own-cardhead"><span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="16" cy="16" r="10.5"/><path d="M16 14v7M16 10.5h.1"/></svg></span><h3 data-i18n="versionLabel">Version</h3></div>
+          <div class="settings-version"><span>G04Event</span><strong>V2.6.5</strong></div>
+        </section>
       </div>
     </div>
   </div>
@@ -1353,7 +1360,7 @@ const I18N = {
     newCountryPlaceholder:"Add a new country …", newCityPlaceholder:"Add a new city …", addButton:"Add",
     catTech:"Technology", catFood:"Food", catPlay:"Games", catMusic:"Music", catArt:"Culture",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catBirthday:"Birthday", catOther:"Other",
-    installTitle:"Install as app", installText:"iPhone/iPad: open Safari → Share → Add to Home Screen. Android: open Chrome → menu ⋮ → Install app.", installNow:"Install now", legalCardTitle:"Legal",
+    installTitle:"Install as app", installText:"iPhone/iPad: open Safari → Share → Add to Home Screen. Android: open Chrome → menu ⋮ → Install app.", installNow:"Install now", legalCardTitle:"Legal", languageLabel:"Language",
     rhythmOnce:"Once", rhythmYearly:"Yearly", rhythmWeekly:"Weekly", rhythmMonthly:"Monthly", rhythmQuarterly:"Quarterly",
     runningNow:"Running now", heroMore:"%n% running · swipe", heroPrev:"Previous event", heroNext:"Next event", next:"Next", detail:"Details", stillRunning:"still running", startsIn:"starts in",
     countdownDays:"Days", countdownHours:"Hrs", countdownMinutes:"Min", countdownSeconds:"Sec",
@@ -1417,7 +1424,7 @@ const I18N = {
     newCountryPlaceholder:"Neues Land eintragen …", newCityPlaceholder:"Neue Stadt eintragen …", addButton:"Hinzufügen",
     catTech:"Technik", catFood:"Essen", catPlay:"Spiel", catMusic:"Musik", catArt:"Kultur",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catBirthday:"Geburtstag", catOther:"Sonstige",
-    installTitle:"Als App installieren", installText:"iPhone/iPad: Safari öffnen → Teilen → Zum Home-Bildschirm. Android: Chrome öffnen → Menü ⋮ → App installieren.", installNow:"Jetzt installieren", legalCardTitle:"Rechtliches",
+    installTitle:"Als App installieren", installText:"iPhone/iPad: Safari öffnen → Teilen → Zum Home-Bildschirm. Android: Chrome öffnen → Menü ⋮ → App installieren.", installNow:"Jetzt installieren", legalCardTitle:"Rechtliches", languageLabel:"Sprache",
     rhythmOnce:"Einmalig", rhythmYearly:"Jährlich", rhythmWeekly:"Wöchentlich", rhythmMonthly:"Monatlich", rhythmQuarterly:"Quartalsweise",
     runningNow:"Läuft gerade", heroMore:"%n% laufen · wischen", heroPrev:"Vorheriges Fest", heroNext:"Nächstes Fest", next:"Als Nächstes", detail:"Details", stillRunning:"läuft noch", startsIn:"beginnt in",
     countdownDays:"Tage", countdownHours:"Std", countdownMinutes:"Min", countdownSeconds:"Sek",
@@ -1880,6 +1887,8 @@ function applyLanguage(){
   });
   $("langToggle").textContent = t("languageButton");
   $("langToggle").setAttribute("aria-label", t("switchLanguage"));
+  document.querySelectorAll("#langSeg [data-lang]").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.lang === LANGUAGE ? "true" : "false"));
   aktualisiereDesignKnopf();
   aktualisiereKopfzeit();
 }
@@ -2649,6 +2658,8 @@ $("designSeg").addEventListener("click", e => {
   if (b) setzeDesign(b.dataset.design);
 });
 
+document.querySelectorAll("#langSeg [data-lang]").forEach(b =>
+  b.addEventListener("click", () => { if (LANGUAGE !== b.dataset.lang) $("langToggle").click(); }));
 $("langToggle").addEventListener("click", () => {
   LANGUAGE = LANGUAGE === "en" ? "de" : "en";
   try { localStorage.setItem(LANGUAGE_KEY, LANGUAGE); } catch(e) {}
