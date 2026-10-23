@@ -1143,6 +1143,16 @@ window.addEventListener("error", function(){
           </div>
         </div>
         <div class="settings-version"><span data-i18n="versionLabel">Version</span><strong>V2.6.5</strong></div>
+        <section class="own-card install-card">
+          <div class="own-cardhead">
+            <span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5v15M10 14l6 6 6-6M6 25h20"/></svg></span>
+            <h3 data-i18n="installTitle">Install as app</h3>
+          </div>
+          <p class="feedback-hint" data-i18n="installText">iPhone/iPad: open Safari → Share → Add to Home Screen. Android: open Chrome → menu ⋮ → Install app.</p>
+          <div class="own-form-actions">
+            <button type="button" class="addbtn" id="installBtn" hidden data-i18n="installNow">Install now</button>
+          </div>
+        </section>
         <section class="own-card" id="erinnerungBox"></section>
         <section class="own-card saved-card" id="merklisteCard">
           <div class="own-cardhead">
@@ -1235,6 +1245,16 @@ window.addEventListener("error", function(){
             </div>
           </form>
         </section>
+        <section class="own-card">
+          <div class="own-cardhead">
+            <span class="own-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M16 4.5l9 3.5v7c0 5.5-3.8 9.8-9 11.5-5.2-1.7-9-6-9-11.5V8z"/></svg></span>
+            <h3 data-i18n="legalCardTitle">Legal</h3>
+          </div>
+          <div class="own-form-actions">
+            <button type="button" class="clearbtn" data-legal="privacy" data-i18n="privacyLink">Privacy</button>
+            <button type="button" class="clearbtn" data-legal="copyright" data-i18n="copyrightLink">Copyright</button>
+          </div>
+        </section>
       </div>
     </div>
   </div>
@@ -1325,6 +1345,7 @@ const I18N = {
     newCountryPlaceholder:"Add a new country …", newCityPlaceholder:"Add a new city …", addButton:"Add",
     catTech:"Technology", catFood:"Food", catPlay:"Games", catMusic:"Music", catArt:"Culture",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catBirthday:"Birthday", catOther:"Other",
+    installTitle:"Install as app", installText:"iPhone/iPad: open Safari → Share → Add to Home Screen. Android: open Chrome → menu ⋮ → Install app.", installNow:"Install now", legalCardTitle:"Legal",
     rhythmOnce:"Once", rhythmYearly:"Yearly", rhythmWeekly:"Weekly", rhythmMonthly:"Monthly", rhythmQuarterly:"Quarterly",
     runningNow:"Running now", heroMore:"%n% running · swipe", heroPrev:"Previous event", heroNext:"Next event", next:"Next", detail:"Details", stillRunning:"still running", startsIn:"starts in",
     countdownDays:"Days", countdownHours:"Hrs", countdownMinutes:"Min", countdownSeconds:"Sec",
@@ -1388,6 +1409,7 @@ const I18N = {
     newCountryPlaceholder:"Neues Land eintragen …", newCityPlaceholder:"Neue Stadt eintragen …", addButton:"Hinzufügen",
     catTech:"Technik", catFood:"Essen", catPlay:"Spiel", catMusic:"Musik", catArt:"Kultur",
     catFilm:"Film", catSport:"Sport", catTrad:"Tradition", catBirthday:"Geburtstag", catOther:"Sonstige",
+    installTitle:"Als App installieren", installText:"iPhone/iPad: Safari öffnen → Teilen → Zum Home-Bildschirm. Android: Chrome öffnen → Menü ⋮ → App installieren.", installNow:"Jetzt installieren", legalCardTitle:"Rechtliches",
     rhythmOnce:"Einmalig", rhythmYearly:"Jährlich", rhythmWeekly:"Wöchentlich", rhythmMonthly:"Monatlich", rhythmQuarterly:"Quartalsweise",
     runningNow:"Läuft gerade", heroMore:"%n% laufen · wischen", heroPrev:"Vorheriges Fest", heroNext:"Nächstes Fest", next:"Als Nächstes", detail:"Details", stillRunning:"läuft noch", startsIn:"beginnt in",
     countdownDays:"Tage", countdownHours:"Std", countdownMinutes:"Min", countdownSeconds:"Sek",
@@ -2645,6 +2667,19 @@ function schliesseRechtliches(){
 }
 document.querySelectorAll("[data-legal]").forEach(btn =>
   btn.addEventListener("click", () => oeffneRechtliches(btn.dataset.legal)));
+
+let installEvent = null;
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  installEvent = e;
+  $("installBtn").hidden = false;
+});
+window.addEventListener("appinstalled", () => { $("installBtn").hidden = true; installEvent = null; });
+$("installBtn").addEventListener("click", () => {
+  if (!installEvent) return;
+  installEvent.prompt();
+  installEvent.userChoice.then(() => { installEvent = null; $("installBtn").hidden = true; });
+});
 $("legalClose").addEventListener("click", schliesseRechtliches);
 $("legalScrim").addEventListener("click", schliesseRechtliches);
 
